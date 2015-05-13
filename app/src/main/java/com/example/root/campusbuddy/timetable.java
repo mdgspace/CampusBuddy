@@ -57,7 +57,7 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_tt, menu);
         return true;
     }
 
