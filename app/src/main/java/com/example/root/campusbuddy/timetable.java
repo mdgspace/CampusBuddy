@@ -1,5 +1,7 @@
 package com.example.root.campusbuddy;
 
+import android.app.DialogFragment;
+import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -36,6 +38,8 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timetable);
+
+        CalendarDBHelper mDbHelper = new CalendarDBHelper(getApplicationContext());
 
         // Get a reference for the week view in the layout.
         mWeekView = (WeekView) findViewById(R.id.weekView);
@@ -105,6 +109,11 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
                     mWeekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics()));
                 }
                 return true;
+
+            case R.id.action_new_event:
+                Intent newEventIntent = new Intent(timetable.this, NewEvent.class);
+                startActivity(newEventIntent);
+
         }
 
         return super.onOptionsItemSelected(item);
