@@ -40,6 +40,10 @@ public class map extends FragmentActivity
 
 
 
+
+
+
+
     @Override
     public void onMapReady(GoogleMap map) {
         map.addMarker(new MarkerOptions()

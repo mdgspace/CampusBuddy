@@ -1,8 +1,11 @@
-package com.example.root.campusbuddy;
+
+        package com.example.root.campusbuddy;
+
 
 /**
  * Created by root on 14/5/15.
  */
+        /*
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,6 +15,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.preference.PreferenceManager;
+
 
 public class CalendarDBHelper {
     private static final String DATABASE_NAME = "mycal.db";
@@ -126,3 +130,78 @@ public class CalendarDBHelper {
 
     }
 }
+*/
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+/**
+ * Created by rc on 13/5/15.
+ */
+
+
+public class CalendarDBHelper extends SQLiteOpenHelper {
+    // If you change the database schema, you must increment the database version.
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "FeedReader.db";
+
+    private static final String TEXT_TYPE = " TEXT";
+    private static final String COMMA_SEP = ",";
+    private static final String SQL_CREATE_ENTRIES =
+            "CREATE TABLE " + CalendarDB.CalendarEntry.TABLE_NAME + " (" +
+                    CalendarDB.CalendarEntry._ID + " INTEGER PRIMARY KEY," +
+                    CalendarDB.CalendarEntry.COLUMN_NAME_DATE + TEXT_TYPE + COMMA_SEP +
+                    CalendarDB.CalendarEntry.COLUMN_NAME_STARTTIME + TEXT_TYPE + COMMA_SEP +
+                    CalendarDB.CalendarEntry.COLUMN_NAME_ENDTIME + TEXT_TYPE + COMMA_SEP +
+                    CalendarDB.CalendarEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
+                    CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL + TEXT_TYPE + COMMA_SEP +
+                    CalendarDB.CalendarEntry.COLUMN_NAME_VENUE + TEXT_TYPE + COMMA_SEP +
+                    " )";
+
+    private static final String SQL_DELETE_ENTRIES =
+            "DROP TABLE IF EXISTS " + CalendarDB.CalendarEntry.TABLE_NAME;
+
+
+    public CalendarDBHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(SQL_CREATE_ENTRIES);
+    }
+
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // This database is only a cache for online data, so its upgrade policy is
+        // to simply to discard the data and start over
+        db.execSQL(SQL_DELETE_ENTRIES);
+        onCreate(db);
+    }
+
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        onUpgrade(db, oldVersion, newVersion);
+    }
+    public void putInformation(SQLiteDatabase db, String date, String starttime, String endtime, String title, String detail, String venue ){
+
+        ContentValues values = new ContentValues();
+        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DATE, date);
+        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTTIME, starttime);
+        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDTIME, endtime);
+        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
+        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, detail);
+        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
+
+
+        db.insert(
+                CalendarDB.CalendarEntry.TABLE_NAME,
+                null,
+                values);
+
+// http://developer.android.com/training/basics/data-storage/databases.html
+// --> on this link, COLUMN_NAME_NULLABLE is used instead of null, but it is giving error here. What is the reason ??
+
+    }
+
+}
+
