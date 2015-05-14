@@ -145,17 +145,18 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class CalendarDBHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "FeedReader.db";
+    public static final String DATABASE_NAME = "EventsReader.db";
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + CalendarDB.CalendarEntry.TABLE_NAME + " (" +
-                    CalendarDB.CalendarEntry._ID + " INTEGER PRIMARY KEY," +
+
+
+                    CalendarDB.CalendarEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
                     CalendarDB.CalendarEntry.COLUMN_NAME_DATE + TEXT_TYPE + COMMA_SEP +
                     CalendarDB.CalendarEntry.COLUMN_NAME_STARTTIME + TEXT_TYPE + COMMA_SEP +
                     CalendarDB.CalendarEntry.COLUMN_NAME_ENDTIME + TEXT_TYPE + COMMA_SEP +
-                    CalendarDB.CalendarEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
                     CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL + TEXT_TYPE + COMMA_SEP +
                     CalendarDB.CalendarEntry.COLUMN_NAME_VENUE + TEXT_TYPE + COMMA_SEP +
                     " )";
@@ -182,13 +183,13 @@ public class CalendarDBHelper extends SQLiteOpenHelper {
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
     }
-    public void putInformation(SQLiteDatabase db, String date, String starttime, String endtime, String title, String detail, String venue ){
+    public void putInformation(SQLiteDatabase db, String title, String date, String starttime, String endtime, String detail,  String venue ){
 
         ContentValues values = new ContentValues();
+        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DATE, date);
         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTTIME, starttime);
         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDTIME, endtime);
-        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, detail);
         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
 

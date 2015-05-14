@@ -155,7 +155,7 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
 
         // Populate the week view with some events.
         List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
-
+/*
         Calendar startTime = Calendar.getInstance();
         startTime.set(Calendar.HOUR_OF_DAY, 3);
         startTime.set(Calendar.MINUTE, 0);
@@ -251,6 +251,25 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
         endTime = (Calendar) startTime.clone();
         endTime.add(Calendar.HOUR_OF_DAY, 3);
         event = new WeekViewEvent(5, getEventTitle(startTime), startTime, endTime);
+        event.setColor(getResources().getColor(R.color.dim_foreground_disabled_material_dark));
+        events.add(event);
+        */
+
+       Calendar startTime = Calendar.getInstance();
+        startTime.set(Calendar.DAY_OF_MONTH, 5);
+        startTime.set(Calendar.HOUR_OF_DAY, 16);
+        startTime.set(Calendar.MINUTE, 20);
+        startTime.set(Calendar.MONTH, 4);
+        startTime.set(Calendar.YEAR, newYear);
+        Calendar endTime = (Calendar) startTime.clone();
+        endTime.set(Calendar.HOUR_OF_DAY, 7);
+        endTime.set(Calendar.MINUTE, 0);
+
+
+
+        WeekViewEvent event = new WeekViewEvent(1, getEventTitle(startTime), startTime, endTime);
+
+        event = new WeekViewEvent(1, getEventTitle(startTime), startTime, endTime);
         event.setColor(getResources().getColor(R.color.dim_foreground_disabled_material_dark));
         events.add(event);
 
