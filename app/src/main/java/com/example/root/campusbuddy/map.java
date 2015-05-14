@@ -38,10 +38,6 @@ public class map extends FragmentActivity
 
     }
 
-   
-
-
-
 
 
     @Override

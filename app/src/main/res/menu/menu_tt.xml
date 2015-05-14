@@ -29,5 +29,10 @@
         android:orderInCategory="100"
         app:showAsAction="always" />
 
+    <item android:id="@+id/action_new_event"
+        android:title=""
+        android:orderInCategory="100"
+        app:showAsAction="always" />
+
 
 </menu>
