@@ -136,37 +136,53 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
-/**
+        /**
  * Created by rc on 13/5/15.
  */
 
 
 public class CalendarDBHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "EventsReader.db";
 
     private static final String TEXT_TYPE = " TEXT";
+    private static final String INT_TYPE = " INTEGER";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + CalendarDB.CalendarEntry.TABLE_NAME + " (" +
 
 
                     CalendarDB.CalendarEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
-                    CalendarDB.CalendarEntry.COLUMN_NAME_DATE + TEXT_TYPE + COMMA_SEP +
-                    CalendarDB.CalendarEntry.COLUMN_NAME_STARTTIME + TEXT_TYPE + COMMA_SEP +
-                    CalendarDB.CalendarEntry.COLUMN_NAME_ENDTIME + TEXT_TYPE + COMMA_SEP +
+                    CalendarDB.CalendarEntry.COLUMN_NAME_DAY + INT_TYPE + COMMA_SEP +
+                    CalendarDB.CalendarEntry.COLUMN_NAME_MONTH + INT_TYPE + COMMA_SEP +
+                    CalendarDB.CalendarEntry.COLUMN_NAME_YEAR + INT_TYPE + COMMA_SEP +
+                    CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR + INT_TYPE + COMMA_SEP +
+                    CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN + INT_TYPE + COMMA_SEP +
+                    CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR + INT_TYPE + COMMA_SEP +
+                    CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN + INT_TYPE + COMMA_SEP +
                     CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL + TEXT_TYPE + COMMA_SEP +
-                    CalendarDB.CalendarEntry.COLUMN_NAME_VENUE + TEXT_TYPE + COMMA_SEP +
+                    CalendarDB.CalendarEntry.COLUMN_NAME_VENUE + TEXT_TYPE +
                     " )";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + CalendarDB.CalendarEntry.TABLE_NAME;
 
+    private static CalendarDBHelper instance;
 
-    public CalendarDBHelper(Context context) {
+
+    private CalendarDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static synchronized CalendarDBHelper getInstance(Context context)
+    {
+        if (instance == null)
+            instance = new CalendarDBHelper(context);
+
+        return instance;
     }
 
     public void onCreate(SQLiteDatabase db) {
@@ -183,13 +199,17 @@ public class CalendarDBHelper extends SQLiteOpenHelper {
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
     }
-    public void putInformation(SQLiteDatabase db, String title, String date, String starttime, String endtime, String detail,  String venue ){
+    public void putInformation(SQLiteDatabase db,  String title, int day, int month, int year, int starthour, int startmin, int endhour, int endmin, String detail,  String venue ){
 
         ContentValues values = new ContentValues();
         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
-        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DATE, date);
-        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTTIME, starttime);
-        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDTIME, endtime);
+        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, day);
+        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, month);
+        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR, year);
+        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, starthour);
+        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startmin);
+        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
+        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endmin);
         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, detail);
         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
 
@@ -199,10 +219,11 @@ public class CalendarDBHelper extends SQLiteOpenHelper {
                 null,
                 values);
 
+
+
 // http://developer.android.com/training/basics/data-storage/databases.html
 // --> on this link, COLUMN_NAME_NULLABLE is used instead of null, but it is giving error here. What is the reason ??
 
     }
 
 }
-

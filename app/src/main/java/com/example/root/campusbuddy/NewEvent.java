@@ -12,7 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.sql.SQLException;
 
 
 public class NewEvent extends Activity implements DateDialog.OnDateSelectedListener, StartTimeDialog.OnStartTimeSelectedListener, EndTimeDialog.OnEndTimeSelectedListener{
@@ -21,15 +24,20 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
     Button submitBut;
 
     SQLiteDatabase db;
-    CalendarDBHelper mDbHelper;
+ //   CalendarDBHelper mDbHelper;
     ContentValues values;
+    int year, day, month, starthour, startminute, endhour, endminute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        mDbHelper = new CalendarDBHelper(getApplicationContext());
+     //   mDbHelper = new CalendarDBHelper(getApplicationContext());
+
+        db = CalendarDBHelper.getInstance(getApplicationContext()).getWritableDatabase();
 
 
-//         db = mDbHelper.getWritableDatabase();
+
+       // CalendarDBHelper.getInstance(getApplicationContext()).onCreate(db);   added by myself
+       // db = mDbHelper.getWritableDatabase();
          values = new ContentValues();
 
 
@@ -76,12 +84,23 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
             public void onClick(View v) {
 
                 values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, editt_title.getText().toString());
-                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DATE, editt_date.getText().toString());
-                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTTIME, editt_start.getText().toString());
-                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDTIME, editt_end.getText().toString());
+                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, day);
+                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, month);
+                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR, year);
+                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, starthour);
+                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startminute);
+                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
+                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
                 values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, editt_details.getText().toString());
                 values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, editt_venue.getText().toString());
 
+                db.insert(
+                        CalendarDB.CalendarEntry.TABLE_NAME,
+                        null,
+                        values);
+
+        Toast.makeText(NewEvent.this, "Details submitted", Toast.LENGTH_LONG).show();
+            finish();
             }
         });
      }
@@ -112,18 +131,26 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
 
 
     @Override
-    public void onDateSelected(int year, int month, int day) {
-        Toast.makeText(NewEvent.this, ""+day+month+year, Toast.LENGTH_LONG).show();
+    public void onDateSelected(int year1, int month1, int day1) {
+        editt_date.setText(year1 + " " + month1 + " " + day1, TextView.BufferType.EDITABLE);
+        year = year1;
+        month = month1;
+        day = day1;
     }
 
     @Override
     public void onEndTimeSelected(int hour, int minute) {
-
+        editt_end.setText(hour + " " + minute, TextView.BufferType.EDITABLE);
+        endhour = hour;
+        endminute = minute;
     }
 
     @Override
     public void onStartTimeSelected(int hour, int minute) {
-
+        String d = hour + " " + minute;
+        editt_start.setText(d, TextView.BufferType.EDITABLE);
+        starthour = hour;
+        startminute = minute;
     }
     }
 
