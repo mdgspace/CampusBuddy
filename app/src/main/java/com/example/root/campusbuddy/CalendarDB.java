@@ -14,7 +14,9 @@ public final class CalendarDB {
 
     /* Inner class that defines the table contents */
     public static abstract class CalendarEntry implements BaseColumns {
+
         public static final String TABLE_NAME = "events";
+        public static final String COLUMN_NAME_ID = "IDs";
         public static final String COLUMN_NAME_DAY = "date";
         public static final String COLUMN_NAME_MONTH = "month";
         public static final String COLUMN_NAME_YEAR = "year";

@@ -1,8 +1,12 @@
 package com.example.root.campusbuddy;
 
 import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.RectF;
@@ -51,6 +55,7 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
 
 
         String[] eventList = {
+                CalendarDB.CalendarEntry.COLUMN_NAME_ID,
                 CalendarDB.CalendarEntry.COLUMN_NAME_TITLE,
                 CalendarDB.CalendarEntry.COLUMN_NAME_DAY,
                 CalendarDB.CalendarEntry.COLUMN_NAME_MONTH,
@@ -96,6 +101,8 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
         // the week view. This is optional.
         setupDateTimeInterpreter(false);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -149,8 +156,10 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
                 return true;
 
             case R.id.action_new_event:
+                finish();
                 Intent newEventIntent = new Intent(timetable.this, NewEvent.class);
                 startActivity(newEventIntent);
+
 
         }
 
@@ -193,162 +202,28 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
 
         // Populate the week view with some events.
         List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
-/*
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 3);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth - 1);
-        startTime.set(Calendar.YEAR, newYear);
-        Calendar endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR, 1);
-        endTime.set(Calendar.MONTH, newMonth - 1);
-        WeekViewEvent event = new WeekViewEvent(1, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
-        events.add(event);
 
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 3);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 4);
-        endTime.set(Calendar.MINUTE, 30);
-        endTime.set(Calendar.MONTH, newMonth-1);
-        event = new WeekViewEvent(10, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.wallet_bright_foreground_holo_dark));
-        events.add(event);
-
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 4);
-        startTime.set(Calendar.MINUTE, 20);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 5);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(10, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.highlighted_text_material_dark));
-        events.add(event);
-
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 5);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR_OF_DAY, 2);
-        endTime.set(Calendar.MONTH, newMonth - 1);
-        event = new WeekViewEvent(2, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.wallet_dim_foreground_disabled_holo_dark));
-        events.add(event);
-
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 5);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        startTime.add(Calendar.DATE, 1);
-        endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR_OF_DAY, 3);
-        endTime.set(Calendar.MONTH, newMonth - 1);
-        event = new WeekViewEvent(3, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
-        events.add(event);
-
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 15);
-        startTime.set(Calendar.HOUR_OF_DAY, 3);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR_OF_DAY, 3);
-        event = new WeekViewEvent(4, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.abc_primary_text_disable_only_material_dark));
-        events.add(event);
-
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 1);
-        startTime.set(Calendar.HOUR_OF_DAY, 3);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR_OF_DAY, 3);
-        event = new WeekViewEvent(5, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.abc_search_url_text));
-        events.add(event);
-
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, startTime.getActualMaximum(Calendar.DAY_OF_MONTH));
-        startTime.set(Calendar.HOUR_OF_DAY, 15);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR_OF_DAY, 3);
-        event = new WeekViewEvent(5, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.dim_foreground_disabled_material_dark));
-        events.add(event);
-        */
-/*
-       Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 5);
-        startTime.set(Calendar.HOUR_OF_DAY, 16);
-        startTime.set(Calendar.MINUTE, 20);
-        startTime.set(Calendar.MONTH, 4);
-        startTime.set(Calendar.YEAR, newYear);
-        Calendar endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 27);
-        endTime.set(Calendar.MINUTE, 0);
-        endTime.set(Calendar.DAY_OF_MONTH, 7);
-
-
-
-        WeekViewEvent event1 = new WeekViewEvent(1, "event1", startTime, endTime);
-        event1.setColor(getResources().getColor(R.color.dim_foreground_disabled_material_light));
-        events.add(event1);
-*/
-        /*
-        Calendar startTime2 = Calendar.getInstance();
-        startTime2.set(Calendar.DAY_OF_MONTH, 5);
-        startTime2.set(Calendar.HOUR_OF_DAY, 16);
-        startTime2.set(Calendar.MINUTE, 20);
-        startTime2.set(Calendar.MONTH, 4);
-        startTime2.set(Calendar.YEAR, newYear);
-        Calendar endTime2 = (Calendar) startTime2.clone();
-        endTime2.set(Calendar.HOUR_OF_DAY, 50);
-        endTime2.set(Calendar.MINUTE, 0);
-
-
-
-
-        WeekViewEvent event2 = new WeekViewEvent(2, "event2", startTime2, endTime2);
-
-        event2.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
-        events.add(event2);
-*/
-/*
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.DATE, cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY));
-        startTime.set(Calendar.MONTH, cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH));
-        startTime.set(Calendar.YEAR, cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR));
-        startTime.set(Calendar.HOUR_OF_DAY, cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR));
-        startTime.set(Calendar.MINUTE, cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN));
-        Calendar endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR));
-        endTime.set(Calendar.MINUTE, cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN));
-
-        WeekViewEvent event = new WeekViewEvent(2, CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, startTime, endTime);
-        event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
-        events.add(event);
-        */
-       // Toast.makeText(timetable.this,  String.valueOf(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)), Toast.LENGTH_LONG).show();
         Calendar startTime, endTime;
         WeekViewEvent event;
-        int i = 1;
+cr.moveToFirst();
+        startTime = Calendar.getInstance();
+        if(cr.getCount() >0){
+       startTime.set(Calendar.DATE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)));
+        startTime.set(Calendar.MONTH, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH)));
+        startTime.set(Calendar.YEAR, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR)));
+        startTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR)));
+        startTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN)));
+        endTime = (Calendar) startTime.clone();
+        endTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR)));
+        endTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN)));
+
+        event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)), cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
+        event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
+        events.add(event);}
+
+
         while(cr.moveToNext()){
+
         //   Toast.makeText(timetable.this,  String.valueOf(cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH))), Toast.LENGTH_LONG).show();
 
              startTime = Calendar.getInstance();
@@ -361,23 +236,87 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
             endTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR)));
             endTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN)));
 
-            event = new WeekViewEvent(i, cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
+            event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)), cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
             event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
             events.add(event);
-            i++;
+
         }
 
 
         return events;
     }
 
-    private String getEventTitle(Calendar time) {
-        return String.format("Event of %02d:%02d %s/%d", time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), time.get(Calendar.MONTH)+1, time.get(Calendar.DAY_OF_MONTH));
-    }
 
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
-        Toast.makeText(timetable.this, "Clicked " + event.getName(), Toast.LENGTH_SHORT).show();
+  //      Toast.makeText(timetable.this, "Event: " + event.getName(), Toast.LENGTH_SHORT).show();
+/*
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        DetailsFragment fragment = new DetailsFragment();
+        fragmentTransaction.add(R.id.calendar, fragment);
+
+        fragmentTransaction.commit();
+*/
+
+       // DetailsFragment det = (DetailsFragment) getSupportFragmentManager().findFragmentById(R.id.hddbn);
+
+     /*   Intent detailsIntent = new Intent(timetable.this, DetailsActivity.class);
+        detailsIntent.putExtra(deta, "details");
+        startActivity(detailsIntent);
+        */
+       long ID = event.getId();
+        String detail = "", venue = "", title = "";
+        int day = 0, month = 0, year = 0, starthour = 0, startmin = 0, endhour = 0, endmin = 0;
+
+        cr.moveToFirst();
+        if (cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)) == ID)
+        {
+            detail = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL));
+            venue = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE));
+            day = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY));
+            month = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH));
+            year = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR));
+            starthour = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR));
+            startmin = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN));
+            endhour = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR));
+            endmin = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN));
+            title = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE));
+
+        }
+
+        else {
+            while(cr.moveToNext()){
+                if (cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)) == ID)
+                {
+                    detail = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL));
+                    venue = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE));
+                    day = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY));
+                    month = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH));
+                    year = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR));
+                    starthour = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR));
+                    startmin = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN));
+                    endhour = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR));
+                    endmin = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN));
+                    title = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE));
+                }
+            }
+        }
+
+        Intent detailsIntent = new Intent(timetable.this, DetailsActivity.class);
+        detailsIntent.putExtra(detail, "details");
+        detailsIntent.putExtra(venue, "venue");
+        detailsIntent.putExtra(title, "title");
+        detailsIntent.putExtra(starthour+ " : " +startmin, "start");
+        detailsIntent.putExtra(endhour+ " : " +endmin, "end");
+        detailsIntent.putExtra(day+ " : " + month + " : " +year, "date");
+
+        startActivity(detailsIntent);
+
+
+        Toast.makeText(timetable.this, "Event ID: " + ID, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override

@@ -4,6 +4,9 @@ package com.example.root.campusbuddy;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -27,10 +30,16 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
  //   CalendarDBHelper mDbHelper;
     ContentValues values;
     int year, day, month, starthour, startminute, endhour, endminute;
+
+    SharedPreferences prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
      //   mDbHelper = new CalendarDBHelper(getApplicationContext());
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_new_event);
 
         db = CalendarDBHelper.getInstance(getApplicationContext()).getWritableDatabase();
 
@@ -39,6 +48,9 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
        // CalendarDBHelper.getInstance(getApplicationContext()).onCreate(db);   added by myself
        // db = mDbHelper.getWritableDatabase();
          values = new ContentValues();
+
+        prefs = this.getSharedPreferences(
+                "com.example.app", Context.MODE_PRIVATE);
 
 
 
@@ -83,6 +95,9 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
             @Override
             public void onClick(View v) {
 
+                Long value = prefs.getLong("ID_KEY", 0);
+
+                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
                 values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, editt_title.getText().toString());
                 values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, day);
                 values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, month);
@@ -99,8 +114,19 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
                         null,
                         values);
 
-        Toast.makeText(NewEvent.this, "Details submitted", Toast.LENGTH_LONG).show();
+
+
+
+
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putLong("ID_KEY", value + 1);
+                editor.commit();
+
+        Toast.makeText(NewEvent.this, "Details submitted  "+value, Toast.LENGTH_LONG).show();
             finish();
+
+                Intent ttIntent = new Intent(NewEvent.this, timetable.class);
+                startActivity(ttIntent);
             }
         });
      }
@@ -153,4 +179,3 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
         startminute = minute;
     }
     }
-

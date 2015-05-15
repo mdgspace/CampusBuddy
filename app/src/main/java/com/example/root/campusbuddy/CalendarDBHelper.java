@@ -145,7 +145,7 @@ import android.widget.Toast;
 
 public class CalendarDBHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "EventsReader.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -155,6 +155,7 @@ public class CalendarDBHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + CalendarDB.CalendarEntry.TABLE_NAME + " (" +
 
 
+                    CalendarDB.CalendarEntry.COLUMN_NAME_ID + INT_TYPE + COMMA_SEP +
                     CalendarDB.CalendarEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
                     CalendarDB.CalendarEntry.COLUMN_NAME_DAY + INT_TYPE + COMMA_SEP +
                     CalendarDB.CalendarEntry.COLUMN_NAME_MONTH + INT_TYPE + COMMA_SEP +
@@ -199,9 +200,10 @@ public class CalendarDBHelper extends SQLiteOpenHelper {
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
     }
-    public void putInformation(SQLiteDatabase db,  String title, int day, int month, int year, int starthour, int startmin, int endhour, int endmin, String detail,  String venue ){
+    public void putInformation(SQLiteDatabase db,  String title,int ID,  int day, int month, int year, int starthour, int startmin, int endhour, int endmin, String detail,  String venue ){
 
         ContentValues values = new ContentValues();
+        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, ID);
         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, day);
         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, month);
