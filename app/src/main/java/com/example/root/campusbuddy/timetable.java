@@ -53,7 +53,8 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
 
         db = CalendarDBHelper.getInstance(getApplicationContext()).getReadableDatabase();
 
-
+        if(DeleteandEditEvents.deletecounter==0)
+        {
         String[] eventList = {
                 CalendarDB.CalendarEntry.COLUMN_NAME_ID,
                 CalendarDB.CalendarEntry.COLUMN_NAME_TITLE,
@@ -73,6 +74,34 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
         }
         catch (Exception err){
             Toast.makeText(timetable.this, err.toString(), Toast.LENGTH_LONG).show();
+        }}
+
+        else{
+            Intent tte=getIntent();
+            Bundle extra=tte.getExtras();
+            String delvalue=extra.getString("value for deleting");
+            db.delete(CalendarDB.CalendarEntry.TABLE_NAME,CalendarDB.CalendarEntry.COLUMN_NAME_ID,new String[]{delvalue});
+            String[] eventList = {
+                    CalendarDB.CalendarEntry.COLUMN_NAME_ID,
+                    CalendarDB.CalendarEntry.COLUMN_NAME_TITLE,
+                    CalendarDB.CalendarEntry.COLUMN_NAME_DAY,
+                    CalendarDB.CalendarEntry.COLUMN_NAME_MONTH,
+                    CalendarDB.CalendarEntry.COLUMN_NAME_YEAR,
+                    CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR,
+                    CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN,
+                    CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR,
+                    CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN,
+                    CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL,
+                    CalendarDB.CalendarEntry.COLUMN_NAME_VENUE
+            };
+
+            try {
+                cr = db.query(CalendarDB.CalendarEntry.TABLE_NAME, eventList, null, null, null, null, null);
+            }
+            catch (Exception err){
+                Toast.makeText(timetable.this, err.toString(), Toast.LENGTH_LONG).show();
+            }
+
         }
        cr.moveToFirst();
       /*
@@ -305,12 +334,12 @@ cr.moveToFirst();
         }
 
         Intent detailsIntent = new Intent(timetable.this, DetailsActivity.class);
-        detailsIntent.putExtra(detail, "details");
-        detailsIntent.putExtra(venue, "venue");
-        detailsIntent.putExtra(title, "title");
-        detailsIntent.putExtra(starthour+ " : " +startmin, "start");
-        detailsIntent.putExtra(endhour+ " : " +endmin, "end");
-        detailsIntent.putExtra(day+ " : " + month + " : " +year, "date");
+        detailsIntent.putExtra("details",detail);
+        detailsIntent.putExtra("venue",venue);
+        detailsIntent.putExtra("title",title);
+        detailsIntent.putExtra("start",starthour+ " : " +startmin);
+        detailsIntent.putExtra("end",endhour+ " : " +endmin);
+        detailsIntent.putExtra("date",day+ " : " + month + " : " +year);
 
         startActivity(detailsIntent);
 
@@ -321,6 +350,9 @@ cr.moveToFirst();
 
     @Override
     public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
+        Intent tte=new Intent(timetable.this,DeleteandEditEvents.class);
+        tte.putExtra("event id",event.getId()+"");
+        startActivity(tte);
         Toast.makeText(timetable.this, "Long pressed event: " + event.getName(), Toast.LENGTH_SHORT).show();
     }
 }

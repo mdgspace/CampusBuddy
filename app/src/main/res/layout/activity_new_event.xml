@@ -40,8 +40,9 @@
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="50dp"
                 android:text="                    "
+                android:focusable="false"
                 android:id="@+id/edit_date"
                 />
         </LinearLayout>
@@ -60,6 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="           "
+                android:focusable="false"
                 android:id="@+id/edit_start_time"
                 />
         </LinearLayout>
@@ -78,6 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="          "
+                android:focusable="false"
                 android:id="@+id/edit_end_time"
                 />
         </LinearLayout>

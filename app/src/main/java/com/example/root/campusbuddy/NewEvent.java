@@ -96,33 +96,54 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
             public void onClick(View v) {
 
                 Long value = prefs.getLong("ID_KEY", 0);
+                if(DeleteandEditEvents.editcounter==0) {
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, editt_title.getText().toString());
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, day);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, month);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR, year);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, starthour);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startminute);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, editt_details.getText().toString());
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, editt_venue.getText().toString());
 
-                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
-                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, editt_title.getText().toString());
-                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, day);
-                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, month);
-                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR, year);
-                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, starthour);
-                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startminute);
-                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
-                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
-                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, editt_details.getText().toString());
-                values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, editt_venue.getText().toString());
-
-                db.insert(
-                        CalendarDB.CalendarEntry.TABLE_NAME,
-                        null,
-                        values);
-
-
+                    db.insert(
+                            CalendarDB.CalendarEntry.TABLE_NAME,
+                            null,
+                            values);
 
 
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putLong("ID_KEY", value + 1);
+                    editor.commit();
+                }
 
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putLong("ID_KEY", value + 1);
-                editor.commit();
+                else{
+                    Intent ne=getIntent();
+                    Bundle extra=ne.getExtras();
+                    String editvalue=extra.getString("value for editing");
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, editvalue);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, editt_title.getText().toString());
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, day);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, month);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR, year);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, starthour);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startminute);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, editt_details.getText().toString());
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, editt_venue.getText().toString());
 
-        Toast.makeText(NewEvent.this, "Details submitted  "+value, Toast.LENGTH_LONG).show();
+                    db.replace(
+                            CalendarDB.CalendarEntry.TABLE_NAME,
+                            null,
+                            values);
+
+                }
+
+        Toast.makeText(NewEvent.this, "Details submitted  ", Toast.LENGTH_LONG).show();
             finish();
 
                 Intent ttIntent = new Intent(NewEvent.this, timetable.class);
@@ -158,7 +179,7 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
 
     @Override
     public void onDateSelected(int year1, int month1, int day1) {
-        editt_date.setText(year1 + " " + month1 + " " + day1, TextView.BufferType.EDITABLE);
+        editt_date.setText(day1+ "/" + month1 + "/" + year1, TextView.BufferType.EDITABLE);
         year = year1;
         month = month1;
         day = day1;
@@ -166,14 +187,14 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
 
     @Override
     public void onEndTimeSelected(int hour, int minute) {
-        editt_end.setText(hour + " " + minute, TextView.BufferType.EDITABLE);
+        editt_end.setText(hour + ":" + minute, TextView.BufferType.EDITABLE);
         endhour = hour;
         endminute = minute;
     }
 
     @Override
     public void onStartTimeSelected(int hour, int minute) {
-        String d = hour + " " + minute;
+        String d = hour + ":" + minute;
         editt_start.setText(d, TextView.BufferType.EDITABLE);
         starthour = hour;
         startminute = minute;
