@@ -1,6 +1,9 @@
 package com.example.root.campusbuddy;
 
+import android.content.Context;
 import android.content.Intent;
+
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,15 +14,32 @@ import android.widget.RadioButton;
 
 public class DeleteandEditEvents extends ActionBarActivity {
 
-    public static int editcounter=0,deletecounter=0;
-    int value_edit;
+    //public static int editcounter=0,deletecounter=0;
+    long value_edit;
+
+    SharedPreferences prefss;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deleteand_edit_events);
         Intent dae=getIntent();
         Bundle extra=dae.getExtras();
-        value_edit=Integer.parseInt(extra.getString("event id"));
+        value_edit=extra.getLong("event id");
+
+        prefss =  this.getSharedPreferences(
+                "com.example.appss", Context.MODE_PRIVATE);
+
+
+    }
+
+    @Override
+    public void onBackPressed(){
+
+        Intent in = new Intent(DeleteandEditEvents.this, timetable.class);
+        startActivity(in);
+
+
     }
 
     @Override
@@ -52,9 +72,13 @@ public class DeleteandEditEvents extends ActionBarActivity {
             case R.id.radio_edit:
                 if(checked)
                 {
-                    editcounter++;
+                    SharedPreferences.Editor editor = prefss.edit();
+                    editor.putInt("DELETE_OR_EDIT", 1);
+                    editor.commit();
+
+                    //editcounter++;
                     Intent ne=new Intent(DeleteandEditEvents.this,NewEvent.class);
-                    ne.putExtra("value for editing",value_edit+"");
+                    ne.putExtra("value for editing",value_edit);
                     startActivity(ne);
                 }
                 break;
@@ -62,9 +86,13 @@ public class DeleteandEditEvents extends ActionBarActivity {
             {
                 if(checked)
                 {
-                deletecounter++;
+                    SharedPreferences.Editor editor = prefss.edit();
+                    editor.putInt("DELETE_OR_EDIT", -1);
+                    editor.commit();
+
+                //deletecounter++;
                 Intent ne=new Intent(DeleteandEditEvents.this,timetable.class);
-                ne.putExtra("value for deleting",value_edit+"");
+                ne.putExtra("value for deleting", value_edit);
                 startActivity(ne);
             }}
         }

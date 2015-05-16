@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -30,8 +31,14 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
  //   CalendarDBHelper mDbHelper;
     ContentValues values;
     int year, day, month, starthour, startminute, endhour, endminute;
+    String title, venue, details;
+    Long ID;
 
-    SharedPreferences prefs;
+    SharedPreferences prefs, pref_edit;
+
+    Long editvalue;
+    SQLiteDatabase db_edit;
+    Cursor cr_edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +49,25 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
         setContentView(R.layout.activity_new_event);
 
         db = CalendarDBHelper.getInstance(getApplicationContext()).getWritableDatabase();
+        String[] eventList = {
+                CalendarDB.CalendarEntry.COLUMN_NAME_ID,
+                CalendarDB.CalendarEntry.COLUMN_NAME_TITLE,
+                CalendarDB.CalendarEntry.COLUMN_NAME_DAY,
+                CalendarDB.CalendarEntry.COLUMN_NAME_MONTH,
+                CalendarDB.CalendarEntry.COLUMN_NAME_YEAR,
+                CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR,
+                CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN,
+                CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR,
+                CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN,
+                CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL,
+                CalendarDB.CalendarEntry.COLUMN_NAME_VENUE
+        };
+        try {
+            cr_edit = db.query(CalendarDB.CalendarEntry.TABLE_NAME, eventList, null, null, null, null, null);
+        }
+        catch (Exception err){
+            Toast.makeText(NewEvent.this, err.toString(), Toast.LENGTH_LONG).show();
+        }
 
 
 
@@ -51,6 +77,9 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
 
         prefs = this.getSharedPreferences(
                 "com.example.app", Context.MODE_PRIVATE);
+
+        pref_edit = this.getSharedPreferences(
+                "com.example.appss", Context.MODE_PRIVATE);
 
 
 
@@ -65,6 +94,44 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
         editt_venue = (EditText) findViewById(R.id.edit_venue);
 
         submitBut = (Button) findViewById(R.id.submit);
+
+        int check = pref_edit.getInt("DELETE_OR_EDIT", 0);
+
+        if (check==1)
+        {
+            Intent ne=getIntent();
+            Bundle extra=ne.getExtras();
+            editvalue = extra.getLong("value for editing");
+            int count=0;
+
+            cr_edit.moveToFirst();
+
+            while (cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)) != editvalue && count<cr_edit.getCount())
+            {
+                cr_edit.moveToNext();
+                count++;
+            }
+
+            title = cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE));
+            venue = cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE));
+            details = cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL));
+
+            ID = editvalue;
+            starthour = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR));
+            startminute = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN));
+            endhour = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR));
+            endminute = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN));
+            year = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR));
+            month = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH));
+            day = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY));
+
+            editt_title.setText(title, TextView.BufferType.EDITABLE);
+            editt_venue.setText(venue, TextView.BufferType.EDITABLE);
+            editt_details.setText(details, TextView.BufferType.EDITABLE);
+            editt_date.setText(day+ "/" + (month+1) + "/" + year, TextView.BufferType.EDITABLE);
+            editt_end.setText(endhour + ":" + endminute, TextView.BufferType.EDITABLE);
+            editt_start.setText(starthour + ":" + startminute, TextView.BufferType.EDITABLE);
+        }
 
 
         editt_date.setOnClickListener(new View.OnClickListener(){
@@ -96,9 +163,14 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
             public void onClick(View v) {
 
                 Long value = prefs.getLong("ID_KEY", 0);
-                if(DeleteandEditEvents.editcounter==0) {
+               int counter = pref_edit.getInt("DELETE_OR_EDIT", 0);
+                if(counter==0) {
+
+                    title = editt_title.getText().toString();
+                    details = editt_details.getText().toString();
+                    venue = editt_venue.getText().toString();
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
-                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, editt_title.getText().toString());
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, day);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, month);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR, year);
@@ -106,8 +178,8 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startminute);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
-                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, editt_details.getText().toString());
-                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, editt_venue.getText().toString());
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, details);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
 
                     db.insert(
                             CalendarDB.CalendarEntry.TABLE_NAME,
@@ -121,11 +193,12 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
                 }
 
                 else{
-                    Intent ne=getIntent();
-                    Bundle extra=ne.getExtras();
-                    String editvalue=extra.getString("value for editing");
+
+                    title = editt_title.getText().toString();
+                    details = editt_details.getText().toString();
+                    venue = editt_venue.getText().toString();
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, editvalue);
-                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, editt_title.getText().toString());
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, day);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, month);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR, year);
@@ -133,13 +206,23 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startminute);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
-                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, editt_details.getText().toString());
-                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, editt_venue.getText().toString());
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, details);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
 
-                    db.replace(
-                            CalendarDB.CalendarEntry.TABLE_NAME,
-                            null,
-                            values);
+                    try {
+                        db.update(
+                                CalendarDB.CalendarEntry.TABLE_NAME,
+                                values,
+                                CalendarDB.CalendarEntry.COLUMN_NAME_ID + "=" + editvalue,
+                                null);
+                    }
+                    catch (Exception e ){
+                        Toast.makeText(NewEvent.this, e.toString(), Toast.LENGTH_LONG).show();
+                    }
+
+                    SharedPreferences.Editor editor = pref_edit.edit();
+                    editor.putInt("DELETE_OR_EDIT", 0);
+                    editor.commit();
 
                 }
 

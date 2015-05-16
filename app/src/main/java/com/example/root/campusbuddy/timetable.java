@@ -46,15 +46,26 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
     private int mWeekViewType = TYPE_THREE_DAY_VIEW;
     private WeekView mWeekView;
 
+    SharedPreferences pref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timetable);
 
+        pref =  this.getSharedPreferences(
+                "com.example.appss", Context.MODE_PRIVATE);
+
+        pref.getInt("DELETE_OR_EDIT", 0);
+
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("DELETE_OR_EDIT", 0);
+        editor.commit();
+
         db = CalendarDBHelper.getInstance(getApplicationContext()).getReadableDatabase();
 
-        if(DeleteandEditEvents.deletecounter==0)
-        {
+
+
         String[] eventList = {
                 CalendarDB.CalendarEntry.COLUMN_NAME_ID,
                 CalendarDB.CalendarEntry.COLUMN_NAME_TITLE,
@@ -74,8 +85,9 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
         }
         catch (Exception err){
             Toast.makeText(timetable.this, err.toString(), Toast.LENGTH_LONG).show();
-        }}
+        }
 
+  /*
         else{
             Intent tte=getIntent();
             Bundle extra=tte.getExtras();
@@ -103,6 +115,7 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
             }
 
         }
+        */
        cr.moveToFirst();
       /*
         try {
@@ -351,8 +364,9 @@ cr.moveToFirst();
     @Override
     public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
         Intent tte=new Intent(timetable.this,DeleteandEditEvents.class);
-        tte.putExtra("event id",event.getId()+"");
+        tte.putExtra("event id",event.getId());
         startActivity(tte);
         Toast.makeText(timetable.this, "Long pressed event: " + event.getName(), Toast.LENGTH_SHORT).show();
+        finish();
     }
 }
