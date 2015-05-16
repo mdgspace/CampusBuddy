@@ -179,7 +179,7 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
 
     @Override
     public void onDateSelected(int year1, int month1, int day1) {
-        editt_date.setText(day1+ "/" + month1 + "/" + year1, TextView.BufferType.EDITABLE);
+        editt_date.setText(day1+ "/" + (month1+1) + "/" + year1, TextView.BufferType.EDITABLE);
         year = year1;
         month = month1;
         day = day1;

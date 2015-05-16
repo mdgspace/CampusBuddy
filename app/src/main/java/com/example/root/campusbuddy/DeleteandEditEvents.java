@@ -57,13 +57,16 @@ public class DeleteandEditEvents extends ActionBarActivity {
                     ne.putExtra("value for editing",value_edit+"");
                     startActivity(ne);
                 }
+                break;
             case R.id.radio_delete:
             {
+                if(checked)
+                {
                 deletecounter++;
                 Intent ne=new Intent(DeleteandEditEvents.this,timetable.class);
                 ne.putExtra("value for deleting",value_edit+"");
                 startActivity(ne);
-            }
+            }}
         }
     }
 }
