@@ -1,6 +1,6 @@
 package com.example.root.campusbuddy;
+import android.support.v4.app.Fragment;
 
-import android.app.Fragment;
 import android.graphics.RectF;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
@@ -21,40 +21,53 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 
 
-public class map extends FragmentActivity
-        implements OnMapReadyCallback, GoogleMap.OnMapClickListener{
 
+ //Original code...
+     /*     public class map extends FragmentActivity
+             //    implements OnMapReadyCallback, GoogleMap.OnMapClickListener
+                {
+              @Override
+              protected void onCreate(Bundle savedInstanceState) {
+                  super.onCreate(savedInstanceState);
+                //  setContentView(R.layout.activity_map);
+                  try {
+                      setContentView(R.layout.activity_map);
+                  }
+                  catch (Exception e)
+                  {
+                      Toast.makeText(map.this, e.toString(), Toast.LENGTH_LONG).show();
+                  MapFragment mapFragment = (MapFragment) getFragmentManager()
+                          .findFragmentById(R.id.mapview);
+                //  mapFragment.getMapAsync(this);
+              }
+             @Override
+              public void onMapReady(GoogleMap map) {
+                  map.addMarker(new MarkerOptions()
+                          .position(new LatLng(0, 0))
+                          .title("Marker"));
+                  map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+              }
+              @Override
+              public void onMapClick(LatLng latLng) {
+                  Toast.makeText(getApplicationContext(), ""+latLng.latitude, Toast.LENGTH_LONG).show();
+                  Toast.makeText(getApplicationContext(), ""+latLng.longitude, Toast.LENGTH_LONG).show();
+              }
+          }*/
 
+  public class map extends  FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
-
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-
-    }
-
-
+       // setContentView(R.layout.activity_map);
+        try {
+            setContentView(R.layout.activity_map);
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(map.this, e.toString(), Toast.LENGTH_LONG).show();
+        }
 
 
-
-
-
-    @Override
-    public void onMapReady(GoogleMap map) {
-        map.addMarker(new MarkerOptions()
-                .position(new LatLng(0, 0))
-                .title("Marker"));
-        map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-    }
-
-    @Override
-    public void onMapClick(LatLng latLng) {
-        Toast.makeText(getApplicationContext(), ""+latLng.latitude, Toast.LENGTH_LONG).show();
-        Toast.makeText(getApplicationContext(), ""+latLng.longitude, Toast.LENGTH_LONG).show();
     }
 }
