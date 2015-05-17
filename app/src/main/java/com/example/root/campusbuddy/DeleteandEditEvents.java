@@ -14,7 +14,7 @@ import android.widget.RadioButton;
 
 public class DeleteandEditEvents extends ActionBarActivity {
 
-    //public static int editcounter=0,deletecounter=0;
+    public static int deletecounter=0;
     long value_edit;
 
     SharedPreferences prefss;
@@ -90,7 +90,7 @@ public class DeleteandEditEvents extends ActionBarActivity {
                     editor.putInt("DELETE_OR_EDIT", -1);
                     editor.commit();
 
-                //deletecounter++;
+                deletecounter++;
                 Intent ne=new Intent(DeleteandEditEvents.this,timetable.class);
                 ne.putExtra("value for deleting", value_edit);
                 startActivity(ne);
