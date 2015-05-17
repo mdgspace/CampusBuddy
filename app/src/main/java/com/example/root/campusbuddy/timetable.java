@@ -45,7 +45,7 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
     private static final int TYPE_WEEK_VIEW = 3;
     private int mWeekViewType = TYPE_THREE_DAY_VIEW;
     private WeekView mWeekView;
-
+    //String delvalue=null;
     SharedPreferences pref;
 
     @Override
@@ -56,7 +56,7 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
         pref =  this.getSharedPreferences(
                 "com.example.appss", Context.MODE_PRIVATE);
 
-        pref.getInt("DELETE_OR_EDIT", 0);
+        int a=pref.getInt("DELETE_OR_EDIT", 0);
 
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt("DELETE_OR_EDIT", 0);
@@ -65,8 +65,8 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
         db = CalendarDBHelper.getInstance(getApplicationContext()).getReadableDatabase();
 
 
-
-        String[] eventList = {
+        if(a!=-1||DeleteandEditEvents.deletecounter==0)
+        {String[] eventList = {
                 CalendarDB.CalendarEntry.COLUMN_NAME_ID,
                 CalendarDB.CalendarEntry.COLUMN_NAME_TITLE,
                 CalendarDB.CalendarEntry.COLUMN_NAME_DAY,
@@ -85,14 +85,15 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
         }
         catch (Exception err){
             Toast.makeText(timetable.this, err.toString(), Toast.LENGTH_LONG).show();
-        }
+        }}
 
-  /*
+
         else{
+
             Intent tte=getIntent();
             Bundle extra=tte.getExtras();
-            String delvalue=extra.getString("value for deleting");
-            db.delete(CalendarDB.CalendarEntry.TABLE_NAME,CalendarDB.CalendarEntry.COLUMN_NAME_ID,new String[]{delvalue});
+            long delvalue=extra.getLong("value for deleting");
+            db.delete(CalendarDB.CalendarEntry.TABLE_NAME,CalendarDB.CalendarEntry.COLUMN_NAME_ID+"="+delvalue,null);
             String[] eventList = {
                     CalendarDB.CalendarEntry.COLUMN_NAME_ID,
                     CalendarDB.CalendarEntry.COLUMN_NAME_TITLE,
@@ -115,7 +116,7 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
             }
 
         }
-        */
+
        cr.moveToFirst();
       /*
         try {
@@ -357,7 +358,7 @@ cr.moveToFirst();
         startActivity(detailsIntent);
 
 
-        Toast.makeText(timetable.this, "Event ID: " + ID, Toast.LENGTH_SHORT).show();
+        Toast.makeText(timetable.this, "Event ID: " +ID, Toast.LENGTH_SHORT).show();
 
     }
 

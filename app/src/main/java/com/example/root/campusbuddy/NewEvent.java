@@ -106,7 +106,7 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
 
             cr_edit.moveToFirst();
 
-            while (cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)) != editvalue && count<cr_edit.getCount())
+            while (cr_edit.getLong(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)) != editvalue && count<cr_edit.getCount())
             {
                 cr_edit.moveToNext();
                 count++;
