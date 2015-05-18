@@ -1,4 +1,4 @@
-/*
+
 package com.example.root.campusbuddy;
 
 import android.app.Fragment;
@@ -32,8 +32,8 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 
-public class map2 extends FragmentActivity
-        implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
+public class map2 extends FragmentActivity{
+       /* implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
 
     GoogleMap mMap;
@@ -137,6 +137,5 @@ map_overscroll_handler mOverscrollHandler = new map_overscroll_handler();
         public void publish(LogRecord logRecord) {
 
         }
-    }
+    }*/
 }
-*/

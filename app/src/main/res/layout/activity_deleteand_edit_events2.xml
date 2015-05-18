@@ -4,21 +4,29 @@
     android:layout_height="match_parent"
     android:id="@+id/scroll"
     >
-    <RadioGroup
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <RadioButton
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/choose_action"
+            android:text="Choose your action..."/>
+
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Edit Event"
-            android:id="@+id/radio_edit"
-            android:onClick="onRadioButtonClick"/>
-        <RadioButton
+            android:id="@+id/text_edit"
+            />
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Delete Event"
-            android:id="@+id/radio_delete"
-            android:onClick="onRadioButtonClick"/>
-    </RadioGroup>
-    </ScrollView>
+            android:id="@+id/text_delete"
+            />
+
+    </LinearLayout>
+</ScrollView>

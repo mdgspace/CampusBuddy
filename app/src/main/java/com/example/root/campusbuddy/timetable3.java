@@ -1,5 +1,7 @@
 package com.example.root.campusbuddy;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -11,10 +13,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alamkanak.weekview.DateTimeInterpreter;
@@ -32,13 +39,16 @@ import java.util.Locale;
  * Created by Raquib-ul-Alam Kanak on 7/21/2014.
  * Website: http://alamkanak.github.io/
  */
-public class timetable extends ActionBarActivity implements WeekView.MonthChangeListener,
+public class timetable3 extends Activity implements WeekView.MonthChangeListener,
         WeekView.EventClickListener, WeekView.EventLongPressListener {
 
     SQLiteDatabase db;
     Cursor cr;
 
     ContentValues values;
+    long longClickedID;
+
+
 
     private static final int TYPE_DAY_VIEW = 1;
     private static final int TYPE_THREE_DAY_VIEW = 2;
@@ -48,25 +58,39 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
     //String delvalue=null;
     SharedPreferences pref;
 
+    public static Activity fa;
+
+    public void showChooseDialog() {
+        //FragmentActivity fa =  new  timetable();
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialog = new delete_edit_choose();
+        dialog.show(timetable3.this.getFragmentManager(), "ChooseDialogFragment");
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timetable);
 
-        pref =  this.getSharedPreferences(
+
+        fa = this;
+
+        pref = this.getSharedPreferences(
                 "com.example.appss", Context.MODE_PRIVATE);
 
-        int a=pref.getInt("DELETE_OR_EDIT", 0);
+        int a = pref.getInt("DELETE_OR_EDIT", 0);
 
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt("DELETE_OR_EDIT", 0);
         editor.commit();
 
+
+
         db = CalendarDBHelper.getInstance(getApplicationContext()).getReadableDatabase();
 
 
-        if(a!=-1||DeleteandEditEvents.deletecounter==0)
-        {String[] eventList = {
+        String[] eventList = {
                 CalendarDB.CalendarEntry.COLUMN_NAME_ID,
                 CalendarDB.CalendarEntry.COLUMN_NAME_TITLE,
                 CalendarDB.CalendarEntry.COLUMN_NAME_DAY,
@@ -82,42 +106,15 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
 
         try {
             cr = db.query(CalendarDB.CalendarEntry.TABLE_NAME, eventList, null, null, null, null, null);
-        }
-        catch (Exception err){
-            Toast.makeText(timetable.this, err.toString(), Toast.LENGTH_LONG).show();
-        }}
-
-
-        else{
-
-            Intent tte=getIntent();
-            Bundle extra=tte.getExtras();
-            long delvalue=extra.getLong("value for deleting");
-            db.delete(CalendarDB.CalendarEntry.TABLE_NAME,CalendarDB.CalendarEntry.COLUMN_NAME_ID+"="+delvalue,null);
-            String[] eventList = {
-                    CalendarDB.CalendarEntry.COLUMN_NAME_ID,
-                    CalendarDB.CalendarEntry.COLUMN_NAME_TITLE,
-                    CalendarDB.CalendarEntry.COLUMN_NAME_DAY,
-                    CalendarDB.CalendarEntry.COLUMN_NAME_MONTH,
-                    CalendarDB.CalendarEntry.COLUMN_NAME_YEAR,
-                    CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR,
-                    CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN,
-                    CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR,
-                    CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN,
-                    CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL,
-                    CalendarDB.CalendarEntry.COLUMN_NAME_VENUE
-            };
-
-            try {
-                cr = db.query(CalendarDB.CalendarEntry.TABLE_NAME, eventList, null, null, null, null, null);
-            }
-            catch (Exception err){
-                Toast.makeText(timetable.this, err.toString(), Toast.LENGTH_LONG).show();
-            }
-
+        } catch (Exception err) {
+            Toast.makeText(timetable3.this, err.toString(), Toast.LENGTH_LONG).show();
         }
 
-       cr.moveToFirst();
+
+
+
+
+        cr.moveToFirst();
       /*
         try {
             Toast.makeText(timetable.this,  String.valueOf(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)), Toast.LENGTH_LONG).show();}
@@ -199,8 +196,8 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
                 return true;
 
             case R.id.action_new_event:
-                finish();
-                Intent newEventIntent = new Intent(timetable.this, NewEvent.class);
+
+                Intent newEventIntent = new Intent(timetable3.this, NewEvent.class);
                 startActivity(newEventIntent);
 
 
@@ -248,28 +245,28 @@ public class timetable extends ActionBarActivity implements WeekView.MonthChange
 
         Calendar startTime, endTime;
         WeekViewEvent event;
-cr.moveToFirst();
+        cr.moveToFirst();
         startTime = Calendar.getInstance();
         if(cr.getCount() >0){
-       startTime.set(Calendar.DATE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)));
-        startTime.set(Calendar.MONTH, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH)));
-        startTime.set(Calendar.YEAR, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR)));
-        startTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR)));
-        startTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN)));
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR)));
-        endTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN)));
+            startTime.set(Calendar.DATE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)));
+            startTime.set(Calendar.MONTH, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH)));
+            startTime.set(Calendar.YEAR, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR)));
+            startTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR)));
+            startTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN)));
+            endTime = (Calendar) startTime.clone();
+            endTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR)));
+            endTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN)));
 
-        event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)), cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
-        events.add(event);}
+            event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)), cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
+            event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
+            events.add(event);}
 
 
         while(cr.moveToNext()){
 
-        //   Toast.makeText(timetable.this,  String.valueOf(cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH))), Toast.LENGTH_LONG).show();
+            //   Toast.makeText(timetable.this,  String.valueOf(cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH))), Toast.LENGTH_LONG).show();
 
-             startTime = Calendar.getInstance();
+            startTime = Calendar.getInstance();
             startTime.set(Calendar.DATE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)));
             startTime.set(Calendar.MONTH, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH)));
             startTime.set(Calendar.YEAR, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR)));
@@ -292,7 +289,7 @@ cr.moveToFirst();
 
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
-  //      Toast.makeText(timetable.this, "Event: " + event.getName(), Toast.LENGTH_SHORT).show();
+        //      Toast.makeText(timetable.this, "Event: " + event.getName(), Toast.LENGTH_SHORT).show();
 /*
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -303,13 +300,13 @@ cr.moveToFirst();
         fragmentTransaction.commit();
 */
 
-       // DetailsFragment det = (DetailsFragment) getSupportFragmentManager().findFragmentById(R.id.hddbn);
+        // DetailsFragment det = (DetailsFragment) getSupportFragmentManager().findFragmentById(R.id.hddbn);
 
      /*   Intent detailsIntent = new Intent(timetable.this, DetailsActivity.class);
         detailsIntent.putExtra(deta, "details");
         startActivity(detailsIntent);
         */
-       long ID = event.getId();
+        long ID = event.getId();
         String detail = "", venue = "", title = "";
         int day = 0, month = 0, year = 0, starthour = 0, startmin = 0, endhour = 0, endmin = 0;
 
@@ -347,7 +344,7 @@ cr.moveToFirst();
             }
         }
 
-        Intent detailsIntent = new Intent(timetable.this, DetailsActivity.class);
+        Intent detailsIntent = new Intent(timetable3.this, DetailsActivity.class);
         detailsIntent.putExtra("details",detail);
         detailsIntent.putExtra("venue",venue);
         detailsIntent.putExtra("title",title);
@@ -358,16 +355,71 @@ cr.moveToFirst();
         startActivity(detailsIntent);
 
 
-        Toast.makeText(timetable.this, "Event ID: " +ID, Toast.LENGTH_SHORT).show();
+        Toast.makeText(timetable3.this, "Event ID: " + ID, Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
-        Intent tte=new Intent(timetable.this,DeleteandEditEvents.class);
+      /*  Intent tte=new Intent(timetable.this,DeleteandEditEvents.class);
         tte.putExtra("event id",event.getId());
         startActivity(tte);
-        Toast.makeText(timetable.this, "Long pressed event: " + event.getName(), Toast.LENGTH_SHORT).show();
-        finish();
+        Toast.makeText(timetable.this, "Long pressed event: " + event.getName(), Toast.LENGTH_SHORT).show();*/
+
+
+        longClickedID = event.getId();
+
+        final Dialog dialog = new Dialog(timetable3.this);
+        dialog.setContentView(R.layout.activity_deleteand_edit_events2);
+        dialog.setTitle("Choose action...");
+
+
+        TextView choose = (TextView) dialog.findViewById(R.id.choose_action);
+        TextView edit = (TextView) dialog.findViewById(R.id.text_edit);
+        TextView del = (TextView) dialog.findViewById(R.id.text_delete);
+
+        choose.setVisibility(View.INVISIBLE);
+
+
+        // if button is clicked, close the custom dialog
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putInt("DELETE_OR_EDIT", 1);
+                editor.commit();
+
+                //editcounter++;
+                Intent ne=new Intent(timetable3.this,NewEvent.class);
+                ne.putExtra("value for editing", longClickedID );
+                startActivity(ne);
+
+                dialog.dismiss();
+            }
+        });
+
+        del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            try {
+                    db.delete(CalendarDB.CalendarEntry.TABLE_NAME, CalendarDB.CalendarEntry.COLUMN_NAME_ID + "=" + longClickedID, null);
+                } catch (Exception e) {
+                    Toast.makeText(timetable3.this, e.toString(), Toast.LENGTH_LONG).show();
+                }
+                dialog.dismiss();
+                finish();
+                startActivity(getIntent());
+
+            }
+        });
+
+        dialog.show();
     }
-}
+
+
+
+    }
+
+
+

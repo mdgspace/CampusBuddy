@@ -83,8 +83,6 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
 
 
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_event);
 
         editt_date = (EditText) findViewById(R.id.edit_date);
         editt_start = (EditText) findViewById(R.id.edit_start_time);
@@ -186,6 +184,7 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
                             null,
                             values);
 
+                    Toast.makeText(NewEvent.this, "Details submitted  ", Toast.LENGTH_LONG).show();
 
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putLong("ID_KEY", value + 1);
@@ -215,6 +214,7 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
                                 values,
                                 CalendarDB.CalendarEntry.COLUMN_NAME_ID + "=" + editvalue,
                                 null);
+                        Toast.makeText(NewEvent.this, "Details edited  ", Toast.LENGTH_LONG).show();
                     }
                     catch (Exception e ){
                         Toast.makeText(NewEvent.this, e.toString(), Toast.LENGTH_LONG).show();
@@ -226,14 +226,26 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
 
                 }
 
-        Toast.makeText(NewEvent.this, "Details submitted  ", Toast.LENGTH_LONG).show();
+
             finish();
 
-                Intent ttIntent = new Intent(NewEvent.this, timetable.class);
+                timetable3.fa.finish();
+
+                Intent ttIntent = new Intent(NewEvent.this, timetable3.class);
                 startActivity(ttIntent);
             }
         });
      }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        Intent ttIntent = new Intent(NewEvent.this, timetable3.class);
+        startActivity(ttIntent);
+        finish();
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

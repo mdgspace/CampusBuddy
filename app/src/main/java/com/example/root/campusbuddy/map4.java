@@ -30,14 +30,14 @@ public class map4 extends SupportMapFragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mContext = getActivity();
+     /*   mContext = getActivity();
         mMap = getMap();
          mOverscrollHandler = new OverscrollHandler();
         mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
         mMap.addTileOverlay(new TileOverlayOptions().tileProvider(new  VexLocalTileProvider(getResources().getAssets())));
         CameraUpdate upd = CameraUpdateFactory.newLatLngZoom(new LatLng(41.87145, 12.52849), 14);
         mMap.moveCamera(upd);
-        mOverscrollHandler.sendEmptyMessageDelayed(0,100);
+        mOverscrollHandler.sendEmptyMessageDelayed(0,100);*/
     }
 
     private LatLng getLatLngCorrection(LatLngBounds cameraBounds) {
