@@ -39,8 +39,8 @@ import java.util.Locale;
  * Created by Raquib-ul-Alam Kanak on 7/21/2014.
  * Website: http://alamkanak.github.io/
  */
-public class timetable3 extends Activity implements WeekView.MonthChangeListener,
-        WeekView.EventClickListener, WeekView.EventLongPressListener {
+public class timetable3 extends ActionBarActivity implements WeekView.MonthChangeListener,
+        WeekView.EventClickListener, WeekView.EventLongPressListener ,delete_edit_choose.AlertPositiveListener {
 
     SQLiteDatabase db;
     Cursor cr;
@@ -57,16 +57,10 @@ public class timetable3 extends Activity implements WeekView.MonthChangeListener
     private WeekView mWeekView;
     //String delvalue=null;
     SharedPreferences pref;
+        int position=0;
 
     public static Activity fa;
 
-    public void showChooseDialog() {
-        //FragmentActivity fa =  new  timetable();
-        // Create an instance of the dialog fragment and show it
-        DialogFragment dialog = new delete_edit_choose();
-        dialog.show(timetable3.this.getFragmentManager(), "ChooseDialogFragment");
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -349,7 +343,7 @@ public class timetable3 extends Activity implements WeekView.MonthChangeListener
         detailsIntent.putExtra("venue",venue);
         detailsIntent.putExtra("title",title);
         detailsIntent.putExtra("start",starthour+ " : " +startmin);
-        detailsIntent.putExtra("end",endhour+ " : " +endmin);
+        detailsIntent.putExtra("end", endhour + " : " + endmin);
         detailsIntent.putExtra("date",day+ " : " + month + " : " +year);
 
         startActivity(detailsIntent);
@@ -368,23 +362,67 @@ public class timetable3 extends Activity implements WeekView.MonthChangeListener
 
 
         longClickedID = event.getId();
-
-        final Dialog dialog = new Dialog(timetable3.this);
-        dialog.setContentView(R.layout.activity_deleteand_edit_events2);
-        dialog.setTitle("Choose action...");
-
-
-        TextView choose = (TextView) dialog.findViewById(R.id.choose_action);
-        TextView edit = (TextView) dialog.findViewById(R.id.text_edit);
-        TextView del = (TextView) dialog.findViewById(R.id.text_delete);
-
-        choose.setVisibility(View.INVISIBLE);
+            delete_edit_choose dialog=new delete_edit_choose();
+            Bundle b=new Bundle();
+            b.putInt("position",position);
+            dialog.setArguments(b);
+            dialog.show(getFragmentManager(), "ChooseDialogFragment");
 
 
-        // if button is clicked, close the custom dialog
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        final Dialog dialog = new Dialog(timetable3.this);
+//        dialog.setContentView(R.layout.activity_deleteand_edit_events2);
+//        dialog.setTitle("Choose action...");
+//
+//
+//        TextView choose = (TextView) dialog.findViewById(R.id.choose_action);
+//        TextView edit = (TextView) dialog.findViewById(R.id.text_edit);
+//        TextView del = (TextView) dialog.findViewById(R.id.text_delete);
+//
+//        choose.setVisibility(View.INVISIBLE);
+//
+//
+//        // if button is clicked, close the custom dialog
+//        edit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                SharedPreferences.Editor editor = pref.edit();
+//                editor.putInt("DELETE_OR_EDIT", 1);
+//                editor.commit();
+//
+//                //editcounter++;
+//                Intent ne=new Intent(timetable3.this,NewEvent.class);
+//                ne.putExtra("value for editing", longClickedID );
+//                startActivity(ne);
+//
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        del.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            try {
+//                    db.delete(CalendarDB.CalendarEntry.TABLE_NAME, CalendarDB.CalendarEntry.COLUMN_NAME_ID + "=" + longClickedID, null);
+//                } catch (Exception e) {
+//                    Toast.makeText(timetable3.this, e.toString(), Toast.LENGTH_LONG).show();
+//                }
+//                dialog.dismiss();
+//                finish();
+//                startActivity(getIntent());
+//
+//            }
+//        });
+//
+//        dialog.show();
+    }
+
+        @Override
+        public void onPositiveClick(int a)
+        {
+                if(a==0)
+                {
+
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putInt("DELETE_OR_EDIT", 1);
                 editor.commit();
@@ -393,33 +431,23 @@ public class timetable3 extends Activity implements WeekView.MonthChangeListener
                 Intent ne=new Intent(timetable3.this,NewEvent.class);
                 ne.putExtra("value for editing", longClickedID );
                 startActivity(ne);
-
-                dialog.dismiss();
-            }
-        });
-
-        del.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            try {
+                }
+                else
+                {
+                        try {
                     db.delete(CalendarDB.CalendarEntry.TABLE_NAME, CalendarDB.CalendarEntry.COLUMN_NAME_ID + "=" + longClickedID, null);
                 } catch (Exception e) {
                     Toast.makeText(timetable3.this, e.toString(), Toast.LENGTH_LONG).show();
                 }
-                dialog.dismiss();
                 finish();
                 startActivity(getIntent());
 
             }
-        });
-
-        dialog.show();
-    }
+                }
+}
 
 
 
-    }
 
 
 

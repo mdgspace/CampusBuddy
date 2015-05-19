@@ -81,7 +81,7 @@
 
         <activity
             android:name=".timetable3"
-            android:label="@string/title_activity_deleteand_edit_events"
+            android:label="@string/app_name"
             >
         </activity>
     </application>
