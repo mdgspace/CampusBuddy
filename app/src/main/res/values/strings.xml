@@ -8,12 +8,16 @@
 
 
 
-
+        <string name="navigation_drawer_open">Navigation Drawer
+        opened</string>
+         <string name="navigation_drawer_close">Navigation Drawer
+        closed</string>
         <string name="action_today">Today</string>
         <string name="action_day_view">Day view</string>
         <string name="action_three_day_view">3 day view</string>
         <string name="action_week_view">Week view</string>
     <string name="title_activity_deleteand_edit_events">DeleteandEditEvents</string>
+    <string name="title_activity_navigation__drawer__fragment">Navigation_Drawer_Fragment</string>
 
 
 
