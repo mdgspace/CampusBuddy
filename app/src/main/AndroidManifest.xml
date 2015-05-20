@@ -85,6 +85,12 @@
             android:name=".Navigation_Drawer_Fragment"
             android:label="@string/title_activity_navigation__drawer__fragment" >
         </activity>
+
+        <activity
+            android:name=".timetable_navigation2"
+            android:label="@string/app_name"
+            >
+        </activity>
     </application>
 
 </manifest>

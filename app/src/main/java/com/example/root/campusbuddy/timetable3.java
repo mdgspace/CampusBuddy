@@ -250,34 +250,6 @@ public class timetable3 extends AppCompatActivity implements WeekView.MonthChang
 
 
 
-    /**
-     * Set up a date time interpreter which will show short date values when in week view and long
-     * date values otherwise.
-     * @param shortDate True if the date values should be short.
-     */
-    private void setupDateTimeInterpreter(final boolean shortDate) {
-        mWeekView.setDateTimeInterpreter(new DateTimeInterpreter() {
-            @Override
-            public String interpretDate(Calendar date) {
-                SimpleDateFormat weekdayNameFormat = new SimpleDateFormat("EEE", Locale.getDefault());
-                String weekday = weekdayNameFormat.format(date.getTime());
-                SimpleDateFormat format = new SimpleDateFormat(" M/d", Locale.getDefault());
-
-                // All android api level do not have a standard way of getting the first letter of
-                // the week day name. Hence we get the first char programmatically.
-                // Details: http://stackoverflow.com/questions/16959502/get-one-letter-abbreviation-of-week-day-of-a-date-in-java#answer-16959657
-                if (shortDate)
-                    weekday = String.valueOf(weekday.charAt(0));
-                return weekday.toUpperCase() + format.format(date.getTime());
-            }
-
-            @Override
-            public String interpretTime(int hour) {
-                return hour > 11 ? (hour - 12) + " PM" : (hour == 0 ? "12 AM" : hour + " AM");
-            }
-        });
-    }
-
     @Override
     public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
 
@@ -326,7 +298,6 @@ public class timetable3 extends AppCompatActivity implements WeekView.MonthChang
 
         return events;
     }
-
 
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
@@ -398,6 +369,35 @@ public class timetable3 extends AppCompatActivity implements WeekView.MonthChang
 
         Toast.makeText(timetable3.this, "Event ID: " + ID, Toast.LENGTH_SHORT).show();
 
+    }
+
+
+    /**
+     * Set up a date time interpreter which will show short date values when in week view and long
+     * date values otherwise.
+     * @param shortDate True if the date values should be short.
+     */
+    private void setupDateTimeInterpreter(final boolean shortDate) {
+        mWeekView.setDateTimeInterpreter(new DateTimeInterpreter() {
+            @Override
+            public String interpretDate(Calendar date) {
+                SimpleDateFormat weekdayNameFormat = new SimpleDateFormat("EEE", Locale.getDefault());
+                String weekday = weekdayNameFormat.format(date.getTime());
+                SimpleDateFormat format = new SimpleDateFormat(" M/d", Locale.getDefault());
+
+                // All android api level do not have a standard way of getting the first letter of
+                // the week day name. Hence we get the first char programmatically.
+                // Details: http://stackoverflow.com/questions/16959502/get-one-letter-abbreviation-of-week-day-of-a-date-in-java#answer-16959657
+                if (shortDate)
+                    weekday = String.valueOf(weekday.charAt(0));
+                return weekday.toUpperCase() + format.format(date.getTime());
+            }
+
+            @Override
+            public String interpretTime(int hour) {
+                return hour > 11 ? (hour - 12) + " PM" : (hour == 0 ? "12 AM" : hour + " AM");
+            }
+        });
     }
 
     @Override

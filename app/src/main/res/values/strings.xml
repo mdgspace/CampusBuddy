@@ -16,8 +16,24 @@
         <string name="action_day_view">Day view</string>
         <string name="action_three_day_view">3 day view</string>
         <string name="action_week_view">Week view</string>
+
+
+    <string-array name="navigation_events">
+        <item>Go to today</item>
+        <item>one day view</item>
+        <item>Three day view</item>
+        <item>Week view</item>
+        <item>Add new event</item>
+
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+
     <string name="title_activity_deleteand_edit_events">DeleteandEditEvents</string>
     <string name="title_activity_navigation__drawer__fragment">Navigation_Drawer_Fragment</string>
+
 
 
 
