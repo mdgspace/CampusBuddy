@@ -11,18 +11,10 @@
         android:textSize="40dp"
         android:id="@+id/mapBut"/>
 
-    <Button
+        <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click to show the calendar..."
-        android:textSize="40dp"
-        android:id="@+id/ttBut"/>
-
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Click to show the navigation2..."
+        android:text="Click to show the Timetable..."
         android:textSize="40dp"
         android:id="@+id/tnBut2"/>
 

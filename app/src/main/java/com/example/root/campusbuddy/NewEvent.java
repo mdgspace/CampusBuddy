@@ -229,9 +229,9 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
 
             finish();
 
-                timetable3.fa.finish();
+                timetable_navigation2.fa.finish();
 
-                Intent ttIntent = new Intent(NewEvent.this, timetable3.class);
+                Intent ttIntent = new Intent(NewEvent.this, timetable_navigation2.class);
                 startActivity(ttIntent);
             }
         });
@@ -241,7 +241,7 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
     public void onBackPressed()
     {
         super.onBackPressed();
-        Intent ttIntent = new Intent(NewEvent.this, timetable3.class);
+        Intent ttIntent = new Intent(NewEvent.this, timetable_navigation2.class);
         startActivity(ttIntent);
         finish();
 

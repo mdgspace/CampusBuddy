@@ -19,7 +19,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         mapButt = (Button) findViewById(R.id.mapBut);
-        ttButt = (Button) findViewById(R.id.ttBut);
 
         tnButt2 = (Button) findViewById(R.id.tnBut2);
 
@@ -28,14 +27,6 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent mapIntent = new Intent(MainActivity.this, map3.class);
                 startActivity(mapIntent);
-            }
-        });
-
-        ttButt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent ttIntent = new Intent(MainActivity.this, timetable3.class);
-                startActivity(ttIntent);
             }
         });
 
