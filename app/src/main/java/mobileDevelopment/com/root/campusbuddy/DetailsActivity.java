@@ -1,7 +1,6 @@
-package com.example.root.campusbuddy;
+package mobileDevelopment.com.root.campusbuddy;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;

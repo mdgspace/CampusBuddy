@@ -1,4 +1,4 @@
-package com.example.root.campusbuddy;
+package mobileDevelopment.com.root.campusbuddy;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import java.util.Calendar;
 

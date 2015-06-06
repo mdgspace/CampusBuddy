@@ -1,4 +1,4 @@
-package com.example.root.campusbuddy;
+package mobileDevelopment.com.root.campusbuddy;
 
 import android.provider.BaseColumns;
 

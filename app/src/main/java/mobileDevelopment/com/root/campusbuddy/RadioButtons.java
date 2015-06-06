@@ -1,4 +1,4 @@
-package com.example.root.campusbuddy;
+package mobileDevelopment.com.root.campusbuddy;
 
 /**
  * Created by root on 19/5/15.

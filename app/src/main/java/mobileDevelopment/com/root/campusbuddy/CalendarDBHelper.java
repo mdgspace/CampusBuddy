@@ -1,5 +1,5 @@
 
-        package com.example.root.campusbuddy;
+        package mobileDevelopment.com.root.campusbuddy;
 
 
 /**
@@ -136,7 +136,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
         /**
  * Created by rc on 13/5/15.

@@ -1,4 +1,4 @@
-package com.example.root.campusbuddy;
+package mobileDevelopment.com.root.campusbuddy;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,11 +11,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
-import com.google.android.gms.nearby.messages.Message;
-
-import java.util.Map;
 
 public class map4 extends SupportMapFragment{
 

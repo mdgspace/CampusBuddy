@@ -1,4 +1,4 @@
-package com.example.root.campusbuddy;
+package mobileDevelopment.com.root.campusbuddy;
 
         import android.content.ContentValues;
         import android.content.Context;
@@ -15,13 +15,11 @@ package com.example.root.campusbuddy;
         import android.support.v4.widget.DrawerLayout;
         import android.support.v7.app.ActionBarActivity;
         import android.util.TypedValue;
-        import android.view.Menu;
         import android.view.MenuItem;
         import android.view.View;
         import android.widget.AdapterView;
         import android.widget.ArrayAdapter;
         import android.widget.ListView;
-        import android.widget.TextView;
         import android.widget.Toast;
 
         import com.alamkanak.weekview.DateTimeInterpreter;
@@ -244,6 +242,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             drawerLayout.closeDrawer(drawerListView);
         }
     }
+
 
     @Override
     public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {

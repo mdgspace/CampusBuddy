@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.example.root.campusbuddy"
+        applicationId "mobileDevelopment.com.root.campusbuddy"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
@@ -25,4 +25,5 @@ dependencies {
 
     compile 'com.github.alamkanak:android-week-view:1.2.3'
     compile 'com.google.android.gms:play-services:7.3.0'
+
 }

@@ -1,4 +1,4 @@
-package com.example.root.campusbuddy;
+package mobileDevelopment.com.root.campusbuddy;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,7 +8,6 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.widget.TimePicker;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 
 /**
