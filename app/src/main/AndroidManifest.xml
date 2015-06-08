@@ -104,7 +104,8 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyA-X5bozVBQg1gKeK_B1AreRFLFXmguwS8" />
+            android:value="AIzaSyD8LQckj7h5s6w_rAzk5UyP3WzpfkO3BCE"/>
+        <!--android:value="AIzaSyA-X5bozVBQg1gKeK_B1AreRFLFXmguwS8" />-->
 
         <activity
             android:name=".TelephoneContacts"

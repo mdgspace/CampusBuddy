@@ -43,8 +43,8 @@ public class SimpleMap extends FragmentActivity
     @Override
     public void onMapReady (GoogleMap map){
         map.addMarker(new MarkerOptions()
-                .position(new LatLng(0, 0))
-                .title("Marker"));
+                .position(new LatLng(29.8662184, 77.89531809))
+                .title("Marker").draggable(true));
         map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
     }
     @Override

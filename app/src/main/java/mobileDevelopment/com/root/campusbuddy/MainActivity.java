@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class MainActivity extends Activity {
 
-    Button mapButt1, mapButt2, tnButt2;
+    Button mapButt1, mapButt2, tnButt2,tdbtt1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +19,7 @@ public class MainActivity extends Activity {
         mapButt1 = (Button) findViewById(R.id.mapBut1);
         mapButt2 = (Button) findViewById(R.id.mapBut2);
         tnButt2 = (Button) findViewById(R.id.tnBut2);
+        tdbtt1=(Button)findViewById(R.id.tdbtn);
 
         mapButt1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +46,13 @@ public class MainActivity extends Activity {
             }
         });
 
-
+        tdbtt1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent tdIntent = new Intent(MainActivity.this, TelephoneContacts.class);
+                startActivity(tdIntent);
+            }
+        });
     }}
 
 

@@ -10,10 +10,10 @@
     android:name="com.google.android.gms.maps.MapFragment"
 
     app:cameraBearing="112.5"
-    app:cameraTargetLat="-33.796923"
-    app:cameraTargetLng="150.922433"
+    app:cameraTargetLat="29.86621840000"
+    app:cameraTargetLng="77.89531809999"
     app:cameraTilt="30"
-    app:cameraZoom="13"
+    app:cameraZoom="17"
     app:mapType="hybrid"
     app:uiCompass="false"
     app:uiRotateGestures="true"
