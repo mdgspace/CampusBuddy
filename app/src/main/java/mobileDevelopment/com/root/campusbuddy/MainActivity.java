@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class MainActivity extends Activity {
 
-    Button mapButt, ttButt, tnButt2;
+    Button mapButt, ttButt, tnButt2,tdbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +19,8 @@ public class MainActivity extends Activity {
         mapButt = (Button) findViewById(R.id.mapBut);
 
         tnButt2 = (Button) findViewById(R.id.tnBut2);
+
+        tdbtn = (Button) findViewById(R.id.tdbtn);
 
         mapButt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +37,14 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent ttIntent = new Intent(MainActivity.this, timetable_navigation2.class);
                 startActivity(ttIntent);
+            }
+        });
+
+        tdbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent tdIntent = new Intent(MainActivity.this, TelephoneContacts.class);
+                startActivity(tdIntent);
             }
         });
 
