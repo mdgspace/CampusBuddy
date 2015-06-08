@@ -1,9 +1,12 @@
 package mobileDevelopment.com.root.campusbuddy;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -16,7 +19,8 @@ import java.util.List;
 
 public class TelephoneContacts extends ActionBarActivity {
     int size;
-
+    String[] names,emailids,contactnos;
+//    double[] contactnos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,21 +33,38 @@ public class TelephoneContacts extends ActionBarActivity {
         {
             List<TelephoneDirectory> contacts=dbh.getContacts();
             size=DatabaseHelper.i;
-            String[] contact_data=new String[size];
+             names=new String[size];
+             contactnos=new String[size];
+             emailids=new String[size];
+
             int i=0;
             for(TelephoneDirectory td:contacts)
             {
-                contact_data[i]=td.name;
+                names[i]=td.name;
+                contactnos[i]=td.contact;
+                emailids[i]=td.emailid;
                 i++;
             }
-            ListAdapter listAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,contact_data);
+            ListAdapter listAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,names);
             ListView listV=(ListView)findViewById(R.id.listview1);
             listV.setAdapter(listAdapter);
+
+
+            listV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    Intent c=new Intent(TelephoneContacts.this,ContactDetails.class);
+                    c.putExtra("Clicked Contact number",contactnos[position]);
+                    startActivity(c);
+                }
+            });
         }
         }
         catch (Exception  e){
             Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();
         }
+
         }
 
 

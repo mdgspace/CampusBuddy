@@ -34,6 +34,7 @@
     <string name="title_activity_deleteand_edit_events">DeleteandEditEvents</string>
     <string name="title_activity_navigation__drawer__fragment">Navigation_Drawer_Fragment</string>
     <string name="title_activity_telephone_contacts">TelephoneContacts</string>
+    <string name="title_activity_contact_details">ContactDetails</string>
 
 
 

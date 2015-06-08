@@ -202,7 +202,7 @@ public List<TelephoneDirectory> getContacts() {
                 TelephoneDirectory location  = new TelephoneDirectory();
                 location.id     = Integer.parseInt(cursor.getString(cursor.getColumnIndex("_id")));
                 location.name    = cursor.getString(cursor.getColumnIndex("Name"));
-                location.contact   = Double.parseDouble(cursor.getString(cursor.getColumnIndex("Contact")));
+                location.contact   = cursor.getString(cursor.getColumnIndex("Contact"));
                 location.emailid    = cursor.getString(cursor.getColumnIndex("email-id"));
 
                 contacts.add(location);

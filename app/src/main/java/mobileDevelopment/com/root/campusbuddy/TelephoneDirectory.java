@@ -7,8 +7,8 @@ import android.app.Activity;
  */
 public class TelephoneDirectory extends Activity {
     public int id;
-    public double contact;
-    public String name,emailid;
+//    public double contact;
+    public String name,emailid,contact;
 
     public TelephoneDirectory(){}
 //
