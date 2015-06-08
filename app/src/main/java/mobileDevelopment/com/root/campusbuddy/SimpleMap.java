@@ -1,5 +1,9 @@
 package mobileDevelopment.com.root.campusbuddy;
 
+/**
+ * Created by rc on 7/6/15.
+ */
+
 import android.support.v4.app.Fragment;
 
 import android.graphics.RectF;
@@ -21,10 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-
-
-
-public class map extends FragmentActivity
+public class SimpleMap extends FragmentActivity
         implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class map extends FragmentActivity
         try {
             setContentView(R.layout.activity_map);
         } catch (Exception e) {
-            Toast.makeText(map.this, e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(SimpleMap.this, e.toString(), Toast.LENGTH_LONG).show();
             MapFragment mapFragment = (MapFragment) getFragmentManager()
                     .findFragmentById(R.id.map);
             //  mapFragment.getMapAsync(this);
@@ -50,6 +51,4 @@ public class map extends FragmentActivity
     public void onMapClick (LatLng latLng){
         Toast.makeText(getApplicationContext(), "" + latLng.latitude, Toast.LENGTH_LONG).show();
         Toast.makeText(getApplicationContext(), "" + latLng.longitude, Toast.LENGTH_LONG).show();
-    }
-
-}
+    }     }
