@@ -39,7 +39,19 @@ public class ContactDetails extends ActionBarActivity {
         callbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+contact));
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact));
+                startActivity(intent);
+            }
+        });
+
+        emailbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Intent.ACTION_VIEW);
+                intent.setType("plain/text");
+//                intent.setData(Uri.parse("www.gmail.com"));
+                intent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
+                intent.putExtra(Intent.EXTRA_EMAIL,new String[]{emailid});
                 startActivity(intent);
             }
         });
