@@ -56,6 +56,7 @@ public class TelephoneContacts extends ActionBarActivity {
                 {
                     Intent c=new Intent(TelephoneContacts.this,ContactDetails.class);
                     c.putExtra("Clicked Contact number",contactnos[position]);
+                    c.putExtra("Clicked email-id",emailids[position]);
                     startActivity(c);
                 }
             });
