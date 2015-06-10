@@ -1,9 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootlayout"
     tools:context="mobileDevelopment.com.root.campusbuddy.ContactDetails">
 
     <include
@@ -26,7 +25,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Contact no:-"
+        android:text="Contact no: "
         android:textSize="30sp"/>
 
         <EditText
@@ -47,35 +46,61 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email-id:-"
+            android:text="Email-id: "
             android:textSize="30sp"/>
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:id="@+id/emailid"
             android:background="@null"
+            android:ems="25"
             android:editable="false"/>
     </LinearLayout>
-
-    <Button
-        android:layout_width="175dp"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabe"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="98dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/emailbutton"
-        android:text="Email"
-        android:textColor="#000000"/>
+        android:layout_marginRight="51dp"
+        android:layout_marginEnd="51dp"/>
+        <!--android:background="@drawable/gmail" />-->
 
-    <Button
-        android:layout_width="175dp"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabc"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/fabe"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/callbutton"
-        android:text="Call"
-        android:textColor="#000000"/>
+        android:layout_marginLeft="70dp"
+        android:layout_marginStart="70dp" />
+        <!--android:background="@drawable/phone"-->
+
+
 
 </RelativeLayout>
+
+    <!--<Button-->
+        <!--android:layout_width="175dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:id="@+id/emailbutton"-->
+        <!--android:text="Email"-->
+        <!--android:textColor="#000000"/>-->
+
+    <!--<Button-->
+        <!--android:layout_width="175dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:id="@+id/callbutton"-->
+        <!--android:text="Call"-->
+        <!--android:textColor="#000000"/>-->
+

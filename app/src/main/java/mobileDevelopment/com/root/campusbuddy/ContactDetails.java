@@ -3,6 +3,8 @@ package mobileDevelopment.com.root.campusbuddy;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +19,7 @@ public class ContactDetails extends ActionBarActivity {
     String contact,emailid;
     Toolbar toolbar;
     int contact1;
+    FloatingActionButton fabc,fabe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +29,8 @@ public class ContactDetails extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.tool_bar1);
         toolbar.setTitle("Details of the Person");
         setSupportActionBar(toolbar);
-
+        setupfabc();
+        setupfabe();
 
         Intent m=getIntent();
         Bundle b=m.getExtras();
@@ -35,8 +39,8 @@ public class ContactDetails extends ActionBarActivity {
 
         EditText edit_contact=(EditText)findViewById(R.id.contactno);
         EditText edit_email=(EditText)findViewById(R.id.emailid);
-        Button callbutton=(Button)findViewById(R.id.callbutton);
-        Button emailbutton=(Button)findViewById(R.id.emailbutton);
+//        Button callbutton=(Button)findViewById(R.id.callbutton);
+//        Button emailbutton=(Button)findViewById(R.id.emailbutton);
 
 //        contact1=Integer.parseInt(contact);
 
@@ -47,25 +51,25 @@ public class ContactDetails extends ActionBarActivity {
         edit_email.setText(emailid+"");
         edit_email.setTextColor(Color.parseColor("#000000"));
 
-        callbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact));
-                startActivity(intent);
-            }
-        });
-
-        emailbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(Intent.ACTION_VIEW);
-                intent.setType("plain/text");
-//                intent.setData(Uri.parse("www.gmail.com"));
-                intent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
-                intent.putExtra(Intent.EXTRA_EMAIL,new String[]{emailid});
-                startActivity(intent);
-            }
-        });
+//        callbutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact));
+//                startActivity(intent);
+//            }
+//        });
+//
+//        emailbutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(Intent.ACTION_VIEW);
+//                intent.setType("plain/text");
+////                intent.setData(Uri.parse("www.gmail.com"));
+//                intent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
+//                intent.putExtra(Intent.EXTRA_EMAIL,new String[]{emailid});
+//                startActivity(intent);
+//            }
+//        });
 
 
     }
@@ -90,5 +94,45 @@ public class ContactDetails extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setupfabc()
+    {
+        fabc=(FloatingActionButton)findViewById(R.id.fabc);
+        fabc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(findViewById(R.id.rootlayout),"Make a call:-",Snackbar.LENGTH_LONG).setAction("Call", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact));
+                        startActivity(intent);
+                    }
+                }).show();
+            }
+        });
+    }
+
+    public void setupfabe()
+    {
+        fabe=(FloatingActionButton)findViewById(R.id.fabe);
+        fabe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(findViewById(R.id.rootlayout),"Write a mail:-",Snackbar.LENGTH_LONG).setAction("E-mail", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent intent=new Intent(Intent.ACTION_VIEW);
+                intent.setType("plain/text");
+                 intent.setData(Uri.parse("www.gmail.com"));
+                intent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
+                intent.putExtra(Intent.EXTRA_EMAIL,new String[]{emailid});
+                startActivity(intent);
+                    }
+                }).show();
+            }
+        });
     }
 }
