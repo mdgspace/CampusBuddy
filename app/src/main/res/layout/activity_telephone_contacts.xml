@@ -1,7 +1,49 @@
-<ListView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<android.support.design.widget.CoordinatorLayout-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+<!--<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="192dp">-->
+
+
+<!--<android.support.design.widget.CollapsingToolbarLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:background="#a4c639"-->
+    <!--app:layout_scrollFlags="scroll|exitUntilCollapsed">-->
+
+    <!--<android.support.v7.widget.Toolbar-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="?attr/actionBarSize"-->
+        <!--android:title="Contacts"/>-->
+        <!--&lt;!&ndash;android:layout_collapseMode="pin"/>&ndash;&gt;-->
+
+<!--</android.support.design.widget.CollapsingToolbarLayout>-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+<include
+    android:id="@+id/tool_bar"
+    layout="@layout/tool_bar"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"/>
+
+<ListView
     android:id="@+id/listview1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
+
+    </LinearLayout>
+    <!--app:layout_behaviour="scroll"/>-->
+<!--</android.support.design.widget.AppBarLayout>-->
+<!--</android.support.design.widget.CoordinatorLayout>-->
+
+
 

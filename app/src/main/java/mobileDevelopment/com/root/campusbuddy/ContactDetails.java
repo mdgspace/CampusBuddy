@@ -1,9 +1,11 @@
 package mobileDevelopment.com.root.campusbuddy;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,12 +15,19 @@ import android.widget.EditText;
 
 public class ContactDetails extends ActionBarActivity {
     String contact,emailid;
+    Toolbar toolbar;
     int contact1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_details);
+
+        toolbar = (Toolbar) findViewById(R.id.tool_bar1);
+        toolbar.setTitle("Details of the Person");
+        setSupportActionBar(toolbar);
+
+
         Intent m=getIntent();
         Bundle b=m.getExtras();
         contact=b.getString("Clicked Contact number");
@@ -34,7 +43,9 @@ public class ContactDetails extends ActionBarActivity {
 
         TelephoneContacts tc=new TelephoneContacts();
         edit_contact.setText(contact+"");
+        edit_contact.setTextColor(Color.parseColor("#000000"));
         edit_email.setText(emailid+"");
+        edit_email.setTextColor(Color.parseColor("#000000"));
 
         callbutton.setOnClickListener(new View.OnClickListener() {
             @Override

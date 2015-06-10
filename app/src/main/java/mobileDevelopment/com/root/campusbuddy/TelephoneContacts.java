@@ -3,6 +3,7 @@ package mobileDevelopment.com.root.campusbuddy;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,12 +20,18 @@ import java.util.List;
 
 public class TelephoneContacts extends ActionBarActivity {
     int size;
+    Toolbar toolbar;
     String[] names,emailids,contactnos;
 //    double[] contactnos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telephone_contacts);
+
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        toolbar.setTitle("List of Important Contacts");
+        setSupportActionBar(toolbar);
+
         DatabaseHelper dbh=new DatabaseHelper(this);
         try {
             dbh.createDataBase();
