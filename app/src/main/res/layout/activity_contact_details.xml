@@ -39,9 +39,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_above="@+id/fabe"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -61,23 +61,22 @@
         android:id="@+id/fabe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="98dp"
+        android:layout_marginBottom="92dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="51dp"
-        android:layout_marginEnd="51dp"/>
+        android:layout_alignLeft="@+id/fabc"
+        android:layout_alignStart="@+id/fabc" />
         <!--android:background="@drawable/gmail" />-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/fabe"
+        android:layout_marginLeft="46dp"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="48dp"
+        android:layout_below="@+id/contactlayout"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="70dp"
-        android:layout_marginStart="70dp" />
+        android:layout_alignParentStart="true" />
         <!--android:background="@drawable/phone"-->
 
 

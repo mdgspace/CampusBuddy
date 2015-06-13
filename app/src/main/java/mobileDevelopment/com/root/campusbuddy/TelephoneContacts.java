@@ -1,36 +1,61 @@
 package mobileDevelopment.com.root.campusbuddy;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.support.v7.widget.RecyclerView;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 
-public class TelephoneContacts extends ActionBarActivity {
+public class TelephoneContacts extends AppCompatActivity{
     int size;
     Toolbar toolbar;
     String[] names,emailids,contactnos;
+    CollapsingToolbarLayout ctoolbar;
+    RecyclerView recyclerView;
 //    double[] contactnos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_telephone_contacts);
+        try {
+            setContentView(R.layout.activity_telephone_contacts);
+
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
+//        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
         toolbar.setTitle("List of Important Contacts");
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+//        ctoolbar.setContentScrimColor(Color.parseColor("#aa00bb"));
+
+
+        }
+        catch(Exception e)
+        {
+            Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();
+        }
 
         DatabaseHelper dbh=new DatabaseHelper(this);
         try {
@@ -52,21 +77,67 @@ public class TelephoneContacts extends ActionBarActivity {
                 emailids[i]=td.emailid;
                 i++;
             }
-            ListAdapter listAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,names);
-            ListView listV=(ListView)findViewById(R.id.listview1);
-            listV.setAdapter(listAdapter);
+            recyclerView=(RecyclerView)findViewById(R.id.recyclerview);
+            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setAdapter(new MyRecyclerAdapter(generateContacts()));
 
-
-            listV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            recyclerView.setOnScrollListener(new MyScrollListener(this) {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                {
-                    Intent c=new Intent(TelephoneContacts.this,ContactDetails.class);
-                    c.putExtra("Clicked Contact number",contactnos[position]);
-                    c.putExtra("Clicked email-id",emailids[position]);
-                    startActivity(c);
+                public void onMoved(int distance) {
+                    toolbar.setTranslationY(-distance);
                 }
             });
+
+            recyclerView.addOnItemTouchListener(new MyItemClickListener(this, new MyItemClickListener.OnItemClickListener() {
+                @Override
+                public void OnItemClick(View v, int i) {
+                    Intent c = new Intent(TelephoneContacts.this, ContactDetails.class);
+                    c.putExtra("Clicked Contact number", contactnos[i]);
+                    c.putExtra("Clicked email-id", emailids[i]);
+                    startActivity(c);
+                }
+            }));
+//
+//
+//            listV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    Intent c = new Intent(TelephoneContacts.this, ContactDetails.class);
+//                    c.putExtra("Clicked Contact number", contactnos[position]);
+//                    c.putExtra("Clicked email-id", emailids[position]);
+//                    startActivity(c);
+//                }
+//            });
+//            listV.setOnScrollListener(new ListView.OnScrollListener() {
+//
+//                boolean hidetoolbar=false;
+//
+//                @Override
+//                public void onScrollStateChanged(AbsListView view, int scrollState) {
+//                    if(hidetoolbar)
+//                    {
+//                        getSupportActionBar().hide();
+//                    }
+//                    else
+//                    {
+//                        getSupportActionBar().show();
+//                    }
+//                }
+//
+//                @Override
+//                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                    if(visibleItemCount==9)
+//                    {
+//                        hidetoolbar=true;
+//                    }
+//                    else
+//                    {
+//                        hidetoolbar=false;
+//                    }
+//                }
+//            });
+
         }
         }
         catch (Exception  e){
@@ -74,6 +145,17 @@ public class TelephoneContacts extends ActionBarActivity {
         }
 
         }
+
+    public ArrayList<Contact> generateContacts()
+    {
+        ArrayList<Contact> contacts=new ArrayList<>();
+        for(int i=0;i<size;i++)
+        {
+            contacts.add(new Contact(names[i]));
+
+        }
+        return contacts;
+    }
 
 
     @Override
