@@ -23,7 +23,6 @@
         <item>one day view</item>
         <item>Three day view</item>
         <item>Week view</item>
-        <item>Add new event</item>
 
     </string-array>
     <string name="drawer_open">Open navigation drawer</string>

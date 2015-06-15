@@ -10,6 +10,7 @@ package mobileDevelopment.com.root.campusbuddy;
         import android.os.Bundle;
         import android.app.Activity;
         import android.content.res.Configuration;
+        import android.support.design.widget.FloatingActionButton;
         import android.support.v4.app.ActionBarDrawerToggle;
         import android.support.v4.view.GravityCompat;
         import android.support.v4.widget.DrawerLayout;
@@ -58,6 +59,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
     private DrawerLayout drawerLayout;
     private ListView drawerListView;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    public FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,6 +169,14 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         // Set up a date time interpreter to interpret how the date and time will be formatted in
         // the week view. This is optional.
         setupDateTimeInterpreter(false);
+        fab=(FloatingActionButton)findViewById(R.id.fabae);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newEventIntent = new Intent(timetable_navigation2.this, NewEvent.class);
+                startActivity(newEventIntent);
+            }
+        });
 
     }
     @Override
@@ -233,14 +243,15 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
                 }
             }
 
-            if (position==4){
-                Intent newEventIntent = new Intent(timetable_navigation2.this, NewEvent.class);
-                startActivity(newEventIntent);
-            }
+//            if (position==4){
+//                Intent newEventIntent = new Intent(timetable_navigation2.this, NewEvent.class);
+//                startActivity(newEventIntent);
+//            }
 
 
             drawerLayout.closeDrawer(drawerListView);
         }
+
     }
 
 

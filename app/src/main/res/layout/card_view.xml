@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="62dp"
     android:id="@+id/card"
-    card_view:cardCornerRadius="4dp">
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    card_view:cardCornerRadius="8dp">
 <!--<LinearLayout-->
     <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
     <!--android:id="@+id/card_view"-->
