@@ -11,7 +11,7 @@ import com.facebook.FacebookSdk;
 
 public class MainActivity extends Activity {
 
-    Button mapButt1, mapButt2, tnButt2,tdbtt1;
+    Button mapButt1, mapButt2, tnButt2,tdbtt1, fbbtt1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
         mapButt2 = (Button) findViewById(R.id.mapBut2);
         tnButt2 = (Button) findViewById(R.id.tnBut2);
         tdbtt1=(Button)findViewById(R.id.tdbtn);
+        fbbtt1=(Button)findViewById(R.id.fbbtn);
 
         mapButt1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +55,13 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent tdIntent = new Intent(MainActivity.this, TelephoneContacts.class);
+                startActivity(tdIntent);
+            }
+        });
+        fbbtt1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent tdIntent = new Intent(MainActivity.this, fb.class);
                 startActivity(tdIntent);
             }
         });

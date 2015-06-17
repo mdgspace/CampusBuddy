@@ -37,6 +37,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name"/>
+
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -100,7 +108,8 @@
             >
         </activity>
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
 
 
         <meta-data
@@ -117,6 +126,11 @@
         </activity>
         <activity
             android:name=".ContactDetails"
+            android:label="@string/title_activity_contact_details" >
+        </activity>
+
+        <activity
+            android:name=".fb"
             android:label="@string/title_activity_contact_details" >
         </activity>
     </application>
