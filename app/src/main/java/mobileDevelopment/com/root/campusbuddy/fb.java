@@ -3,10 +3,15 @@ package mobileDevelopment.com.root.campusbuddy;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -20,22 +25,25 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Arrays;
 
 public class fb extends Activity {
 
+    String messages[];
     Button fbbt1;
     CallbackManager callbackManager;
-
+    JSONObject m;
     AccessTokenTracker accessTokenTracker;
+    ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb);
-
+        list=(ListView)findViewById(R.id.listfb);
         try {
 
             FacebookSdk.sdkInitialize(getApplicationContext());
@@ -62,6 +70,7 @@ public class fb extends Activity {
                     new FacebookCallback<LoginResult>() {
                         @Override
                         public void onSuccess(LoginResult loginResult) {
+                            Toast.makeText(fb.this,"Logged in",Toast.LENGTH_LONG).show();
                             // App code
                         }
 
@@ -94,7 +103,7 @@ public class fb extends Activity {
                 public void onClick(View v) {
                     try {
                         getUserData(AccessToken.getCurrentAccessToken());
-                        Toast.makeText(fb.this, "Access Token: "+ AccessToken.getCurrentAccessToken().getToken().toString(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(fb.this, "Access Token: "+ AccessToken.getCurrentAccessToken().getToken(), Toast.LENGTH_LONG).show();
                     }
                     catch (Exception e){
                         Toast.makeText(fb.this, "error is: "+e.toString(), Toast.LENGTH_LONG).show();
@@ -134,19 +143,35 @@ public class fb extends Activity {
         request.executeAsync();*/
 
          GraphRequest.newGraphPathRequest(
-                accessToken, "/726074494095651/posts",
+                accessToken, "/415004402015833/posts",
                 new GraphRequest.Callback() {
                     @Override
                     public void onCompleted(GraphResponse graphResponse) {
 
                         try {
-                            String resp = graphResponse.getRawResponse();
-                            Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
+//                            String resp = graphResponse.getRawResponse();
+//                            String r=graphResponse.getJSONObject().getString("data");
+//                            Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
+//                            Toast.makeText(fb.this, "response is: " + r, Toast.LENGTH_LONG).show();
+
+//                            edit.setText(resp);
+//                            edit.setTextColor(Color.parseColor("#000000"));
+                            m=graphResponse.getJSONObject();
+                            JSONArray n=m.getJSONArray("data");
+                            messages=new String[n.length()];
+                            for(int i=0;i<n.length();i++) {
+                                JSONObject a = n.getJSONObject(i);
+                                messages[i]=a.optString("message");
+                            }
+
+                            list.setAdapter(new ArrayAdapter<String>(fb.this,android.R.layout.simple_list_item_1,messages));
+
                         } catch (Exception e) {
                             Toast.makeText(fb.this, "error is: " + e.toString(), Toast.LENGTH_LONG).show();
                         }
                     }
                 }).executeAsync();
+
     }
 
     @Override

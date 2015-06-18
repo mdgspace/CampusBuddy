@@ -11,12 +11,6 @@
         android:textSize="40dp"
         android:id="@+id/mapBut1"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Click to show the mapview"
-        android:textSize="40dp"
-        android:id="@+id/mapBut2"/>
 
         <Button
         android:layout_width="wrap_content"
@@ -38,5 +32,12 @@
         android:text="Click to show fb"
         android:textSize="40dp"
         android:id="@+id/fbbtn"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click to show the mapview"
+        android:textSize="40dp"
+        android:id="@+id/mapBut2"/>
 
-    </LinearLayout>
+
+</LinearLayout>
