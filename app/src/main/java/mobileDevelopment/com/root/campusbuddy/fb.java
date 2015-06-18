@@ -140,7 +140,7 @@ public class fb extends Activity {
                     public void onCompleted(GraphResponse graphResponse) {
 
                         try {
-                            String resp = graphResponse.getJSONObject().toString();
+                            String resp = graphResponse.getRawResponse();
                             Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
                         } catch (Exception e) {
                             Toast.makeText(fb.this, "error is: " + e.toString(), Toast.LENGTH_LONG).show();
