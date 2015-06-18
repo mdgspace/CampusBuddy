@@ -112,6 +112,7 @@ public class fb extends Activity {
 
 
     public void getUserData(AccessToken accessToken){
+        /*
         GraphRequest request = GraphRequest.newGraphPathRequest(
                 accessToken, "/726074494095651/posts",
                 new GraphRequest.Callback() {
@@ -130,7 +131,22 @@ public class fb extends Activity {
         parameters.putString("posts", "posts");
         request.setParameters(parameters);
 
-        request.executeAsync();
+        request.executeAsync();*/
+
+         GraphRequest.newGraphPathRequest(
+                accessToken, "/726074494095651/posts",
+                new GraphRequest.Callback() {
+                    @Override
+                    public void onCompleted(GraphResponse graphResponse) {
+
+                        try {
+                            String resp = graphResponse.getJSONObject().toString();
+                            Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
+                        } catch (Exception e) {
+                            Toast.makeText(fb.this, "error is: " + e.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }).executeAsync();
     }
 
     @Override
