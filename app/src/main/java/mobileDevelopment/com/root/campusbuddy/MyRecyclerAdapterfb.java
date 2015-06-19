@@ -44,6 +44,7 @@ public class MyRecyclerAdapterfb extends RecyclerView.Adapter<PostViewHolder>
     public void onBindViewHolder(PostViewHolder holder, int position) {
         Post post=posts.get(position);
         holder.postmessage.setText(post.getMessage());
+        Picasso.with(fb.c).load(post.getURL()).into(holder.fbpostpic);
 
     }
 

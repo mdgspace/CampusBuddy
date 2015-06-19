@@ -2,6 +2,7 @@ package mobileDevelopment.com.root.campusbuddy;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -44,11 +45,12 @@ public class fb extends Activity {
     AccessTokenTracker accessTokenTracker;
 //    ListView list;
     RecyclerView recyclerView;
-
+    public static Context c;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb);
+        c=this;
 //        list=(ListView)findViewById(R.id.listfb);
         try {
 
