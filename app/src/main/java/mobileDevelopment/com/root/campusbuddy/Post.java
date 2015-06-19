@@ -2,6 +2,8 @@ package mobileDevelopment.com.root.campusbuddy;
 
 import android.util.Log;
 
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONObject;
 
 /**
@@ -10,7 +12,7 @@ import org.json.JSONObject;
 public class Post {
 
     JSONObject post;
-    String message;
+    String message,url;
     public Post(JSONObject obj)
     {
         this.post=obj;
@@ -26,5 +28,17 @@ public class Post {
             Log.d("Error: ",e.toString());
         }
         return message;
+    }
+
+    public String getURL()
+    {
+        try{
+            url=post.optString("picture");
+        }
+        catch (Exception e)
+        {
+            Log.d("Error: ",e.toString());
+        }
+        return url;
     }
 }
