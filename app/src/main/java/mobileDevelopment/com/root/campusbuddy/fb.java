@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -28,6 +30,7 @@ import com.facebook.login.LoginResult;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class fb extends Activity {
@@ -36,14 +39,16 @@ public class fb extends Activity {
     Button fbbt1;
     CallbackManager callbackManager;
     JSONObject m;
+    JSONArray n;
     AccessTokenTracker accessTokenTracker;
-    ListView list;
+//    ListView list;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb);
-        list=(ListView)findViewById(R.id.listfb);
+//        list=(ListView)findViewById(R.id.listfb);
         try {
 
             FacebookSdk.sdkInitialize(getApplicationContext());
@@ -122,20 +127,7 @@ public class fb extends Activity {
 
     public void getUserData(AccessToken accessToken){
         /*
-        GraphRequest request = GraphRequest.newGraphPathRequest(
-                accessToken, "/726074494095651/posts",
-                new GraphRequest.Callback() {
-                    @Override
-                    public void onCompleted(GraphResponse graphResponse) {
 
-                        try {
-                            String resp = graphResponse.getRawResponse();
-                            Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
-                        } catch (Exception e) {
-                            Toast.makeText(fb.this, "error is: " + e.toString(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
         Bundle parameters = new Bundle();
         parameters.putString("posts", "posts");
         request.setParameters(parameters);
@@ -149,22 +141,27 @@ public class fb extends Activity {
                     public void onCompleted(GraphResponse graphResponse) {
 
                         try {
-//                            String resp = graphResponse.getRawResponse();
+                            String resp = graphResponse.getRawResponse();
 //                            String r=graphResponse.getJSONObject().getString("data");
-//                            Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
+                            Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
 //                            Toast.makeText(fb.this, "response is: " + r, Toast.LENGTH_LONG).show();
 
 //                            edit.setText(resp);
 //                            edit.setTextColor(Color.parseColor("#000000"));
                             m=graphResponse.getJSONObject();
-                            JSONArray n=m.getJSONArray("data");
-                            messages=new String[n.length()];
-                            for(int i=0;i<n.length();i++) {
-                                JSONObject a = n.getJSONObject(i);
-                                messages[i]=a.optString("message");
-                            }
+                            n=m.getJSONArray("data");
+//                            messages=new String[n.length()];
+//                            for(int i=0;i<n.length();i++) {
+//                                JSONObject a = n.getJSONObject(i);
+//                                messages[i]=a.optString("message");
+//                            }
 
-                            list.setAdapter(new ArrayAdapter<String>(fb.this,android.R.layout.simple_list_item_1,messages));
+                            recyclerView=(RecyclerView)findViewById(R.id.recyclerview1);
+                            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(fb.this);
+                            recyclerView.setLayoutManager(linearLayoutManager);
+                            recyclerView.setAdapter(new MyRecyclerAdapterfb(generatePosts()));
+
+//                            list.setAdapter(new ArrayAdapter<String>(fb.this,android.R.layout.simple_list_item_1,messages));
 
                         } catch (Exception e) {
                             Toast.makeText(fb.this, "error is: " + e.toString(), Toast.LENGTH_LONG).show();
@@ -188,5 +185,20 @@ public class fb extends Activity {
         catch (Exception e){
             Toast.makeText(fb.this, "error is: "+e.toString(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    public ArrayList<Post> generatePosts()
+    {
+        ArrayList<Post> posts=new ArrayList<>();
+        try {
+            for (int i = 0; i < n.length(); i++) {
+                posts.add(new Post(n.getJSONObject(i)));
+            }
+        }
+        catch (Exception e)
+        {
+            Log.d("Error: ",e.toString());
+        }
+        return posts;
     }
 }

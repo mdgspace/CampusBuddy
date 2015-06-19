@@ -15,8 +15,12 @@
         <!--android:layout_height="match_parent"-->
         <!--android:id="@+id/editfb"-->
         <!--android:scrollbars="vertical"/>-->
-    <ListView
+    <!--<ListView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/listfb"/>-->
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/listfb"/>
+        android:id="@+id/recyclerview1"/>
 </LinearLayout>
