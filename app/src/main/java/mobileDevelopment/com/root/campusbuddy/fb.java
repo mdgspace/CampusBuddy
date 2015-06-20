@@ -27,6 +27,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -42,6 +43,7 @@ public class fb extends Activity {
     CallbackManager callbackManager;
     JSONObject m;
     JSONArray n;
+    LoginButton loginButton;
     AccessTokenTracker accessTokenTracker;
 //    ListView list;
     RecyclerView recyclerView;
@@ -74,27 +76,50 @@ public class fb extends Activity {
         */
             // if (AccessToken.getCurrentAccessToken().toString().equals(null)) {
 
-            LoginManager.getInstance().registerCallback(callbackManager,
-                    new FacebookCallback<LoginResult>() {
-                        @Override
-                        public void onSuccess(LoginResult loginResult) {
-                            Toast.makeText(fb.this,"Logged in",Toast.LENGTH_LONG).show();
-                            // App code
-                        }
+            loginButton = (LoginButton)findViewById(R.id.login_button);
+            loginButton.setReadPermissions("user_friends");
 
-                        @Override
-                        public void onCancel() {
-                            // App code
-                            // savedInstanceState
-                        }
+            loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    // App code
+                    Toast.makeText(fb.this,"Logged in",Toast.LENGTH_LONG).show();
 
-                        @Override
-                        public void onError(FacebookException exception) {
-                            // App code
-                            Toast.makeText(fb.this, exception.toString(),  Toast.LENGTH_LONG).show();
-                        }
-                    });
-            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile, user_groups"));
+                }
+
+                @Override
+                public void onCancel() {
+                    // App code
+                }
+
+                @Override
+                public void onError(FacebookException exception) {
+                    // App code
+                }
+            });
+
+
+//            LoginManager.getInstance().registerCallback(callbackManager,
+//                    new FacebookCallback<LoginResult>() {
+//                        @Override
+//                        public void onSuccess(LoginResult loginResult) {
+//                            Toast.makeText(fb.this,"Logged in",Toast.LENGTH_LONG).show();
+//                            // App code
+//                        }
+//
+//                        @Override
+//                        public void onCancel() {
+//                            // App code
+//                            // savedInstanceState
+//                        }
+//
+//                        @Override
+//                        public void onError(FacebookException exception) {
+//                            // App code
+//                            Toast.makeText(fb.this, exception.toString(),  Toast.LENGTH_LONG).show();
+//                        }
+//                    });
+//            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile, user_groups"));
 
             //   }
             accessTokenTracker = new AccessTokenTracker() {
