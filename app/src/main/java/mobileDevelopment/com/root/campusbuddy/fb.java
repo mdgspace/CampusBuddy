@@ -38,12 +38,10 @@ import java.util.Arrays;
 
 public class fb extends Activity {
 
-    String messages[];
-    Button fbbt1;
-    CallbackManager callbackManager;
+    String[] ids;
+    int[] fbpl;
     JSONObject m;
     JSONArray n;
-    LoginButton loginButton;
     AccessTokenTracker accessTokenTracker;
 //    ListView list;
     RecyclerView recyclerView;
@@ -54,49 +52,17 @@ public class fb extends Activity {
         setContentView(R.layout.activity_fb);
         c=this;
 //        list=(ListView)findViewById(R.id.listfb);
+        Bundle b=getIntent().getExtras();
+        fbpl=b.getIntArray("pagesliked");
+        ids=new String[fbpl.length];
+        ids[0]="415004402015833";//id for iit r freshers
+        ids[1]="257702554250168";//id for robocon
+
         try {
 
-            FacebookSdk.sdkInitialize(getApplicationContext());
-
-            fbbt1 = (Button) findViewById(R.id.fbbutton);
-
-
-            callbackManager = CallbackManager.Factory.create();
-
-       /* accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(
-                    AccessToken oldAccessToken,
-                    AccessToken currentAccessToken) {
-
-            }
-        };
-
-        Log.d("Access Token: ", AccessToken.getCurrentAccessToken().toString());
-        */
             // if (AccessToken.getCurrentAccessToken().toString().equals(null)) {
 
-            loginButton = (LoginButton)findViewById(R.id.login_button);
-            loginButton.setReadPermissions("user_friends");
 
-            loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                @Override
-                public void onSuccess(LoginResult loginResult) {
-                    // App code
-                    Toast.makeText(fb.this,"Logged in",Toast.LENGTH_LONG).show();
-
-                }
-
-                @Override
-                public void onCancel() {
-                    // App code
-                }
-
-                @Override
-                public void onError(FacebookException exception) {
-                    // App code
-                }
-            });
 
 
 //            LoginManager.getInstance().registerCallback(callbackManager,
@@ -131,9 +97,6 @@ public class fb extends Activity {
                 }
             };
 
-            fbbt1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
                     try {
                         getUserData(AccessToken.getCurrentAccessToken());
 //                        Toast.makeText(fb.this, "Access Token: "+ AccessToken.getCurrentAccessToken().getToken(), Toast.LENGTH_LONG).show();
@@ -143,67 +106,51 @@ public class fb extends Activity {
                     }
 
                 }
-            });
-        }
-        catch (Exception e){
+        catch (Exception e)
+        {
             Toast.makeText(fb.this, e.toString(),  Toast.LENGTH_LONG).show();
         }
-
-
-    }
+            }
 
 
     public void getUserData(AccessToken accessToken){
-        /*
 
-        Bundle parameters = new Bundle();
-        parameters.putString("posts", "posts");
-        request.setParameters(parameters);
+       for(int i=0;i<fbpl.length;i++) {
+           GraphRequest.newGraphPathRequest(accessToken,
+//                 "/415004402015833/posts",
+                   "/"+ids[fbpl[i]]+"/posts",
+                   new GraphRequest.Callback() {
+                       @Override
+                       public void onCompleted(GraphResponse graphResponse) {
 
-        request.executeAsync();*/
+                           try {
+                               String resp = graphResponse.getRawResponse();
+                               Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
 
-         GraphRequest.newGraphPathRequest(
-                accessToken, "/415004402015833/posts",
-                new GraphRequest.Callback() {
-                    @Override
-                    public void onCompleted(GraphResponse graphResponse) {
-
-                        try {
-                            String resp = graphResponse.getRawResponse();
-//                            String r=graphResponse.getJSONObject().getString("data");
-                            Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
-//                            Toast.makeText(fb.this, "response is: " + r, Toast.LENGTH_LONG).show();
-
-//                            edit.setText(resp);
-//                            edit.setTextColor(Color.parseColor("#000000"));
-                            m=graphResponse.getJSONObject();
-                            n=m.getJSONArray("data");
+                               m = graphResponse.getJSONObject();
+                               n = m.getJSONArray("data");
 //                            messages=new String[n.length()];
 //                            for(int i=0;i<n.length();i++) {
 //                                JSONObject a = n.getJSONObject(i);
 //                                messages[i]=a.optString("message");
 //                            }
 
-                            recyclerView=(RecyclerView)findViewById(R.id.recyclerview1);
-                            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(fb.this);
-                            recyclerView.setLayoutManager(linearLayoutManager);
-                            recyclerView.setAdapter(new MyRecyclerAdapterfb(generatePosts()));
+                               recyclerView = (RecyclerView) findViewById(R.id.recyclerview1);
+                               LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fb.this);
+                               recyclerView.setLayoutManager(linearLayoutManager);
+                               recyclerView.setAdapter(new MyRecyclerAdapterfb(generatePosts()));
 
 //                            list.setAdapter(new ArrayAdapter<String>(fb.this,android.R.layout.simple_list_item_1,messages));
 
-                        } catch (Exception e) {
-                            Toast.makeText(fb.this, "error is: " + e.toString(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }).executeAsync();
-
+                           } catch (Exception e) {
+                               Toast.makeText(fb.this, "error is: " + e.toString(), Toast.LENGTH_LONG).show();
+                           }
+                       }
+                   }).executeAsync();
+       }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
+
 
     @Override
     protected void onDestroy() {

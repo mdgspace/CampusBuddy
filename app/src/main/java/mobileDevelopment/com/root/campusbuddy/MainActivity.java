@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
         fbbtt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent tdIntent = new Intent(MainActivity.this, fb.class);
+                Intent tdIntent = new Intent(MainActivity.this, Fblist.class);
                 startActivity(tdIntent);
             }
         });

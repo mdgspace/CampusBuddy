@@ -26,6 +26,15 @@
         <item>Week view</item>
 
     </string-array>
+
+    <string-array name="fbpages">
+        <item>IITR Freshies forum</item>
+        <item>Team Robocon</item>
+        <item>SDS Labs</item>
+        <item>IMG</item>
+
+    </string-array>
+
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Web search</string>
@@ -35,6 +44,7 @@
     <string name="title_activity_navigation__drawer__fragment">Navigation_Drawer_Fragment</string>
     <string name="title_activity_telephone_contacts">TelephoneContacts</string>
     <string name="title_activity_contact_details">ContactDetails</string>
+    <string name="title_activity_fblist">Fblist</string>
 
 
 

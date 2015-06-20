@@ -5,17 +5,16 @@
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="22" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.example.googlemapstesting.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
@@ -25,26 +24,20 @@
         android:glEsVersion="0x00020000"
         android:required="true" />
 
-
     <permission
         android:name="com.example.googlemapstesting.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
-
-
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name"/>
-
-
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -101,24 +94,21 @@
             android:name=".timetable_navigation2"
             android:label="@string/app_name" >
         </activity>
-
         <activity
-            android:name="mobileDevelopment.com.root.campusbuddy.SimpleMap"
-            android:label="@string/app_name"
-            >
+            android:name=".SimpleMap"
+            android:label="@string/app_name" >
         </activity>
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-
-
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyD8LQckj7h5s6w_rAzk5UyP3WzpfkO3BCE"/>
-        <!--android:value="AIzaSyA-X5bozVBQg1gKeK_B1AreRFLFXmguwS8" />-->
+            android:value="AIzaSyD8LQckj7h5s6w_rAzk5UyP3WzpfkO3BCE" />
+        <!-- android:value="AIzaSyA-X5bozVBQg1gKeK_B1AreRFLFXmguwS8" /> -->
 
         <activity
             android:name=".TelephoneContacts"
@@ -128,10 +118,13 @@
             android:name=".ContactDetails"
             android:label="@string/title_activity_contact_details" >
         </activity>
-
         <activity
             android:name=".fb"
             android:label="@string/title_activity_contact_details" >
+        </activity>
+        <activity
+            android:name=".Fblist"
+            android:label="@string/title_activity_fblist" >
         </activity>
     </application>
 
