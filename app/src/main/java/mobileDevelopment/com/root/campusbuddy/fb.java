@@ -24,6 +24,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
+import com.facebook.GraphRequestBatch;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -116,6 +117,7 @@ public class fb extends Activity {
 
     public void getUserData(AccessToken accessToken){
 
+
        for(int i=0;i<fbpl.length;i++) {
 
            if(fbpl[i]==true) {
@@ -149,21 +151,23 @@ public class fb extends Activity {
                                    }
 
 //                            list.setAdapter(new ArrayAdapter<String>(fb.this,android.R.layout.simple_list_item_1,messages));
+                                   recyclerView = (RecyclerView) findViewById(R.id.recyclerview1);
+                                   LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fb.this);
+                                   recyclerView.setLayoutManager(linearLayoutManager);
+                                   recyclerView.setAdapter(new MyRecyclerAdapterfb(posts));
 
                                }
                                catch (Exception e) {
                                    Toast.makeText(fb.this, "error is: " + e.toString(), Toast.LENGTH_LONG).show();
                                }
-                           }
-                       }).executeAsync();
 
+                           }
+
+                       }).executeAsync();
            }
 
        }
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview1);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fb.this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(new MyRecyclerAdapterfb(posts));
+
     }
 
 
