@@ -24,11 +24,10 @@ public class Fblist extends ActionBarActivity {
 
     ListView listview;
     String[] fbpages;
-    int[] fbpagesliked;
+    boolean[] fbpagesliked;
     ArrayAdapter<String> adapter;
     LoginButton loginButton;
     CallbackManager callbackManager;
-    int j=0;
     Button submitb;
 
 
@@ -75,17 +74,19 @@ public class Fblist extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 SparseBooleanArray checked = listview.getCheckedItemPositions();
-                fbpagesliked=new int[2];
+                fbpagesliked=new boolean[checked.size()];
                 for (int i = 0; i < checked.size(); i++) {
                     if (checked.valueAt(i)) {
-                        fbpagesliked[j] = i;
-                        j++;
+                        fbpagesliked[i] =true;
+                    }
+                    else{
+                        fbpagesliked[i]=false;
                     }
                 }
 
                 Intent intent = new Intent(Fblist.this, fb.class);
                 Bundle b = new Bundle();
-                b.putIntArray("pagesliked", fbpagesliked);
+                b.putBooleanArray("pagesliked", fbpagesliked);
                 intent.putExtras(b);
                 startActivity(intent);
             }

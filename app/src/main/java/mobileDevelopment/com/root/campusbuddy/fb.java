@@ -39,12 +39,13 @@ import java.util.Arrays;
 public class fb extends Activity {
 
     String[] ids;
-    int[] fbpl;
+    boolean[] fbpl;
     JSONObject m;
     JSONArray n;
     AccessTokenTracker accessTokenTracker;
 //    ListView list;
     RecyclerView recyclerView;
+    ArrayList<Post> posts;
     public static Context c;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +54,11 @@ public class fb extends Activity {
         c=this;
 //        list=(ListView)findViewById(R.id.listfb);
         Bundle b=getIntent().getExtras();
-        fbpl=b.getIntArray("pagesliked");
-        ids=new String[fbpl.length];
+        fbpl=b.getBooleanArray("pagesliked");
+        ids=new String[2];
         ids[0]="415004402015833";//id for iit r freshers
         ids[1]="257702554250168";//id for robocon
-
+        posts=new ArrayList<>();
         try {
 
             // if (AccessToken.getCurrentAccessToken().toString().equals(null)) {
@@ -116,38 +117,53 @@ public class fb extends Activity {
     public void getUserData(AccessToken accessToken){
 
        for(int i=0;i<fbpl.length;i++) {
-           GraphRequest.newGraphPathRequest(accessToken,
-//                 "/415004402015833/posts",
-                   "/"+ids[fbpl[i]]+"/posts",
-                   new GraphRequest.Callback() {
-                       @Override
-                       public void onCompleted(GraphResponse graphResponse) {
 
-                           try {
-                               String resp = graphResponse.getRawResponse();
-                               Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
+           if(fbpl[i]==true) {
+               GraphRequest.newGraphPathRequest(accessToken,
+                       "/" + ids[i] + "/posts",
+                       new GraphRequest.Callback() {
+                           @Override
+                           public void onCompleted(GraphResponse graphResponse) {
 
-                               m = graphResponse.getJSONObject();
-                               n = m.getJSONArray("data");
+                               try {
+                                   String resp = graphResponse.getRawResponse();
+                                   Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
+
+                                   m = graphResponse.getJSONObject();
+
+                                   n = m.getJSONArray("data");
 //                            messages=new String[n.length()];
 //                            for(int i=0;i<n.length();i++) {
 //                                JSONObject a = n.getJSONObject(i);
 //                                messages[i]=a.optString("message");
 //                            }
 
-                               recyclerView = (RecyclerView) findViewById(R.id.recyclerview1);
-                               LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fb.this);
-                               recyclerView.setLayoutManager(linearLayoutManager);
-                               recyclerView.setAdapter(new MyRecyclerAdapterfb(generatePosts()));
+                                   try {
+                                       for (int j = 0; j <n.length(); j++) {
+                                           posts.add(new Post(n.getJSONObject(j)));
+                                       }
+                                   }
+                                   catch (Exception e)
+                                   {
+                                       Log.d("Error: ",e.toString());
+                                   }
 
 //                            list.setAdapter(new ArrayAdapter<String>(fb.this,android.R.layout.simple_list_item_1,messages));
 
-                           } catch (Exception e) {
-                               Toast.makeText(fb.this, "error is: " + e.toString(), Toast.LENGTH_LONG).show();
+                               }
+                               catch (Exception e) {
+                                   Toast.makeText(fb.this, "error is: " + e.toString(), Toast.LENGTH_LONG).show();
+                               }
                            }
-                       }
-                   }).executeAsync();
+                       }).executeAsync();
+
+           }
+
        }
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fb.this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(new MyRecyclerAdapterfb(posts));
     }
 
 
@@ -162,18 +178,17 @@ public class fb extends Activity {
         }
     }
 
-    public ArrayList<Post> generatePosts()
-    {
-        ArrayList<Post> posts=new ArrayList<>();
-        try {
-            for (int i = 0; i < n.length(); i++) {
-                posts.add(new Post(n.getJSONObject(i)));
-            }
-        }
-        catch (Exception e)
-        {
-            Log.d("Error: ",e.toString());
-        }
-        return posts;
-    }
+//    public ArrayList<Post> generatePosts()
+//    {
+//        try {
+//            for (int i = 0; i < n.length(); i++) {
+//                posts.add(new Post(n.getJSONObject(i)));
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//            Log.d("Error: ",e.toString());
+//        }
+//        return posts;
+//    }
 }
