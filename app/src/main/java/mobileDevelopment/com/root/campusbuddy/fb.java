@@ -36,6 +36,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 public class fb extends Activity {
 
@@ -130,7 +132,7 @@ public class fb extends Activity {
                                try {
                                    String resp = graphResponse.getRawResponse();
                                    Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
-
+                                    Log.e("Response",resp);
                                    m = graphResponse.getJSONObject();
 
                                    n = m.getJSONArray("data");
@@ -149,7 +151,7 @@ public class fb extends Activity {
                                    {
                                        Log.d("Error: ",e.toString());
                                    }
-
+                                   Collections.sort(posts);
 //                            list.setAdapter(new ArrayAdapter<String>(fb.this,android.R.layout.simple_list_item_1,messages));
                                    recyclerView = (RecyclerView) findViewById(R.id.recyclerview1);
                                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fb.this);
