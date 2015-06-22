@@ -141,7 +141,7 @@ public class fb extends Activity {
 //                            }
 
                                    try {
-                                       for (int j = 0; j <n.length(); j++) {
+                                       for (int j = 0; j <5; j++) {
                                            posts.add(new Post(n.getJSONObject(j)));
                                        }
                                    }
