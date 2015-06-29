@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
         tdbtt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent tdIntent = new Intent(MainActivity.this, TelephoneContacts.class);
+                Intent tdIntent = new Intent(MainActivity.this,Deptt_list.class);
                 startActivity(tdIntent);
             }
         });

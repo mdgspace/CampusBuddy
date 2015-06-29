@@ -53,12 +53,21 @@
         <!-- <category android:name="android.intent.category.DEFAULT" /> -->
         <!-- </intent-filter> -->
         <!-- </activity> -->
+
+        <activity
+            android:name=".Deptt_list"
+            android:label="@string/app_name" >
+        <intent-filter>
+            <action android:name="android.intent.action.DEPTT_LIST" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+        </activity>
+
         <activity
             android:name=".map3"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAP" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

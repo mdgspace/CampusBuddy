@@ -63,7 +63,7 @@ public class TelephoneContacts extends AppCompatActivity{
 
         if(dbh.open())
         {
-            List<TelephoneDirectory> contacts=dbh.getContacts();
+            List<TelephoneDirectory> contacts=dbh.getContacts(getIntent().getExtras().getString("table_name"));
             size=DatabaseHelper.i;
              names=new String[size];
              contactnos=new String[size];

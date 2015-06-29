@@ -1,6 +1,7 @@
 package mobileDevelopment.com.root.campusbuddy;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -24,13 +25,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //The Android's default system path of your application database.
     private static String DB_PATH = "/data/data/mobileDevelopment.com.root.campusbuddy/databases/";
 
-    private static String DB_NAME = "telephonedirectory1.db";
+    private static String DB_NAME = "iitr_contacts.db";
 
-    private SQLiteDatabase myDataBase;
+    private SQLiteDatabase myDataBase2;
     public static int i=0;
 
     private final Context myContext;
-    private final String TABLE_CONTACT="contacts";
+  //  private final String TABLE_CONTACT="contacts";
+
+
 
     /**
      * Constructor
@@ -140,7 +143,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //Open the database
         String myPath = DB_PATH + DB_NAME;
-        myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+        myDataBase2 = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
     }
 
@@ -149,11 +152,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         try {
             String myPath = DB_PATH + DB_NAME;
-            myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
+            myDataBase2 = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
             return true;
 
         } catch(Exception sqle) {
-            myDataBase = null;
+            myDataBase2 = null;
             return false;
         }
 
@@ -162,8 +165,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public synchronized void close() {
 
-        if (myDataBase != null)
-            myDataBase.close();
+        if (myDataBase2 != null)
+            myDataBase2.close();
 
         super.close();
 
@@ -171,6 +174,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+
+
         try{createDataBase();}
         catch (Exception e){
             e.printStackTrace();
@@ -183,13 +189,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-public List<TelephoneDirectory> getContacts() {
+public List<TelephoneDirectory> getContacts(String table_name) {
 
     List<TelephoneDirectory> contacts = null;
 
     try {
 
-        String      query  = "SELECT * FROM " + TABLE_CONTACT;
+        String  query  = "SELECT * FROM " + table_name;
         SQLiteDatabase  db    = SQLiteDatabase.openDatabase( DB_PATH + DB_NAME , null, SQLiteDatabase.OPEN_READWRITE);
         Cursor cursor  = db.rawQuery(query, null);
 
@@ -200,10 +206,10 @@ public List<TelephoneDirectory> getContacts() {
             do {
                 i++;
                 TelephoneDirectory location  = new TelephoneDirectory();
-                location.id     = Integer.parseInt(cursor.getString(cursor.getColumnIndex("_id")));
+                location.id     = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
                 location.name    = cursor.getString(cursor.getColumnIndex("Name"));
                 location.contact   = cursor.getString(cursor.getColumnIndex("Contact"));
-                location.emailid    = cursor.getString(cursor.getColumnIndex("email-id"));
+                location.emailid    = cursor.getString(cursor.getColumnIndex("Mail"));
 
                 contacts.add(location);
 
