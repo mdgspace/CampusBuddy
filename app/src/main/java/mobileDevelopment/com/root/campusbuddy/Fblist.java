@@ -64,6 +64,7 @@ public class Fblist extends ActionBarActivity {
             }
         });
         try{
+
         listview=(ListView)findViewById(R.id.listfbpages);
         fbpages=getResources().getStringArray(R.array.fbpages);
             listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);

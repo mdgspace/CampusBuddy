@@ -61,6 +61,9 @@ public class fb extends Activity {
         ids=new String[2];
         ids[0]="415004402015833";//id for iit r freshers
         ids[1]="257702554250168";//id for robocon
+
+
+
         posts=new ArrayList<>();
         try {
 

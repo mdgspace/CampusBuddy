@@ -25,7 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //The Android's default system path of your application database.
     private static String DB_PATH = "/data/data/mobileDevelopment.com.root.campusbuddy/databases/";
 
-    private static String DB_NAME = "iitr_contacts.db";
+    private static String DB_NAME = "iitr_contacts1.db";
 
     private SQLiteDatabase myDataBase2;
     public static int i=0;
