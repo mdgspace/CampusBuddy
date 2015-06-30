@@ -57,8 +57,10 @@ public class TelephoneContacts extends AppCompatActivity{
             Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();
         }
 
+try{
+
         DatabaseHelper dbh=new DatabaseHelper(this);
-        try {
+
             dbh.createDataBase();
 
         if(dbh.open())

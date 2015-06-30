@@ -25,9 +25,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //The Android's default system path of your application database.
     private static String DB_PATH = "/data/data/mobileDevelopment.com.root.campusbuddy/databases/";
 
-    private static String DB_NAME = "iitr_contacts1.db";
+    private static String DB_NAME = "iitr_final";
 
-    private SQLiteDatabase myDataBase2;
+    private SQLiteDatabase myDataBase6;
     public static int i=0;
 
     private final Context myContext;
@@ -61,15 +61,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 //By calling this method and empty database will be created into the default system path
                 //of your application so we are gonna be able to overwrite that database with our database.
+
+               // this.close();
                 this.getReadableDatabase();
 
                 try {
-
+                   // this.close();
                     copyDataBase();
 
                 } catch (IOException e) {
 
                     throw new Error("Error copying database");
+
+
 
                 }
             }
@@ -143,7 +147,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //Open the database
         String myPath = DB_PATH + DB_NAME;
-        myDataBase2 = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+        myDataBase6 = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
     }
 
@@ -152,11 +156,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         try {
             String myPath = DB_PATH + DB_NAME;
-            myDataBase2 = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
+            myDataBase6 = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
             return true;
 
         } catch(Exception sqle) {
-            myDataBase2 = null;
+            myDataBase6 = null;
             return false;
         }
 
@@ -165,8 +169,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public synchronized void close() {
 
-        if (myDataBase2 != null)
-            myDataBase2.close();
+        if (myDataBase6 != null)
+            myDataBase6.close();
 
         super.close();
 
@@ -206,7 +210,7 @@ public List<TelephoneDirectory> getContacts(String table_name) {
             do {
                 i++;
                 TelephoneDirectory location  = new TelephoneDirectory();
-                location.id     = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
+                location.id     = Integer.parseInt(cursor.getString(cursor.getColumnIndex("_id")));
                 location.name    = cursor.getString(cursor.getColumnIndex("Name"));
                 location.contact   = cursor.getString(cursor.getColumnIndex("Contact"));
                 location.emailid    = cursor.getString(cursor.getColumnIndex("Mail"));

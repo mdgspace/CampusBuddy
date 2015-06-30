@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,10 +149,15 @@ public class Deptt_list extends ListActivity {
                 break;
 
         }
+        try {
 
-        Intent deptt_intent  = new Intent(Deptt_list.this, TelephoneContacts.class);
-        deptt_intent.putExtra("table_name", table_name);
-        startActivity(deptt_intent);
+            Intent deptt_intent = new Intent(Deptt_list.this, TelephoneContacts.class);
+            deptt_intent.putExtra("table_name", table_name);
+            startActivity(deptt_intent);
+        }
+        catch (Exception e){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
 
 
     }
