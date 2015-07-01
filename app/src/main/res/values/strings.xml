@@ -28,12 +28,11 @@
     </string-array>
 
     <string-array name="fbpages">
-        <item>IIT Roorkee</item>
+        <item>Cinema Club</item>
         <item>IITR Freshies forum</item>
         <item>SDSLabs</item>
         <item>Team Robocon</item>
         <item>EDC</item>
-        <item>SHARE IITR</item>
         <item>General Notice Board</item>
         <item>Audio Section</item>
         <item>Sanskriti Club</item>
@@ -41,7 +40,7 @@
         <item>ASHRAE</item>
         <item>Cognizance</item>
         <item>Photography Section</item>
-        <item>Cinema Club</item>
+        <item>IIT Roorkee</item>
         <item>Technologic 2015</item>
         <item>Electronics Section</item>
         <item>NCC</item>
@@ -49,9 +48,7 @@
         <item>Fine Arts Section</item>
         <item>Anushruti</item>
         <item>Rhapsody</item>
-
-
-
+        <item>SHARE IITR</item>
     </string-array>
 
     <string name="drawer_open">Open navigation drawer</string>

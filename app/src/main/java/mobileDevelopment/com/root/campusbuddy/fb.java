@@ -58,8 +58,8 @@ public class fb extends Activity {
 //        list=(ListView)findViewById(R.id.listfb);
         Bundle b=getIntent().getExtras();
         fbpl=b.getBooleanArray("pagesliked");
-        ids=new String[20];
-        ids[0]= "415004402015833"; // IIT Roorkee
+        ids=new String[21];
+        ids[12]= "415004402015833"; // IIT Roorkee
         ids[1]="415004402015833";//id for iit r freshers
         ids[2]="182484805131346";//id for SDSLabs
         ids[3]="257702554250168";//id for robocon
@@ -71,7 +71,7 @@ public class fb extends Activity {
         ids[9]="754869404569818"; // ASHRAE
         ids[10]="217963184943488"; // Cognizance
         ids[11]="317158211638196"; // Photography Section
-        ids[12]="231275190406200"; // Cinema Club
+        ids[0]="231275190406200"; // Cinema Club
         ids[13]="369513426410599"; // TECHNOLOGIC 2015
         ids[14]="503218879766649"; // ELECTRONICS SECTION
         ids[15]="242919515859218"; // NCC

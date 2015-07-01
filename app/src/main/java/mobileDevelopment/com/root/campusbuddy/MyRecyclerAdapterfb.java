@@ -6,6 +6,7 @@ package mobileDevelopment.com.root.campusbuddy;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -42,10 +44,16 @@ public class MyRecyclerAdapterfb extends RecyclerView.Adapter<PostViewHolder>
 
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
-        Post post=posts.get(position);
-        holder.postmessage.setText(post.getMessage());
-        Picasso.with(fb.c).load(post.getURL()).into(holder.fbpostpic);
-
+        try {
+            Post post = posts.get(position);
+            holder.postmessage.setText(post.getMessage());
+            Picasso.with(fb.c).load(post.getURL()).into(holder.fbpostpic);
+        }
+        catch(Exception e)
+        {
+            Toast.makeText(fb.c,"Error: "+e.toString(),Toast.LENGTH_LONG).show();
+            Log.d("Error: ",e.toString());
+        }
     }
 
     @Override
