@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class Fblist extends ActionBarActivity {
     LoginButton loginButton;
     CallbackManager callbackManager;
     Button submitb;
+    CheckedTextView c;
 
 
     @Override
@@ -74,22 +76,42 @@ public class Fblist extends ActionBarActivity {
         submitb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SparseBooleanArray checked = listview.getCheckedItemPositions();
-                fbpagesliked=new boolean[checked.size()];
-                for (int i = 0; i < checked.size(); i++) {
-                    if (checked.valueAt(i)) {
-                        fbpagesliked[i] =true;
+//                SparseBooleanArray checked = listview.getCheckedItemPositions();
+//                fbpagesliked=new boolean[checked.size()];
+//                for (int i = 0; i < checked.size(); i++) {
+//                    if (checked.valueAt(i)) {
+//                        fbpagesliked[i] =true;
+//                    }
+//                    else{
+//                        fbpagesliked[i]=false;
+//                    }
+//                }
+                try{
+                    fbpagesliked=new boolean[listview.getChildCount()];
+                    for(int i=0;i<listview.getChildCount();i++)
+                {
+                    c=(CheckedTextView)listview.getChildAt(i);
+                    if(c.isChecked())
+                    {
+                        fbpagesliked[i]=true;
                     }
-                    else{
+                    else
+                    if(c.isChecked()!=true)
+                    {
                         fbpagesliked[i]=false;
                     }
                 }
-
                 Intent intent = new Intent(Fblist.this, fb.class);
                 Bundle b = new Bundle();
                 b.putBooleanArray("pagesliked", fbpagesliked);
                 intent.putExtras(b);
                 startActivity(intent);
+
+            }
+                catch (Exception e)
+                {
+                    Toast.makeText(Fblist.this,e.toString(),Toast.LENGTH_LONG).show();
+                }
             }
         });}
         catch(Exception e)
