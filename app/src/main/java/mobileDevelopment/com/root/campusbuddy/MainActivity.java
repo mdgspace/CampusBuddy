@@ -21,7 +21,6 @@ public class MainActivity extends Activity {
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         mapButt1 = (Button) findViewById(R.id.mapBut1);
-        mapButt2 = (Button) findViewById(R.id.mapBut2);
         tnButt2 = (Button) findViewById(R.id.tnBut2);
         tdbtt1=(Button)findViewById(R.id.tdbtn);
         fbbtt1=(Button)findViewById(R.id.fbbtn);
@@ -33,15 +32,6 @@ public class MainActivity extends Activity {
                 startActivity(mapIntent);
             }
         });
-        mapButt2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mapIntent = new Intent(MainActivity.this, map3.class);
-                startActivity(mapIntent);
-            }
-        });
-
-
 
         tnButt2.setOnClickListener(new View.OnClickListener() {
             @Override

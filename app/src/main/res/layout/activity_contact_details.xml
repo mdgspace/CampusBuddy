@@ -61,7 +61,7 @@
         android:id="@+id/fabe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="92dp"
+        android:layout_marginBottom="116dp"
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/fabc"
         android:layout_alignStart="@+id/fabc" />
@@ -71,9 +71,8 @@
         android:id="@+id/fabc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="46dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginLeft="51dp"
+        android:layout_marginStart="51dp"
         android:layout_below="@+id/contactlayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
