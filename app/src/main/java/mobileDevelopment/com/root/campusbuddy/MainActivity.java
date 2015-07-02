@@ -12,6 +12,7 @@ import com.facebook.FacebookSdk;
 public class MainActivity extends Activity {
 
     Button mapButt1, mapButt2, tnButt2,tdbtt1, fbbtt1;
+    public static int count=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +52,16 @@ public class MainActivity extends Activity {
         fbbtt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent tdIntent = new Intent(MainActivity.this, Fblist.class);
-                startActivity(tdIntent);
+                count++;
+                if(count==1) {
+                    Intent tdIntent = new Intent(MainActivity.this, Fblist.class);
+                    startActivity(tdIntent);
+                }
+                else
+                {
+                    Intent tdIntent = new Intent(MainActivity.this, fb.class);
+                    startActivity(tdIntent);
+                }
             }
         });
     }}

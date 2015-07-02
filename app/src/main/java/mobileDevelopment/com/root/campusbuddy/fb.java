@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -49,12 +50,14 @@ public class fb extends Activity {
 //    ListView list;
     RecyclerView recyclerView;
     ArrayList<Post> posts;
+    FloatingActionButton fabfbu;
     public static Context c;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb);
         c=this;
+        fabfbu=(FloatingActionButton)findViewById(R.id.fabfb);
 //        list=(ListView)findViewById(R.id.listfb);
         Bundle b=getIntent().getExtras();
         fbpl=b.getBooleanArray("pagesliked");
@@ -134,6 +137,14 @@ public class fb extends Activity {
         {
             Toast.makeText(fb.this, e.toString(),  Toast.LENGTH_LONG).show();
         }
+
+        fabfbu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(fb.this,Fblist.class);
+                startActivity(i);
+            }
+        });
             }
 
 
