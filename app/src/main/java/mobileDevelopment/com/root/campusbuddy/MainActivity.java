@@ -2,7 +2,9 @@ package mobileDevelopment.com.root.campusbuddy;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +14,8 @@ import com.facebook.FacebookSdk;
 public class MainActivity extends Activity {
 
     Button mapButt1, mapButt2, tnButt2,tdbtt1, fbbtt1;
-    public static int count=0;
+    SharedPreferences prefsforfb;
+    int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +23,12 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
+        prefsforfb=this.getSharedPreferences("com.example.appfb", Context.MODE_PRIVATE);
+
+//        SharedPreferences.Editor editor = prefsforfb.edit();
+//        editor.putInt("No of times ", 0);
+//        editor.commit();
+
 
         mapButt1 = (Button) findViewById(R.id.mapBut1);
         tnButt2 = (Button) findViewById(R.id.tnBut2);
@@ -52,7 +61,14 @@ public class MainActivity extends Activity {
         fbbtt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                count++;
+//                count=prefsforfb.getInt("No of times ",0);
+
+                SharedPreferences.Editor editor = prefsforfb.edit();
+                editor.putInt("No of times ", count + 1);
+                editor.commit();
+
+                count=prefsforfb.getInt("No of times ",0);
+
                 if(count==1) {
                     Intent tdIntent = new Intent(MainActivity.this, Fblist.class);
                     startActivity(tdIntent);
@@ -64,7 +80,13 @@ public class MainActivity extends Activity {
                 }
             }
         });
-    }}
+    }
+    @Override
+    public void onBackPressed()
+    {
+        finish();
+    }
+}
 
 
 

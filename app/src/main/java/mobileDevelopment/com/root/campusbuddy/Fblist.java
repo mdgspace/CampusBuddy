@@ -1,5 +1,6 @@
 package mobileDevelopment.com.root.campusbuddy;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -21,16 +22,17 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 
-public class Fblist extends ActionBarActivity {
+public class Fblist extends Activity {
 
     ListView listview;
     String[] fbpages;
-    boolean[] fbpagesliked;
+    boolean[] fbpagesliked=null;
     ArrayAdapter<String> adapter;
     LoginButton loginButton;
     CallbackManager callbackManager;
     Button submitb;
     CheckedTextView c;
+    int i,count=0;
 
 
     @Override
@@ -101,11 +103,33 @@ public class Fblist extends ActionBarActivity {
                         fbpagesliked[i]=false;
                     }
                 }
-                Intent intent = new Intent(Fblist.this, fb.class);
-                Bundle b = new Bundle();
-                b.putBooleanArray("pagesliked", fbpagesliked);
-                intent.putExtras(b);
-                startActivity(intent);
+
+                    if(fbpagesliked!=null)
+                    {
+                        for(i=0;i<fbpagesliked.length;i++)
+                        {
+                            if(fbpagesliked[i]==true)
+                                count++;
+                        }}
+
+                    if(fbpagesliked==null || count==0)
+                    {
+                        Toast.makeText(Fblist.this,"Atleast one of the pages have to be chosen to get the feeds",Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(Fblist.this, fb.class);
+                        Bundle b = new Bundle();
+                        b.putBooleanArray("pagesliked", fbpagesliked);
+                        intent.putExtras(b);
+                        startActivity(intent);}
+
+//                onPause();
+//                Intent intent = new Intent(Fblist.this, fb.class);
+//                Bundle b = new Bundle();
+//                b.putBooleanArray("pagesliked", fbpagesliked);
+//                intent.putExtras(b);
+//                startActivity(intent);
 
             }
                 catch (Exception e)
@@ -147,4 +171,41 @@ public class Fblist extends ActionBarActivity {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
+
+//    @Override
+//    protected void onPause(){
+//        Toast.makeText(this,"Atleast one of the pages have to be chosen to get the feeds",Toast.LENGTH_LONG).show();
+//        if(fbpagesliked!=null)
+//        {
+//        for(i=0;i<fbpagesliked.length;i++)
+//        {
+//            if(fbpagesliked[i]==true)
+//                count++;
+//        }}
+//
+//        if(fbpagesliked==null || count==0)
+//        {
+//            Toast.makeText(this,"Atleast one of the pages have to be chosen to get the feeds",Toast.LENGTH_LONG).show();
+//        }
+//        else
+//        {
+//            Intent intent = new Intent(Fblist.this, fb.class);
+//            Bundle b = new Bundle();
+//            b.putBooleanArray("pagesliked", fbpagesliked);
+//            intent.putExtras(b);
+//            startActivity(intent);
+//            finish();
+//            super.onPause();}
+//    }
+
+    @Override
+    public void onBackPressed()
+    {
+        finish();
+        Intent i=new Intent(Fblist.this,MainActivity.class);
+        startActivity(i);
+        finish();
+
+    }
+
 }

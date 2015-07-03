@@ -48,6 +48,7 @@ public class fb extends Activity {
     JSONArray n;
     AccessTokenTracker accessTokenTracker;
 //    ListView list;
+    int i,count=0;
     RecyclerView recyclerView;
     ArrayList<Post> posts;
     FloatingActionButton fabfbu;
@@ -61,6 +62,25 @@ public class fb extends Activity {
 //        list=(ListView)findViewById(R.id.listfb);
         Bundle b=getIntent().getExtras();
         fbpl=b.getBooleanArray("pagesliked");
+
+        if(fbpl==null)
+        {
+            Toast.makeText(this,"Yayy",Toast.LENGTH_LONG).show();
+
+        }
+//        for(i=0;i<fbpl.length;i++)
+//        {
+//            if(fbpl[i]==true)
+//                count++;
+//        }
+//
+//        if(fbpl==null || count==0)
+//        {
+//            Toast.makeText(this,"Choose atleast one of the pages to get feeds",Toast.LENGTH_LONG).show();
+//            Intent i=new Intent(fb.this,Fblist.class);
+//            startActivity(i);
+//        }
+
         ids=new String[21];
         ids[12]= "415004402015833"; // IIT Roorkee
         ids[1]="415004402015833";//id for iit r freshers
@@ -191,7 +211,7 @@ public class fb extends Activity {
 
                                }
                                catch (Exception e) {
-                                   Toast.makeText(fb.this, "error is: " + e.toString(), Toast.LENGTH_LONG).show();
+//                                   Toast.makeText(fb.this, "error is: " + e.toString(), Toast.LENGTH_LONG).show();
                                }
 
                            }
@@ -213,6 +233,16 @@ public class fb extends Activity {
         catch (Exception e){
             Toast.makeText(fb.this, "error is: "+e.toString(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        finish();
+        Intent i=new Intent(fb.this,MainActivity.class);
+        startActivity(i);
+        finish();
+
     }
 
 //    public ArrayList<Post> generatePosts()

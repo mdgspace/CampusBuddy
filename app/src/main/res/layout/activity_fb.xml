@@ -27,8 +27,8 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabfb"
-        android:layout_width="116dp"
-        android:layout_height="105dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="51dp"
         android:layout_marginStart="51dp"
         android:layout_alignParentLeft="true"
