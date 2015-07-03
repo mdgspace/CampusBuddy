@@ -49,6 +49,7 @@ public class fb extends Activity {
     AccessTokenTracker accessTokenTracker;
 //    ListView list;
     int i,count=0;
+    static boolean[] fbpls;
     RecyclerView recyclerView;
     ArrayList<Post> posts;
     FloatingActionButton fabfbu;
@@ -60,18 +61,14 @@ public class fb extends Activity {
         c=this;
         fabfbu=(FloatingActionButton)findViewById(R.id.fabfb);
 //        list=(ListView)findViewById(R.id.listfb);
-        Bundle b=getIntent().getExtras();
+
         try{
-        fbpl=b.getBooleanArray("pagesliked");
-
-        if(fbpl==null)
-        {
-            Toast.makeText(this,"Yayy",Toast.LENGTH_LONG).show();
-
-        }}
+            Bundle b=getIntent().getExtras();
+            fbpl=b.getBooleanArray("pagesliked");
+        }
         catch(Exception e)
         {
-            Toast.makeText(this,"Yayy",Toast.LENGTH_LONG).show();
+            fbpl=fbpls;
         }
 //        for(i=0;i<fbpl.length;i++)
 //        {

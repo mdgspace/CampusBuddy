@@ -119,6 +119,7 @@ public class Fblist extends Activity {
                     }
                     else
                     {
+                        fb.fbpls=fbpagesliked;
                         Intent intent = new Intent(Fblist.this, fb.class);
                         Bundle b = new Bundle();
                         b.putBooleanArray("pagesliked", fbpagesliked);
