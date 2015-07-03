@@ -122,7 +122,9 @@ public class Fblist extends Activity {
                         Bundle b = new Bundle();
                         b.putBooleanArray("pagesliked", fbpagesliked);
                         intent.putExtras(b);
-                        startActivity(intent);}
+                        startActivity(intent);
+                        finish();
+                    }
 
 //                onPause();
 //                Intent intent = new Intent(Fblist.this, fb.class);
@@ -201,7 +203,6 @@ public class Fblist extends Activity {
     @Override
     public void onBackPressed()
     {
-        finish();
         Intent i=new Intent(Fblist.this,MainActivity.class);
         startActivity(i);
         finish();

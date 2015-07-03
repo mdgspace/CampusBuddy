@@ -238,7 +238,6 @@ public class fb extends Activity {
     @Override
     public void onBackPressed()
     {
-        finish();
         Intent i=new Intent(fb.this,MainActivity.class);
         startActivity(i);
         finish();
