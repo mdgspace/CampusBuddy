@@ -61,12 +61,17 @@ public class fb extends Activity {
         fabfbu=(FloatingActionButton)findViewById(R.id.fabfb);
 //        list=(ListView)findViewById(R.id.listfb);
         Bundle b=getIntent().getExtras();
+        try{
         fbpl=b.getBooleanArray("pagesliked");
 
         if(fbpl==null)
         {
             Toast.makeText(this,"Yayy",Toast.LENGTH_LONG).show();
 
+        }}
+        catch(Exception e)
+        {
+            Toast.makeText(this,"Yayy",Toast.LENGTH_LONG).show();
         }
 //        for(i=0;i<fbpl.length;i++)
 //        {

@@ -14,8 +14,7 @@ import com.facebook.FacebookSdk;
 public class MainActivity extends Activity {
 
     Button mapButt1, mapButt2, tnButt2,tdbtt1, fbbtt1;
-    SharedPreferences prefsforfb;
-    int count;
+//    SharedPreferences prefsforfb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +22,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-        prefsforfb=this.getSharedPreferences("com.example.appfb", Context.MODE_PRIVATE);
+//        prefsforfb=this.getSharedPreferences("com.example.appfb", Context.MODE_PRIVATE);
 
 //        SharedPreferences.Editor editor = prefsforfb.edit();
 //        editor.putInt("No of times ", 0);
@@ -63,13 +62,10 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
 //                count=prefsforfb.getInt("No of times ",0);
 
-                SharedPreferences.Editor editor = prefsforfb.edit();
-                editor.putInt("No of times ", count + 1);
-                editor.commit();
 
-                count=prefsforfb.getInt("No of times ",0);
+//                count=prefsforfb.getInt("No of times ",0);
 
-                if(count==1) {
+                if(Fblist.flag==true) {
                     Intent tdIntent = new Intent(MainActivity.this, Fblist.class);
                     startActivity(tdIntent);
                 }
@@ -81,7 +77,14 @@ public class MainActivity extends Activity {
             }
         });
     }
-
+//    @Override
+//    public void onPause()
+//    {
+//
+//        SharedPreferences.Editor editor = prefsforfb.edit();
+//        editor.putInt("No of times ", count + 1);
+//        editor.commit();
+//    }
 }
 
 

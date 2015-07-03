@@ -33,7 +33,7 @@ public class Fblist extends Activity {
     Button submitb;
     CheckedTextView c;
     int i,count=0;
-
+    public static boolean flag=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,7 @@ public class Fblist extends Activity {
 
         super.onCreate(savedInstanceState);
 
+        flag=false;
         setContentView(R.layout.activity_fblist);
 
 
@@ -203,6 +204,7 @@ public class Fblist extends Activity {
     @Override
     public void onBackPressed()
     {
+        flag=true;
         Intent i=new Intent(Fblist.this,MainActivity.class);
         startActivity(i);
         finish();
