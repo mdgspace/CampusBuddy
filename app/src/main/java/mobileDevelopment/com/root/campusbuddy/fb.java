@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -40,20 +42,22 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-public class fb extends Activity {
+public class fb extends AppCompatActivity{
 
     String[] ids;
+    Toolbar toolbar;
     boolean[] fbpl;
     JSONObject m;
     JSONArray n;
     AccessTokenTracker accessTokenTracker;
 //    ListView list;
-    int i,count=0;
+     int i;
     static boolean[] fbpls;
     RecyclerView recyclerView;
     ArrayList<Post> posts;
     FloatingActionButton fabfbu;
     public static Context c;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +65,11 @@ public class fb extends Activity {
         c=this;
         fabfbu=(FloatingActionButton)findViewById(R.id.fabfb);
 //        list=(ListView)findViewById(R.id.listfb);
-
+        toolbar = (Toolbar) findViewById(R.id.tool_barfb);
+//        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
+        toolbar.setTitle("Facebook posts");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         try{
             Bundle b=getIntent().getExtras();
             fbpl=b.getBooleanArray("pagesliked");
@@ -173,7 +181,7 @@ public class fb extends Activity {
     public void getUserData(AccessToken accessToken){
 
 
-       for(int i=0;i<fbpl.length;i++) {
+       for(i=0;i<fbpl.length;i++) {
 
            if(fbpl[i]==true) {
                GraphRequest.newGraphPathRequest(accessToken,

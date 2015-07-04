@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +24,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 
-public class Fblist extends Activity {
+public class Fblist extends AppCompatActivity{
 
     ListView listview;
     String[] fbpages;
@@ -34,15 +36,21 @@ public class Fblist extends Activity {
     CheckedTextView c;
     int i,count=0;
     public static boolean flag=true;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         super.onCreate(savedInstanceState);
-
-        flag=false;
         setContentView(R.layout.activity_fblist);
+
+        toolbar = (Toolbar) findViewById(R.id.tool_barfblist);
+//        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
+        toolbar.setTitle("Facebook page list");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        flag=false;
 
 
         callbackManager = CallbackManager.Factory.create();

@@ -29,6 +29,9 @@ import java.util.List;
  */
 public class MyRecyclerAdapterfb extends RecyclerView.Adapter<PostViewHolder>
 {
+    String[] pages={"Cinema Club","IIT R Freshies Forum","SDS Labs","Team Robocon","EDC","General Notice Board"
+    ,"Audio Section","Sanskriti Club","Group for Interative Learning","ASHARE","Cognizance","Photography Section","IIT Roorkee pge",
+            "Technology 2015 page","Electronics","NCC","Cinematics SEction","Fine Arts","Anushruti","Rhapsody","ShARE IITR"};
     public List<Post> posts;
     public MyRecyclerAdapterfb(List<Post> posts)
     {
@@ -47,7 +50,8 @@ public class MyRecyclerAdapterfb extends RecyclerView.Adapter<PostViewHolder>
         try {
             Post post = posts.get(position);
             holder.postmessage.setText(post.getMessage());
-            Picasso.with(fb.c).load(post.getURL()).into(holder.fbpostpic);
+            Picasso.with(fb.c).load(post.getURL()).fit().centerCrop().into(holder.fbpostpic);
+//            holder.postheader.setText(pages[fb.i]);
         }
         catch(Exception e)
         {
