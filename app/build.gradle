@@ -20,6 +20,9 @@ android {
 }
 repositories {
     mavenCentral()
+    maven {
+        url "https://jitpack.io"
+    }
 }
 
 
@@ -35,4 +38,5 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.0.0'
     // compile project(':facebook')
     compile 'com.squareup.picasso:picasso:2.3.2'
+    compile 'com.github.ozodrukh:RippleDrawable:2.0.0'
 }
