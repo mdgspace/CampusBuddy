@@ -2,6 +2,7 @@ package mobileDevelopment.com.root.campusbuddy;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.AbsListView;
@@ -19,6 +21,10 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.support.v7.widget.RecyclerView;
+
+import com.facebook.rebound.SimpleSpringListener;
+import com.facebook.rebound.Spring;
+import com.facebook.rebound.SpringSystem;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -93,13 +99,66 @@ try{
 
             recyclerView.addOnItemTouchListener(new MyItemClickListener(this, new MyItemClickListener.OnItemClickListener() {
                 @Override
-                public void OnItemClick(View v, int i) {
-                    Intent c = new Intent(TelephoneContacts.this, ContactDetails.class);
-                    c.putExtra("Clicked Contact number", contactnos[i]);
-                    c.putExtra("Clicked email-id", emailids[i]);
-                    startActivity(c);
+                public void OnItemClick(View v, int i, MotionEvent e) {
+
+
+                    SpringSystem springSystem = SpringSystem.create();
+                    //Add a spring to the system.
+                    final Spring spring = springSystem.createSpring();
+                    final View v1=v;
+                    final int i1=i;
+                    if(e.getAction()== MotionEvent.ACTION_DOWN)
+                    {
+                        spring.addListener(new SimpleSpringListener() {
+
+                            @Override
+                            public void onSpringUpdate(Spring spring) {
+                                // You can observe the updates in the spring
+                                // state by asking its current value in onSpringUpdate.
+                                float value = (float) spring.getCurrentValue();
+                                float scale = 1f - (value * 0.1f);
+                                v1.setScaleX(scale);
+                                v1.setScaleY(scale);                    }
+                        });
+
+                        //Set the spring in motion; moving from 0 to 1
+                        spring.setEndValue(5);
+                    }
+                    else
+                    if(e.getAction()== MotionEvent.ACTION_UP)
+                    {
+                        spring.addListener(new SimpleSpringListener() {
+
+                            @Override
+                            public void onSpringUpdate(Spring spring) {
+                                // You can observe the updates in the spring
+                                // state by asking its current value in onSpringUpdate.
+                                float value = (float) spring.getCurrentValue();
+                                float scale = (value * 0.2f);
+                                v1.setScaleX(scale);
+                                v1.setScaleY(scale);                    }
+                        });
+
+                        //Set the spring in motion; moving from 0 to 1
+                        spring.setEndValue(5);
+                    }
+
+                    Handler handler=new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent c = new Intent(TelephoneContacts.this, ContactDetails.class);
+                            c.putExtra("Clicked Contact number", contactnos[i1]);
+                            c.putExtra("Clicked email-id", emailids[i1]);
+                            startActivity(c);
+                        }
+                    },500);
+
+
                 }
             }));
+
+
 //
 //
 //            listV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
