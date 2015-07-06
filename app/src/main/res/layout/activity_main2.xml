@@ -5,7 +5,7 @@
     android:id="@+id/RL">
 
     <ImageButton
-        android:layout_width="210dp"
+        android:layout_width="190dp"
         android:layout_height="270dp"
         android:id="@+id/tdbtn"
         android:background="#e3b3e3"
@@ -15,21 +15,21 @@
          />
 
     <ImageButton
-        android:layout_width="190dp"
+        android:layout_width="210dp"
         android:layout_height="320dp"
         android:id="@+id/fbbtn"
         android:layout_gravity="right"
         android:layout_toRightOf="@+id/tdbtn"
         android:background="#bedde5" />
     <ImageButton
-        android:layout_width="210dp"
+        android:layout_width="190dp"
         android:layout_height="320dp"
         android:id="@+id/tnBut2"
         android:layout_gravity="right"
         android:layout_below="@+id/tdbtn"
         android:background="#17d684" />
     <ImageButton
-        android:layout_width="190dp"
+        android:layout_width="210dp"
         android:layout_height="270dp"
         android:id="@+id/mapBut1"
         android:layout_gravity="right"
@@ -41,8 +41,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
-
-
         android:src="@drawable/ic_contact_phone_white_48dp"
         android:layout_marginLeft="80dp"
         android:layout_marginTop="50dp" />
@@ -57,7 +55,7 @@
 
         android:layout_marginLeft="10dp"
         android:layout_marginTop="63dp"
-        android:textSize="45dp"
+        android:textSize="30dp"
         android:textIsSelectable="false"
         android:layout_below="@+id/imageView"
         android:layout_alignParentLeft="true"
@@ -82,7 +80,7 @@
         android:layout_alignTop="@+id/textView"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textSize="40dp"
+        android:textSize="30dp"
         android:layout_marginRight="8dp" />
 
     <ImageView
@@ -102,7 +100,7 @@
         android:id="@+id/textView3"
 
         android:layout_marginTop="450dp"
-        android:textSize="45dp"
+        android:textSize="30dp"
         android:layout_marginLeft="15dp" />
 
     <ImageView
@@ -122,7 +120,7 @@
         android:layout_alignTop="@+id/textView3"
         android:layout_alignRight="@+id/textView2"
         android:layout_alignEnd="@+id/textView2"
-        android:textSize="45dp"
+        android:textSize="30dp"
         android:layout_marginRight="23dp" />
 
 

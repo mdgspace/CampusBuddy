@@ -192,8 +192,8 @@ public class fb extends AppCompatActivity{
 
                                try {
                                    String resp = graphResponse.getRawResponse();
-                                   Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
-                                    Log.e("Response",resp);
+//                                   Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
+//                                    Log.e("Response",resp);
                                    m = graphResponse.getJSONObject();
 
                                    n = m.getJSONArray("data");
@@ -210,7 +210,7 @@ public class fb extends AppCompatActivity{
                                    }
                                    catch (Exception e)
                                    {
-                                       Log.d("Error: ",e.toString());
+//                                       Log.d("Error: ",e.toString());
                                    }
                                    Collections.sort(posts);
 //                            list.setAdapter(new ArrayAdapter<String>(fb.this,android.R.layout.simple_list_item_1,messages));
