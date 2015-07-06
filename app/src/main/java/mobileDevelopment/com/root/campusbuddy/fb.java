@@ -159,7 +159,7 @@ public class fb extends AppCompatActivity{
 //                        Toast.makeText(fb.this, "Access Token: "+ AccessToken.getCurrentAccessToken().getToken(), Toast.LENGTH_LONG).show();
                     }
                     catch (Exception e){
-                        Toast.makeText(fb.this, "error is: "+e.toString(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(fb.this, "error is: "+e.toString(), Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -173,6 +173,7 @@ public class fb extends AppCompatActivity{
             public void onClick(View v) {
                 Intent i=new Intent(fb.this,Fblist.class);
                 startActivity(i);
+                finish();
             }
         });
             }
@@ -241,7 +242,7 @@ public class fb extends AppCompatActivity{
         try{
         accessTokenTracker.stopTracking();}
         catch (Exception e){
-            Toast.makeText(fb.this, "error is: "+e.toString(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(fb.this, "error is: "+e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 

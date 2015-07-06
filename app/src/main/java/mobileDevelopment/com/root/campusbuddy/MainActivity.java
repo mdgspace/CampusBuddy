@@ -9,12 +9,16 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
+import com.facebook.rebound.SimpleSpringListener;
+import com.facebook.rebound.Spring;
+import com.facebook.rebound.SpringSystem;
 
 import codetail.graphics.drawables.DrawableHotspotTouch;
 import codetail.graphics.drawables.LollipopDrawable;
@@ -38,13 +42,38 @@ public class MainActivity extends AppCompatActivity {
 //        SharedPreferences.Editor editor = prefsforfb.edit();
 //        editor.putInt("No of times ", 0);
 //        editor.commit();
-
-
         mapButt1 = (ImageButton) findViewById(R.id.mapBut1);
         tnButt2 = (ImageButton) findViewById(R.id.tnBut2);
         tdbtt1=(ImageButton)findViewById(R.id.tdbtn);
         fbbtt1=(ImageButton)findViewById(R.id.fbbtn);
 
+//        SpringSystem springSystem = SpringSystem.create();
+//// Add a spring to the system.
+//        final Spring spring = springSystem.createSpring();
+//
+//        mapButt1.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                spring.addListener(new SimpleSpringListener() {
+//
+//                    @Override
+//                    public void onSpringUpdate(Spring spring) {
+//                        // You can observe the updates in the spring
+//                        // state by asking its current value in onSpringUpdate.
+//                        float value = (float) spring.getCurrentValue();
+//                        float scale = 1f - (value * 0.5f);
+//                        mapButt1.setScaleX(scale);
+//                        mapButt1.setScaleY(scale);
+//                    }
+//                });
+//
+//// Set the spring in motion; moving from 0 to 1
+//                spring.setEndValue(1);
+//
+//                return false;
+//            }
+//        });
+// Add a listener to observe the motion of the spring.
         mapButt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
