@@ -146,13 +146,13 @@ public class Fblist extends AppCompatActivity{
             }
                 catch (Exception e)
                 {
-                    Toast.makeText(Fblist.this,e.toString(),Toast.LENGTH_LONG).show();
+//                    Toast.makeText(Fblist.this,e.toString(),Toast.LENGTH_LONG).show();
                 }
             }
         });}
         catch(Exception e)
         {
-            Toast.makeText(Fblist.this,e.toString(),Toast.LENGTH_LONG).show();
+//            Toast.makeText(Fblist.this,e.toString(),Toast.LENGTH_LONG).show();
         }
 
     }

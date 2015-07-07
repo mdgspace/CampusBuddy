@@ -165,7 +165,7 @@ public class fb extends AppCompatActivity{
                 }
         catch (Exception e)
         {
-            Toast.makeText(fb.this, e.toString(),  Toast.LENGTH_LONG).show();
+//            Toast.makeText(fb.this, e.toString(),  Toast.LENGTH_LONG).show();
         }
 
         fabfbu.setOnClickListener(new View.OnClickListener() {
