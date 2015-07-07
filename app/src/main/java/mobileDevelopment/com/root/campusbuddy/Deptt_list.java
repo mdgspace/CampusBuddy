@@ -41,6 +41,13 @@ public class Deptt_list extends AppCompatActivity{
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
 
         listValues = new ArrayList<String>();
         listValues.add("Architecture and Planning");
@@ -170,7 +177,15 @@ public class Deptt_list extends AppCompatActivity{
 
         });
 
-    }}
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        // Toast.makeText(this, "Back button works", Toast.LENGTH_LONG).show();
+    }
+
+}
 
 //    // when an item of the list is clicked
 //    @Override

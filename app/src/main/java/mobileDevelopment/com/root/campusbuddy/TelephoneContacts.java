@@ -47,12 +47,22 @@ public class TelephoneContacts extends AppCompatActivity{
         try {
             setContentView(R.layout.activity_telephone_contacts);
 
-
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+            toolbar = (Toolbar) findViewById(R.id.tool_bar);
 //        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
-        toolbar.setTitle("List of Important Contacts");
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            toolbar.setTitle("List of Important Contacts");
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+
+            // toolbar.setSubtitle("Sub");
+           // toolbar.setLogo(R.drawable.ic_launcher);
 
 //        ctoolbar.setContentScrimColor(Color.parseColor("#aa00bb"));
 
@@ -206,6 +216,11 @@ try{
         }
 
         }
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+       // Toast.makeText(this, "Back button works", Toast.LENGTH_LONG).show();
+    }
 
     public ArrayList<Contact> generateContacts()
     {
@@ -219,12 +234,13 @@ try{
     }
 
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_telephone_contacts, menu);
         return true;
     }
+    */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
