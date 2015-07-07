@@ -70,6 +70,13 @@ public class fb extends AppCompatActivity{
         toolbar.setTitle("Facebook posts");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         try{
             Bundle b=getIntent().getExtras();
             fbpl=b.getBooleanArray("pagesliked");
@@ -177,6 +184,8 @@ public class fb extends AppCompatActivity{
             }
         });
             }
+
+
 
 
     public void getUserData(AccessToken accessToken){
