@@ -37,6 +37,7 @@ public class Fblist extends AppCompatActivity{
     int i,count=0;
     public static boolean flag=true;
     Toolbar toolbar;
+    boolean flagfb=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,7 @@ public class Fblist extends AppCompatActivity{
             public void onSuccess(LoginResult loginResult) {
                 // App code
                 Toast.makeText(Fblist.this, "Logged in", Toast.LENGTH_LONG).show();
-
+                flagfb=true;
             }
 
             @Override
@@ -121,8 +122,14 @@ public class Fblist extends AppCompatActivity{
                                 count++;
                         }}
 
-                    if(fbpagesliked==null || count==0)
+                    if(fbpagesliked==null || count==0 || flagfb==false)
                     {
+                        if(flagfb==false)
+                        {
+                            Toast.makeText(Fblist.this,"Please Login first to get the feeds",Toast.LENGTH_LONG).show();
+
+                        }
+                        else
                         Toast.makeText(Fblist.this,"Atleast one of the pages have to be chosen to get the feeds",Toast.LENGTH_LONG).show();
                     }
                     else
