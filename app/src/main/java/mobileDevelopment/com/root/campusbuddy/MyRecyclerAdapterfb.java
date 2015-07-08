@@ -55,8 +55,8 @@ public class MyRecyclerAdapterfb extends RecyclerView.Adapter<PostViewHolder>
         }
         catch(Exception e)
         {
-            Toast.makeText(fb.c,"Error: "+e.toString(),Toast.LENGTH_LONG).show();
-            Log.d("Error: ",e.toString());
+//            Toast.makeText(fb.c,"Error: "+e.toString(),Toast.LENGTH_LONG).show();
+//            Log.d("Error: ",e.toString());
         }
     }
 

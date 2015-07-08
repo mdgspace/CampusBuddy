@@ -42,7 +42,7 @@ public  class Post implements Comparable<Post>{
         }
         catch (Exception e)
         {
-            Log.d("Error: ",e.toString());
+//            Log.d("Error: ",e.toString());
         }
         return url;
     }
