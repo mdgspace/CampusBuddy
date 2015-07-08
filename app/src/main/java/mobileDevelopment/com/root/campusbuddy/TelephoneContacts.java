@@ -49,7 +49,7 @@ public class TelephoneContacts extends AppCompatActivity{
 
             toolbar = (Toolbar) findViewById(R.id.tool_bar);
 //        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
-            toolbar.setTitle("List of Important Contacts");
+            toolbar.setTitle(getIntent().getExtras().getString("table_name"));
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -160,6 +160,7 @@ try{
                             Intent c = new Intent(TelephoneContacts.this, ContactDetails.class);
                             c.putExtra("Clicked Contact number", contactnos[i1]);
                             c.putExtra("Clicked email-id", emailids[i1]);
+                            c.putExtra("Clicked name", names[i1]);
                             startActivity(c);
                         }
                     },500);

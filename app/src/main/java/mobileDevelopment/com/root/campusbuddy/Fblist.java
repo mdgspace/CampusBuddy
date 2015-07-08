@@ -124,9 +124,9 @@ public class Fblist extends AppCompatActivity{
 
 
 
-                    if(fbpagesliked==null || count==0 || (AccessToken.getCurrentAccessToken().getToken()==null))
+                    if(fbpagesliked==null || count==0 || (AccessToken.getCurrentAccessToken()==null))
                     {
-                        if(AccessToken.getCurrentAccessToken().getToken()==null)
+                        if(AccessToken.getCurrentAccessToken()==null)
                         {
                             Toast.makeText(Fblist.this,"Please Login first to get the feeds",Toast.LENGTH_LONG).show();
 

@@ -27,7 +27,7 @@ public class ContactDetails extends ActionBarActivity {
         setContentView(R.layout.activity_contact_details);
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar1);
-        toolbar.setTitle("Details of the Person");
+        toolbar.setTitle(getIntent().getExtras().getString("Clicked name"));
         setSupportActionBar(toolbar);
         setupfabc();
         setupfabe();
