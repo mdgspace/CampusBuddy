@@ -202,7 +202,7 @@ public class fb extends AppCompatActivity{
 
                                try {
                                    String resp = graphResponse.getRawResponse();
-//                                   Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
+//                               Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
 //                                    Log.e("Response",resp);
                                    m = graphResponse.getJSONObject();
 
