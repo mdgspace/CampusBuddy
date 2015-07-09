@@ -35,7 +35,7 @@ public class Fblist extends AppCompatActivity{
     ListView listview;
     String[] fbpages;
     boolean[] fbpagesliked=null;
-    ArrayAdapter<String> adapter;
+//    ArrayAdapter<String> adapter;
     LoginButton loginButton;
     CallbackManager callbackManager;
     Button submitb;
@@ -89,7 +89,10 @@ public class Fblist extends AppCompatActivity{
         listview=(ListView)findViewById(R.id.listfbpages);
         fbpages=getResources().getStringArray(R.array.fbpages);
             listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-            adapter=new ArrayAdapter<String>(Fblist.this,R.layout.mytextviewfb,fbpages);
+//            adapter=new ArrayAdapter<String>(Fblist.this,R.layout.mytextviewfb,fbpages);
+
+            CustomList adapter=new CustomList(Fblist.this,fbpages);
+
 //            {
 //                @Override
 //                public View getView(int p,View view,ViewGroup parent)
@@ -102,12 +105,6 @@ public class Fblist extends AppCompatActivity{
 //            };
         listview.setAdapter(adapter);
 
-            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                }
-            });
 
         submitb.setOnClickListener(new View.OnClickListener() {
             @Override
