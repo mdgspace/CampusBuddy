@@ -28,6 +28,7 @@ public class ContactDetails extends ActionBarActivity {
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar1);
         toolbar.setTitle(getIntent().getExtras().getString("Clicked name"));
+        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);
         setupfabc();
         setupfabe();

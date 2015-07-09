@@ -68,6 +68,7 @@ public class fb extends AppCompatActivity{
         toolbar = (Toolbar) findViewById(R.id.tool_barfb);
 //        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
         toolbar.setTitle("Facebook posts");
+        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
