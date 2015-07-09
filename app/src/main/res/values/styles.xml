@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/my_accent</item>
         <item name="android:textColorPrimary">@color/my_primary_text</item>
         <item name="android:textColorSecondary">@color/my_secondary_text</item>
-
+        <!--<item name="android:textColor">#000000</item>-->
 
     </style>
 

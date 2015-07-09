@@ -11,10 +11,14 @@ import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -35,10 +39,12 @@ public class Fblist extends AppCompatActivity{
     LoginButton loginButton;
     CallbackManager callbackManager;
     Button submitb;
-    CheckedTextView c;
+    ViewGroup v;
     int i,count=0;
     public static boolean flag=true;
     Toolbar toolbar;
+    CheckBox c;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +89,25 @@ public class Fblist extends AppCompatActivity{
         listview=(ListView)findViewById(R.id.listfbpages);
         fbpages=getResources().getStringArray(R.array.fbpages);
             listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-            adapter=new ArrayAdapter<String>(Fblist.this,android.R.layout.simple_list_item_multiple_choice,fbpages);
+            adapter=new ArrayAdapter<String>(Fblist.this,R.layout.mytextviewfb,fbpages);
+//            {
+//                @Override
+//                public View getView(int p,View view,ViewGroup parent)
+//                {
+//                    View view1=super.getView(p,view,parent);
+//                    TextView txt=(TextView)view1.findViewById(android.R.id.text1);
+//                    txt.setTextColor(Color.BLACK);
+//                    txt.setBackgroundColor(Color.WHITE);
+//                    return view;}
+//            };
         listview.setAdapter(adapter);
+
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                }
+            });
 
         submitb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +126,8 @@ public class Fblist extends AppCompatActivity{
                     fbpagesliked=new boolean[listview.getChildCount()];
                     for(int i=0;i<listview.getChildCount();i++)
                 {
-                    c=(CheckedTextView)listview.getChildAt(i);
+                    v=(ViewGroup)listview.getChildAt(i);
+                    c=(CheckBox)v.findViewById(R.id.checkBox);
                     if(c.isChecked())
                     {
                         fbpagesliked[i]=true;
@@ -157,13 +181,13 @@ public class Fblist extends AppCompatActivity{
             }
                 catch (Exception e)
                 {
-//                    Toast.makeText(Fblist.this,e.toString(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(Fblist.this,e.toString(),Toast.LENGTH_LONG).show();
                 }
             }
         });}
         catch(Exception e)
         {
-//            Toast.makeText(Fblist.this,e.toString(),Toast.LENGTH_LONG).show();
+            Toast.makeText(Fblist.this,e.toString(),Toast.LENGTH_LONG).show();
         }
 
     }

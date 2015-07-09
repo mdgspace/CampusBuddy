@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -75,7 +76,18 @@ public class Deptt_list extends AppCompatActivity{
 
         // initiate the listadapter
         ArrayAdapter<String> myAdapter = new ArrayAdapter <String>(this,
-                android.R.layout.simple_list_item_1, listValues);
+                R.layout.mytextview, listValues);
+
+// {
+//            @Override
+//        public View getView(int p,View view,ViewGroup parent)
+//            {
+//                View view1=super.getView(p,view,parent);
+//                TextView txt=(TextView)view1.findViewById(android.R.id.text1);
+//                txt.setTextColor(Color.BLACK);
+//                txt.setBackgroundColor(Color.WHITE);
+//                return view;}
+//        };
 
         // assign the list adapter
         list.setAdapter(myAdapter);
