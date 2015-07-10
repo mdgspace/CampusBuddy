@@ -3,7 +3,7 @@
      android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/RL">
-
+<!--
     <ImageButton
         android:layout_width="190dp"
         android:layout_height="270dp"
@@ -123,5 +123,5 @@
         android:textSize="30dp"
         android:layout_marginRight="23dp" />
 
-
+-->
 </RelativeLayout>

@@ -13,12 +13,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
+
+import java.util.Calendar;
 
 import codetail.graphics.drawables.DrawableHotspotTouch;
 import codetail.graphics.drawables.LollipopDrawable;
@@ -33,7 +37,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main3);
+
+        Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+
+        if (hour<19 && hour>6){
+            RelativeLayout layout =(RelativeLayout)findViewById(R.id.layout);
+            layout.setBackgroundResource(R.drawable.day_720);
+
+            ImageView img= (ImageView) findViewById(R.id.sun_moon);
+            img.setImageResource(R.drawable.sun_360);
+        }
+        else {
+            RelativeLayout layout =(RelativeLayout)findViewById(R.id.layout);
+            layout.setBackgroundResource(R.drawable.night_720);
+
+            ImageView img= (ImageView) findViewById(R.id.sun_moon);
+            img.setImageResource(R.drawable.moon_360);}
+
+
 
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -114,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         /*
 try {
     mActionButton = (FloatingActionButton) findViewById(R.id.fabtest);
@@ -128,6 +152,7 @@ catch (Exception e){
     Toast.makeText(this, "reached catch", Toast.LENGTH_LONG).show();
 }
 */
+
     }
 
 
