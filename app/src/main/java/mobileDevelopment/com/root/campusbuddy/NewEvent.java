@@ -238,6 +238,7 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
     public void onBackPressed()
     {
         super.onBackPressed();
+        timetable_navigation2.fa.finish();
         Intent ttIntent = new Intent(NewEvent.this, timetable_navigation2.class);
         startActivity(ttIntent);
         finish();
