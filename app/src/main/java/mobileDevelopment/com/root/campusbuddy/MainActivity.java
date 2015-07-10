@@ -1,11 +1,13 @@
 package mobileDevelopment.com.root.campusbuddy;
 
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -34,24 +36,38 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton mActionButton;
 //    SharedPreferences prefsforfb;
 
+   @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
+
+       int sdk = android.os.Build.VERSION.SDK_INT;
 
         Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
 
         if (hour<19 && hour>6){
             RelativeLayout layout =(RelativeLayout)findViewById(R.id.layout);
-            layout.setBackgroundResource(R.drawable.day_720);
+
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                layout.setBackgroundDrawable( getResources().getDrawable(R.drawable.day_720) );
+            } else {
+                layout.setBackground(getResources().getDrawable(R.drawable.day_720));
+            }
+            //  layout.setBackgroundResource(R.drawable.day_720);
 
             ImageView img= (ImageView) findViewById(R.id.sun_moon);
             img.setImageResource(R.drawable.sun_360);
         }
         else {
             RelativeLayout layout =(RelativeLayout)findViewById(R.id.layout);
-            layout.setBackgroundResource(R.drawable.night_720);
+            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                layout.setBackgroundDrawable( getResources().getDrawable(R.drawable.night_720) );
+            } else {
+                layout.setBackground(getResources().getDrawable(R.drawable.night_720));
+            }
+            //  layout.setBackgroundResource(R.drawable.night_720);
 
             ImageView img= (ImageView) findViewById(R.id.sun_moon);
             img.setImageResource(R.drawable.moon_360);}
