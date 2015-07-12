@@ -175,6 +175,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             public void onClick(View v) {
                 Intent newEventIntent = new Intent(timetable_navigation2.this, NewEvent.class);
                 startActivity(newEventIntent);
+
             }
         });
 
