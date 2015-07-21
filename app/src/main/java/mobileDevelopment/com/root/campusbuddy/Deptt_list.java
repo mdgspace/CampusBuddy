@@ -19,11 +19,11 @@ import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
+/*
 import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
-
+*/
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +67,7 @@ public class Deptt_list extends AppCompatActivity{
         recyclerView.setOnScrollListener(new MyScrollListener(this) {
             @Override
             public void onMoved(int distance) {
-                toolbar.setTranslationY(-distance);
+              //  toolbar.setTranslationY(-distance);
             }
         });
 
@@ -76,7 +76,7 @@ public class Deptt_list extends AppCompatActivity{
             public void OnItemClick(View v, int i, MotionEvent e) {
 
             final int position = i;
-
+            /*
                 SpringSystem springSystem = SpringSystem.create();
                 //Add a spring to the system.
                 final Spring spring = springSystem.createSpring();
@@ -114,8 +114,9 @@ public class Deptt_list extends AppCompatActivity{
 
                     //Set the spring in motion; moving from 0 to 1
                     spring.setEndValue(5);
-                }
 
+                }
+            */
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -349,7 +350,7 @@ public class Deptt_list extends AppCompatActivity{
         listValues.add(new Contact("Electrical Engineering"));
         listValues.add(new Contact("Electronics and Communication Engineering"));
         listValues.add(new Contact("Humanities and Social Sciences"));
-        listValues.add(new Contact("Hydrology"));
+       // listValues.add(new Contact("Hydrology"));
         listValues.add(new Contact("Management Studies"));
         listValues.add(new Contact("Mathematics"));
         listValues.add(new Contact("Mechanical and Industrial Engineering"));

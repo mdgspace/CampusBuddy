@@ -21,10 +21,11 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.support.v7.widget.RecyclerView;
-
+/*
 import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
+*/
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -104,15 +105,15 @@ try{
             recyclerView.setOnScrollListener(new MyScrollListener(this) {
                 @Override
                 public void onMoved(int distance){
-                    toolbar.setTranslationY(-distance);
+                  //  toolbar.setTranslationY(-distance);
                 }
             });
 
             recyclerView.addOnItemTouchListener(new MyItemClickListener(this, new MyItemClickListener.OnItemClickListener() {
                 @Override
                 public void OnItemClick(View v, int i, MotionEvent e) {
-
-
+                    final int i1=i;
+                /*
                     SpringSystem springSystem = SpringSystem.create();
                     //Add a spring to the system.
                     final Spring spring = springSystem.createSpring();
@@ -153,7 +154,7 @@ try{
                         //Set the spring in motion; moving from 0 to 1
                         spring.setEndValue(5);
                     }
-
+        */
                     Handler handler=new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -229,6 +230,7 @@ try{
         ArrayList<Contact> contacts=new ArrayList<>();
         for(int i=0;i<size;i++)
         {
+            if(names[i]!=null)
             contacts.add(new Contact(names[i]));
 
         }
