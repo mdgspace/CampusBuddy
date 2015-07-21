@@ -49,7 +49,7 @@ public class TelephoneContacts extends AppCompatActivity{
 
             toolbar = (Toolbar) findViewById(R.id.tool_bar);
 //        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
-            toolbar.setTitle(getIntent().getExtras().getString("table_name"));
+            toolbar.setTitle(getIntent().getExtras().getString("dept_name"));
             toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -103,7 +103,7 @@ try{
 
             recyclerView.setOnScrollListener(new MyScrollListener(this) {
                 @Override
-                public void onMoved(int distance) {
+                public void onMoved(int distance){
                     toolbar.setTranslationY(-distance);
                 }
             });
