@@ -12,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -47,6 +49,7 @@ public class fb extends AppCompatActivity{
     String[] ids;
     Toolbar toolbar;
     boolean[] fbpl;
+    ArrayList<String> fbpliked;
     JSONObject m;
     JSONArray n;
     AccessTokenTracker accessTokenTracker;
@@ -55,7 +58,7 @@ public class fb extends AppCompatActivity{
     static boolean[] fbpls;
     RecyclerView recyclerView;
     ArrayList<Post> posts;
-    FloatingActionButton fabfbu;
+//    FloatingActionButton fabfbu;
     public static Context c;
 
     @Override
@@ -63,29 +66,23 @@ public class fb extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb);
         c=this;
-        fabfbu=(FloatingActionButton)findViewById(R.id.fabfb);
+//        fabfbu=(FloatingActionButton)findViewById(R.id.fabfb);
 //        list=(ListView)findViewById(R.id.listfb);
         toolbar = (Toolbar) findViewById(R.id.tool_barfb);
 //        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
         toolbar.setTitle("Facebook posts");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        try{
-            Bundle b=getIntent().getExtras();
-            fbpl=b.getBooleanArray("pagesliked");
-        }
-        catch(Exception e)
-        {
-            fbpl=fbpls;
-        }
+//        try{
+////            Bundle b=getIntent().getExtras();
+////            fbpl=b.getBooleanArray("pagesliked");
+//        }
+//        catch(Exception e)
+//        {
+//            fbpl=fbpls;
+//        }
 //        for(i=0;i<fbpl.length;i++)
 //        {
 //            if(fbpl[i]==true)
@@ -122,7 +119,9 @@ public class fb extends AppCompatActivity{
         ids[19]="1410660759172170"; // RHAPSODY
         ids[20]="292035034247"; // SHARE
 
-        posts=new ArrayList<>();
+        posts=new ArrayList<Post>();
+
+        fbpliked=PagesSelected.getSelectedPageIds(fb.this);
         try {
 
             // if (AccessToken.getCurrentAccessToken().toString().equals(null)) {
@@ -176,14 +175,14 @@ public class fb extends AppCompatActivity{
 //            Toast.makeText(fb.this, e.toString(),  Toast.LENGTH_LONG).show();
         }
 
-        fabfbu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(fb.this,Fblist.class);
-                startActivity(i);
-                finish();
-            }
-        });
+//        fabfbu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i=new Intent(fb.this,Fblist.class);
+//                startActivity(i);
+//                finish();
+//            }
+//        });
             }
 
 
@@ -191,12 +190,17 @@ public class fb extends AppCompatActivity{
 
     public void getUserData(AccessToken accessToken){
 
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fb.this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        final MyRecyclerAdapterfb adapterfb = new MyRecyclerAdapterfb(posts);
+        recyclerView.setAdapter(adapterfb);
 
-       for(i=0;i<fbpl.length;i++) {
+       for(i=0;i<fbpliked.size();i++) {
 
-           if(fbpl[i]==true) {
+
                GraphRequest.newGraphPathRequest(accessToken,
-                       "/" + ids[i] + "/posts",
+                       "/" + fbpliked.get(i) + "/posts",
                        new GraphRequest.Callback() {
                            @Override
                            public void onCompleted(GraphResponse graphResponse) {
@@ -204,7 +208,7 @@ public class fb extends AppCompatActivity{
                                try {
                                    String resp = graphResponse.getRawResponse();
 //                               Toast.makeText(fb.this, "response is: " + resp, Toast.LENGTH_LONG).show();
-//                                    Log.e("Response",resp);
+                                    Log.e("Response",resp);
                                    m = graphResponse.getJSONObject();
 
                                    n = m.getJSONArray("data");
@@ -224,11 +228,9 @@ public class fb extends AppCompatActivity{
 //                                       Log.d("Error: ",e.toString());
                                    }
                                    Collections.sort(posts);
+                                   adapterfb.posts = posts;
 //                            list.setAdapter(new ArrayAdapter<String>(fb.this,android.R.layout.simple_list_item_1,messages));
-                                   recyclerView = (RecyclerView) findViewById(R.id.recyclerview1);
-                                   LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fb.this);
-                                   recyclerView.setLayoutManager(linearLayoutManager);
-                                   recyclerView.setAdapter(new MyRecyclerAdapterfb(posts));
+                                   adapterfb.notifyDataSetChanged();
 
                                }
                                catch (Exception e) {
@@ -238,7 +240,7 @@ public class fb extends AppCompatActivity{
                            }
 
                        }).executeAsync();
-           }
+
 
        }
 
@@ -256,13 +258,40 @@ public class fb extends AppCompatActivity{
         }
     }
 
-    @Override
-    public void onBackPressed()
-    {
-        Intent i=new Intent(fb.this,MainActivity.class);
-        startActivity(i);
-        finish();
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_fb, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.logout) {
+            LoginManager.getInstance().logOut();
+            Intent i=new Intent(fb.this,MainActivity.class);
+            finish();
+            startActivity(i);
+            return true;
+        }
+
+        else
+        if(id==R.id.addpages)
+        {
+            Intent i=new Intent(fb.this,Fblist.class);
+            finish();
+                startActivity(i);
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 //    public ArrayList<Post> generatePosts()

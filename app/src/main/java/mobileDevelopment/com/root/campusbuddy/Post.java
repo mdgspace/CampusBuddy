@@ -21,29 +21,25 @@ public  class Post implements Comparable<Post>{
 
     public Post(JSONObject obj)
     {
+        try{
         this.post=obj;
+        message = post.optString("message");
+        url=post.optString("picture");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        date = sdf.parse(post.optString("updated_time").substring(0, 10));}
+        catch (Exception e)
+        {
+            Log.e("Post error: ",e.toString());
+        }
+
     }
 
     public String getMessage()
     {
-        try {
-            message = post.optString("message");
-        }
-        catch (Exception e)
-        {
-            Log.d("Error: ",e.toString());
-        }
         return message;
     }
     public String getURL()
     {
-        try{
-            url=post.optString("picture");
-        }
-        catch (Exception e)
-        {
-//            Log.d("Error: ",e.toString());
-        }
         return url;
     }
 
@@ -54,14 +50,6 @@ public  class Post implements Comparable<Post>{
 
     public Date getDate()
     {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-             date = sdf.parse(post.optString("updated_time").substring(0,10));
-        }
-        catch (Exception e)
-        {
-            Toast.makeText(fb.c,e.toString(),Toast.LENGTH_LONG).show();
-        }
         return date;
 
     }

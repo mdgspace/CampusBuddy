@@ -62,6 +62,7 @@
     <string name="title_activity_contact_details">ContactDetails</string>
     <string name="title_activity_fblist">Fblist</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_fblogin">Fblogin</string>
 
 
 

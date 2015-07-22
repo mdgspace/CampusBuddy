@@ -2,6 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+     android:background="#ffffff"
      android:orientation="vertical">
 
      <include
@@ -22,18 +23,18 @@
 
      <Button
          android:layout_width="match_parent"
-         android:layout_height="wrap_content"
+         android:layout_height="48dp"
          android:id="@+id/submitbutton"
-         android:layout_above="@+id/login_button"
          android:textColor="#000000"
+         android:text="Get Feeds"
+         android:layout_alignParentBottom="true"
          android:layout_alignParentLeft="true"
-         android:layout_alignParentStart="true"
-         android:text="Submit"/>
-    <com.facebook.login.widget.LoginButton
-    android:id="@+id/login_button"
-    android:layout_width="match_parent"
-    android:layout_height="58dp"
-    android:layout_gravity="center_horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+         android:layout_alignParentStart="true" />
+    <!--<com.facebook.login.widget.LoginButton-->
+    <!--android:id="@+id/login_button"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="58dp"-->
+    <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true" />-->
 </RelativeLayout>
