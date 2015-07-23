@@ -1,5 +1,8 @@
 package mobileDevelopment.com.root.campusbuddy;
 
+import android.graphics.Color;
+import android.support.v7.widget.Toolbar;
+
 import java.util.Calendar;
 
 /**
@@ -7,15 +10,14 @@ import java.util.Calendar;
  */
 public class DayNightTheme {
 
-    public static int getThemeId()
+    public static void setToolbar(Toolbar toolbar)
     {
         Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
-        if (hour>19 && hour<6) {
-            return R.style.NightTheme;
+        if (hour>19 || hour<6) {
+            toolbar.setBackgroundColor(Color.parseColor("#7B1FA2"));
         }
         else{
-            return R.style.AppTheme;
-        }
+            toolbar.setBackgroundColor(Color.parseColor("#ED1C24"));        }
     }
 }

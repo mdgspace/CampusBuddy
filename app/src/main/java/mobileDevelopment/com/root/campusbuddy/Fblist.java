@@ -55,14 +55,16 @@ public class Fblist extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-        setTheme(DayNightTheme.getThemeId());
         super.onCreate(savedInstanceState);
 
 //       recreate();
 
         setContentView(R.layout.activity_fblist);
 
+
         toolbar = (Toolbar) findViewById(R.id.tool_barfblist);
+        DayNightTheme.setToolbar(toolbar);
+
 //        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
         toolbar.setTitle("Facebook page list");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
