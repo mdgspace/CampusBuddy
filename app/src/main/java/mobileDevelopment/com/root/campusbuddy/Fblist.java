@@ -55,9 +55,9 @@ public class Fblist extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-
-        super.onCreate(savedInstanceState);
         setTheme(DayNightTheme.getThemeId());
+        super.onCreate(savedInstanceState);
+
 //       recreate();
 
         setContentView(R.layout.activity_fblist);
