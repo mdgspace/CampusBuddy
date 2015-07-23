@@ -16,6 +16,6 @@ public class ContactViewHolder extends RecyclerView.ViewHolder {
     {
         super(itemView);
         nameT=(TextView)itemView.findViewById(R.id.name);
-        cardview=(CardView)itemView;
+        cardview=(CardView)itemView.findViewById(R.id.card);
     }
 }
