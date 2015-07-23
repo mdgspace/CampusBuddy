@@ -9,6 +9,12 @@
     <color name="my_secondary_text">#000000</color>
     <color name="my_icons">#FFFFFF</color>
     <!--<color name="my_divider">#B6B6B6</color>-->
-
+    <color name="primary">#9C27B0</color>
+        <color name="primary_dark">#7B1FA2</color>
+        <color name="primary_light">#E1BEE7</color>
+        <color name="accent">#E040FB</color>
+        <color name="primary_text">#212121</color>
+        <color name="secondary_text">#727272</color>
+        <color name="divider">#B6B6B6</color>
 
 </resources>

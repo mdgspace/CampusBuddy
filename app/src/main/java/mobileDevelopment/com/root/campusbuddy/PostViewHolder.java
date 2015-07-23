@@ -18,9 +18,12 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
     public PostViewHolder(View itemView)
     {
         super(itemView);
-        postmessage=(TextView)itemView.findViewById(R.id.postmessage);
-        postheader=(TextView)itemView.findViewById(R.id.fbpagename);
-        fbpostpic=(ImageView)itemView.findViewById(R.id.fbpostpic);
-        cardview=(CardView)itemView;
+
+            postmessage = (TextView) itemView.findViewById(R.id.postmessage);
+            postheader = (TextView) itemView.findViewById(R.id.fbpagename);
+            fbpostpic = (ImageView) itemView.findViewById(R.id.fbpostpic);
+            cardview = (CardView) itemView;
     }
 }
+
+

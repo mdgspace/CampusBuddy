@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 /*
 import com.facebook.rebound.SimpleSpringListener;
@@ -146,11 +147,11 @@ public class MainActivity extends AppCompatActivity {
 
 //                count=prefsforfb.getInt("No of times ",0);
 
-                if (Fblist.flag == true) {
-                    Intent tdIntent = new Intent(MainActivity.this, Fblist.class);
+                if(AccessToken.getCurrentAccessToken()==null){
+                    Intent tdIntent = new Intent(MainActivity.this, Fblogin.class);
                     startActivity(tdIntent);
                 } else {
-                    Intent tdIntent = new Intent(MainActivity.this, fb.class);
+                    Intent tdIntent = new Intent(MainActivity.this,fb.class);
                     startActivity(tdIntent);
                 }
             }

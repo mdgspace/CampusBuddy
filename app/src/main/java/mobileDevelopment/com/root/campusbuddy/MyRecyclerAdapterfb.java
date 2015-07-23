@@ -27,11 +27,11 @@ import java.util.List;
 /**
  * Created by root on 13/6/15.
  */
-public class MyRecyclerAdapterfb extends RecyclerView.Adapter<PostViewHolder>
+public class MyRecyclerAdapterfb extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
-    String[] pages={"Cinema Club","IIT R Freshies Forum","SDS Labs","Team Robocon","EDC","General Notice Board"
-    ,"Audio Section","Sanskriti Club","Group for Interative Learning","ASHARE","Cognizance","Photography Section","IIT Roorkee pge",
-            "Technology 2015 page","Electronics","NCC","Cinematics SEction","Fine Arts","Anushruti","Rhapsody","ShARE IITR"};
+//    String[] pages={"Cinema Club","IIT R Freshies Forum","SDS Labs","Team Robocon","EDC","General Notice Board"
+//    ,"Audio Section","Sanskriti Club","Group for Interative Learning","ASHARE","Cognizance","Photography Section","IIT Roorkee pge",
+//            "Technology 2015 page","Electronics","NCC","Cinematics SEction","Fine Arts","Anushruti","Rhapsody","ShARE IITR"};
     public List<Post> posts;
     public MyRecyclerAdapterfb(List<Post> posts)
     {
@@ -39,18 +39,57 @@ public class MyRecyclerAdapterfb extends RecyclerView.Adapter<PostViewHolder>
         this.posts.addAll(posts);
     }
 
+
+
     @Override
-    public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_viewfb,parent,false);
-        return new PostViewHolder(itemView);
+    public int getItemViewType(int position) {
+        Post post = posts.get(position);
+        if(post.getURL()!=null)
+        return 1;
+
+        else
+            return  2;
     }
 
     @Override
-    public void onBindViewHolder(PostViewHolder holder, int position) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View v;
+        RecyclerView.ViewHolder vh;
+
+        switch(viewType)
+        {
+            case 1:v= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_viewfb,parent,false);
+//                    vh=new PostViewHolder(v);
+                    return new PostViewHolder(v);
+//                    break;
+
+            case 2:v= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_viewfbwithoutpics,parent,false);
+                return new PostViewHolderwithoutfb(v);
+//                return vh;
+//            break;
+
+            default:return null;
+    }}
+
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         try {
-            Post post = posts.get(position);
-            holder.postmessage.setText(post.getMessage());
-            Picasso.with(fb.c).load(post.getURL()).fit().centerCrop().into(holder.fbpostpic);
+            int viewType=getItemViewType(position);
+            if(viewType==1) {
+                Post post = posts.get(position);
+                ((PostViewHolder)holder).postmessage.setText(post.getMessage());
+                    Picasso.with(fb.c).load(post.getURL()).fit().centerCrop().into(((PostViewHolder)holder).fbpostpic);
+                Log.e(position+"",post.getURL());
+            }
+            else
+            {
+                Post post = posts.get(position);
+                ((PostViewHolderwithoutfb)holder).postmessage.setText(post.getMessage());
+            }
+//            else
+//                holder.fbpostpic.setVisibility(View.GONE);
 //            holder.postheader.setText(pages[fb.i]);
         }
         catch(Exception e)
