@@ -55,11 +55,10 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
     public static Activity fa;
 
-    private String[] drawerListViewItems;
-    private DrawerLayout drawerLayout;
-    private ListView drawerListView;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
-    public FloatingActionButton fab;
+
+
+
+    public com.github.clans.fab.FloatingActionButton fab_new_event, fab_go_today, fab_three_day, fab_one_day;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,41 +66,10 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
 
 
-// get list items from strings.xml
-        drawerListViewItems = getResources().getStringArray(R.array.navigation_events);
 
-// get ListView defined in activity_main.xml
-        drawerListView = (ListView) findViewById(R.id.left_drawer);
 
-// Set the adapter for the list view
-        drawerListView.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, drawerListViewItems));
-
-// 2. App Icon
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout2);
-
-// 2.1 create ActionBarDrawerToggle
-        actionBarDrawerToggle = new ActionBarDrawerToggle(
-                this, /* host Activity */
-                drawerLayout, /* DrawerLayout object */
-                R.drawable.ic_drawer, /* nav drawer icon to replace 'Up' caret */
-                R.string.drawer_open, /* "open drawer" description */
-                R.string.drawer_close /* "close drawer" description */
-        );
 
 // 2.2 Set actionBarDrawerToggle as the DrawerListener
-        drawerLayout.setDrawerListener(actionBarDrawerToggle);
-       /* try {
-// 2.3 enable and show "up" arrow
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        catch (Exception e){
-            Toast.makeText(timetable_navigation2.this, e.toString(), Toast.LENGTH_LONG).show();
-        }
-*/
-// just styling option
-        drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        drawerListView.setOnItemClickListener(new DrawerItemClickListener());
 
         fa = this;
 
@@ -144,13 +112,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
 
         cr.moveToFirst();
-      /*
-        try {
-            Toast.makeText(timetable.this,  String.valueOf(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)), Toast.LENGTH_LONG).show();}
-        catch (Exception err){
-            Toast.makeText(timetable.this, err.toString(), Toast.LENGTH_LONG).show();
-        }
-*/
+
 
 
         // Get a reference for the week view in the layout.
@@ -169,8 +131,12 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         // Set up a date time interpreter to interpret how the date and time will be formatted in
         // the week view. This is optional.
         setupDateTimeInterpreter(false);
-        fab=(FloatingActionButton)findViewById(R.id.fabae);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab_new_event=(com.github.clans.fab.FloatingActionButton)findViewById(R.id.fab_new);
+        fab_one_day=(com.github.clans.fab.FloatingActionButton)findViewById(R.id.fab_one);
+        fab_three_day=(com.github.clans.fab.FloatingActionButton)findViewById(R.id.fab_three);
+        fab_go_today=(com.github.clans.fab.FloatingActionButton)findViewById(R.id.fab_today);
+
+        fab_new_event.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent newEventIntent = new Intent(timetable_navigation2.this, NewEvent.class);
@@ -179,27 +145,53 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             }
         });
 
+        fab_one_day.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mWeekViewType != TYPE_DAY_VIEW) {
+                    //item.setChecked(!item.isChecked());
+                    mWeekViewType = TYPE_DAY_VIEW;
+                    mWeekView.setNumberOfVisibleDays(1);
+
+                    // Lets change some dimensions to best fit the view.
+                    mWeekView.setColumnGap((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()));
+                    mWeekView.setTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
+                    mWeekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
+                }
+
+                }
+        });
+
+        fab_three_day.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mWeekViewType != TYPE_THREE_DAY_VIEW) {
+                    // item.setChecked(!item.isChecked());
+                    mWeekViewType = TYPE_THREE_DAY_VIEW;
+                    mWeekView.setNumberOfVisibleDays(3);
+
+                    // Lets change some dimensions to best fit the view.
+                    mWeekView.setColumnGap((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()));
+                    mWeekView.setTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
+                    mWeekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
+                }
+
+            }
+        });
+
+        fab_go_today.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mWeekView.goToToday();
+
+            }
+        });
+
     }
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-// Sync the toggle state after onRestoreInstanceState has occurred.
-        actionBarDrawerToggle.syncState();
-    }
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        actionBarDrawerToggle.onConfigurationChanged(newConfig);
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-// call ActionBarDrawerToggle.onOptionsItemSelected(), if it returns true
-// then it has handled the app icon touch event
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
+
+
+    /*
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -244,16 +236,14 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
                 }
             }
 
-//            if (position==4){
-//                Intent newEventIntent = new Intent(timetable_navigation2.this, NewEvent.class);
-//                startActivity(newEventIntent);
-//            }
 
 
-            drawerLayout.closeDrawer(drawerListView);
+
+
         }
 
     }
+    */
 
 
     @Override
@@ -307,23 +297,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
-        //      Toast.makeText(timetable.this, "Event: " + event.getName(), Toast.LENGTH_SHORT).show();
-/*
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        DetailsFragment fragment = new DetailsFragment();
-        fragmentTransaction.add(R.id.calendar, fragment);
-
-        fragmentTransaction.commit();
-*/
-
-        // DetailsFragment det = (DetailsFragment) getSupportFragmentManager().findFragmentById(R.id.hddbn);
-
-     /*   Intent detailsIntent = new Intent(timetable.this, DetailsActivity.class);
-        detailsIntent.putExtra(deta, "details");
-        startActivity(detailsIntent);
-        */
         long ID = event.getId();
         String detail = "", venue = "", title = "";
         int day = 0, month = 0, year = 0, starthour = 0, startmin = 0, endhour = 0, endmin = 0;
@@ -417,53 +391,6 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         dialog.setArguments(b);
         dialog.show(getFragmentManager(), "ChooseDialogFragment");
 
-
-//        final Dialog dialog = new Dialog(timetable3.this);
-//        dialog.setContentView(R.layout.activity_deleteand_edit_events2);
-//        dialog.setTitle("Choose action...");
-//
-//
-//        TextView choose = (TextView) dialog.findViewById(R.id.choose_action);
-//        TextView edit = (TextView) dialog.findViewById(R.id.text_edit);
-//        TextView del = (TextView) dialog.findViewById(R.id.text_delete);
-//
-//        choose.setVisibility(View.INVISIBLE);
-//
-//
-//        // if button is clicked, close the custom dialog
-//        edit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                SharedPreferences.Editor editor = pref.edit();
-//                editor.putInt("DELETE_OR_EDIT", 1);
-//                editor.commit();
-//
-//                //editcounter++;
-//                Intent ne=new Intent(timetable3.this,NewEvent.class);
-//                ne.putExtra("value for editing", longClickedID );
-//                startActivity(ne);
-//
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        del.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            try {
-//                    db.delete(CalendarDB.CalendarEntry.TABLE_NAME, CalendarDB.CalendarEntry.COLUMN_NAME_ID + "=" + longClickedID, null);
-//                } catch (Exception e) {
-//                    Toast.makeText(timetable3.this, e.toString(), Toast.LENGTH_LONG).show();
-//                }
-//                dialog.dismiss();
-//                finish();
-//                startActivity(getIntent());
-//
-//            }
-//        });
-//
-//        dialog.show();
     }
 
     @Override
