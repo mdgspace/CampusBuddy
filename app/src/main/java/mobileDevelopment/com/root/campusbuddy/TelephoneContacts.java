@@ -49,6 +49,7 @@ public class TelephoneContacts extends AppCompatActivity{
             setContentView(R.layout.activity_telephone_contacts);
 
             toolbar = (Toolbar) findViewById(R.id.tool_bar);
+            DayNightTheme.setToolbar(toolbar);
 //        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
             toolbar.setTitle(getIntent().getExtras().getString("dept_name"));
             toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
