@@ -175,7 +175,7 @@ public class fb extends AppCompatActivity{
         staggeredGridView = (StaggeredGridView) findViewById(R.id.grid_view);
        // final MyRecyclerAdapterfb adapterfb = new MyRecyclerAdapterfb(posts);
 
-        final FBFeedAdapter adapterfb = new FBFeedAdapter(this, posts);
+        final FBFeedAdapter adapterfb = new FBFeedAdapter(this, R.layout.card_viewfb, posts);
         staggeredGridView.setAdapter(adapterfb);
 
        for(i=0;i<fbpliked.size();i++) {
@@ -210,6 +210,10 @@ public class fb extends AppCompatActivity{
                                    }
                                    Collections.sort(posts);
                                    adapterfb.arrayList = posts;
+
+                                   for(int i=0 ; i<posts.size();i++){
+                                       Log.v("FBPicAct", posts.get(i).getURL());
+                                   }
                                    /*
 //                            list.setAdapter(new ArrayAdapter<String>(fb.this,android.R.layout.simple_list_item_1,messages));
                                    */

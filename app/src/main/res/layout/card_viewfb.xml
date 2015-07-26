@@ -13,7 +13,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rel"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <!--<ImageView-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="82dp"-->
@@ -32,23 +32,24 @@
         android:textColor="#000077"
         android:textSize="30dp" />
 
-    <TextView
+    <com.etsy.android.grid.util.DynamicHeightTextView
         android:id="@+id/postmessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/fbpostpic"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/fbpagename"
-        android:textColor="#000000" />
+        android:layout_below="@id/fbpagename"
+        android:textColor="#000000"
+        android:text="yolo"/>
 
-    <ImageView
+    <com.etsy.android.grid.util.DynamicHeightImageView
         android:id="@+id/fbpostpic"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/postmessage"/>
 </RelativeLayout>
 
 
