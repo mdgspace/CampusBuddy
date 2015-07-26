@@ -32,9 +32,9 @@ dependencies {
     compile 'com.github.alamkanak:android-week-view:1.2.3'
     compile 'com.google.android.gms:play-services:7.3.0'
     compile 'com.android.support:design:+'
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:recyclerview-v7:22.2.0'
-    compile 'com.android.support:cardview-v7:21.+'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:recyclerview-v7:22.2.1'
+    compile 'com.android.support:cardview-v7:22.2.1'
     compile 'com.facebook.android:facebook-android-sdk:4.0.0'
     // compile project(':facebook')
     compile 'com.squareup.picasso:picasso:2.3.2'
@@ -42,4 +42,5 @@ dependencies {
     compile 'com.github.ozodrukh:RippleDrawable:2.0.0'
    // compile 'com.getbase:floatingactionbutton:1.10.0'
     compile 'com.github.clans:fab:1.5.5'
+    compile 'com.etsy.android.grid:library:1.0.5'
 }
