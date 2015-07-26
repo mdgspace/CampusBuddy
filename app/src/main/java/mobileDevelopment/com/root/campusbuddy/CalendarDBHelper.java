@@ -134,8 +134,13 @@ public class CalendarDBHelper {
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
         /**
  * Created by rc on 13/5/15.
@@ -226,5 +231,51 @@ public class CalendarDBHelper extends SQLiteOpenHelper {
 // --> on this link, COLUMN_NAME_NULLABLE is used instead of null, but it is giving error here. What is the reason ??
 
     }
+            public ArrayList<HashMap<String, Integer>> fetchNotificationData(int year,int month,int day,int hour,int minute) {
+                ArrayList<HashMap<String, Integer>> arr = null;
+//        Cursor cursor = ourDatabase.rawQuery("SELECT * FROM " + details_table
+//                + " WHERE " + due_date + "='" + date + "'", null);
+               SQLiteDatabase db = getReadableDatabase();
+                String[] eventList = {
+                        CalendarDB.CalendarEntry.COLUMN_NAME_ID,
+                        CalendarDB.CalendarEntry.COLUMN_NAME_TITLE,
+                        CalendarDB.CalendarEntry.COLUMN_NAME_DAY,
+                        CalendarDB.CalendarEntry.COLUMN_NAME_MONTH,
+                        CalendarDB.CalendarEntry.COLUMN_NAME_YEAR,
+                        CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR,
+                        CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN,
+                        CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR,
+                        CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN,
+                        CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL,
+                        CalendarDB.CalendarEntry.COLUMN_NAME_VENUE
+                };
 
-}
+
+                    Cursor cr = db.query(CalendarDB.CalendarEntry.TABLE_NAME, eventList, null, null, null, null, null);
+                if (cr != null && cr.getCount() > 0) {
+                    arr = new ArrayList<HashMap<String, Integer>>();
+                    cr.moveToFirst();
+                    while (!cr.isAfterLast()) {
+
+                        if(year==cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR))&&
+                                month==cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH))&&
+                                day==cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY))&&
+                                ((hour==(cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR))-1))||
+                                hour==(cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR))))){
+                            HashMap<String, Integer> map = new HashMap<String, Integer>();
+
+                            map.put("Start day", day);
+                            map.put("Start month", month);
+                            map.put("Start year", year);
+                            map.put("Start hour", hour+1);
+//                            map.put("Start minute", Integer.toString(cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN))));
+
+
+                            arr.add(map);
+                        }
+                        cr.moveToNext();
+                    }
+                }
+                return arr;
+            }}
+
