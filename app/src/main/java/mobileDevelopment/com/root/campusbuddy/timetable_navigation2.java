@@ -10,18 +10,9 @@ package mobileDevelopment.com.root.campusbuddy;
         import android.graphics.RectF;
         import android.os.Bundle;
         import android.app.Activity;
-        import android.content.res.Configuration;
-        import android.support.design.widget.FloatingActionButton;
-        import android.support.v4.app.ActionBarDrawerToggle;
-        import android.support.v4.view.GravityCompat;
-        import android.support.v4.widget.DrawerLayout;
         import android.support.v7.app.ActionBarActivity;
         import android.util.TypedValue;
-        import android.view.MenuItem;
         import android.view.View;
-        import android.widget.AdapterView;
-        import android.widget.ArrayAdapter;
-        import android.widget.ListView;
         import android.widget.Toast;
 
         import com.alamkanak.weekview.DateTimeInterpreter;
@@ -31,7 +22,6 @@ package mobileDevelopment.com.root.campusbuddy;
         import java.text.SimpleDateFormat;
         import java.util.ArrayList;
         import java.util.Calendar;
-        import java.util.HashMap;
         import java.util.List;
         import java.util.Locale;
 

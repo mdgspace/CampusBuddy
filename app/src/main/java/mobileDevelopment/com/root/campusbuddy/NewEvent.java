@@ -1,15 +1,16 @@
 package mobileDevelopment.com.root.campusbuddy;
 
 
-import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,8 +19,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-public class NewEvent extends Activity implements DateDialog.OnDateSelectedListener, StartTimeDialog.OnStartTimeSelectedListener, EndTimeDialog.OnEndTimeSelectedListener{
+import java.util.Calendar;
+
+import mobileDevelopment.com.root.campusbuddy.CalendarDB;
+import mobileDevelopment.com.root.campusbuddy.CalendarDBHelper;
+import mobileDevelopment.com.root.campusbuddy.R;
+import mobileDevelopment.com.root.campusbuddy.timetable_navigation2;
+
+
+public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener{
 
     EditText editt_date, editt_start, editt_end, editt_title, editt_details, editt_venue;
     Button submitBut;
@@ -31,6 +43,8 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
     String title, venue, details;
     Long ID;
 
+    boolean isStartTime = true;
+
     SharedPreferences prefs, pref_edit;
 
     Long editvalue;
@@ -41,6 +55,8 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
     protected void onCreate(Bundle savedInstanceState) {
 
      //   mDbHelper = new CalendarDBHelper(getApplicationContext());
+
+        overridePendingTransition(R.anim.slide_in_up, R.anim.fade_out);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
@@ -132,24 +148,66 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
         editt_date.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                /*
                 DialogFragment newFragment = new DateDialog();
                 newFragment.show(getFragmentManager(), "datePicker");
+                */
+                Calendar now = Calendar.getInstance();
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        NewEvent.this,
+                        now.get(Calendar.YEAR),
+                        now.get(Calendar.MONTH),
+                        now.get(Calendar.DAY_OF_MONTH)
+                );
+
+
+                dpd.show(getFragmentManager(), "Datepickerdialog");
             }
         });
 
         editt_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment newFragment = new StartTimeDialog();
-                newFragment.show(getFragmentManager(), "startTimePicker");
+
+                isStartTime = true;
+                Calendar now = Calendar.getInstance();
+                TimePickerDialog tpd = TimePickerDialog.newInstance(
+                        NewEvent.this,
+                        now.get(Calendar.HOUR_OF_DAY),
+                        now.get(Calendar.MINUTE),
+                        false
+                );
+
+                tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        Log.d("TimePicker", "Dialog was cancelled");
+                    }
+                });
+                tpd.show(getFragmentManager(), "StartTimedialog");
             }
         });
 
         editt_end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment newFragment = new EndTimeDialog();
-                newFragment.show(getFragmentManager(), "endTimePicker");
+
+                isStartTime = false;
+                Calendar now = Calendar.getInstance();
+                TimePickerDialog tpd = TimePickerDialog.newInstance(
+                        NewEvent.this,
+                        now.get(Calendar.HOUR_OF_DAY),
+                        now.get(Calendar.MINUTE),
+                        false
+                );
+
+                tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        Log.d("TimePicker", "Dialog was cancelled");
+                    }
+                });
+                tpd.show(getFragmentManager(), "EndTimedialog");
             }
         });
 
@@ -225,6 +283,9 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
 
                 timetable_navigation2.fa.finish();
                 finish();
+                overridePendingTransition(R.anim.fade_in, R.anim.slide_out_up);
+
+
 
                 Intent ttIntent = new Intent(NewEvent.this, timetable_navigation2.class);
                 startActivity(ttIntent);
@@ -237,12 +298,14 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
     public void onBackPressed()
     {
         super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_out_up);
         /*
         timetable_navigation2.fa.finish();
         Intent ttIntent = new Intent(NewEvent.this, timetable_navigation2.class);
         startActivity(ttIntent);
         */
         finish();
+
 
     }
 
@@ -272,25 +335,33 @@ public class NewEvent extends Activity implements DateDialog.OnDateSelectedListe
 
 
     @Override
-    public void onDateSelected(int year1, int month1, int day1) {
+    public void onDateSet(DatePickerDialog datePickerDialog, int year1, int month1, int day1) {
         editt_date.setText(day1+ "/" + (month1+1) + "/" + year1, TextView.BufferType.EDITABLE);
         year = year1;
         month = month1;
         day = day1;
     }
 
+
     @Override
-    public void onEndTimeSelected(int hour, int minute) {
-        editt_end.setText(hour + ":" + minute, TextView.BufferType.EDITABLE);
-        endhour = hour;
-        endminute = minute;
+    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hour, int minute) {
+
+        if(isStartTime){
+            editt_start.setText(hour + ":" + minute, TextView.BufferType.EDITABLE);
+            starthour = hour;
+            startminute = minute;
+        }
+        else{
+            editt_end.setText(hour + ":" + minute, TextView.BufferType.EDITABLE);
+            endhour = hour;
+            endminute = minute;
+        }
     }
 
     @Override
-    public void onStartTimeSelected(int hour, int minute) {
-        String d = hour + ":" + minute;
-        editt_start.setText(d, TextView.BufferType.EDITABLE);
-        starthour = hour;
-        startminute = minute;
+    public void onDestroy(){
+        super.onDestroy();
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_out_up);
+
     }
-    }
+}
