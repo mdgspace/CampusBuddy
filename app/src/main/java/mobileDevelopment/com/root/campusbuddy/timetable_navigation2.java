@@ -6,6 +6,7 @@ package mobileDevelopment.com.root.campusbuddy;
         import android.content.SharedPreferences;
         import android.database.Cursor;
         import android.database.sqlite.SQLiteDatabase;
+        import android.graphics.Color;
         import android.graphics.RectF;
         import android.os.Bundle;
         import android.app.Activity;
@@ -30,6 +31,7 @@ package mobileDevelopment.com.root.campusbuddy;
         import java.text.SimpleDateFormat;
         import java.util.ArrayList;
         import java.util.Calendar;
+        import java.util.HashMap;
         import java.util.List;
         import java.util.Locale;
 
@@ -132,6 +134,8 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         // the week view. This is optional.
         setupDateTimeInterpreter(false);
         fab_new_event=(com.github.clans.fab.FloatingActionButton)findViewById(R.id.fab_new);
+        fab_new_event.setLabelText("New Event");
+        fab_new_event.setBackgroundColor(Color.parseColor("#00ff00"));
         fab_one_day=(com.github.clans.fab.FloatingActionButton)findViewById(R.id.fab_one);
         fab_three_day=(com.github.clans.fab.FloatingActionButton)findViewById(R.id.fab_three);
         fab_go_today=(com.github.clans.fab.FloatingActionButton)findViewById(R.id.fab_today);
@@ -420,6 +424,8 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
         }
     }
+
+
 }
 
 

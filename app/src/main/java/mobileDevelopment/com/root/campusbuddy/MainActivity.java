@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
-
+        NotificationHandler.buildNotification(this);
        int sdk = android.os.Build.VERSION.SDK_INT;
 
         Calendar c = Calendar.getInstance();
@@ -190,6 +190,12 @@ catch (Exception e){
 //        SharedPreferences.Editor editor = prefsforfb.edit();
 //        editor.putInt("No of times ", count + 1);
 //        editor.commit();
+//    }
+
+//    public void broadcastIntent(View view){
+//        Intent intent = new Intent();
+//        intent.setAction("abc");
+//        sendBroadcast(intent);
 //    }
 
 }
