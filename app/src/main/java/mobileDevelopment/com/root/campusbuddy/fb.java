@@ -1,47 +1,27 @@
 package mobileDevelopment.com.root.campusbuddy;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
+import com.etsy.android.grid.StaggeredGridView;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
-import com.facebook.GraphRequestBatch;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 
 public class fb extends AppCompatActivity{
@@ -56,7 +36,7 @@ public class fb extends AppCompatActivity{
 //    ListView list;
      int i;
     static boolean[] fbpls;
-    RecyclerView recyclerView;
+    StaggeredGridView staggeredGridView;
     ArrayList<Post> posts;
 //    FloatingActionButton fabfbu;
     public static Context c;
@@ -65,11 +45,12 @@ public class fb extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb);
-        DayNightTheme.setToolbar(toolbar);
+
         c=this;
 //        fabfbu=(FloatingActionButton)findViewById(R.id.fabfb);
 //        list=(ListView)findViewById(R.id.listfb);
         toolbar = (Toolbar) findViewById(R.id.tool_barfb);
+        DayNightTheme.setToolbar(toolbar);
 //        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
         toolbar.setTitle("Facebook posts");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
@@ -191,14 +172,13 @@ public class fb extends AppCompatActivity{
 
     public void getUserData(AccessToken accessToken){
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview1);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fb.this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        final MyRecyclerAdapterfb adapterfb = new MyRecyclerAdapterfb(posts);
-        recyclerView.setAdapter(adapterfb);
+        staggeredGridView = (StaggeredGridView) findViewById(R.id.grid_view);
+       // final MyRecyclerAdapterfb adapterfb = new MyRecyclerAdapterfb(posts);
+
+        final FBFeedAdapter adapterfb = new FBFeedAdapter(this, posts);
+        staggeredGridView.setAdapter(adapterfb);
 
        for(i=0;i<fbpliked.size();i++) {
-
 
                GraphRequest.newGraphPathRequest(accessToken,
                        "/" + fbpliked.get(i) + "/posts",
@@ -229,10 +209,11 @@ public class fb extends AppCompatActivity{
 //                                       Log.d("Error: ",e.toString());
                                    }
                                    Collections.sort(posts);
-                                   adapterfb.posts = posts;
+                                   adapterfb.arrayList = posts;
+                                   /*
 //                            list.setAdapter(new ArrayAdapter<String>(fb.this,android.R.layout.simple_list_item_1,messages));
+                                   */
                                    adapterfb.notifyDataSetChanged();
-
                                }
                                catch (Exception e) {
 //                                   Toast.makeText(fb.this, "error is: " + e.toString(), Toast.LENGTH_LONG).show();
@@ -241,7 +222,6 @@ public class fb extends AppCompatActivity{
                            }
 
                        }).executeAsync();
-
 
        }
 
