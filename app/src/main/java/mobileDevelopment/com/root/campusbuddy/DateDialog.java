@@ -15,9 +15,14 @@ import java.util.Calendar;
 
 
 public  class DateDialog extends DialogFragment
-        implements DatePickerDialog.OnDateSetListener {
+        implements DatePickerDialog.OnDateSetListener, com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
 
 OnDateSelectedListener mCallBack;
+
+    @Override
+    public void onDateSet(com.wdullaer.materialdatetimepicker.date.DatePickerDialog datePickerDialog, int i, int i1, int i2) {
+
+    }
 
     public interface OnDateSelectedListener {
         public void onDateSelected(int year, int month, int day);

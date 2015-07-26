@@ -153,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Intent tdIntent = new Intent(MainActivity.this,fb.class);
                     startActivity(tdIntent);
+                    
                 }
             }
         });
