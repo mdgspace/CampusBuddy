@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -26,14 +28,20 @@
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
         <!--android:id="@+id/listfb"/>-->
-    <android.support.v7.widget.RecyclerView
+            <!--<android.support.v7.widget.RecyclerView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:id="@+id/recyclerview1"-->
+                <!--android:layout_below="@+id/tool_barfb"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_alignParentEnd="true" />-->
+    <com.etsy.android.grid.StaggeredGridView
+        android:id="@+id/grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerview1"
-        android:layout_below="@+id/tool_barfb"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
+        app:item_margin="8dp"
+        app:column_count="1"
+        android:layout_below="@id/tool_barfb"/>
     <!--<android.support.design.widget.FloatingActionButton-->
         <!--android:id="@+id/fabfb"-->
         <!--android:layout_width="wrap_content"-->
