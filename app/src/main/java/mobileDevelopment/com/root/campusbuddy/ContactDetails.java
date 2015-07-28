@@ -3,15 +3,14 @@ package mobileDevelopment.com.root.campusbuddy;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 
@@ -31,6 +30,13 @@ public class ContactDetails extends ActionBarActivity {
         toolbar.setTitle(getIntent().getExtras().getString("Clicked name"));
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);
+
+        fabc=(FloatingActionButton)findViewById(R.id.fabc);
+        DayNightTheme.setfab(fabc);
+
+        fabe=(FloatingActionButton)findViewById(R.id.fabe);
+        DayNightTheme.setfab(fabe);
+
         setupfabc();
         setupfabe();
 
@@ -100,7 +106,7 @@ public class ContactDetails extends ActionBarActivity {
 
     public void setupfabc()
     {
-        fabc=(FloatingActionButton)findViewById(R.id.fabc);
+
         fabc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +124,6 @@ public class ContactDetails extends ActionBarActivity {
 
     public void setupfabe()
     {
-        fabe=(FloatingActionButton)findViewById(R.id.fabe);
         fabe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

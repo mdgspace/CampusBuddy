@@ -2,36 +2,31 @@ package mobileDevelopment.com.root.campusbuddy;
 
 
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
+
+import java.util.Calendar;
+
+import codetail.graphics.drawables.LollipopDrawablesCompat;
+
 /*
 import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
 */
-
-import java.util.Calendar;
-
-import codetail.graphics.drawables.DrawableHotspotTouch;
-import codetail.graphics.drawables.LollipopDrawable;
-import codetail.graphics.drawables.LollipopDrawablesCompat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,7 +39,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
-        NotificationHandler.buildNotification(this);
+
+
+       SharedPreferences getPrefs = PreferenceManager
+               .getDefaultSharedPreferences(this);
+       SharedPreferences.Editor editor = getPrefs.edit();
+
+       boolean isSet = getPrefs.getBoolean("alarm_set", false);
+       if(!isSet){
+           NotificationHandler.buildNotification(this);
+           editor.putBoolean("alarm_set", true);
+           editor.commit();
+       }
        int sdk = android.os.Build.VERSION.SDK_INT;
 
         Calendar c = Calendar.getInstance();

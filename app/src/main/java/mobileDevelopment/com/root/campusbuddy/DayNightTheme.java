@@ -1,6 +1,7 @@
 package mobileDevelopment.com.root.campusbuddy;
 
 import android.graphics.Color;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 
 import java.util.Calendar;
@@ -19,5 +20,17 @@ public class DayNightTheme {
         }
         else{
             toolbar.setBackgroundColor(Color.parseColor("#ED1C24"));        }
+    }
+    public static void setfab(FloatingActionButton fab)
+    {
+        Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        if (hour>19 || hour<6) {
+//            fab.setBackgroundTintList(Color.parseColor("#7B1FA2"));
+            //ColorStateList c=new ColorStateList();
+            //fab.setBackgroundTintList(c);
+        }
+        else{
+            fab.setBackgroundColor(Color.parseColor("#ED1C24"));        }
     }
 }

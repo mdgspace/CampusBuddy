@@ -3,7 +3,7 @@
     <!-- The main content view -->
 
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -44,7 +44,9 @@
 
         <!--
         android:src="@drawable/ic_menu"
-            fab:fab_colorNormal="@color/app_primary"
+            f
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"ab:fab_colorNormal="@color/app_primary"
             fab:fab_colorPressed="@color/app_primary_pressed"
             fab:fab_colorRipple="@color/app_ripple"
         -->
@@ -55,12 +57,10 @@
         android:id="@+id/menu"
         android:layout_width="138dp"
         android:layout_height="wrap_content"
-
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="25dp"
-        fab:menu_fab_size="normal"
+        android:layout_alignParentEnd="true"
+        fab:menu_fab_size="mini"
         fab:menu_showShadow="true"
         fab:menu_shadowColor="#66000000"
         fab:menu_shadowRadius="4dp"
@@ -92,8 +92,7 @@
 
         fab:menu_labels_position="left"
         fab:menu_openDirection="up"
-        android:layout_marginLeft="250dp"
-        android:layout_marginTop="150dp">
+        >
         <!--
          fab:menu_labels_paddingTop="4dp"
         fab:menu_labels_paddingRight="8dp"
@@ -138,7 +137,6 @@
 
 
 </com.github.clans.fab.FloatingActionMenu>
-
-    </FrameLayout>
+    </RelativeLayout>
     <!-- The navigation drawer -->
 
