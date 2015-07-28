@@ -80,7 +80,7 @@ public class fb extends AppCompatActivity{
 
         ids=new String[21];
         ids[12]= "415004402015833"; // IIT Roorkee
-        ids[1]="415004402015833";//id for iit r freshers
+        ids[1]="198343570325312";//id for MDG
         ids[2]="182484805131346";//id for SDSLabs
         ids[3]="257702554250168";//id for robocon
         ids[4]="265096099170"; // EDC

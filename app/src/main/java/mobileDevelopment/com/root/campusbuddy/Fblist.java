@@ -74,7 +74,7 @@ public class Fblist extends AppCompatActivity{
 
         fbpageslikedmap=new HashMap<String,String>();
         fbpageslikedmap.put("Cinema Club", "231275190406200");
-        fbpageslikedmap.put("IIT R Freshies Forum","415004402015833");
+        fbpageslikedmap.put("MDG, IITR","415004402015833");
         fbpageslikedmap.put("SDSLabs","182484805131346");
         fbpageslikedmap.put("Team Robocon","257702554250168");
         fbpageslikedmap.put("EDC","265096099170");
