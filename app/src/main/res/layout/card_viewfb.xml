@@ -30,6 +30,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="8dp">
+
+        <com.etsy.android.grid.util.DynamicHeightImageView
+            android:id="@+id/fbpostpicicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/postmessage"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/fbpagename"/>
     <TextView
         android:id="@+id/fbpagename"
         android:layout_width="wrap_content"

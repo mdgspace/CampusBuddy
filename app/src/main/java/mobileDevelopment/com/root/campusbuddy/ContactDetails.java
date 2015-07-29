@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.Calendar;
+
 
 public class ContactDetails extends ActionBarActivity {
     String contact,emailid;
@@ -32,10 +34,11 @@ public class ContactDetails extends ActionBarActivity {
         setSupportActionBar(toolbar);
 
         fabc=(FloatingActionButton)findViewById(R.id.fabc);
-        DayNightTheme.setfab(fabc);
 
         fabe=(FloatingActionButton)findViewById(R.id.fabe);
-        DayNightTheme.setfab(fabe);
+
+        setfab(fabc);
+        setfab(fabe);
 
         setupfabc();
         setupfabe();
@@ -142,4 +145,17 @@ public class ContactDetails extends ActionBarActivity {
             }
         });
     }
+
+    public void setfab(FloatingActionButton fab)
+    {
+        Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+
+        if (hour>=19 || hour<=6) {
+//            fab.setBackgroundTintList(Color.parseColor("#7B1FA2"));
+            fab.setBackgroundTintList(getResources().getColorStateList(R.color.fabcolor));
+        }
+        else{
+            fab.setBackgroundTintList(getResources().getColorStateList(R.color.fabcolorday));
+        }}
 }
