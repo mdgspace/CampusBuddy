@@ -49,7 +49,8 @@ public class Fblist extends AppCompatActivity{
     public static boolean flag=true;
     Toolbar toolbar;
     CheckBox c;
-    HashMap<String,String> fbpageslikedmap;
+    public HashMap<String,String> fbpageslikedmap;
+//    public static ArrayList<String> listofvalues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,9 @@ public class Fblist extends AppCompatActivity{
         fbpageslikedmap.put("Anushruti","272394492879208");
         fbpageslikedmap.put("Rhapsody","1410660759172170");
         fbpageslikedmap.put("SHARE IITR","292035034247");
+
+//        listofvalues = new ArrayList<String>(fbpageslikedmap.values());
+
 
         fbpagesliked=new ArrayList<String>();
         callbackManager = CallbackManager.Factory.create();

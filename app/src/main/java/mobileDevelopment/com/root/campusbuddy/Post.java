@@ -5,6 +5,7 @@ import android.util.Log;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -16,10 +17,10 @@ public  class Post implements Comparable<Post>{
     String message,url,url2;
     public Date date;
 
-    String id;
-
+    String id,id1;
+    ArrayList<String> listofvalues;
     int[] images;
-
+    Fblist fblist=new Fblist();
 
     public Post(JSONObject obj)
     {
@@ -46,21 +47,54 @@ public  class Post implements Comparable<Post>{
         images[19] = R.drawable.rhapsody;
         images[20] = R.drawable.share;
 
+        listofvalues =new ArrayList<>();
+        listofvalues.add("231275190406200");
+        listofvalues.add("415004402015833");
+        listofvalues.add("182484805131346");
+        listofvalues.add("257702554250168");
+        listofvalues.add("265096099170");
+        listofvalues.add("671125706342859");
+        listofvalues.add("418543801611643");
+        listofvalues.add("420363998145999");
+        listofvalues.add("146825225353259");
+        listofvalues.add("754869404569818");
+        listofvalues.add("217963184943488");
+        listofvalues.add("317158211638196");
+        listofvalues.add("415004402015833");
+        listofvalues.add("369513426410599");
+        listofvalues.add("503218879766649");
+        listofvalues.add("242919515859218");
+        listofvalues.add("100641016663545");
+        listofvalues.add("567441813288417");
+        listofvalues.add("272394492879208");
+        listofvalues.add("1410660759172170");
+        listofvalues.add("292035034247");
+
+
 
         try{
         this.post=obj;
         message = post.optString("message");
         url=post.optString("picture");
-            url2=post.optString("icon");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
         date = sdf.parse(post.optString("updated_time").substring(0, 10));
             id=post.getJSONObject("from").getString("name");
+            id1=post.getJSONObject("from").getString("id");
+            Log.e("id of fb icon",id1);
         }
         catch (Exception e)
         {
             Log.e("Post error: ",e.toString());
         }
 
+    }
+
+    public int getImageDrawable()
+    {
+        int a=listofvalues.indexOf(id1);
+        Log.e("id of fb icon",a+"");
+
+        return images[a];
     }
 
     public String getMessage()
@@ -72,10 +106,6 @@ public  class Post implements Comparable<Post>{
         return url;
     }
     public String getHeader(){return id+"";}
-    public String getURL2()
-    {
-        return url2;
-    }
 
 
     @Override

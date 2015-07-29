@@ -67,17 +67,16 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
 
         holder.postmessage.setText(post.getMessage());
         holder.postheader.setText(post.getHeader());
+        holder.fbpostpicicon.setImageResource(post.getImageDrawable());
         Log.v("FBMessage", post.getMessage());
         Log.v("FBPic", post.getURL());
 
         if(post.getURL().trim().startsWith("http")){
             holder.fbpostpic.setHeightRatio(1);
             Picasso.with(context).load(post.getURL()).fit().centerCrop().into(holder.fbpostpic);
-            Picasso.with(context).load(post.getURL2()).fit().centerCrop().into(holder.fbpostpicicon);
 
         } else {
             holder.fbpostpic.setVisibility(View.GONE);
-            holder.fbpostpicicon.setVisibility(View.GONE);
 
         }
 
