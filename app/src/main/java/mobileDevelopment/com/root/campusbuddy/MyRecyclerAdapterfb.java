@@ -29,9 +29,9 @@ import java.util.List;
  */
 public class MyRecyclerAdapterfb extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
-//    String[] pages={"Cinema Club","IIT R Freshies Forum","SDS Labs","Team Robocon","EDC","General Notice Board"
+//    String[] pages={"Cinema Club","IIT R Freshies Forum","SDS Labs","Team robocon","edc","General Notice Board"
 //    ,"Audio Section","Sanskriti Club","Group for Interative Learning","ASHARE","Cognizance","Photography Section","IIT Roorkee pge",
-//            "Technology 2015 page","Electronics","NCC","Cinematics SEction","Fine Arts","Anushruti","Rhapsody","ShARE IITR"};
+//            "Technology 2015 page","Electronics","ncc","Cinematics SEction","Fine Arts","Anushruti","Rhapsody","ShARE IITR"};
     public List<Post> posts;
     public MyRecyclerAdapterfb(List<Post> posts)
     {

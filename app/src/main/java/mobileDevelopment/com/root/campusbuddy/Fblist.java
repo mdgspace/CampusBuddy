@@ -74,10 +74,10 @@ public class Fblist extends AppCompatActivity{
 
         fbpageslikedmap=new HashMap<String,String>();
         fbpageslikedmap.put("Cinema Club", "231275190406200");
-        fbpageslikedmap.put("IIT R Freshies Forum","415004402015833");
+        fbpageslikedmap.put("mdg, IITR","415004402015833");
         fbpageslikedmap.put("SDSLabs","182484805131346");
-        fbpageslikedmap.put("Team Robocon","257702554250168");
-        fbpageslikedmap.put("EDC","265096099170");
+        fbpageslikedmap.put("Team robocon","257702554250168");
+        fbpageslikedmap.put("edc","265096099170");
         fbpageslikedmap.put("General Notice Board","671125706342859");
         fbpageslikedmap.put("Audio Section","418543801611643");
         fbpageslikedmap.put("Sanskriti Club","420363998145999");
@@ -88,7 +88,7 @@ public class Fblist extends AppCompatActivity{
         fbpageslikedmap.put("IIT Roorkee","415004402015833");
         fbpageslikedmap.put("Technologic 2015","369513426410599");
         fbpageslikedmap.put("Electronics Section","503218879766649");
-        fbpageslikedmap.put("NCC","242919515859218");
+        fbpageslikedmap.put("ncc","242919515859218");
         fbpageslikedmap.put("Cinematic Section","100641016663545");
         fbpageslikedmap.put("Fine Arts Section","567441813288417");
         fbpageslikedmap.put("Anushruti","272394492879208");

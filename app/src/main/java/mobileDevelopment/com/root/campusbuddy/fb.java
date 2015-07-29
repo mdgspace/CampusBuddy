@@ -80,10 +80,10 @@ public class fb extends AppCompatActivity{
 
         ids=new String[21];
         ids[12]= "415004402015833"; // IIT Roorkee
-        ids[1]="415004402015833";//id for iit r freshers
+        ids[1]="198343570325312";//id for mdg
         ids[2]="182484805131346";//id for SDSLabs
         ids[3]="257702554250168";//id for robocon
-        ids[4]="265096099170"; // EDC
+        ids[4]="265096099170"; // edc
         ids[5]="671125706342859"; // Notice Board
         ids[6]="418543801611643"; //  Audio Section
         ids[7]="420363998145999"; // Sanskriti Club
@@ -94,7 +94,7 @@ public class fb extends AppCompatActivity{
         ids[0]="231275190406200"; // Cinema Club
         ids[13]="369513426410599"; // TECHNOLOGIC 2015
         ids[14]="503218879766649"; // ELECTRONICS SECTION
-        ids[15]="242919515859218"; // NCC
+        ids[15]="242919515859218"; // ncc
         ids[16]="100641016663545"; // CINEMATIC SECTION
         ids[17]="567441813288417"; // FINE ARTS SECTION
         ids[18]="272394492879208"; // ANUSHRUTI

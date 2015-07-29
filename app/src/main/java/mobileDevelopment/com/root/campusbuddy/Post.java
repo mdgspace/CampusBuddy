@@ -1,9 +1,6 @@
 package mobileDevelopment.com.root.campusbuddy;
 
 import android.util.Log;
-import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
@@ -18,10 +15,38 @@ public  class Post implements Comparable<Post>{
     JSONObject post;
     String message,url,url2;
     public Date date;
+
     String id;
+
+    int[] images;
+
 
     public Post(JSONObject obj)
     {
+        images = new int[21];
+        images[0] = R.drawable.cinema_club;
+        images[1] = R.drawable.mdg;
+        images[2] = R.drawable.sds_labs;
+        images[3] = R.drawable.robocon;
+        images[4] = R.drawable.edc;
+        images[5] = R.drawable.general_nb;
+        images[6] = R.drawable.audio;
+        images[7] = R.drawable.sanskriti;
+        images[8] = R.drawable.interactive_learning;
+        images[9] = R.drawable.ashrae;
+        images[10] = R.drawable.cogni;
+        images[11] = R.drawable.photography;
+        images[12] = R.drawable.iit_roorkee;
+        images[13] = R.drawable.technologic;
+        images[14] = R.drawable.electronics_section;
+        images[15] = R.drawable.ncc;
+        images[16] = R.drawable.cinematic;
+        images[17] = R.drawable.fine_arts;
+        images[18] = R.drawable.anushruti;
+        images[19] = R.drawable.rhapsody;
+        images[20] = R.drawable.share;
+
+
         try{
         this.post=obj;
         message = post.optString("message");

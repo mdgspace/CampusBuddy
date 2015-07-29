@@ -108,7 +108,9 @@
             android:layout_height="wrap_content"
             fab:menu_fab_size="mini"
             fab:fab_label="One day view"
+
             android:src="@drawable/ic_launcher"/>
+
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_three"
