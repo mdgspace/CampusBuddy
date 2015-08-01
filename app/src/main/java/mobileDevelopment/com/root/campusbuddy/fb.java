@@ -50,7 +50,8 @@ public class fb extends AppCompatActivity{
 //        fabfbu=(FloatingActionButton)findViewById(R.id.fabfb);
 //        list=(ListView)findViewById(R.id.listfb);
         toolbar = (Toolbar) findViewById(R.id.tool_barfb);
-        DayNightTheme.setToolbar(toolbar);
+//        DayNightTheme.setToolbar(toolbar);
+        toolbar.setBackgroundColor(Color.parseColor("#19436C"));
 //        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
         toolbar.setTitle("Facebook posts");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));

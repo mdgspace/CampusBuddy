@@ -235,7 +235,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, details);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
-                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_EVENT_TYPE, "weekly");
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_EVENT_TYPE, "once");
 
 
                     db.insert(

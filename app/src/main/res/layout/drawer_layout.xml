@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
 
 
-        fab:fab_labelsPosition="right"
+        fab:fab_labelsPosition="left"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="false"
         android:layout_alignParentLeft="false"
@@ -82,6 +82,7 @@
             fab:fab_colorPressed="@color/wallet_highlighted_text_holo_dark"
             android:id="@+id/fab_one"
             android:src="@drawable/ic_launcher"
+
             />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
@@ -118,7 +119,7 @@
             />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
--->
+
 
 
     </RelativeLayout>

@@ -19,7 +19,7 @@ public class NotificationHandler {
         intent.putExtra("onetime", Boolean.FALSE);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
         //After after day
-        am.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().get(Calendar.HOUR_OF_DAY), AlarmManager.INTERVAL_HOUR , pi);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_HOUR , pi);
 
     }
 

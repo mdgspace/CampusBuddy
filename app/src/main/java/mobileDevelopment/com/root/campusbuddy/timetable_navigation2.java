@@ -57,13 +57,16 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
         Calendar cd = Calendar.getInstance();
 
-        cd.add(Calendar.DAY_OF_MONTH, -1);
-      //  cd.add(cd.DATE, -1);
-        Toast.makeText(this, cd.DAY_OF_MONTH + "he;llo "+ cd.MONTH + " " + cd.YEAR, Toast.LENGTH_LONG).show();
+//        cd.add(Calendar.DAY_OF_MONTH, -1);
+//       cd.add(cd.DATE, -1);
+//        Toast.makeText(this, cd.DAY_OF_MONTH + "he;llo "+ cd.MONTH + " " + cd.YEAR, Toast.LENGTH_LONG).show();
 
 
 // 2.2 Set actionBarDrawerToggle as the DrawerListener
 
+        Calendar c=Calendar.getInstance();
+        c.set(Calendar.YEAR,2015);
+        Toast.makeText(this,c.get(Calendar.YEAR)+"",Toast.LENGTH_LONG).show();
         fa = this;
 
         pref = this.getSharedPreferences(
