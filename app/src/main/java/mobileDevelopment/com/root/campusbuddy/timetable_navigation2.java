@@ -48,19 +48,11 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
     public static Activity fa;
 
-
-
-
     public FloatingActionButton fab_new_event, fab_go_today, fab_three_day, fab_one_day;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
          setContentView(R.layout.drawer_layout);
-
-
-
-
-
 
 // 2.2 Set actionBarDrawerToggle as the DrawerListener
 
@@ -91,7 +83,8 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
                 CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR,
                 CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN,
                 CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL,
-                CalendarDB.CalendarEntry.COLUMN_NAME_VENUE
+                CalendarDB.CalendarEntry.COLUMN_NAME_VENUE,
+                CalendarDB.CalendarEntry.COLUMN_NAME_EVENT_TYPE
         };
 
         try {
@@ -252,6 +245,9 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         WeekViewEvent event;
         cr.moveToFirst();
         startTime = Calendar.getInstance();
+
+//        String event_type = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_EVENT_TYPE));
+
         if(cr.getCount() >0){
             startTime.set(Calendar.DATE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)));
             startTime.set(Calendar.MONTH, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH)));
@@ -290,12 +286,24 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
         return events;
     }
+    public void AddEvent(Calendar startTime, Calendar endTime){
+        startTime.set(Calendar.DATE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)));
+        startTime.set(Calendar.MONTH, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH)));
+        startTime.set(Calendar.YEAR, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR)));
+        startTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR)));
+        startTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN)));
+        endTime = (Calendar) startTime.clone();
+        endTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR)));
+        endTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN)));
+
+
+    }
 
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
 
         long ID = event.getId();
-        String detail = "", venue = "", title = "";
+        String detail = "", venue = "", title = "", type = "";
         int day = 0, month = 0, year = 0, starthour = 0, startmin = 0, endhour = 0, endmin = 0;
 
         cr.moveToFirst();
@@ -311,6 +319,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             endhour = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR));
             endmin = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN));
             title = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE));
+            type = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_EVENT_TYPE));
 
         }
 
@@ -328,6 +337,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
                     endhour = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR));
                     endmin = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN));
                     title = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE));
+
                 }
             }
         }
@@ -340,6 +350,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         detailsIntent.putExtra("start",starthour+ " : " +startmin);
         detailsIntent.putExtra("end", endhour + " : " + endmin);
         detailsIntent.putExtra("date",day+ " : " + month + " : " +year);
+        detailsIntent.putExtra("type",  type);
 
         startActivity(detailsIntent);
 

@@ -27,8 +27,9 @@ public class DetailsActivity extends Activity {
         String start = extras.getString("start");
         String end = extras.getString("end");
         String title = extras.getString("title");
+        String type = extras.getString("type");
 
-        tv.setText(title + "\n"+details + "\nDate: "+ date + "\nTime: "  + start + " - " + end + "\nVenue: " + venue);
+        tv.setText(title + "\n"+details + "\nDate: "+ date + "\nTime: "  + start + " - " + end + "\nVenue: " + venue + "\nType of Event: " + type);
 
 
     }

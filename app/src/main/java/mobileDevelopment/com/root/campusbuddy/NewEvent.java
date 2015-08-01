@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +41,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
  //   CalendarDBHelper mDbHelper;
     ContentValues values;
     int year, day, month, starthour, startminute, endhour, endminute;
-    String title, venue, details;
+    String title, venue, details, event_type= "once";
     Long ID;
 
     boolean isStartTime = true;
@@ -73,7 +74,8 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR,
                 CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN,
                 CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL,
-                CalendarDB.CalendarEntry.COLUMN_NAME_VENUE
+                CalendarDB.CalendarEntry.COLUMN_NAME_VENUE,
+                CalendarDB.CalendarEntry.COLUMN_NAME_EVENT_TYPE
         };
         try {
             cr_edit = db.query(CalendarDB.CalendarEntry.TABLE_NAME, eventList, null, null, null, null, null);
@@ -233,6 +235,8 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, details);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_EVENT_TYPE, "weekly");
+
 
                     db.insert(
                             CalendarDB.CalendarEntry.TABLE_NAME,
@@ -262,6 +266,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, details);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
+                    values.put(CalendarDB.CalendarEntry.COLUMN_NAME_EVENT_TYPE, event_type);
 
                     try {
                         db.update(
@@ -363,5 +368,26 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         super.onDestroy();
         overridePendingTransition(R.anim.fade_in, R.anim.slide_out_up);
 
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_once:
+                if (checked)
+                    event_type = "once";
+                    break;
+            case R.id.radio_daily:
+                if (checked)
+                    event_type = "daily";
+                    break;
+            case R.id.radio_weekly:
+                if (checked)
+                    event_type = "weekly";
+                    break;
+        }
     }
 }
