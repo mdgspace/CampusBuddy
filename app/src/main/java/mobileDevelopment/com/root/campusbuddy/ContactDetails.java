@@ -56,7 +56,7 @@ public class ContactDetails extends ActionBarActivity {
         emailid=b.getString("Clicked email-id");
 
         TextView ptv=(TextView)findViewById(R.id.phonetext);
-        TextView etv=(TextView)findViewById(R.id.emialtext);
+        TextView etv=(TextView)findViewById(R.id.emialtext1);
         ptv.setText(contact);
         etv.setText(emailid);
         c.setOnClickListener(new View.OnClickListener() {
@@ -194,6 +194,21 @@ public class ContactDetails extends ActionBarActivity {
     public void onDestroy(){
         super.onDestroy();
         overridePendingTransition(R.anim.fade_in, R.anim.slide_out_up);
+
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_out_up);
+        /*
+        timetable_navigation2.fa.finish();
+        Intent ttIntent = new Intent(NewEvent.this, timetable_navigation2.class);
+        startActivity(ttIntent);
+        */
+        finish();
+
 
     }
 }
