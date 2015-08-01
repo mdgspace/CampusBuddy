@@ -109,16 +109,41 @@
                 android:hint="Venue"
                 android:textColor="#000000"/>
         </android.support.design.widget.TextInputLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Type Of Event: "/>
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton android:id="@+id/radio_once"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="once"
+                android:onClick="onRadioButtonClicked"
+                />
+            <RadioButton android:id="@+id/radio_daily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Daily"
+                android:onClick="onRadioButtonClicked"
+                />
+            <RadioButton android:id="@+id/radio_weekly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weekly"
+                android:onClick="onRadioButtonClicked"
+               />
 
+        </RadioGroup>
 
-
-
-
-
-
-
-
+</LinearLayout>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
