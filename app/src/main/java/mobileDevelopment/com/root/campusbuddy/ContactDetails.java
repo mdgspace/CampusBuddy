@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.Calendar;
 
@@ -21,9 +23,12 @@ public class ContactDetails extends ActionBarActivity {
     Toolbar toolbar;
     int contact1;
     FloatingActionButton fabc,fabe;
+    CardView c,c1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(R.anim.slide_in_up, R.anim.fade_out);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_details);
 
@@ -32,35 +37,61 @@ public class ContactDetails extends ActionBarActivity {
         toolbar.setTitle(getIntent().getExtras().getString("Clicked name"));
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);
+        c=(CardView)findViewById(R.id.phone);
+        c1=(CardView)findViewById(R.id.email);
 
-        fabc=(FloatingActionButton)findViewById(R.id.fabc);
-
-        fabe=(FloatingActionButton)findViewById(R.id.fabe);
-
-        setfab(fabc);
-        setfab(fabe);
-
-        setupfabc();
-        setupfabe();
+//        fabc=(FloatingActionButton)findViewById(R.id.fabc);
+//
+//        fabe=(FloatingActionButton)findViewById(R.id.fabe);
+//
+//        setfab(fabc);
+//        setfab(fabe);
+//
+//        setupfabc();
+//        setupfabe();
 
         Intent m=getIntent();
         Bundle b=m.getExtras();
         contact=b.getString("Clicked Contact number");
         emailid=b.getString("Clicked email-id");
 
-        EditText edit_contact=(EditText)findViewById(R.id.contactno);
-        EditText edit_email=(EditText)findViewById(R.id.emailid);
-//        Button callbutton=(Button)findViewById(R.id.callbutton);
+        TextView ptv=(TextView)findViewById(R.id.phonetext);
+        TextView etv=(TextView)findViewById(R.id.emialtext);
+        ptv.setText(contact);
+        etv.setText(emailid);
+        c.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact));
+                startActivity(intent);
+            }
+        });
+
+        c1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Intent.ACTION_VIEW);
+                intent.setType("plain/text");
+//                intent.setData(Uri.parse("www.gmail.com"));
+                intent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
+                intent.putExtra(Intent.EXTRA_EMAIL,new String[]{emailid});
+                startActivity(intent);
+            }
+        });
+
+//        EditText edit_contact=(EditText)findViewById(R.id.contactno);
+//        EditText edit_email=(EditText)findViewById(R.id.emailid);
+////        Button callbutton=(Button)findViewById(R.id.callbutton);
 //        Button emailbutton=(Button)findViewById(R.id.emailbutton);
 
 //        contact1=Integer.parseInt(contact);
 
 
         TelephoneContacts tc=new TelephoneContacts();
-        edit_contact.setText(contact+"");
-        edit_contact.setTextColor(Color.parseColor("#000000"));
-        edit_email.setText(emailid+"");
-        edit_email.setTextColor(Color.parseColor("#000000"));
+//        edit_contact.setText(contact+"");
+//        edit_contact.setTextColor(Color.parseColor("#000000"));
+//        edit_email.setText(emailid+"");
+//        edit_email.setTextColor(Color.parseColor("#000000"));
 
 //        callbutton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -107,55 +138,62 @@ public class ContactDetails extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setupfabc()
-    {
+//    public void setupfabc()
+//    {
+//
+//        fabc.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Snackbar.make(findViewById(R.id.rootlayout),"Make a call:-",Snackbar.LENGTH_LONG).setAction("Call", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v)
+//                    {
+//                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact));
+//                        startActivity(intent);
+//                    }
+//                }).show();
+//            }
+//        });
+//    }
+//
+//    public void setupfabe()
+//    {
+//        fabe.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Snackbar.make(findViewById(R.id.rootlayout),"Write a mail:-",Snackbar.LENGTH_LONG).setAction("E-mail", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v)
+//                    {
+//                        Intent intent=new Intent(Intent.ACTION_VIEW);
+//                intent.setType("plain/text");
+//                 intent.setData(Uri.parse("www.gmail.com"));
+//                intent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
+//                intent.putExtra(Intent.EXTRA_EMAIL,new String[]{emailid});
+//                startActivity(intent);
+//                    }
+//                }).show();
+//            }
+//        });
+//    }
+//
+//    public void setfab(FloatingActionButton fab)
+//    {
+//        Calendar c = Calendar.getInstance();
+//        int hour = c.get(Calendar.HOUR_OF_DAY);
+//
+//        if (hour>=19 || hour<=6) {
+////            fab.setBackgroundTintList(Color.parseColor("#7B1FA2"));
+//            fab.setBackgroundTintList(getResources().getColorStateList(R.color.fabcolor));
+//        }
+//        else{
+//            fab.setBackgroundTintList(getResources().getColorStateList(R.color.fabcolorday));
+//        }}
 
-        fabc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(findViewById(R.id.rootlayout),"Make a call:-",Snackbar.LENGTH_LONG).setAction("Call", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact));
-                        startActivity(intent);
-                    }
-                }).show();
-            }
-        });
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_out_up);
+
     }
-
-    public void setupfabe()
-    {
-        fabe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(findViewById(R.id.rootlayout),"Write a mail:-",Snackbar.LENGTH_LONG).setAction("E-mail", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        Intent intent=new Intent(Intent.ACTION_VIEW);
-                intent.setType("plain/text");
-                 intent.setData(Uri.parse("www.gmail.com"));
-                intent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
-                intent.putExtra(Intent.EXTRA_EMAIL,new String[]{emailid});
-                startActivity(intent);
-                    }
-                }).show();
-            }
-        });
-    }
-
-    public void setfab(FloatingActionButton fab)
-    {
-        Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-
-        if (hour>=19 || hour<=6) {
-//            fab.setBackgroundTintList(Color.parseColor("#7B1FA2"));
-            fab.setBackgroundTintList(getResources().getColorStateList(R.color.fabcolor));
-        }
-        else{
-            fab.setBackgroundTintList(getResources().getColorStateList(R.color.fabcolorday));
-        }}
 }

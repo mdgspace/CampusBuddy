@@ -69,7 +69,7 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
         holder.postheader.setText(post.getHeader());
         holder.fbpostpicicon.setImageResource(post.getImageDrawable());
         Log.v("FBMessage", post.getMessage());
-        Log.v("FBPic", post.getURL());
+        Log.e("FBPic", post.getURL());
 
         if(post.getURL().trim().startsWith("http")){
             holder.fbpostpic.setHeightRatio(1);
