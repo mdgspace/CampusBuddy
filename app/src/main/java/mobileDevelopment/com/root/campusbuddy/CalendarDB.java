@@ -27,7 +27,7 @@ public final class CalendarDB {
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_DETAIL = "detail";
         public static final String COLUMN_NAME_VENUE = "venue";
-        public static final String COLUMN_NAME_EVENT_TYPE = "type";
+
 
 
     }

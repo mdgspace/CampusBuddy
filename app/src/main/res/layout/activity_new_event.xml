@@ -131,6 +131,7 @@
                 android:layout_height="wrap_content"
                 android:text="once"
                 android:onClick="onRadioButtonClicked"
+
                 />
             <RadioButton android:id="@+id/radio_daily"
                 android:layout_width="wrap_content"

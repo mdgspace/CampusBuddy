@@ -169,8 +169,7 @@ public class CalendarDBHelper extends SQLiteOpenHelper {
                     CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR + INT_TYPE + COMMA_SEP +
                     CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN + INT_TYPE + COMMA_SEP +
                     CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL + TEXT_TYPE + COMMA_SEP +
-                    CalendarDB.CalendarEntry.COLUMN_NAME_VENUE + TEXT_TYPE + COMMA_SEP +
-                    CalendarDB.CalendarEntry.COLUMN_NAME_EVENT_TYPE + TEXT_TYPE +
+                    CalendarDB.CalendarEntry.COLUMN_NAME_VENUE + TEXT_TYPE  +
                     " )";
 
     private static final String SQL_DELETE_ENTRIES =
@@ -219,7 +218,7 @@ public class CalendarDBHelper extends SQLiteOpenHelper {
         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endmin);
         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, detail);
         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
-        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_EVENT_TYPE, type);
+
 
 
         db.insert(
@@ -250,7 +249,7 @@ public class CalendarDBHelper extends SQLiteOpenHelper {
                         CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN,
                         CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL,
                         CalendarDB.CalendarEntry.COLUMN_NAME_VENUE,
-                        CalendarDB.CalendarEntry.COLUMN_NAME_EVENT_TYPE
+
                 };
 
 

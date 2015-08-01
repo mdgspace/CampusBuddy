@@ -95,7 +95,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
                 CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN,
                 CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL,
                 CalendarDB.CalendarEntry.COLUMN_NAME_VENUE,
-                CalendarDB.CalendarEntry.COLUMN_NAME_EVENT_TYPE
+
         };
 
         try {
@@ -262,21 +262,12 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         WeekViewEvent event;
         cr.moveToFirst();
         startTime = Calendar.getInstance();
-        String event_type = "once";
-
         int day3, month3, year3;
 
-        Calendar c = Calendar.getInstance();
-
-        c.add(Calendar.DATE, -1);
-        c.add(c.DATE, -1);
-
-
-
         if(cr.getCount() >0){
-            event_type = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_EVENT_TYPE));
 
-            if(event_type.equals("once")){
+
+
             startTime.set(Calendar.DATE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)));
             startTime.set(Calendar.MONTH, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH)));
             startTime.set(Calendar.YEAR, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR)));
@@ -288,21 +279,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
             event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)), cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
             event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
-            events.add(event);}
-        else if(event_type.equals("daily")){
-                // code for daily event...
-
-                if(sem==1){
-
-                }
-                else {}
-            }
-            else if(event_type.equals("weekly")){
-                // code for weekly event...
-            }
-            else if(event_type.equals("monthly")){
-                // code for weekly event...
-            }
+            events.add(event);
         }
 
 
@@ -310,9 +287,9 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
             //   Toast.makeText(timetable.this,  String.valueOf(cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH))), Toast.LENGTH_LONG).show();
 
-            event_type = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_EVENT_TYPE));
 
-            if(event_type.equals("once")){
+
+
                 startTime.set(Calendar.DATE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)));
                 startTime.set(Calendar.MONTH, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH)));
                 startTime.set(Calendar.YEAR, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR)));
@@ -324,32 +301,11 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
                 event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)), cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
                 event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
-                events.add(event);}
-            else if(event_type.equals("daily")){
-                // code for daily event...
-            }
-            else if(event_type.equals("weekly")){
-                // code for weekly event...
-            }
-            else if(event_type.equals("monthly")){
-                // code for weekly event...
-            }
+                events.add(event);
         }
 
 
         return events;
-    }
-    public void AddEvent(Calendar startTime, Calendar endTime){
-        startTime.set(Calendar.DATE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)));
-        startTime.set(Calendar.MONTH, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH)));
-        startTime.set(Calendar.YEAR, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR)));
-        startTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR)));
-        startTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN)));
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR)));
-        endTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN)));
-
-
     }
 
     @Override
@@ -372,7 +328,6 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             endhour = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR));
             endmin = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN));
             title = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE));
-            type = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_EVENT_TYPE));
 
         }
 
