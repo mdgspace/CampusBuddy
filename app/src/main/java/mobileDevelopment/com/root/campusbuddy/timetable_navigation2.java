@@ -18,6 +18,7 @@ package mobileDevelopment.com.root.campusbuddy;
         import com.alamkanak.weekview.DateTimeInterpreter;
         import com.alamkanak.weekview.WeekView;
         import com.alamkanak.weekview.WeekViewEvent;
+        import com.getbase.floatingactionbutton.FloatingActionButton;
 
         import java.text.SimpleDateFormat;
         import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
 
 
-    public com.github.clans.fab.FloatingActionButton fab_new_event, fab_go_today, fab_three_day, fab_one_day;
+    public FloatingActionButton fab_new_event, fab_go_today, fab_three_day, fab_one_day;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,12 +124,13 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         // Set up a date time interpreter to interpret how the date and time will be formatted in
         // the week view. This is optional.
         setupDateTimeInterpreter(false);
-        fab_new_event=(com.github.clans.fab.FloatingActionButton)findViewById(R.id.fab_new);
-        fab_new_event.setLabelText("New Event");
+        fab_new_event=(FloatingActionButton)findViewById(R.id.fab_new);
+        fab_new_event.setTitle("New Event");
+      //  fab_new_event.setLabelText("New Event");
         fab_new_event.setBackgroundColor(Color.parseColor("#00ff00"));
-        fab_one_day=(com.github.clans.fab.FloatingActionButton)findViewById(R.id.fab_one);
-        fab_three_day=(com.github.clans.fab.FloatingActionButton)findViewById(R.id.fab_three);
-        fab_go_today=(com.github.clans.fab.FloatingActionButton)findViewById(R.id.fab_today);
+        fab_one_day=(FloatingActionButton)findViewById(R.id.fab_one);
+        fab_three_day=(FloatingActionButton)findViewById(R.id.fab_three);
+        fab_go_today=(FloatingActionButton)findViewById(R.id.fab_today);
 
         fab_new_event.setOnClickListener(new View.OnClickListener() {
             @Override
