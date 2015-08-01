@@ -140,6 +140,12 @@
                 android:text="Weekly"
                 android:onClick="onRadioButtonClicked"
                />
+        <RadioButton android:id="@+id/radio_monthly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Monthly"
+            android:onClick="onRadioButtonClicked"
+            />
 
         </RadioGroup>
 

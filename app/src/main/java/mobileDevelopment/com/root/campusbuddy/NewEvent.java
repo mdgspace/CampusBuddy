@@ -388,6 +388,10 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 if (checked)
                     event_type = "weekly";
                     break;
+            case R.id.radio_monthly:
+                if (checked)
+                    event_type = "monthly";
+                break;
         }
     }
 }
