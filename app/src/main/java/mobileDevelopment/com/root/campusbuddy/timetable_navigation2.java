@@ -407,7 +407,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         Bundle b=new Bundle();
         b.putInt("position",position);
         dialog.setArguments(b);
-        dialog.show(getFragmentManager(), "ChooseDialogFragment");
+        new delete_edit_choose().show(this, 0);
 
     }
 

@@ -5,15 +5,24 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+
 import android.support.v7.app.AlertDialog;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+
 
 /**
  * Created by rc on 18/5/15.
  */
-public class delete_edit_choose extends DialogFragment {
+public class delete_edit_choose extends DialogFragment  {
 
     AlertPositiveListener alertPositiveListener;
+
+    private AlertPositiveListener mAlertPositiveListener;
     public interface AlertPositiveListener {
         public void onPositiveClick(int position);
     }
@@ -34,7 +43,6 @@ public class delete_edit_choose extends DialogFragment {
         }
     }
 
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -48,11 +56,13 @@ public class delete_edit_choose extends DialogFragment {
         builder.setTitle("Choose what you want to do?");
         //builder.setView(inflater.inflate(R.layout.activity_deleteand_edit_events2, null));
 
-        builder.setSingleChoiceItems(RadioButtons.dae,position,null);
+        builder.setSingleChoiceItems(RadioButtons.dae, position, null);
         builder.setPositiveButton("OK", positiveListener);
-        builder.setNegativeButton("Cancel",null);
-
+        builder.setNegativeButton("Cancel", null);
         AlertDialog dialog = builder.create();
+
+
+
 
 //        TextView tv_edit = (TextView) dialog.findViewById(R.id.text_edit);
 //        TextView tv_delete = (TextView) dialog.findViewById(R.id.text_delete);
@@ -71,10 +81,10 @@ public class delete_edit_choose extends DialogFragment {
 //                dismiss();
 //            }
 //        });
-
-
         return dialog;
+
     }
+
 
     DialogInterface.OnClickListener positiveListener=new DialogInterface.OnClickListener() {
         @Override
@@ -84,5 +94,6 @@ public class delete_edit_choose extends DialogFragment {
             alertPositiveListener.onPositiveClick(position);
         }
     };
+
 
 }

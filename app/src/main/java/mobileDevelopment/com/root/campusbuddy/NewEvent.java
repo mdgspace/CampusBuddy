@@ -281,7 +281,7 @@ try {
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
 
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, starthour);
+                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, "10");
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startminute);
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
@@ -297,6 +297,7 @@ try {
                                 values);
                         value++;
                         cd.add(Calendar.MONTH, 1);
+                        Toast.makeText(NewEvent.this, value+ "", Toast.LENGTH_SHORT).show();
                     }
 
 
