@@ -1,11 +1,12 @@
 package mobileDevelopment.com.root.campusbuddy;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 
 /**
  * Created by rc on 18/5/15.
