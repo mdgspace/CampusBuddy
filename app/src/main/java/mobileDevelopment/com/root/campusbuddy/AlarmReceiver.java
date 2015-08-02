@@ -68,7 +68,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                             .getActivity(context, 0, in, PendingIntent.FLAG_UPDATE_CURRENT);
 
                     mBuilder = new NotificationCompat.Builder(context)
-                            .setSmallIcon(R.drawable.campus_icon)
+                            .setSmallIcon(R.drawable.buddy_icon)
                             .setContentTitle("You have an event in another one hour")
 //                            .setContentText(data.get(i).get("balance"))
                             .setContentIntent(pendingIntent)

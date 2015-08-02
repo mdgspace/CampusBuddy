@@ -306,8 +306,6 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             event.setColor(getResources().getColor(R.color.colorPrimaryLight));
                 events.add(event);
         }
-
-
         return events;
     }
 
