@@ -11,6 +11,7 @@ package mobileDevelopment.com.root.campusbuddy;
         import android.os.Bundle;
         import android.app.Activity;
         import android.support.v7.app.ActionBarActivity;
+        import android.util.Log;
         import android.util.TypedValue;
         import android.view.View;
         import android.widget.Toast;
@@ -278,7 +279,8 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             endTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN)));
 
             event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)), cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
-            event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
+//            event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
+            event.setColor(getResources().getColor(R.color.colorPrimaryLight));
             events.add(event);
         }
 
@@ -300,7 +302,8 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
                 endTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN)));
 
                 event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)), cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
-                event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
+//                event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
+            event.setColor(getResources().getColor(R.color.colorPrimaryLight));
                 events.add(event);
         }
 
