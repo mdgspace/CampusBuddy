@@ -251,6 +251,7 @@ try {
                             CalendarDB.CalendarEntry.TABLE_NAME,
                             null,
                             values);
+                    value++;
                 } else if (event_type.equals("weekly")) {
                     while (cd.get(Calendar.MONTH) <= 10) {
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
@@ -280,7 +281,7 @@ try {
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
 
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, starthour);
+                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, "10");
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startminute);
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
@@ -296,6 +297,7 @@ try {
                                 values);
                         value++;
                         cd.add(Calendar.MONTH, 1);
+                        Toast.makeText(NewEvent.this, value+ "", Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -329,7 +331,7 @@ try {
                 Toast.makeText(NewEvent.this, "Details submitted  ", Toast.LENGTH_LONG).show();
 
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putLong("ID_KEY", value + 1);
+                editor.putLong("ID_KEY", value);
                 editor.commit();
             } else {
 

@@ -5,21 +5,30 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 /**
  * Created by rc on 18/5/15.
  */
-public class delete_edit_choose extends DialogFragment {
+public class delete_edit_choose extends DialogFragment  {
 
     AlertPositiveListener alertPositiveListener;
+
+    private AlertPositiveListener mAlertPositiveListener;
     public interface AlertPositiveListener {
         public void onPositiveClick(int position);
     }
 
     // Use this instance of the interface to deliver action events
 
-
+/*
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         // Verify that the host activity implements the callback interface
@@ -32,7 +41,14 @@ public class delete_edit_choose extends DialogFragment {
                     + " must implement ChooseDialogListener");
         }
     }
-
+    */
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (!(activity instanceof AlertPositiveListener))
+            throw new RuntimeException("The Activity must implement Callback to be used by ColorChooserDialog.");
+        mAlertPositiveListener = (AlertPositiveListener) activity;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -41,17 +57,26 @@ public class delete_edit_choose extends DialogFragment {
 
         Bundle b=getArguments();
         int position=b.getInt("position");
-
+/*
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
        // LayoutInflater inflater = getActivity().getLayoutInflater();
         builder.setTitle("Choose what you want to do?");
         //builder.setView(inflater.inflate(R.layout.activity_deleteand_edit_events2, null));
 
-        builder.setSingleChoiceItems(RadioButtons.dae,position,null);
+        builder.setSingleChoiceItems(RadioButtons.dae, position, null);
         builder.setPositiveButton("OK", positiveListener);
-        builder.setNegativeButton("Cancel",null);
-
+        builder.setNegativeButton("Cancel", null);
         AlertDialog dialog = builder.create();
+*/
+        boolean wrapInScrollView = true;
+        MaterialDialog material_dialog = new MaterialDialog.Builder(getActivity())
+                .title("Choose your action")
+                .customView(R.layout.activity_delete_edit, wrapInScrollView)
+                .positiveText("OK")
+                .negativeText("Cancel")
+                .build();
+
+
 
 //        TextView tv_edit = (TextView) dialog.findViewById(R.id.text_edit);
 //        TextView tv_delete = (TextView) dialog.findViewById(R.id.text_delete);
@@ -72,7 +97,16 @@ public class delete_edit_choose extends DialogFragment {
 //        });
 
 
-        return dialog;
+        return material_dialog;
+    }
+
+    private void setBackgroundCompat(View view, Drawable d) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            view.setBackground(d);
+        } else {
+            //noinspection deprecation
+            view.setBackgroundDrawable(d);
+        }
     }
 
     DialogInterface.OnClickListener positiveListener=new DialogInterface.OnClickListener() {
@@ -83,5 +117,13 @@ public class delete_edit_choose extends DialogFragment {
             alertPositiveListener.onPositiveClick(position);
         }
     };
+
+
+    public void show(AppCompatActivity context, int preselect) {
+        Bundle args = new Bundle();
+        args.putInt("preselect", preselect);
+        setArguments(args);
+        show(context.getFragmentManager(), "ChooseDialogFragment");
+    }
 
 }
