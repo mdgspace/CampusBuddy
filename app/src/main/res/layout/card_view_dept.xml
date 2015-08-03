@@ -40,19 +40,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_call_black_18dp"
-        android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/imageButtonemail"
-        android:layout_toStartOf="@+id/imageButtonemail"
-        android:id="@+id/imageButtoncall" />
+        android:background="#ffffff"
+        android:id="@+id/imageButtoncall"
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/imageButtonemail"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="10dp" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_email_black_18dp"
         android:layout_alignParentTop="true"
+        android:background="#ffffff"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/imageButtonemail" />
+        android:id="@+id/imageButtonemail"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
