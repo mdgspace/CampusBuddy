@@ -36,7 +36,7 @@ import java.util.List;
 public class TelephoneContacts extends AppCompatActivity{
     int size;
     Toolbar toolbar;
-    String[] names,emailids,contactnos;
+    static String[] names,emailids,contactnos;
     CollapsingToolbarLayout ctoolbar;
     RecyclerView recyclerView;
 //    double[] contactnos;
@@ -101,7 +101,7 @@ try{
             recyclerView=(RecyclerView)findViewById(R.id.recyclerview);
             LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
             recyclerView.setLayoutManager(linearLayoutManager);
-            recyclerView.setAdapter(new MyRecyclerAdapter(generateContacts()));
+            recyclerView.setAdapter(new MyRecyclerAdapter_departmentcontacts(generateContacts()));
 
             recyclerView.setOnScrollListener(new MyScrollListener(this) {
                 @Override
@@ -110,67 +110,67 @@ try{
                 }
             });
 
-            recyclerView.addOnItemTouchListener(new MyItemClickListener(this, new MyItemClickListener.OnItemClickListener() {
-                @Override
-                public void OnItemClick(View v, int i, MotionEvent e) {
-                    final int i1=i;
-                /*
-                    SpringSystem springSystem = SpringSystem.create();
-                    //Add a spring to the system.
-                    final Spring spring = springSystem.createSpring();
-                    final View v1=v;
-                    final int i1=i;
-                    if(e.getAction()== MotionEvent.ACTION_DOWN)
-                    {
-                        spring.addListener(new SimpleSpringListener() {
-
-                            @Override
-                            public void onSpringUpdate(Spring spring) {
-                                // You can observe the updates in the spring
-                                // state by asking its current value in onSpringUpdate.
-                                float value = (float) spring.getCurrentValue();
-                                float scale = 1f - (value * 0.1f);
-                                v1.setScaleX(scale);
-                                v1.setScaleY(scale);                    }
-                        });
-
-                        //Set the spring in motion; moving from 0 to 1
-                        spring.setEndValue(5);
-                    }
-                    else
-                    if(e.getAction()== MotionEvent.ACTION_UP)
-                    {
-                        spring.addListener(new SimpleSpringListener() {
-
-                            @Override
-                            public void onSpringUpdate(Spring spring) {
-                                // You can observe the updates in the spring
-                                // state by asking its current value in onSpringUpdate.
-                                float value = (float) spring.getCurrentValue();
-                                float scale = (value * 0.2f);
-                                v1.setScaleX(scale);
-                                v1.setScaleY(scale);                    }
-                        });
-
-                        //Set the spring in motion; moving from 0 to 1
-                        spring.setEndValue(5);
-                    }
-        */
-                    Handler handler=new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent c = new Intent(TelephoneContacts.this, ContactDetails.class);
-                            c.putExtra("Clicked Contact number", contactnos[i1]);
-                            c.putExtra("Clicked email-id", emailids[i1]);
-                            c.putExtra("Clicked name", names[i1]);
-                            startActivity(c);
-                        }
-                    },500);
-
-
-                }
-            }));
+//            recyclerView.addOnItemTouchListener(new MyItemClickListener(this, new MyItemClickListener.OnItemClickListener() {
+//                @Override
+//                public void OnItemClick(View v, int i, MotionEvent e) {
+//                    final int i1=i;
+//                /*
+//                    SpringSystem springSystem = SpringSystem.create();
+//                    //Add a spring to the system.
+//                    final Spring spring = springSystem.createSpring();
+//                    final View v1=v;
+//                    final int i1=i;
+//                    if(e.getAction()== MotionEvent.ACTION_DOWN)
+//                    {
+//                        spring.addListener(new SimpleSpringListener() {
+//
+//                            @Override
+//                            public void onSpringUpdate(Spring spring) {
+//                                // You can observe the updates in the spring
+//                                // state by asking its current value in onSpringUpdate.
+//                                float value = (float) spring.getCurrentValue();
+//                                float scale = 1f - (value * 0.1f);
+//                                v1.setScaleX(scale);
+//                                v1.setScaleY(scale);                    }
+//                        });
+//
+//                        //Set the spring in motion; moving from 0 to 1
+//                        spring.setEndValue(5);
+//                    }
+//                    else
+//                    if(e.getAction()== MotionEvent.ACTION_UP)
+//                    {
+//                        spring.addListener(new SimpleSpringListener() {
+//
+//                            @Override
+//                            public void onSpringUpdate(Spring spring) {
+//                                // You can observe the updates in the spring
+//                                // state by asking its current value in onSpringUpdate.
+//                                float value = (float) spring.getCurrentValue();
+//                                float scale = (value * 0.2f);
+//                                v1.setScaleX(scale);
+//                                v1.setScaleY(scale);                    }
+//                        });
+//
+//                        //Set the spring in motion; moving from 0 to 1
+//                        spring.setEndValue(5);
+//                    }
+//        */
+//                    Handler handler=new Handler();
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Intent c = new Intent(TelephoneContacts.this, ContactDetails.class);
+//                            c.putExtra("Clicked Contact number", contactnos[i1]);
+//                            c.putExtra("Clicked email-id", emailids[i1]);
+//                            c.putExtra("Clicked name", names[i1]);
+//                            startActivity(c);
+//                        }
+//                    },500);
+//
+//
+//                }
+//            }));
 
 
 //
