@@ -79,7 +79,7 @@
             fab:fab_title="Another one on the right"
             fab:fab_colorPressed="@color/wallet_highlighted_text_holo_dark"
             android:id="@+id/fab_one"
-            android:src="@drawable/ic_launcher"
+            android:src="@drawable/three_day_icon"
 
             />
 

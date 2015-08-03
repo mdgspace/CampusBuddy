@@ -278,6 +278,8 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             endTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR)));
             endTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN)));
 
+
+
             event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)), cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
 //            event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
             event.setColor(getResources().getColor(R.color.colorPrimaryLight));
@@ -405,7 +407,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         Bundle b=new Bundle();
         b.putInt("position",position);
         dialog.setArguments(b);
-        new delete_edit_choose().show(this, 0);
+        new delete_edit_choose().show(this.getFragmentManager(), "delete_and_choose");
 
     }
 
