@@ -53,23 +53,10 @@ public class MainActivity extends AppCompatActivity {
        }
        int sdk = android.os.Build.VERSION.SDK_INT;
 
-        Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
 
-        if (hour<19 && hour>6){
-            RelativeLayout layout =(RelativeLayout)findViewById(R.id.layout);
 
-            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                layout.setBackgroundDrawable( getResources().getDrawable(R.drawable.day_720) );
-            } else {
-                layout.setBackground(getResources().getDrawable(R.drawable.day_720));
-            }
-            //  layout.setBackgroundResource(R.drawable.day_720);
 
-            ImageView img= (ImageView) findViewById(R.id.sun_moon);
-            img.setImageResource(R.drawable.sun_360);
-        }
-        else {
+
             RelativeLayout layout =(RelativeLayout)findViewById(R.id.layout);
             if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                 layout.setBackgroundDrawable( getResources().getDrawable(R.drawable.night_720) );
@@ -78,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
             }
             //  layout.setBackgroundResource(R.drawable.night_720);
 
-            ImageView img= (ImageView) findViewById(R.id.sun_moon);
-            img.setImageResource(R.drawable.moon_360);}
+//            ImageView img= (ImageView) findViewById(R.id.sun_moon);
+//            img.setImageResource(R.drawable.moon_360);
 
 
 

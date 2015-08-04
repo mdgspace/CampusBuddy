@@ -216,7 +216,7 @@ try {
     submitBut.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+int sem_end =1 ;
             Calendar cd = Calendar.getInstance();
 
             Long value = prefs.getLong("ID_KEY", 0);
@@ -232,6 +232,9 @@ try {
                 title = editt_title.getText().toString();
                 details = editt_details.getText().toString();
                 venue = editt_venue.getText().toString();
+
+                if(month >= 6) sem_end =10 ;
+                else sem_end = 5;
 
 
                 if (event_type.equals("once")) {
@@ -253,7 +256,7 @@ try {
                             values);
                     value++;
                 } else if (event_type.equals("weekly")) {
-                    while (cd.get(Calendar.MONTH) <= 10) {
+                    while (cd.get(Calendar.MONTH) <= sem_end) {
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
 
@@ -277,7 +280,7 @@ try {
                     }
                 }
                 else if (event_type.equals("monthly")) {
-                    while (cd.get(Calendar.MONTH) <= 10) {
+                    while (cd.get(Calendar.MONTH) <= sem_end) {
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
 
@@ -302,7 +305,7 @@ try {
 
 
                 } else if (event_type.equals("daily")) {
-                    while (cd.get(Calendar.MONTH) <= 10) {
+                    while (cd.get(Calendar.MONTH) <= sem_end) {
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
 
