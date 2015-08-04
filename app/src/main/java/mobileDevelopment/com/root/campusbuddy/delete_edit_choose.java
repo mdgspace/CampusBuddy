@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 
 /**
@@ -22,6 +23,7 @@ import android.view.View;
 public class delete_edit_choose extends DialogFragment  {
 
     AlertPositiveListener alertPositiveListener;
+    int position;
 
     private AlertPositiveListener mAlertPositiveListener;
     public interface AlertPositiveListener {
@@ -48,10 +50,14 @@ public class delete_edit_choose extends DialogFragment  {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         //getting arguments from the parent activity
-
-        Bundle b=getArguments();
-        int position=b.getInt("position");
-
+        try {
+            Bundle b = getArguments();
+            position = b.getInt("position");
+        }
+        catch (Exception e)
+        {
+//            Toast.makeText(getActivity(),e.toString(),Toast.LENGTH_LONG).show();
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
        // LayoutInflater inflater = getActivity().getLayoutInflater();
         builder.setTitle("Choose what you want to do?");

@@ -276,6 +276,8 @@ int sem_end =1 ;
                                 values);
                         value++;
 
+
+
                         cd.add(Calendar.DATE, 7);
                     }
                 }
@@ -361,7 +363,7 @@ int sem_end =1 ;
                             null);
                     Toast.makeText(NewEvent.this, "Details edited  ", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
-                    Toast.makeText(NewEvent.this, e.toString(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(NewEvent.this, e.toString(), Toast.LENGTH_LONG).show();
                 }
 
                 SharedPreferences.Editor editor = pref_edit.edit();

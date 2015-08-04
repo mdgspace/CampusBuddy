@@ -65,9 +65,9 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
 // 2.2 Set actionBarDrawerToggle as the DrawerListener
 
-        Calendar c=Calendar.getInstance();
-        c.set(Calendar.YEAR,2015);
-        Toast.makeText(this,c.get(Calendar.YEAR)+"",Toast.LENGTH_LONG).show();
+//        Calendar c=Calendar.getInstance();
+//        c.set(Calendar.YEAR,2015);
+//        Toast.makeText(this,c.get(Calendar.YEAR)+"",Toast.LENGTH_LONG).show();
         fa = this;
 
         pref = this.getSharedPreferences(
@@ -102,7 +102,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         try {
             cr = db.query(CalendarDB.CalendarEntry.TABLE_NAME, eventList, null, null, null, null, null);
         } catch (Exception err) {
-            Toast.makeText(timetable_navigation2.this, err.toString(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(timetable_navigation2.this, err.toString(), Toast.LENGTH_LONG).show();
         }
 
 
@@ -131,12 +131,15 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         setupDateTimeInterpreter(false);
         fab_new_event=(FloatingActionButton)findViewById(R.id.fab_new);
         fab_new_event.setTitle("New Event");
+
       //  fab_new_event.setLabelText("New Event");
-        fab_new_event.setBackgroundColor(Color.parseColor("#00ff00"));
         fab_one_day=(FloatingActionButton)findViewById(R.id.fab_one);
         fab_three_day=(FloatingActionButton)findViewById(R.id.fab_three);
         fab_go_today=(FloatingActionButton)findViewById(R.id.fab_today);
 
+//        fab_one_day.setBackgroundTintList(getResources().getColorStateList(R.color.fabcolor));
+//        fab_one_day.setIcon(R.drawable.three_day_icon);
+       // fab_one_day.setIconDrawable(getResources().getDrawable(R.drawable.three_day_icon));
         fab_new_event.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -278,7 +281,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             endTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR)));
             endTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN)));
 
-
+          //  Toast.makeText(this, "In DB : " + cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)) + "In Start time : " + startTime.get(Calendar.DAY_OF_MONTH ), Toast.LENGTH_LONG).show();
 
             event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)), cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
 //            event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
@@ -366,7 +369,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         startActivity(detailsIntent);
 
 
-        Toast.makeText(timetable_navigation2.this, "Event ID: " + ID, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(timetable_navigation2.this, "Event ID: " + ID, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -407,7 +410,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         Bundle b=new Bundle();
         b.putInt("position",position);
         dialog.setArguments(b);
-        new delete_edit_choose().show(this.getFragmentManager(), "delete_and_choose");
+        new delete_edit_choose().show(getFragmentManager(), "delete_and_choose");
 
     }
 
