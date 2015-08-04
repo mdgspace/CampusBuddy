@@ -64,7 +64,7 @@ public class Fblist extends AppCompatActivity{
 
 
         toolbar = (Toolbar) findViewById(R.id.tool_barfblist);
-        DayNightTheme.setToolbar(toolbar);
+//        DayNightTheme.setToolbar(toolbar);
 
 //        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
         toolbar.setTitle("Facebook page list");

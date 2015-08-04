@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,6 +53,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     Long editvalue;
     SQLiteDatabase db_edit;
     Cursor cr_edit;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,12 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
+
+        toolbar = (Toolbar) findViewById(R.id.tool_bar1);
+//        DayNightTheme.setToolbar(toolbar);
+        toolbar.setTitle("Add an Event");
+        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+        setSupportActionBar(toolbar);
 
         db = CalendarDBHelper.getInstance(getApplicationContext()).getWritableDatabase();
         String[] eventList = {
