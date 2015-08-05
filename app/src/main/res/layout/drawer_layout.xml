@@ -55,7 +55,7 @@
         android:id="@+id/right_labels"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        fab:fab_labelStyle="@style/menu_labels_style"
 
         fab:fab_labelsPosition="left"
         android:layout_marginBottom="12dp"
@@ -86,7 +86,7 @@
             />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:layout_width="30dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/mdtp_white"
             fab:fab_size="mini"

@@ -56,6 +56,9 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         super.onCreate(savedInstanceState);
          setContentView(R.layout.drawer_layout);
 
+
+
+
         Calendar cd = Calendar.getInstance();
 
 //        cd.add(Calendar.DAY_OF_MONTH, -1);
