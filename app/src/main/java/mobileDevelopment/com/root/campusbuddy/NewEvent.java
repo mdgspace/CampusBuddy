@@ -43,7 +43,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
  //   CalendarDBHelper mDbHelper;
     ContentValues values;
     int year, day, month, starthour, startminute, endhour, endminute;
-    String title, venue, details, event_type= "once";
+    String title, venue, details;
     Long ID;
 
     boolean isStartTime = true;
@@ -225,28 +225,23 @@ try {
     submitBut.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-int sem_end =1 ;
-            Calendar cd = Calendar.getInstance();
+//            Calendar cd = Calendar.getInstance();
 
             Long value = prefs.getLong("ID_KEY", 0);
             int counter = pref_edit.getInt("DELETE_OR_EDIT", 0);
             if (counter == 0) {
 
-                cd.set(Calendar.YEAR, year);
-                cd.set(Calendar.MONTH, month);
-                cd.set(Calendar.DAY_OF_MONTH, day);
-                cd.set(Calendar.HOUR_OF_DAY,starthour);
-                cd.set(Calendar.MINUTE,startminute);
+//                cd.set(Calendar.YEAR, year);
+//                cd.set(Calendar.MONTH, month);
+//                cd.set(Calendar.DAY_OF_MONTH, day);
+//                cd.set(Calendar.HOUR_OF_DAY,starthour);
+//                cd.set(Calendar.MINUTE,startminute);
 
                 title = editt_title.getText().toString();
                 details = editt_details.getText().toString();
                 venue = editt_venue.getText().toString();
 
-                if(month >= 6) sem_end =10 ;
-                else sem_end = 5;
 
-
-                if (event_type.equals("once")) {
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
 
@@ -264,82 +259,82 @@ int sem_end =1 ;
                             null,
                             values);
                     value++;
-                } else if (event_type.equals("weekly")) {
-                    while (cd.get(Calendar.MONTH) <= sem_end) {
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
+//                } else if (event_type.equals("weekly")) {
+//                    while (cd.get(Calendar.MONTH) <= sem_end) {
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
+//
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, cd.get(Calendar.HOUR_OF_DAY));
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, cd.get(Calendar.MINUTE));
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, details);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, cd.get(Calendar.DAY_OF_MONTH));
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, cd.get(Calendar.MONTH));
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR, cd.get(Calendar.YEAR));
+//
+//                        db.insert(
+//                                CalendarDB.CalendarEntry.TABLE_NAME,
+//                                null,
+//                                values);
+//                        value++;
+//
+//
+//
+//                        cd.add(Calendar.DATE, 7);
+//                    }
+//                }
+//                else if (event_type.equals("monthly")) {
+//                    while (cd.get(Calendar.MONTH) <= sem_end) {
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
+//
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, "10");
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startminute);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, details);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, cd.get(Calendar.DAY_OF_MONTH));
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, cd.get(Calendar.MONTH));
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR, cd.get(Calendar.YEAR));
+//
+//                        db.insert(
+//                                CalendarDB.CalendarEntry.TABLE_NAME,
+//                                null,
+//                                values);
+//                        value++;
+//                        cd.add(Calendar.MONTH, 1);
+//                        Toast.makeText(NewEvent.this, value+ "", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//
+//                } else if (event_type.equals("daily")) {
+//                    while (cd.get(Calendar.MONTH) <= sem_end) {
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
+//
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, starthour);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startminute);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, details);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, cd.get(Calendar.DAY_OF_MONTH));
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, cd.get(Calendar.MONTH));
+//                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR, cd.get(Calendar.YEAR));
+//
+//                        db.insert(
+//                                CalendarDB.CalendarEntry.TABLE_NAME,
+//                                null,
+//                                values);
+//                        value++;
+//
+//                        cd.add(Calendar.DATE, 1);
+//                    }
 
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, cd.get(Calendar.HOUR_OF_DAY));
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, cd.get(Calendar.MINUTE));
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, details);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, cd.get(Calendar.DAY_OF_MONTH));
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, cd.get(Calendar.MONTH));
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR, cd.get(Calendar.YEAR));
 
-                        db.insert(
-                                CalendarDB.CalendarEntry.TABLE_NAME,
-                                null,
-                                values);
-                        value++;
-
-
-
-                        cd.add(Calendar.DATE, 7);
-                    }
-                }
-                else if (event_type.equals("monthly")) {
-                    while (cd.get(Calendar.MONTH) <= sem_end) {
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
-
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, "10");
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startminute);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, details);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, cd.get(Calendar.DAY_OF_MONTH));
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, cd.get(Calendar.MONTH));
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR, cd.get(Calendar.YEAR));
-
-                        db.insert(
-                                CalendarDB.CalendarEntry.TABLE_NAME,
-                                null,
-                                values);
-                        value++;
-                        cd.add(Calendar.MONTH, 1);
-                        Toast.makeText(NewEvent.this, value+ "", Toast.LENGTH_SHORT).show();
-                    }
-
-
-                } else if (event_type.equals("daily")) {
-                    while (cd.get(Calendar.MONTH) <= sem_end) {
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
-
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, starthour);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startminute);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, details);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, cd.get(Calendar.DAY_OF_MONTH));
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, cd.get(Calendar.MONTH));
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR, cd.get(Calendar.YEAR));
-
-                        db.insert(
-                                CalendarDB.CalendarEntry.TABLE_NAME,
-                                null,
-                                values);
-                        value++;
-
-                        cd.add(Calendar.DATE, 1);
-                    }
-
-                }
 
 
                 Toast.makeText(NewEvent.this, "Details submitted  ", Toast.LENGTH_LONG).show();
@@ -465,28 +460,28 @@ catch (Exception e){
 
     }
 
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.radio_once:
-                if (checked)
-                    event_type = "once";
-                    break;
-            case R.id.radio_daily:
-                if (checked)
-                    event_type = "daily";
-                    break;
-            case R.id.radio_weekly:
-                if (checked)
-                    event_type = "weekly";
-                    break;
-            case R.id.radio_monthly:
-                if (checked)
-                    event_type = "monthly";
-                break;
-        }
-    }
+//    public void onRadioButtonClicked(View view) {
+//        // Is the button now checked?
+//        boolean checked = ((RadioButton) view).isChecked();
+//
+//        // Check which radio button was clicked
+//        switch(view.getId()) {
+//            case R.id.radio_once:
+//                if (checked)
+//                    event_type = "once";
+//                    break;
+//            case R.id.radio_daily:
+//                if (checked)
+//                    event_type = "daily";
+//                    break;
+//            case R.id.radio_weekly:
+//                if (checked)
+//                    event_type = "weekly";
+//                    break;
+//            case R.id.radio_monthly:
+//                if (checked)
+//                    event_type = "monthly";
+//                break;
+//        }
+//    }
 }
