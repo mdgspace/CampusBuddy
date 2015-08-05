@@ -128,49 +128,47 @@
     android:layout_height="30dp"
     android:text="Type Of Event: "
     android:id="@+id/text"/>
-    <!--<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="horizontal"-->
-        <!--android:layout_below="@id/text">-->
-            <!--<RadioButton android:id="@+id/radio_once"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="once"-->
-                <!--android:onClick="onRadioButtonClicked"-->
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+        android:layout_below="@id/text">
+            <RadioButton android:id="@+id/radio_once"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="once"
+                android:onClick="onRadioButtonClicked"
 
-                <!--/>-->
-            <!--<RadioButton android:id="@+id/radio_daily"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Daily"-->
-                <!--android:onClick="onRadioButtonClicked"-->
-                <!--/>-->
-            <!--<RadioButton android:id="@+id/radio_weekly"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Weekly"-->
-                <!--android:onClick="onRadioButtonClicked"-->
-               <!--/>-->
-        <!--<RadioButton android:id="@+id/radio_monthly"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Monthly"-->
-            <!--android:onClick="onRadioButtonClicked"-->
-            <!--/>-->
+                />
+            <RadioButton android:id="@+id/radio_daily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Daily"
+                android:onClick="onRadioButtonClicked"
+                />
+            <RadioButton android:id="@+id/radio_weekly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weekly"
+                android:onClick="onRadioButtonClicked"
+               />
+        <RadioButton android:id="@+id/radio_monthly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Monthly"
+            android:onClick="onRadioButtonClicked"
+            />
 
-        <!--</RadioGroup>-->
+        </RadioGroup>
 </RelativeLayout>
-
-</LinearLayout>
+        </LinearLayout>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Submit"
             android:textColor="#000000"
             android:id="@+id/submit"/>
-
-    </LinearLayout>
+</LinearLayout>
 
 
 

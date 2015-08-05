@@ -255,21 +255,21 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
         // Populate the week view with some events.
         List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
-        int sem = 1;
-        int month = Calendar.MONTH;
-        if (month>5) //month values start from 0. So, it is june at 5.
-            sem=1;
-        else
-            sem = 2;
+//        int sem = 1;
+//        int month = Calendar.MONTH;
+//        if (month>5) //month values start from 0. So, it is june at 5.
+//            sem=1;
+//        else
+//            sem = 2;
 
         Calendar startTime, endTime;
         WeekViewEvent event;
         cr.moveToFirst();
-        startTime = Calendar.getInstance();
+
         int day3, month3, year3;
 
         if(cr.getCount() >0){
-
+            startTime = Calendar.getInstance();
 
 
             startTime.set(Calendar.DATE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)));
@@ -283,7 +283,8 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
           //  Toast.makeText(this, "In DB : " + cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)) + "In Start time : " + startTime.get(Calendar.DAY_OF_MONTH ), Toast.LENGTH_LONG).show();
 
-            event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)), cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
+            event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)),
+                    cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
 //            event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
             event.setColor(getResources().getColor(R.color.colorPrimaryLight));
             events.add(event);
@@ -295,21 +296,23 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             //   Toast.makeText(timetable.this,  String.valueOf(cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH))), Toast.LENGTH_LONG).show();
 
 
+            startTime = Calendar.getInstance();
 
+            startTime.set(Calendar.DATE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)));
+            startTime.set(Calendar.MONTH, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH)));
+            startTime.set(Calendar.YEAR, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR)));
+            startTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR)));
+            startTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN)));
+            endTime = (Calendar) startTime.clone();
+            endTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR)));
+            endTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN)));
 
-                startTime.set(Calendar.DATE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)));
-                startTime.set(Calendar.MONTH, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH)));
-                startTime.set(Calendar.YEAR, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR)));
-                startTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR)));
-                startTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN)));
-                endTime = (Calendar) startTime.clone();
-                endTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR)));
-                endTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN)));
+            //  Toast.makeText(this, "In DB : " + cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)) + "In Start time : " + startTime.get(Calendar.DAY_OF_MONTH ), Toast.LENGTH_LONG).show();
 
-                event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)), cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
-//                event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
+            event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)), cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
+//            event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
             event.setColor(getResources().getColor(R.color.colorPrimaryLight));
-                events.add(event);
+            events.add(event);
         }
         return events;
     }
