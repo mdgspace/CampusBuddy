@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,14 +21,15 @@ import android.widget.Toast;
 /**
  * Created by rc on 18/5/15.
  */
-public class delete_edit_choose extends DialogFragment  {
+public class Dialog_for_more_delete extends DialogFragment  {
 
-    AlertPositiveListener alertPositiveListener;
-    int position;
+    AlertPositiveListenerfordelete alertPositiveListener;
+    long position;
+    int a=0;
 
-    private AlertPositiveListener mAlertPositiveListener;
-    public interface AlertPositiveListener {
-        public void onPositiveClick(int position);
+    private AlertPositiveListenerfordelete mAlertPositiveListener;
+    public interface AlertPositiveListenerfordelete{
+        public void onPositiveClickfordelete(int position);
     }
 
     // Use this instance of the interface to deliver action events
@@ -38,7 +40,7 @@ public class delete_edit_choose extends DialogFragment  {
         // Verify that the host activity implements the callback interface
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
-            alertPositiveListener = (AlertPositiveListener) activity;
+            alertPositiveListener = (AlertPositiveListenerfordelete) activity;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString()
@@ -52,21 +54,26 @@ public class delete_edit_choose extends DialogFragment  {
         //getting arguments from the parent activity
         try {
             Bundle b = getArguments();
-            position = b.getInt("position");
+            position = b.getLong("position");
         }
         catch (Exception e)
         {
 //            Toast.makeText(getActivity(),e.toString(),Toast.LENGTH_LONG).show();
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-       // LayoutInflater inflater = getActivity().getLayoutInflater();
-        builder.setTitle("Choose what you want to do?");
+        // LayoutInflater inflater = getActivity().getLayoutInflater();
         //builder.setView(inflater.inflate(R.layout.activity_deleteand_edit_events2, null));
 
-        builder.setSingleChoiceItems(RadioButtons.dae, position, null);
-
-        builder.setPositiveButton("OK", positiveListener);
-        builder.setNegativeButton("Cancel", null);
+        builder.setMultiChoiceItems(R.array.do_multiple, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                if (b == true) {
+                    a = 1;
+                }
+                else a=0;
+            }
+        });
+        builder.setPositiveButton("OK", positiveListenerfordelete);
         AlertDialog dialog = builder.create();
 
 
@@ -93,15 +100,23 @@ public class delete_edit_choose extends DialogFragment  {
 
     }
 
-
-    DialogInterface.OnClickListener positiveListener=new DialogInterface.OnClickListener() {
+    DialogInterface.OnClickListener positiveListenerfordelete=new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            AlertDialog dialog1=(AlertDialog)dialog;
-            int position=dialog1.getListView().getCheckedItemPosition();
-            alertPositiveListener.onPositiveClick(position);
+//            AlertDialog dialog1=(AlertDialog)dialog;
+//            int position=dialog1.getListView().getCheckedItemPosition();
+            alertPositiveListener.onPositiveClickfordelete(a);
         }
     };
+
+//    DialogInterface.OnClickListener positiveListener=new DialogInterface.OnClickListener() {
+//        @Override
+//        public void onClick(DialogInterface dialog, int which) {
+//            AlertDialog dialog1=(AlertDialog)dialog;
+//            int position=dialog1.getListView().getCheckedItemPosition();
+//            alertPositiveListener.onPositiveClick(position);
+//        }
+//    };
 
 
 }

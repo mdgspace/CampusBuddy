@@ -132,7 +132,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-        android:layout_below="@id/text">
+        android:layout_below="@id/text"
+        android:id="@+id/typeofevent">
             <RadioButton android:id="@+id/radio_once"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

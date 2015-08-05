@@ -28,7 +28,7 @@ package mobileDevelopment.com.root.campusbuddy;
         import java.util.Locale;
 
 public class timetable_navigation2 extends ActionBarActivity  implements WeekView.MonthChangeListener,
-        WeekView.EventClickListener, WeekView.EventLongPressListener ,delete_edit_choose.AlertPositiveListener{
+        WeekView.EventClickListener, WeekView.EventLongPressListener ,Dialog_for_more.AlertPositiveListenerforedit,delete_edit_choose.AlertPositiveListener, Dialog_for_more_delete.AlertPositiveListenerfordelete{
 
     SQLiteDatabase db;
     Cursor cr;
@@ -46,6 +46,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
     //String delvalue=null;
     SharedPreferences pref;
     int position=0;
+    boolean  ismultiedit = false;
 
     public static Activity fa;
 
@@ -430,25 +431,72 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             editor.putInt("DELETE_OR_EDIT", 1);
             editor.commit();
 
+            Dialog_for_more d=new Dialog_for_more();
+            Bundle b=new Bundle();
+            b.putLong("position", longClickedID);
+            d.setArguments(b);
+            new Dialog_for_more().show(getFragmentManager(), "delete_and_choose");
+
             //editcounter++;
-            Intent ne=new Intent(timetable_navigation2.this,NewEvent.class);
-            ne.putExtra("value for editing", longClickedID );
-            startActivity(ne);
+//            Intent ne=new Intent(timetable_navigation2.this,NewEvent.class);
+//            ne.putExtra("value for editing", longClickedID );
+//            startActivity(ne);
+
+
         }
         else
         {
             try {
-                db.delete(CalendarDB.CalendarEntry.TABLE_NAME, CalendarDB.CalendarEntry.COLUMN_NAME_ID + "=" + longClickedID, null);
+                Dialog_for_more_delete d=new Dialog_for_more_delete();
+                Bundle b=new Bundle();
+                b.putLong("position",position);
+                d.setArguments(b);
+                new Dialog_for_more_delete().show(getFragmentManager(), "delete_and_choose");
+
+//
+// db.delete(CalendarDB.CalendarEntry.TABLE_NAME, CalendarDB.CalendarEntry.COLUMN_NAME_ID + "=" + longClickedID, null);
             } catch (Exception e) {
                 Toast.makeText(timetable_navigation2.this, e.toString(), Toast.LENGTH_LONG).show();
             }
-            finish();
-            startActivity(getIntent());
+//            finish();
+//            startActivity(getIntent());
 
         }
     }
 
 
+    @Override
+    public void onPositiveClickfordelete(int a) {
+        if(a==1)
+        {
+           Log.e("HEY","HEY"); // Code for check box checked for delete
+        }
+        else
+        {
+
+            db.delete(CalendarDB.CalendarEntry.TABLE_NAME, CalendarDB.CalendarEntry.COLUMN_NAME_ID + "=" + longClickedID, null);
+            finish();
+            startActivity(getIntent());
+            //Code for checkbox not checked for delete
+        }
+    }
+
+    @Override
+    public void onPositiveClickforedit(int position) {
+        if(position==1)
+        {
+            ismultiedit=true; // Code for checkbox checked for edit
+        }
+
+        else
+        {
+            ismultiedit=false;
+        }
+        Intent in=new Intent(timetable_navigation2.this,NewEvent.class);
+        in.putExtra("multi_edit",ismultiedit);
+        startActivity(in);
+        finish();
+    }
 }
 
 

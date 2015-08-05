@@ -27,6 +27,10 @@
 
     </string-array>
 
+    <array name="do_multiple">
+        <item>Do this for all repetitive events</item>
+    </array>
+
     <string-array name="fbpages">
         <item>Cinema Club</item>
         <item>MDG, IITR</item>
