@@ -20,6 +20,7 @@ package mobileDevelopment.com.root.campusbuddy;
         import com.alamkanak.weekview.WeekView;
         import com.alamkanak.weekview.WeekViewEvent;
         import com.getbase.floatingactionbutton.FloatingActionButton;
+        import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
         import java.text.SimpleDateFormat;
         import java.util.ArrayList;
@@ -35,8 +36,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
     ContentValues values;
     long longClickedID;
-
-
+    int[] check_array ;
 
     private static final int TYPE_DAY_VIEW = 1;
     private static final int TYPE_THREE_DAY_VIEW = 2;
@@ -49,6 +49,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
     boolean  ismultiedit = false;
 
     public static Activity fa;
+    FloatingActionsMenu fab_menu;
 
 
     public FloatingActionButton fab_new_event, fab_go_today, fab_three_day, fab_one_day;
@@ -57,10 +58,9 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         super.onCreate(savedInstanceState);
          setContentView(R.layout.drawer_layout);
 
+fab_menu = (FloatingActionsMenu) findViewById(R.id.right_labels);
 
-
-
-        Calendar cd = Calendar.getInstance();
+ Calendar cd = Calendar.getInstance();
 
 //        cd.add(Calendar.DAY_OF_MONTH, -1);
 //       cd.add(cd.DATE, -1);
@@ -108,6 +108,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         } catch (Exception err) {
 //            Toast.makeText(timetable_navigation2.this, err.toString(), Toast.LENGTH_LONG).show();
         }
+        check_array = new int[cr.getCount()];
         cr.moveToFirst();
 
         // Get a reference for the week view in the layout.
@@ -208,10 +209,10 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
         int day3, month3, year3;
 
-        if(cr.getCount() >0){
+        if(cr.getCount() >0 && check_array[0] == 0){
             startTime = Calendar.getInstance();
 
-
+check_array[0] = 1;
             startTime.set(Calendar.DATE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)));
             startTime.set(Calendar.MONTH, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH)));
             startTime.set(Calendar.YEAR, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR)));
@@ -225,17 +226,19 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
             event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)),
                     cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
+            Log.v("Id", ""+event.getId());
+            Log.v("Title", cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)));
 //            event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
             event.setColor(getResources().getColor(R.color.colorPrimaryLight));
             events.add(event);
         }
 
 
-        while(cr.moveToNext()){
+        while(cr.moveToNext() && check_array[cr.getPosition()]==0){
 
             //   Toast.makeText(timetable.this,  String.valueOf(cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH))), Toast.LENGTH_LONG).show();
 
-
+            check_array[cr.getPosition()]=1;
             startTime = Calendar.getInstance();
 
             startTime.set(Calendar.DATE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)));
@@ -306,7 +309,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         detailsIntent.putExtra("title",title);
         detailsIntent.putExtra("start",starthour+ " : " +startmin);
         detailsIntent.putExtra("end", endhour + " : " + endmin);
-        detailsIntent.putExtra("date",day+ " : " + (month+1) + " : " +year);
+        detailsIntent.putExtra("date", day + " : " + (month + 1) + " : " + year);
         detailsIntent.putExtra("type",  type);
 
         startActivity(detailsIntent);
@@ -489,6 +492,15 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         Intent in=new Intent(timetable_navigation2.this,NewEvent.class);
         in.putExtra("multi_edit",ismultiedit);
         startActivity(in);
+
+    }
+    @Override
+    public void onBackPressed(){
+
+        if(fab_menu.isExpanded())
+            fab_menu.collapse();
+       else  super.onBackPressed();
+
 
     }
 }

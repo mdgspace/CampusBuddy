@@ -277,6 +277,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                                     CalendarDB.CalendarEntry.TABLE_NAME,
                                     null,
                                     values);
+                            Log.d("Req. Toast", "Count:- " + cr_edit.getCount()+ " , title:- " + title);
                             value++;
                         } else if (event_type.equals("weekly")) {
                             while (cd.get(Calendar.MONTH) <= 10) {
@@ -386,9 +387,6 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                                                 CalendarDB.CalendarEntry.COLUMN_NAME_VENUE + "=?",
                                         new String[]{original_title, original_starthour, original_startminute, original_endhour, original_endminute, original_venue});
                             */
-
-
-
                                 db.update(CalendarDB.CalendarEntry.TABLE_NAME, values,
                                         CalendarDB.CalendarEntry.COLUMN_NAME_TITLE + "=? AND " +
                                                 CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR + "=? AND " +
