@@ -44,9 +44,9 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     SQLiteDatabase db;
     //   CalendarDBHelper mDbHelper;
     ContentValues values;
-    int year, day, month, starthour, startminute, endhour, endminute,
+    int year, day, month, starthour, startminute, endhour, endminute;
+    String title, venue, details, event_type= "once", original_title, original_venue,
             original_starthour, original_startminute, original_endhour, original_endminute;
-    String title, venue, details, event_type= "once", original_title, original_venue;
     Long ID;
 
     boolean isStartTime = true, ismultiedit = false;
@@ -155,10 +155,10 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             endhour = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR));
             endminute = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN));
 
-            original_starthour = starthour;
-            original_startminute = startminute;
-            original_endhour = endhour;
-            original_endminute = endminute;
+            original_starthour = cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR));
+            original_startminute = cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN));
+            original_endhour = cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR));
+            original_endminute = cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN));
 
             year = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR));
             month = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH));
@@ -298,7 +298,6 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                                         null,
                                         values);
                                 value++;
-
                                 cd.add(Calendar.DATE, 7);
                             }
                         }
@@ -360,72 +359,77 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                         editor.commit();
                     } else {
 
-
-
-                        title = editt_title.getText().toString();
-                        details = editt_details.getText().toString();
-                        venue = editt_venue.getText().toString();
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, editvalue);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, day);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, month);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR, year);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, starthour);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startminute);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, details);
-                        values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
-
-                        if (!(ismultiedit))
+                        if (ismultiedit)
                         {
+
+                            editt_date.setKeyListener(null);
+                            title = editt_title.getText().toString();
+                            details = editt_details.getText().toString();
+                            venue = editt_venue.getText().toString();
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, editvalue);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, starthour);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startminute);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, details);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
 //                            Toast.makeText(NewEvent.this,ismultiedit+"",Toast.LENGTH_LONG).show();
 
+                            try {
+                              /*  db.delete(CalendarDB.CalendarEntry.TABLE_NAME,
+                                        CalendarDB.CalendarEntry.COLUMN_NAME_TITLE + "=? AND " +
+                                                CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR + "=? AND " +
+                                                CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN + "=? AND " +
+                                                CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR + "=? AND " +
+                                                CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN + "=? AND " +
+                                                CalendarDB.CalendarEntry.COLUMN_NAME_VENUE + "=?",
+                                        new String[]{original_title, original_starthour, original_startminute, original_endhour, original_endminute, original_venue});
+                            */
 
-                        try {
+
+
+                                db.update(CalendarDB.CalendarEntry.TABLE_NAME, values,
+                                        CalendarDB.CalendarEntry.COLUMN_NAME_TITLE + "=? AND " +
+                                                CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR + "=? AND " +
+                                                CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN + "=? AND " +
+                                                CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR + "=? AND " +
+                                                CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN + "=? AND " +
+                                                CalendarDB.CalendarEntry.COLUMN_NAME_VENUE + "=?",
+                                        new String[]{original_title, original_starthour, original_startminute, original_endhour, original_endminute, original_venue});
+
+
+                            }
+                            catch (Exception e){
+                                Toast.makeText(NewEvent.this, e.toString(), Toast.LENGTH_LONG).show();
+                                Log.e(e.toString(), "error");
+                            }
+   }
+                    else {
+                            // code for single edit.
+
+                            title = editt_title.getText().toString();
+                            details = editt_details.getText().toString();
+                            venue = editt_venue.getText().toString();
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, editvalue);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DAY, day);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH, month);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR, year);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR, starthour);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN, startminute);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR, endhour);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN, endminute);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, details);
+                            values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
+
                             db.update(
                                     CalendarDB.CalendarEntry.TABLE_NAME,
                                     values,
                                     CalendarDB.CalendarEntry.COLUMN_NAME_ID + "=" + editvalue,
                                     null);
-                            Toast.makeText(NewEvent.this, "Details edited  ", Toast.LENGTH_LONG).show();
-                        } catch (Exception e) {
-                            Toast.makeText(NewEvent.this, e.toString(), Toast.LENGTH_LONG).show();
-                        }
 
 
-                    }
-                    else {
-                            // code for multi edit.
-
-                            cr_edit.moveToFirst();
-                            int count = 0;
-                            while (cr_edit.getLong(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)) != editvalue && count < cr_edit.getCount()) {
-                                cr_edit.moveToNext();
-                                count++;
-                            }
-
-                            while ((cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE))).equals(original_title)
-                                    && (cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR))).equals(original_starthour)
-                                    && (cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN))).equals(original_startminute)
-                                    && (cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR))).equals(original_endhour)
-                                    && (cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN))).equals(original_endminute)
-                                    && (cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE))).equals(original_venue)
-                                    )
-                            {
-                                try
-                                {
-                                    db.update(
-                                            CalendarDB.CalendarEntry.TABLE_NAME,
-                                            values,
-                                            null,
-                                            null);
-                                  //  Toast.makeText(NewEvent.this, "Details edited  ", Toast.LENGTH_LONG).show();
-                                } catch (Exception e) {
-                                    Toast.makeText(NewEvent.this, e.toString(), Toast.LENGTH_LONG).show();
-                                }
-                                cr_edit.moveToNext();
-                            }
                         }
                         SharedPreferences.Editor editor = pref_edit.edit();
                         editor.putInt("DELETE_OR_EDIT", 0);
