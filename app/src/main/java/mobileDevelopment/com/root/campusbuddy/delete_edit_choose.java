@@ -63,7 +63,7 @@ public class delete_edit_choose extends DialogFragment  {
         builder.setTitle("Choose what you want to do?");
         //builder.setView(inflater.inflate(R.layout.activity_deleteand_edit_events2, null));
 
-        builder.setSingleChoiceItems(RadioButtons.dae, position, null);
+        builder.setSingleChoiceItems(RadioButtons.dae, 0, null);
 
         builder.setPositiveButton("OK", positiveListener);
         builder.setNegativeButton("Cancel", null);
@@ -72,23 +72,6 @@ public class delete_edit_choose extends DialogFragment  {
 
 
 
-//        TextView tv_edit = (TextView) dialog.findViewById(R.id.text_edit);
-//        TextView tv_delete = (TextView) dialog.findViewById(R.id.text_delete);
-//
-//        tv_delete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mListener.DeleteClickListener();
-//            dismiss();
-//            }
-//        });
-//        tv_edit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mListener.EditClickListener();
-//                dismiss();
-//            }
-//        });
         return dialog;
 
     }

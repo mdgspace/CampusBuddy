@@ -44,8 +44,9 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     SQLiteDatabase db;
     //   CalendarDBHelper mDbHelper;
     ContentValues values;
-    int year, day, month, starthour, startminute, endhour, endminute;
-    String title, venue, details, event_type= "once";
+    int year, day, month, starthour, startminute, endhour, endminute,
+            original_starthour, original_startminute, original_endhour, original_endminute;
+    String title, venue, details, event_type= "once", original_title, original_venue;
     Long ID;
 
     boolean isStartTime = true, ismultiedit = false;
@@ -126,9 +127,11 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
         if (check==1)
         {
+            radioGroup.setVisibility(View.GONE);
             Intent ne=getIntent();
             Bundle extra=ne.getExtras();
             editvalue = extra.getLong("value for editing");
+
             int count=0;
 
             cr_edit.moveToFirst();
@@ -143,11 +146,20 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             venue = cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE));
             details = cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL));
 
+            original_title =  title;
+            original_venue = venue;
+
             ID = editvalue;
             starthour = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR));
             startminute = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN));
             endhour = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR));
             endminute = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN));
+
+            original_starthour = starthour;
+            original_startminute = startminute;
+            original_endhour = endhour;
+            original_endminute = endminute;
+
             year = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR));
             month = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH));
             day = cr_edit.getInt(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY));
@@ -348,13 +360,9 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                         editor.commit();
                     } else {
 
-                        radioGroup.setVisibility(View.GONE);
 
-                        if (!(ismultiedit))
-                        {
-                            Toast.makeText(NewEvent.this,ismultiedit+"",Toast.LENGTH_LONG).show();
 
-                            title = editt_title.getText().toString();
+                        title = editt_title.getText().toString();
                         details = editt_details.getText().toString();
                         venue = editt_venue.getText().toString();
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, editvalue);
@@ -369,6 +377,11 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL, details);
                         values.put(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE, venue);
 
+                        if (!(ismultiedit))
+                        {
+//                            Toast.makeText(NewEvent.this,ismultiedit+"",Toast.LENGTH_LONG).show();
+
+
                         try {
                             db.update(
                                     CalendarDB.CalendarEntry.TABLE_NAME,
@@ -380,15 +393,43 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                             Toast.makeText(NewEvent.this, e.toString(), Toast.LENGTH_LONG).show();
                         }
 
+
+                    }
+                    else {
+                            // code for multi edit.
+
+                            cr_edit.moveToFirst();
+                            int count = 0;
+                            while (cr_edit.getLong(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)) != editvalue && count < cr_edit.getCount()) {
+                                cr_edit.moveToNext();
+                                count++;
+                            }
+
+                            while ((cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE))).equals(original_title)
+                                    && (cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR))).equals(original_starthour)
+                                    && (cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN))).equals(original_startminute)
+                                    && (cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR))).equals(original_endhour)
+                                    && (cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN))).equals(original_endminute)
+                                    && (cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE))).equals(original_venue)
+                                    )
+                            {
+                                try
+                                {
+                                    db.update(
+                                            CalendarDB.CalendarEntry.TABLE_NAME,
+                                            values,
+                                            null,
+                                            null);
+                                  //  Toast.makeText(NewEvent.this, "Details edited  ", Toast.LENGTH_LONG).show();
+                                } catch (Exception e) {
+                                    Toast.makeText(NewEvent.this, e.toString(), Toast.LENGTH_LONG).show();
+                                }
+                                cr_edit.moveToNext();
+                            }
+                        }
                         SharedPreferences.Editor editor = pref_edit.edit();
                         editor.putInt("DELETE_OR_EDIT", 0);
                         editor.commit();
-                    }
-                    else {
-                            Toast.makeText(NewEvent.this,ismultiedit+"",Toast.LENGTH_LONG).show();
-                            Log.e("HEY","HEY");
-                            // code for multi edit.
-                        }
 
                     }
 
@@ -413,12 +454,15 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     public void onBackPressed()
     {
         super.onBackPressed();
-        overridePendingTransition(R.anim.fade_in, R.anim.slide_out_up);
-        /*
+
+
         timetable_navigation2.fa.finish();
+        finish();
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_out_up);
+
+
         Intent ttIntent = new Intent(NewEvent.this, timetable_navigation2.class);
         startActivity(ttIntent);
-        */
         finish();
 
 

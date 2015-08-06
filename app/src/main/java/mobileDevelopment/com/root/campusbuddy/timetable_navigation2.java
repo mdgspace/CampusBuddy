@@ -108,14 +108,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         } catch (Exception err) {
 //            Toast.makeText(timetable_navigation2.this, err.toString(), Toast.LENGTH_LONG).show();
         }
-
-
-
-
-
         cr.moveToFirst();
-
-
 
         // Get a reference for the week view in the layout.
         mWeekView = (WeekView) findViewById(R.id.weekView);
@@ -196,63 +189,6 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         });
 
     }
-
-
-
-    /*
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
-           // Toast.makeText(timetable_navigation2.this, ((TextView)view).getText(), Toast.LENGTH_LONG).show();
-           if (position==0){
-               mWeekView.goToToday();
-           }
-            if (position==1){
-                if (mWeekViewType != TYPE_DAY_VIEW) {
-                    //item.setChecked(!item.isChecked());
-                    mWeekViewType = TYPE_DAY_VIEW;
-                    mWeekView.setNumberOfVisibleDays(1);
-
-                    // Lets change some dimensions to best fit the view.
-                    mWeekView.setColumnGap((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()));
-                    mWeekView.setTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
-                    mWeekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
-                }
-            }
-            if (position==2){
-                if (mWeekViewType != TYPE_THREE_DAY_VIEW) {
-                   // item.setChecked(!item.isChecked());
-                    mWeekViewType = TYPE_THREE_DAY_VIEW;
-                    mWeekView.setNumberOfVisibleDays(3);
-
-                    // Lets change some dimensions to best fit the view.
-                    mWeekView.setColumnGap((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics()));
-                    mWeekView.setTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
-                    mWeekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
-                }
-            }
-            if (position==3){
-                if (mWeekViewType != TYPE_WEEK_VIEW) {
-                   // item.setChecked(!item.isChecked());
-                    mWeekViewType = TYPE_WEEK_VIEW;
-                    mWeekView.setNumberOfVisibleDays(7);
-
-                    // Lets change some dimensions to best fit the view.
-                    mWeekView.setColumnGap((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getResources().getDisplayMetrics()));
-                    mWeekView.setTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics()));
-                    mWeekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 10, getResources().getDisplayMetrics()));
-                }
-            }
-
-
-
-
-
-        }
-
-    }
-    */
-
 
     @Override
     public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
@@ -415,7 +351,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         longClickedID = event.getId();
         delete_edit_choose dialog=new delete_edit_choose();
         Bundle b=new Bundle();
-        b.putInt("position",position);
+        b.putInt("position",0);
         dialog.setArguments(b);
         new delete_edit_choose().show(getFragmentManager(), "delete_and_choose");
 
@@ -435,7 +371,8 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             Bundle b=new Bundle();
             b.putLong("position", longClickedID);
             d.setArguments(b);
-            new Dialog_for_more().show(getFragmentManager(), "delete_and_choose");
+            new Dialog_for_more().show(getFragmentManager(), "edit_and_choose");
+
 
             //editcounter++;
 //            Intent ne=new Intent(timetable_navigation2.this,NewEvent.class);
@@ -467,13 +404,70 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
     @Override
     public void onPositiveClickfordelete(int a) {
-        if(a==1)
-        {
-           Log.e("HEY","HEY"); // Code for check box checked for delete
+        if(a==1) {
+            cr.moveToFirst();
+            int count = 0;
+            while (cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)) != longClickedID && count < cr.getCount()) {
+                cr.moveToNext();
+                count++;
         }
+            String original_title = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)),
+                    original_startminute = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN)),
+                    original_starthour = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR)),
+                    original_endhour = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR)),
+                    original_endminute = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN)),
+                    original_venue = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE));
+          /*  while ((cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE))).equals(original_title)
+                    && (cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR))).equals(original_starthour)
+                    && (cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN))).equals(original_startminute)
+                    && (cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR))).equals(original_endhour)
+                    && (cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN))).equals(original_endminute)
+                    && (cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE))).equals(original_venue)
+                    ) {
+                try {
+                    db.delete(CalendarDB.CalendarEntry.TABLE_NAME, CalendarDB.CalendarEntry.COLUMN_NAME_ID + "=" + cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)), null);
+                    //  Toast.makeText(NewEvent.this, "Details edited  ", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(timetable_navigation2.this, e.toString(), Toast.LENGTH_LONG).show();
+                }
+             //   db.delete(CalendarDB.CalendarEntry.TABLE_NAME, null, null);
+
+              */
+            try {
+               /*  db.delete(CalendarDB.CalendarEntry.TABLE_NAME,
+                                 CalendarDB.CalendarEntry.COLUMN_NAME_TITLE + "=" + original_title + "," +
+
+                                 CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR + "=" + original_starthour + "," +
+                                 CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN + "=" + original_startminute + "," +
+                                 CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR + "=" + original_endhour + "," +
+                                 CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN + "=" + original_endminute + " AND " +
+                                 CalendarDB.CalendarEntry.COLUMN_NAME_VENUE + "=" + original_venue,
+                          null);
+
+*/
+
+                db.delete(CalendarDB.CalendarEntry.TABLE_NAME,
+                        CalendarDB.CalendarEntry.COLUMN_NAME_TITLE + "=? AND " + CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR + "=? AND " +
+                                CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN + "=? AND " + CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR + "=? AND " +
+                                CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN + "=? AND " +
+                                CalendarDB.CalendarEntry.COLUMN_NAME_VENUE + "=?",
+                        new String[]{original_title, original_starthour, original_startminute, original_endhour, original_endminute, original_venue});
+            }
+            catch (Exception e){
+                Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+                Log.e(e.toString(), "error");
+            }
+
+                finish();
+            startActivity(getIntent());
+
+
+            Log.e("HEY", "HEY"); // Code for check box checked for delete
+            }
+
+
         else
         {
-
             db.delete(CalendarDB.CalendarEntry.TABLE_NAME, CalendarDB.CalendarEntry.COLUMN_NAME_ID + "=" + longClickedID, null);
             finish();
             startActivity(getIntent());
@@ -495,7 +489,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         Intent in=new Intent(timetable_navigation2.this,NewEvent.class);
         in.putExtra("multi_edit",ismultiedit);
         startActivity(in);
-        finish();
+
     }
 }
 

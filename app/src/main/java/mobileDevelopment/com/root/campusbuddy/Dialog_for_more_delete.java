@@ -54,7 +54,7 @@ public class Dialog_for_more_delete extends DialogFragment  {
         //getting arguments from the parent activity
         try {
             Bundle b = getArguments();
-            position = b.getLong("position");
+        //    position = b.getLong("position");
         }
         catch (Exception e)
         {
