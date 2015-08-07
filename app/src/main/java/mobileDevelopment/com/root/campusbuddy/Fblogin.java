@@ -59,7 +59,7 @@ public class Fblogin extends ActionBarActivity {
                                 Toast.makeText(Fblogin.this, exception.toString(), Toast.LENGTH_LONG).show();
                             }
                         });
-                LoginManager.getInstance().logInWithReadPermissions(Fblogin.this, Arrays.asList("public_profile, user_groups"));
+                LoginManager.getInstance().logInWithReadPermissions(Fblogin.this, Arrays.asList("public_profile"));
 
                    }
 

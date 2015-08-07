@@ -18,7 +18,7 @@ public class DetailsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        tv = (TextView) findViewById(R.id.details_textview_activity);
+        tv = (TextView) findViewById(R.id.details_Venue);
         Intent detailsIntent = getIntent();
         Bundle extras = detailsIntent.getExtras();
         String details = extras.getString("details");
