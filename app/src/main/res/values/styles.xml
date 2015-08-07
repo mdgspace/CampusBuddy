@@ -16,7 +16,7 @@
         <!--<item name="android:textColor">#000000</item>-->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
         <item name="colorAccent">@color/accent</item>
         <item name="android:textColorPrimary">@color/my_primary_text</item>
         <item name="android:textColorSecondary">@color/my_secondary_text</item>
@@ -26,6 +26,11 @@
 
     <style name="PopupMenu" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:textColorPrimary">#000000</item>
+    </style>
+
+    <style name="menu_labels_style">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
 

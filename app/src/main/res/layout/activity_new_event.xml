@@ -9,12 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="Details Of Event"-->
+            <!--android:textSize="24sp"/>-->
+
+        <include
+            android:id="@+id/tool_bar1"
+            layout="@layout/tool_bar"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Details Of Event"
-            android:textSize="24sp"/>
+            android:layout_width="match_parent"
+             />
 
      <android.support.design.widget.TextInputLayout
 
@@ -29,6 +36,7 @@
                     android:id="@+id/edit_title"
                     android:hint="Title"
                     android:textColor="#000000"
+                    android:singleLine="true"
                     />
             </android.support.design.widget.TextInputLayout>
 
@@ -46,6 +54,7 @@
                 android:id="@+id/edit_date"
                 android:hint="Date"
                 android:textColor="#000000"
+                android:singleLine="true"
                 />
         </android.support.design.widget.TextInputLayout>
 
@@ -63,6 +72,7 @@
                 android:id="@+id/edit_start_time"
                 android:hint="Starting Time"
                 android:textColor="#000000"
+                android:singleLine="true"
                 />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
@@ -79,6 +89,7 @@
                 android:id="@+id/edit_end_time"
                 android:hint="Ending Time"
                 android:textColor="#000000"
+                android:singleLine="true"
                 />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
@@ -93,7 +104,9 @@
                 android:text=""
                 android:id="@+id/edit_details"
                 android:hint="Details"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                android:singleLine="true"
+                />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
 
@@ -107,7 +120,8 @@
                 android:text=""
                 android:id="@+id/edit_venue"
                 android:hint="Venue"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                android:singleLine="true"/>
         </android.support.design.widget.TextInputLayout>
     <LinearLayout
         android:orientation="horizontal"
@@ -125,7 +139,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-        android:layout_below="@id/text">
+        android:layout_below="@id/text"
+        android:id="@+id/typeofevent">
             <RadioButton android:id="@+id/radio_once"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -154,16 +169,14 @@
 
         </RadioGroup>
 </RelativeLayout>
-
-</LinearLayout>
+        </LinearLayout>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Submit"
             android:textColor="#000000"
             android:id="@+id/submit"/>
-
-    </LinearLayout>
+</LinearLayout>
 
 
 

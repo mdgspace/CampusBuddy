@@ -15,18 +15,18 @@
         android:id="@+id/weekView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        app:eventTextColor="@android:color/white"
         app:textSize="12sp"
         app:hourHeight="60dp"
         app:headerColumnPadding="8dp"
-
+        app:headerColumnTextColor="#8f000000"
         app:headerRowPadding="12dp"
         app:columnGap="8dp"
         app:noOfVisibleDays="3"
-
         app:dayBackgroundColor="#05000000"
         app:todayBackgroundColor="#1848adff"
         app:headerColumnBackground="#ffffffff"
+        app:overlappingEventGap="0dp"
         />
 
 
@@ -55,7 +55,7 @@
         android:id="@+id/right_labels"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        fab:fab_labelStyle="@style/menu_labels_style"
 
         fab:fab_labelsPosition="left"
         android:layout_marginBottom="12dp"
@@ -74,13 +74,15 @@
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/mdtp_white"
+            fab:fab_colorNormal="#E8E8E8"
             fab:fab_size="mini"
-            fab:fab_title="Another one on the right"
-            fab:fab_colorPressed="@color/wallet_highlighted_text_holo_dark"
+            app:elevation="0dp"
+            fab:fab_title="One day view"
+            fab:fab_colorPressed="#E8E8E8"
             android:id="@+id/fab_one"
-            android:src="@drawable/three_day_icon"
-
+            app:borderWidth="0dp"
+            app:backgroundTint="#E8E8E8"
+            android:src="@drawable/ic_one_day"
             />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
@@ -91,18 +93,20 @@
             fab:fab_title="Three day view"
             fab:fab_colorPressed="@color/wallet_highlighted_text_holo_dark"
             android:id="@+id/fab_three"
-            android:src="@drawable/ic_launcher"
-            />
+            android:src="@drawable/ic_three_day"
+
+            android:paddingBottom="10dp" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/mdtp_white"
             fab:fab_size="mini"
-            fab:fab_title="Today"
+            fab:fab_title="Go to Today"
             fab:fab_colorPressed="@color/wallet_highlighted_text_holo_dark"
+
             android:id="@+id/fab_today"
-            android:src="@drawable/ic_launcher"
+            android:src="@drawable/ic_two_day"
             />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
@@ -113,12 +117,12 @@
             fab:fab_title="Add new Event"
             fab:fab_colorPressed="@color/wallet_highlighted_text_holo_dark"
             android:id="@+id/fab_new"
-            android:src="@drawable/ic_launcher"
+            android:src="@drawable/ic_create"
             />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
-
+    
 
     </RelativeLayout>
     <!-- The navigation drawer -->

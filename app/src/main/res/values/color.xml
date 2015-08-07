@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <color name="black_semi_transparent">#B2000000</color>
+    <color name="white">#fafafa</color>
     <color name="colorPrimary">#ED1C24</color>
     <color name="colorPrimaryDark">#CC0000</color>
     <color name="colorPrimaryLight">#B3E5FC</color>

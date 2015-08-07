@@ -46,7 +46,7 @@ public class Deptt_list extends AppCompatActivity{
 
        // list=(ListView)findViewById(R.id.list);
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        DayNightTheme.setToolbar(toolbar);
+//        DayNightTheme.setToolbar(toolbar);
 //        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
         toolbar.setTitle("List of departments");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));

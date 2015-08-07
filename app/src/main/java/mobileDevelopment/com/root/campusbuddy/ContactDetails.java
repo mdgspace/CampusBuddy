@@ -33,7 +33,7 @@ public class ContactDetails extends ActionBarActivity {
         setContentView(R.layout.activity_contact_details);
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar1);
-        DayNightTheme.setToolbar(toolbar);
+//        DayNightTheme.setToolbar(toolbar);
         toolbar.setTitle(getIntent().getExtras().getString("Clicked name"));
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);

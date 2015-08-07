@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 
 /**
@@ -22,6 +23,7 @@ import android.view.View;
 public class delete_edit_choose extends DialogFragment  {
 
     AlertPositiveListener alertPositiveListener;
+    int position;
 
     private AlertPositiveListener mAlertPositiveListener;
     public interface AlertPositiveListener {
@@ -48,16 +50,21 @@ public class delete_edit_choose extends DialogFragment  {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         //getting arguments from the parent activity
-
-        Bundle b=getArguments();
-        int position=b.getInt("position");
-
+        try {
+            Bundle b = getArguments();
+            position = b.getInt("position");
+        }
+        catch (Exception e)
+        {
+//            Toast.makeText(getActivity(),e.toString(),Toast.LENGTH_LONG).show();
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
        // LayoutInflater inflater = getActivity().getLayoutInflater();
         builder.setTitle("Choose what you want to do?");
         //builder.setView(inflater.inflate(R.layout.activity_deleteand_edit_events2, null));
 
-        builder.setSingleChoiceItems(RadioButtons.dae, position, null);
+        builder.setSingleChoiceItems(RadioButtons.dae, 0, null);
+
         builder.setPositiveButton("OK", positiveListener);
         builder.setNegativeButton("Cancel", null);
         AlertDialog dialog = builder.create();
@@ -65,23 +72,6 @@ public class delete_edit_choose extends DialogFragment  {
 
 
 
-//        TextView tv_edit = (TextView) dialog.findViewById(R.id.text_edit);
-//        TextView tv_delete = (TextView) dialog.findViewById(R.id.text_delete);
-//
-//        tv_delete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mListener.DeleteClickListener();
-//            dismiss();
-//            }
-//        });
-//        tv_edit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mListener.EditClickListener();
-//                dismiss();
-//            }
-//        });
         return dialog;
 
     }
