@@ -55,7 +55,7 @@ public class TelephoneContacts extends AppCompatActivity{
             toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            
+
 
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
