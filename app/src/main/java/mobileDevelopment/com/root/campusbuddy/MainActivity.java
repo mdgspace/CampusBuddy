@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -58,8 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-            RelativeLayout layout =(RelativeLayout)findViewById(R.id.layout);
+       LinearLayout layout =(LinearLayout)findViewById(R.id.layout);
             if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                 layout.setBackgroundDrawable( getResources().getDrawable(R.drawable.night_720) );
             } else {

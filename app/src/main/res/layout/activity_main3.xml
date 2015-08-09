@@ -1,64 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/layout"
-    android:background="@drawable/night_720">
+    android:background="@drawable/night_720"
+    >
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/text_CB"
         android:gravity= "center"
-
         android:src = "@drawable/text3"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/tdbtn"
-        android:layout_alignEnd="@+id/tdbtn" />
-
-
-
-
+        android:layout_marginTop="10dp"
+        />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:id="@+id/tdbtn"
-
-
+        android:layout_marginTop="15dp"
         android:src="@drawable/rsz_3ic_contacts"
-        android:layout_above="@+id/mapBut1"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_gravity="right" />
+
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:id="@+id/fbbtn"
         android:src="@drawable/rsz_ic_notices"
-        android:layout_above="@+id/imageView6"
-        android:layout_alignRight="@+id/mapBut1"
-        android:layout_alignEnd="@+id/mapBut1" />
+        android:layout_marginTop="15dp" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/rsz_ic_calendar"
         android:id="@+id/tnBut2"
-        android:layout_above="@+id/fbbtn"
+
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="right" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
        android:src="@drawable/rsz_ic_map"
         android:id="@+id/mapBut1"
-
-        android:layout_above="@+id/tnBut2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp" />
         <!--android:layout_alignRight="@+id/progressBar"-->
         <!--android:layout_alignEnd="@+id/progressBar" />-->
     <!--<Button-->
@@ -68,15 +59,20 @@
         <!--android:text="Broadcast Intent"-->
         <!--android:onClick="broadcastIntent"-->
         <!--android:layout_centerHorizontal="true" />-->
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView6"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/main_building_720"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView6"
+            android:layout_gravity="center_horizontal|bottom"
+            android:src="@drawable/main_building_720"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
 
     <!--<ProgressBar-->
         <!--android:layout_width="wrap_content"-->
@@ -85,4 +81,4 @@
         <!--android:layout_below="@+id/fbbtn"-->
         <!--android:layout_alignRight="@+id/fbbtn"-->
         <!--android:layout_alignEnd="@+id/fbbtn" />-->
-</RelativeLayout>
+</LinearLayout>
