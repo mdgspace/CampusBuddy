@@ -2,6 +2,7 @@ package mobileDevelopment.com.root.campusbuddy;
 
         import android.content.ContentValues;
         import android.content.Context;
+        import android.content.DialogInterface;
         import android.content.Intent;
         import android.content.SharedPreferences;
         import android.database.Cursor;
@@ -11,9 +12,12 @@ package mobileDevelopment.com.root.campusbuddy;
         import android.os.Bundle;
         import android.app.Activity;
         import android.support.v7.app.ActionBarActivity;
+        import android.support.v7.app.AlertDialog;
         import android.util.Log;
         import android.util.TypedValue;
+        import android.view.LayoutInflater;
         import android.view.View;
+        import android.widget.TextView;
         import android.widget.Toast;
 
         import com.alamkanak.weekview.DateTimeInterpreter;
@@ -302,7 +306,57 @@ check_array[0] = 1;
             }
         }
 
-        Intent detailsIntent = new Intent(timetable_navigation2
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+// ...Irrelevant code for customizing the buttons and title
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.activity_details, null);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setTitle("Event Details");
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        TextView tv_venue = (TextView) dialogView.findViewById(R.id.details_Venue);
+        if(!(venue.equals(null))){
+            tv_venue.setVisibility(View.VISIBLE);
+            tv_venue.setText("Venue: " + venue);
+        }
+        else {
+            tv_venue.setVisibility(View.GONE);
+        }
+
+
+        TextView tv_details = (TextView) dialogView.findViewById(R.id.details_details);
+        if(!(detail.equals(null))) {
+            tv_details.setVisibility(View.VISIBLE);
+            tv_details.setText("Details: " + detail);
+        }
+            else {
+                tv_details.setVisibility(View.GONE);
+            }
+
+        TextView tv_date = (TextView) dialogView.findViewById(R.id.details_date);
+        tv_date.setText("Date: " + day + "-" + month + "-" + year);
+
+        TextView tv_title = (TextView) dialogView.findViewById(R.id.details_title);
+        if(!(title.equals(null))) {
+            tv_title.setVisibility(View.VISIBLE);
+            tv_title.setText("Title: " + title);
+        }
+        else {
+                tv_title.setVisibility(View.GONE);
+            }
+
+        TextView tv_time = (TextView) dialogView.findViewById(R.id.details_time);
+            tv_time.setText("Time: " + starthour + ":" + startmin + " - " + endhour + "-" + endmin);
+
+
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+        /*Intent detailsIntent = new Intent(timetable_navigation2
                 .this, DetailsActivity.class);
         detailsIntent.putExtra("details",detail);
         detailsIntent.putExtra("venue",venue);
@@ -313,7 +367,7 @@ check_array[0] = 1;
         detailsIntent.putExtra("type",  type);
 
         startActivity(detailsIntent);
-
+*/
 
 //        Toast.makeText(timetable_navigation2.this, "Event ID: " + ID, Toast.LENGTH_SHORT).show();
 

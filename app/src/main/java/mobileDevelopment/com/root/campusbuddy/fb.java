@@ -79,28 +79,29 @@ public class fb extends AppCompatActivity{
 //            startActivity(i);
 //        }
 
-        ids=new String[21];
+        ids=new String[22];
         ids[12]= "415004402015833"; // IIT Roorkee
         ids[1]="198343570325312";//id for mdg
         ids[2]="182484805131346";//id for SDSLabs
         ids[3]="257702554250168";//id for robocon
-        ids[4]="265096099170"; // edc
-        ids[5]="671125706342859"; // Notice Board
-        ids[6]="418543801611643"; //  Audio Section
-        ids[7]="420363998145999"; // Sanskriti Club
-        ids[8]="146825225353259"; // Group For Interactive Learning, IITR
-        ids[9]="754869404569818"; // ASHRAE
-        ids[10]="217963184943488"; // Cognizance
-        ids[11]="317158211638196"; // Photography Section
+        ids[4]="353701311987";//id for IMG
+        ids[5]="265096099170"; // edc
+        ids[6]="671125706342859"; // Notice Board
+        ids[7]="418543801611643"; //  Audio Section
+        ids[8]="420363998145999"; // Sanskriti Club
+        ids[9]="146825225353259"; // Group For Interactive Learning, IITR
+        ids[10]="754869404569818"; // ASHRAE
+        ids[11]="217963184943488"; // Cognizance
+        ids[13]="317158211638196"; // Photography Section
         ids[0]="231275190406200"; // Cinema Club
-        ids[13]="369513426410599"; // TECHNOLOGIC 2015
-        ids[14]="503218879766649"; // ELECTRONICS SECTION
-        ids[15]="242919515859218"; // ncc
-        ids[16]="100641016663545"; // CINEMATIC SECTION
-        ids[17]="567441813288417"; // FINE ARTS SECTION
-        ids[18]="272394492879208"; // ANUSHRUTI
-        ids[19]="1410660759172170"; // RHAPSODY
-        ids[20]="292035034247"; // SHARE
+        ids[14]="369513426410599"; // TECHNOLOGIC 2015
+        ids[15]="503218879766649"; // ELECTRONICS SECTION
+        ids[16]="242919515859218"; // ncc
+        ids[17]="100641016663545"; // CINEMATIC SECTION
+        ids[18]="567441813288417"; // FINE ARTS SECTION
+        ids[19]="272394492879208"; // ANUSHRUTI
+        ids[20]="1410660759172170"; // RHAPSODY
+        ids[21]="292035034247"; // SHARE
 
         posts=new ArrayList<Post>();
 

@@ -78,6 +78,7 @@ public class Fblist extends AppCompatActivity{
         fbpageslikedmap.put("mdg, IITR","415004402015833");
         fbpageslikedmap.put("SDSLabs","182484805131346");
         fbpageslikedmap.put("Team robocon","257702554250168");
+        fbpageslikedmap.put("IMG","353701311987");
         fbpageslikedmap.put("edc","265096099170");
         fbpageslikedmap.put("General Notice Board","671125706342859");
         fbpageslikedmap.put("Audio Section","418543801611643");
@@ -95,6 +96,7 @@ public class Fblist extends AppCompatActivity{
         fbpageslikedmap.put("Anushruti","272394492879208");
         fbpageslikedmap.put("Rhapsody","1410660759172170");
         fbpageslikedmap.put("SHARE IITR","292035034247");
+
 
 //        listofvalues = new ArrayList<String>(fbpageslikedmap.values());
 
@@ -160,9 +162,16 @@ public class Fblist extends AppCompatActivity{
                 }
 
                 PagesSelected.writeSelectedPageIds(Fblist.this, fbpagesliked);
+                if(fbpagesliked==null)
+                {
+                    Toast.makeText(Fblist.this,"Please Select atleast one page to get the feeds",Toast.LENGTH_LONG).show();
+                    onResume();
+                }
+                else
+                {
                 Intent intent = new Intent(Fblist.this, fb.class);
                 finish();
-                startActivity(intent);
+                startActivity(intent);}
 //                try{
 //                    fbpagesliked=new boolean[listview.getChildCount()];
 //                    for(int i=0;i<listview.getChildCount();i++)

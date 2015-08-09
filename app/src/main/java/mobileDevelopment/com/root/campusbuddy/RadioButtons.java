@@ -5,7 +5,7 @@ package mobileDevelopment.com.root.campusbuddy;
  */
 public class RadioButtons {
     static String[] dae=new String[]{
-            "Edit Events",
-            "Delete Events"
+            "Edit Event",
+            "Delete Event"
     };
 }
