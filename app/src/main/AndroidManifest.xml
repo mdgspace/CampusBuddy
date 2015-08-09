@@ -29,13 +29,13 @@
         android:name="com.example.googlemapstesting.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
-    <supports-screens
-        android:anyDensity="true"
-        android:largeScreens="true"
-        android:normalScreens="true"
-        android:resizeable="true"
-        android:smallScreens="true"
-        android:xlargeScreens="true" />
+    <!--<supports-screens-->
+        <!--android:anyDensity="true"-->
+        <!--android:largeScreens="true"-->
+        <!--android:normalScreens="true"-->
+        <!--android:resizeable="true"-->
+        <!--android:smallScreens="true"-->
+        <!--android:xlargeScreens="true" />-->
 
     <application
         android:allowBackup="true"
