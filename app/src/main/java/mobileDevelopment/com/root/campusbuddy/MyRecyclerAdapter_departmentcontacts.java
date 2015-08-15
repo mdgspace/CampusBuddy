@@ -40,11 +40,11 @@ public class MyRecyclerAdapter_departmentcontacts extends RecyclerView.Adapter<C
         boolean valid_email = true;
         if(TelephoneContacts.contactnos[position] == null || TelephoneContacts.contactnos[position].length() == 0){
             valid_phone_number = false;
-            holder.call.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_call_black_18dp));
+            holder.call.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_call_grey_18dp));
         }
         if(TelephoneContacts.emailids[position] == null || TelephoneContacts.emailids[position].length() == 0){
             valid_email = false;
-            holder.email.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_call_black_18dp));
+            holder.email.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_email_grey_18dp));
         }
         final boolean call_status = valid_phone_number;
         final boolean email_status = valid_email;
