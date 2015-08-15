@@ -34,7 +34,7 @@ public class PagesSelected {
 
     public static ArrayList<String> getSelectedPageIds(Context context){
         try {
-            FileInputStream inputStream = null;
+            FileInputStream inputStream;
             ArrayList<String> idList = new ArrayList<String>();
             inputStream = context.openFileInput(preferences_file);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
