@@ -1,14 +1,11 @@
 package mobileDevelopment.com.root.campusbuddy;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.etsy.android.grid.util.DynamicHeightImageView;
@@ -71,13 +68,13 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
         Log.v("FBMessage", post.getMessage());
         Log.e("FBPic", post.getURL());
 
+        holder.fbpostpic.setVisibility(View.VISIBLE);
         if(post.getURL().trim().startsWith("http")){
             holder.fbpostpic.setHeightRatio(1);
             Picasso.with(context).load(post.getURL()).fit().centerCrop().into(holder.fbpostpic);
 
         } else {
             holder.fbpostpic.setVisibility(View.GONE);
-
         }
 
 
