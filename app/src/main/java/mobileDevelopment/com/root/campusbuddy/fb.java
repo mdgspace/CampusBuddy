@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.etsy.android.grid.StaggeredGridView;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.GraphRequest;
+import com.facebook.GraphRequestBatch;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 
@@ -22,7 +24,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 
 public class fb extends AppCompatActivity{
 
@@ -172,7 +176,7 @@ public class fb extends AppCompatActivity{
 
 
 
-    public void getUserData(AccessToken accessToken){
+    public void getUserData(final AccessToken accessToken){
 
         staggeredGridView = (StaggeredGridView) findViewById(R.id.grid_view);
        // final MyRecyclerAdapterfb adapterfb = new MyRecyclerAdapterfb(posts);
@@ -180,7 +184,7 @@ public class fb extends AppCompatActivity{
         final FBFeedAdapter adapterfb = new FBFeedAdapter(this, R.layout.card_viewfb, posts);
         staggeredGridView.setAdapter(adapterfb);
 
-       for(i=0;i<fbpliked.size();i++) {
+      /* for(i=0;i<fbpliked.size();i++) {
 
                GraphRequest.newGraphPathRequest(accessToken,
                        "/" + fbpliked.get(i) + "/posts",
@@ -203,7 +207,9 @@ public class fb extends AppCompatActivity{
 
                                    try {
                                        for (int j = 0; j <5; j++) {
-                                           posts.add(new Post(n.getJSONObject(j)));
+                                           if(n.getJSONObject(j).has("message")){
+                                               posts.add(new Post(n.getJSONObject(j)));
+                                           }
                                        }
                                    }
                                    catch (Exception e)
@@ -216,9 +222,9 @@ public class fb extends AppCompatActivity{
                                    for(int i=0 ; i<posts.size();i++){
                                        Log.v("FBPicAct", posts.get(i).getURL());
                                    }
-                                   /*
+                                   *//*
 //                            list.setAdapter(new ArrayAdapter<String>(fb.this,android.R.layout.simple_list_item_1,messages));
-                                   */
+                                   *//*
                                    adapterfb.notifyDataSetChanged();
                                }
                                catch (Exception e) {
@@ -229,8 +235,90 @@ public class fb extends AppCompatActivity{
 
                        }).executeAsync();
 
-       }
+       }*/
 
+        final ArrayList<GraphRequest> postsArrayList = new ArrayList<>();
+
+        for (i=0;i<fbpliked.size();i++){
+            postsArrayList.add(GraphRequest.newGraphPathRequest(accessToken, "/" + fbpliked.get(i) +
+                    "/posts", new GraphRequest.Callback() {
+                @Override
+                public void onCompleted(GraphResponse graphResponse) {
+                    Log.v("Single page", graphResponse.toString());
+
+                    final ArrayList<Post> pageSpecificPosts = new ArrayList<>();
+
+                    try {
+                        m = graphResponse.getJSONObject();
+                        n = m.getJSONArray("data");
+
+                        try {
+                            for (int j = 0; j <5; j++) {
+                                if(n.getJSONObject(j).has("message")){
+                                    pageSpecificPosts.add(new Post(n.getJSONObject(j)));
+                                }
+                            }
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        ArrayList<GraphRequest> picsRequestList = new ArrayList<>();
+
+                        for(int i = 0; i<pageSpecificPosts.size(); i++){
+                            final int j = i;
+                            picsRequestList.add(GraphRequest.newGraphPathRequest(accessToken, "/" +
+                                    pageSpecificPosts.get(i).getPostId() + "/attachments", new GraphRequest.Callback() {
+                                @Override
+                                public void onCompleted(GraphResponse graphResponse) {
+
+                                    try {
+                                        JSONArray data = graphResponse.getJSONObject().getJSONArray("data");
+                                        JSONObject jsonObject = data.getJSONObject(0);
+
+                                        if(jsonObject.has("media")){
+                                            String imageUrl = jsonObject.getJSONObject("media").getJSONObject("image").getString("src");
+                                            pageSpecificPosts.get(j).setImageUrl(imageUrl);
+                                        }
+                                    }catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }));
+                        }
+
+                        GraphRequestBatch picsRequestBatch = new GraphRequestBatch(picsRequestList);
+                        picsRequestBatch.addCallback(new GraphRequestBatch.Callback() {
+                            @Override
+                            public void onBatchCompleted(GraphRequestBatch graphRequestBatch) {
+                                posts.addAll(pageSpecificPosts);
+                                Collections.sort(posts);
+                                adapterfb.arrayList = posts;
+                                adapterfb.notifyDataSetChanged();
+                            }
+                        });
+                        picsRequestBatch.executeAsync();
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }));
+        }
+
+        GraphRequestBatch graphRequestBatch = new GraphRequestBatch(postsArrayList);
+        graphRequestBatch.addCallback(new GraphRequestBatch.Callback() {
+            @Override
+            public void onBatchCompleted(GraphRequestBatch graphRequestBatch) {
+                //Display
+                Log.v("Batch", graphRequestBatch.toString());
+                Collections.sort(posts);
+                adapterfb.arrayList = posts;
+                adapterfb.notifyDataSetChanged();
+            }
+        });
+
+        graphRequestBatch.executeAsync();
     }
 
 

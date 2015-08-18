@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.etsy.android.grid.util.DynamicHeightImageView;
 import com.etsy.android.grid.util.DynamicHeightTextView;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Holder holder;
+        final Holder holder;
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.card_viewfb, parent, false);
@@ -69,14 +70,19 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
         Log.e("FBPic", post.getURL());
 
         holder.fbpostpic.setVisibility(View.VISIBLE);
-        if(post.getURL().trim().startsWith("http")){
-            holder.fbpostpic.setHeightRatio(1);
-            Picasso.with(context).load(post.getURL()).fit().centerCrop().into(holder.fbpostpic);
+        holder.fbpostpic.setHeightRatio(1);
 
-        } else {
-            holder.fbpostpic.setVisibility(View.GONE);
-        }
-
+            if(post.getImageUrl()!=null){
+                try {
+                    Picasso.with(context).load(post.getImageUrl()).fit().centerCrop().
+                            into(holder.fbpostpic);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    holder.fbpostpic.setVisibility(View.GONE);
+                }
+            }else{
+                holder.fbpostpic.setVisibility(View.GONE);
+            }
 
         return convertView;
     }
