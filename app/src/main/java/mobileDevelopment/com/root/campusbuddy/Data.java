@@ -22,7 +22,7 @@ public class Data {
         fbPageList.add(new Page("General Notice Board", "671125706342859"));
         fbPageList.add(new Page("Audio Section", "418543801611643"));
         fbPageList.add(new Page("Sanskriti Club", "420363998145999"));
-        fbPageList.add(new Page("Interactive Learning", "146825225353259"));
+        fbPageList.add(new Page("Group For Interactive Learning, IITR", "146825225353259"));
         fbPageList.add(new Page("ASHRAE", "754869404569818"));
         fbPageList.add(new Page("Cognizance", "217963184943488"));
         fbPageList.add(new Page("Photography Section", "317158211638196"));
