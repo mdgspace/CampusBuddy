@@ -2,6 +2,8 @@ package mobileDevelopment.com.root.campusbuddy;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +55,8 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
             convertView = inflater.inflate(R.layout.card_viewfb, parent, false);
             holder = new Holder();
             holder.postmessage = (DynamicHeightTextView) convertView.findViewById(R.id.postmessage);
+            holder.postmessage.setMovementMethod(LinkMovementMethod.getInstance());
+            Linkify.addLinks(holder.postmessage, Linkify.ALL);
             holder.postheader = (TextView) convertView.findViewById(R.id.fbpagename);
             holder.fbpostpic = (DynamicHeightImageView) convertView.findViewById(R.id.fbpostpic);
             holder.fbpostpicicon = (DynamicHeightImageView) convertView.findViewById(R.id.fbpostpicicon);
