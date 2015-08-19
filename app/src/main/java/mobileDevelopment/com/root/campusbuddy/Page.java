@@ -14,12 +14,17 @@ public class Page {
         this.page_id = page_id;
     }
 
-    boolean isSelected;
+    boolean isSelected= false;
 
     public Page(String page_name){
         this.page_name=page_name;
-        this.isSelected=false;
     }
+
+    public Page(String page_name, String id){
+        this.page_name=page_name;
+        this.page_id = id;
+    }
+
 
     public boolean isSelected() {
         return isSelected;
