@@ -58,8 +58,7 @@ public class Fblist extends AppCompatActivity{
     public static boolean flag=true;
     Toolbar toolbar;
     CheckBox c;
-    public HashMap<String,String> fbpageslikedmap;
-    public ArrayList<String> listofvalues;
+    public ArrayList<Page> listofvalues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +97,9 @@ public class Fblist extends AppCompatActivity{
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         flag=false;
 
-        fbpageslikedmap=new HashMap<String,String>();
+        /*fbpageslikedmap=new HashMap<String,String>();
         fbpageslikedmap.put("Cinema Club", "231275190406200");
-        fbpageslikedmap.put("mdg, IITR","415004402015833");
+        fbpageslikedmap.put("mdg, IITR","198343570325312");
         fbpageslikedmap.put("SDSLabs","182484805131346");
         fbpageslikedmap.put("Team robocon","257702554250168");
         fbpageslikedmap.put("IMG","353701311987");
@@ -121,9 +120,9 @@ public class Fblist extends AppCompatActivity{
         fbpageslikedmap.put("Anushruti","272394492879208");
         fbpageslikedmap.put("Rhapsody","1410660759172170");
         fbpageslikedmap.put("SHARE IITR","292035034247");
+*/
 
-
-        listofvalues = new ArrayList<String>(fbpageslikedmap.values());
+        listofvalues = Data.getFbPageList();
 
 
         fbpagesliked=new ArrayList<String>();
@@ -156,7 +155,7 @@ public class Fblist extends AppCompatActivity{
             pageList = new ArrayList<Page>();
             for(int i=0;i<fbpages.length;i++){
                 Page page = new Page(fbpages[i]);
-                page.page_id = fbpageslikedmap.get(page.getPage_name());
+                page.page_id = listofvalues.get(i).getPage_id();
                 pageList.add(page);
             }
 
@@ -230,8 +229,8 @@ public class Fblist extends AppCompatActivity{
                     for(int i=0;i<fbpages.length;i++)
                     {
                         if(pageList.get(i).isSelected()){
-                            fbpagesliked.add(fbpageslikedmap.get(pageList.get(i).getPage_name()));
-                            values.put(PagesDB.PagesEntry.COLUMN_NAME_Pages_ID, fbpageslikedmap.get(pageList.get(i).getPage_name()));
+                            fbpagesliked.add(listofvalues.get(i).getPage_id());
+                            values.put(PagesDB.PagesEntry.COLUMN_NAME_Pages_ID, listofvalues.get(i).getPage_id());
                             values.put(PagesDB.PagesEntry.COLUMN_NAME_Page_name, pageList.get(i).getPage_name());
                             db.insert(
                                     PagesDB.PagesEntry.TABLE_NAME,
