@@ -2,6 +2,12 @@ package mobileDevelopment.com.root.campusbuddy;
 
 import android.util.Log;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -11,19 +17,24 @@ import java.util.Date;
 /**
  * Created by root on 13/6/15.
  */
-public  class Post implements Comparable<Post>{
+public class Post implements Comparable<Post> {
 
     JSONObject post;
-    String message,url,url2;
+    String message, url, url2;
     public Date date;
 
-    String id,id1;
-    ArrayList<String> listofvalues;
-    int[] images;
-    Fblist fblist=new Fblist();
+    String id, id1;
 
-    public Post(JSONObject obj)
-    {
+    String postId, imageUrl;
+
+    ArrayList<String> listofvalues;
+
+    int[] images;
+    Fblist fblist = new Fblist();
+
+    //TODO: Data class
+
+    public Post(JSONObject obj) {
         images = new int[22];
         images[0] = R.drawable.cinema_club;
         images[1] = R.drawable.mdg;
@@ -48,7 +59,7 @@ public  class Post implements Comparable<Post>{
         images[20] = R.drawable.rhapsody;
         images[21] = R.drawable.share;
 
-        listofvalues =new ArrayList<>();
+        listofvalues = new ArrayList<>();
         listofvalues.add("231275190406200");
         listofvalues.add("415004402015833");
         listofvalues.add("182484805131346");
@@ -73,41 +84,46 @@ public  class Post implements Comparable<Post>{
         listofvalues.add("292035034247");
 
 
+        try {
+            this.post = obj;
 
-        try{
-        this.post=obj;
-        message = post.optString("message");
-        url=post.optString("picture");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-        date = sdf.parse(post.optString("updated_time").substring(0, 10));
-            id=post.getJSONObject("from").getString("name");
-            id1=post.getJSONObject("from").getString("id");
-            Log.e("id of fb icon",id1);
-        }
-        catch (Exception e)
-        {
-            Log.e("Post error: ",e.toString());
+            message = post.optString("message");
+            url = post.optString("picture");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+            date = sdf.parse(post.optString("updated_time").substring(0, 10));
+            id = post.getJSONObject("from").getString("name");
+            id1 = post.getJSONObject("from").getString("id");
+            Log.e("id of fb icon", id1);
+            postId = post.optString("id");
+
+        } catch (Exception e) {
+            Log.e("Post error: ", e.toString());
         }
 
     }
 
-    public int getImageDrawable()
-    {
-        int a=listofvalues.indexOf(id1);
-        Log.e("id of fb icon",a+"");
+    public int getImageDrawable() {
+        int a = listofvalues.indexOf(id1);
+        Log.e("id of fb icon", a + "");
 
         return images[a];
     }
 
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
-    public String getURL()
-    {
+
+    public String getURL() {
         return url;
     }
-    public String getHeader(){return id+"";}
+
+    public String getHeader() {
+        return id + "";
+    }
+
+    public String getPostId(){
+        return postId;
+    }
 
 
     @Override
@@ -115,14 +131,24 @@ public  class Post implements Comparable<Post>{
         return getDate().compareTo(another.getDate());
     }
 
-    public Date getDate()
-    {
+    public Date getDate() {
         return date;
 
     }
 
-    public void setDate(Date date)
-    {
-        this.date=date;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getImageUrl(){
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl){
+        this.imageUrl = imageUrl;
+    }
+
+    private static class ImageUrlHolder{
+        public String imageUrl = null;
     }
 }

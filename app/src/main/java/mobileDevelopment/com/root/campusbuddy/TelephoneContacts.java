@@ -1,36 +1,24 @@
 package mobileDevelopment.com.root.campusbuddy;
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.Handler;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.accessibility.AccessibilityNodeInfo;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /*
 import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
 */
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 
 public class TelephoneContacts extends AppCompatActivity{
@@ -101,7 +89,7 @@ try{
             recyclerView=(RecyclerView)findViewById(R.id.recyclerview);
             LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
             recyclerView.setLayoutManager(linearLayoutManager);
-            recyclerView.setAdapter(new MyRecyclerAdapter_departmentcontacts(generateContacts()));
+            recyclerView.setAdapter(new MyRecyclerAdapter_departmentcontacts(generateContacts(), this));
 
             recyclerView.setOnScrollListener(new MyScrollListener(this) {
                 @Override

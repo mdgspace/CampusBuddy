@@ -1,7 +1,10 @@
 package mobileDevelopment.com.root.campusbuddy;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -36,11 +39,17 @@ import java.util.HashMap;
 
 public class Fblist extends AppCompatActivity{
 
+
+    Cursor cr;
+
+    ContentValues values;
+    String page_id,page_name;
     ListView listview;
     String[] fbpages;
-//    boolean[] fbpagesliked=null;
+    //    boolean[] fbpagesliked=null;
     ArrayList<String> fbpagesliked;
-//    ArrayAdapter<String> adapter;
+    public ArrayList<Page> pageList;
+    //    ArrayAdapter<String> adapter;
     LoginButton loginButton;
     CallbackManager callbackManager;
     Button submitb;
@@ -50,7 +59,7 @@ public class Fblist extends AppCompatActivity{
     Toolbar toolbar;
     CheckBox c;
     public HashMap<String,String> fbpageslikedmap;
-//    public static ArrayList<String> listofvalues;
+    public ArrayList<String> listofvalues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +70,22 @@ public class Fblist extends AppCompatActivity{
 //       recreate();
 
         setContentView(R.layout.activity_fblist);
+
+        final SQLiteDatabase db = Pages_db_helper.getInstance(getApplicationContext()).getWritableDatabase();
+
+
+        String[] eventList = {
+                PagesDB.PagesEntry.COLUMN_NAME_Pages_ID,
+                PagesDB.PagesEntry.COLUMN_NAME_Page_name
+        };
+
+        try {
+            cr = db.query(PagesDB.PagesEntry.TABLE_NAME, eventList, null, null, null, null, null);
+        }
+        catch (Exception err){
+            Toast.makeText(Fblist.this, err.toString(), Toast.LENGTH_LONG).show();
+        }
+        values = new ContentValues();
 
 
         toolbar = (Toolbar) findViewById(R.id.tool_barfblist);
@@ -98,7 +123,7 @@ public class Fblist extends AppCompatActivity{
         fbpageslikedmap.put("SHARE IITR","292035034247");
 
 
-//        listofvalues = new ArrayList<String>(fbpageslikedmap.values());
+        listofvalues = new ArrayList<String>(fbpageslikedmap.values());
 
 
         fbpagesliked=new ArrayList<String>();
@@ -126,23 +151,71 @@ public class Fblist extends AppCompatActivity{
 //        });
         try{
 
-        listview=(ListView)findViewById(R.id.listfbpages);
-        fbpages=getResources().getStringArray(R.array.fbpages);
-            final ArrayList<Page> pageList = new ArrayList<Page>();
+            listview=(ListView)findViewById(R.id.listfbpages);
+            fbpages=getResources().getStringArray(R.array.fbpages);
+            pageList = new ArrayList<Page>();
             for(int i=0;i<fbpages.length;i++){
                 Page page = new Page(fbpages[i]);
+                page.page_id = fbpageslikedmap.get(page.getPage_name());
                 pageList.add(page);
             }
+
+            PagesSelected.writeSelectedPageIds(Fblist.this, fbpagesliked);
+
             listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 //            adapter=new ArrayAdapter<String>(Fblist.this,R.layout.mytextviewfb,fbpages);
+//            try {
+//                listofvalues= PagesSelected.getSelectedPageIds(this);
+//                for(int j=0;j<listofvalues.size();j++)
+//                {
+//                    for(int i=0;i<pageList.size();i++)
+//                    {
+//                        if(listofvalues.get(j).equals(pageList.get(i).page_id))
+//                        {
+//                            pageList.get(i).setIsSelected(true);
+//                            Log.e("True pages", pageList.get(i).getPage_name());
+//                        }
+//                    }
+//
+//                }}
+//            catch (Exception e)
+//            {;}
+            cr.moveToFirst();
 
+            if(cr.getCount()>0)
+            {
+
+             //   page_id=cr.getString(cr.getColumnIndex(PagesDB.PagesEntry.COLUMN_NAME_Pages_ID));
+                page_name=cr.getString(cr.getColumnIndex(PagesDB.PagesEntry.COLUMN_NAME_Page_name));
+
+                for(int i=0;i<fbpages.length;i++)
+                {
+                    if(page_name.equals(pageList.get(i).getPage_name())){
+                        pageList.get(i).setIsSelected(true);
+                    }
+                }
+
+            }
+
+            while(cr.moveToNext()){
+                page_name=cr.getString(cr.getColumnIndex(PagesDB.PagesEntry.COLUMN_NAME_Page_name));
+
+                for(int i=0;i<fbpages.length;i++)
+                {
+                    if(page_name.equals(pageList.get(i).getPage_name())){
+                        pageList.get(i).setIsSelected(true);
+                    }
+                }
+
+            }
+            db.delete(PagesDB.PagesEntry.TABLE_NAME, null, null);
             CustomList adapter=new CustomList(Fblist.this,pageList);
-        listview.setAdapter(adapter);
+            listview.setAdapter(adapter);
 
 
-        submitb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            submitb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 //                SparseBooleanArray checked = listview.getCheckedItemPositions();
 //                fbpagesliked=new boolean[checked.size()];
 //                for (int i = 0; i < checked.size(); i++) {
@@ -154,24 +227,30 @@ public class Fblist extends AppCompatActivity{
 //                    }
 //                }
 
-                for(int i=0;i<fbpages.length;i++)
-                {
-                    if(pageList.get(i).isSelected()){
-                        fbpagesliked.add(fbpageslikedmap.get(pageList.get(i).getPage_name()));
+                    for(int i=0;i<fbpages.length;i++)
+                    {
+                        if(pageList.get(i).isSelected()){
+                            fbpagesliked.add(fbpageslikedmap.get(pageList.get(i).getPage_name()));
+                            values.put(PagesDB.PagesEntry.COLUMN_NAME_Pages_ID, fbpageslikedmap.get(pageList.get(i).getPage_name()));
+                            values.put(PagesDB.PagesEntry.COLUMN_NAME_Page_name, pageList.get(i).getPage_name());
+                            db.insert(
+                                    PagesDB.PagesEntry.TABLE_NAME,
+                                    null,
+                                    values);
+                        }
                     }
-                }
 
-                PagesSelected.writeSelectedPageIds(Fblist.this, fbpagesliked);
-                if(fbpagesliked==null)
-                {
-                    Toast.makeText(Fblist.this,"Please Select atleast one page to get the feeds",Toast.LENGTH_LONG).show();
-                    onResume();
-                }
-                else
-                {
-                Intent intent = new Intent(Fblist.this, fb.class);
-                finish();
-                startActivity(intent);}
+                    PagesSelected.writeSelectedPageIds(Fblist.this, fbpagesliked);
+                    if(fbpagesliked==null)
+                    {
+                        Toast.makeText(Fblist.this,"Please Select atleast one page to get the feeds",Toast.LENGTH_LONG).show();
+                        onResume();
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(Fblist.this, fb.class);
+                        finish();
+                        startActivity(intent);}
 //                try{
 //                    fbpagesliked=new boolean[listview.getChildCount()];
 //                    for(int i=0;i<listview.getChildCount();i++)
@@ -242,20 +321,23 @@ public class Fblist extends AppCompatActivity{
 //            Toast.makeText(Fblist.this,e.toString(),Toast.LENGTH_LONG).show();
 //        }
 
-    }});}catch(Exception e)
+               }
+
+
+            });}catch(Exception e)
         {
             Toast.makeText(Fblist.this,e.toString(),Toast.LENGTH_LONG).show();
         }
     }
 
 
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_fblist, menu);
-        return true;
-    }
-*/
+    /* @Override
+     public boolean onCreateOptionsMenu(Menu menu) {
+         // Inflate the menu; this adds items to the action bar if it is present.
+         getMenuInflater().inflate(R.menu.menu_fblist, menu);
+         return true;
+     }
+ */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
