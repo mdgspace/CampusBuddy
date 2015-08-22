@@ -1,7 +1,9 @@
 package mobileDevelopment.com.root.campusbuddy;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -66,11 +68,22 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
           holder = (Holder) convertView.getTag();
         }
 
-        Post post = arrayList.get(position);
+        final Post post = arrayList.get(position);
 
         holder.postmessage.setText(post.getMessage());
         holder.postheader.setText(post.getHeader());
         holder.fbpostpicicon.setImageResource(post.getImageDrawable());
+
+        holder.postmessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(post.getLinkUrl()!=null) {
+                    Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(post.getLinkUrl()));
+                    getContext().startActivity(browser);
+                }
+            }
+        });
+
         Log.v("FBMessage", post.getMessage());
         Log.e("FBPic", post.getURL());
 
@@ -108,6 +121,8 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
             }else{
                 holder.fbpostpic.setVisibility(View.GONE);
             }
+
+
 
         return convertView;
     }

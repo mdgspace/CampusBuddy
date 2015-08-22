@@ -25,7 +25,7 @@ public class Post implements Comparable<Post> {
 
     String id, id1;
 
-    String postId, imageUrl;
+    String postId, imageUrl,linkurl=null;
 
     //TODO: Data class
 
@@ -90,6 +90,13 @@ public class Post implements Comparable<Post> {
         return date;
 
     }
+
+    public void setLinkUrl(String linkurl){this.linkurl=linkurl;}
+    public  String getLinkUrl(){
+        if(linkurl!=null)
+        return linkurl;
+    else
+    return null;}
 
     public void setDate(Date date) {
         this.date = date;
