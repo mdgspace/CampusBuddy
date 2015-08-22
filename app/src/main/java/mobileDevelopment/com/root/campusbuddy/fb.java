@@ -278,7 +278,14 @@ public class fb extends AppCompatActivity{
 
                                         if(jsonObject.has("media")){
                                             String imageUrl = jsonObject.getJSONObject("media").getJSONObject("image").getString("src");
+
                                             pageSpecificPosts.get(j).setImageUrl(imageUrl);
+                                        }
+
+                                        if(jsonObject.has("url"))
+                                        {
+                                            String urlOfLink=jsonObject.getString("url");
+                                            pageSpecificPosts.get(j).setLinkUrl(urlOfLink);
                                         }
                                     }catch (Exception e){
                                         e.printStackTrace();
