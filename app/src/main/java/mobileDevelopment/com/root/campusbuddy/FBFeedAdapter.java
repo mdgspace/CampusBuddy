@@ -62,6 +62,7 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
             holder.postheader = (TextView) convertView.findViewById(R.id.fbpagename);
             holder.fbpostpic = (DynamicHeightImageView) convertView.findViewById(R.id.fbpostpic);
             holder.fbpostpicicon = (DynamicHeightImageView) convertView.findViewById(R.id.fbpostpicicon);
+            holder.dateofpost=(TextView)convertView.findViewById(R.id.dateofpost);
 
             convertView.setTag(holder);
         } else {
@@ -73,16 +74,16 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
         holder.postmessage.setText(post.getMessage());
         holder.postheader.setText(post.getHeader());
         holder.fbpostpicicon.setImageResource(post.getImageDrawable());
-
-        holder.postmessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(post.getLinkUrl()!=null) {
-                    Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(post.getLinkUrl()));
-                    getContext().startActivity(browser);
-                }
-            }
-        });
+        holder.dateofpost.setText(post.getDateS());
+//        holder.postmessage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(post.getLinkUrl()!=null) {
+//                    Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(post.getLinkUrl()));
+//                    getContext().startActivity(browser);
+//                }
+//            }
+//        });
 
         Log.v("FBMessage", post.getMessage());
         Log.e("FBPic", post.getURL());
@@ -122,7 +123,15 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
                 holder.fbpostpic.setVisibility(View.GONE);
             }
 
-
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(post.getLinkUrl()!=null) {
+                        Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(post.getLinkUrl()));
+                        getContext().startActivity(browser);
+                    }
+                }
+            });
 
         return convertView;
     }
@@ -130,7 +139,7 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
     public static class Holder{
 
         DynamicHeightTextView postmessage;
-        TextView postheader;
+        TextView postheader,dateofpost;
         DynamicHeightImageView fbpostpic;
         DynamicHeightImageView fbpostpicicon;
 

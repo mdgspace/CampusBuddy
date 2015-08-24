@@ -22,7 +22,7 @@ public class Post implements Comparable<Post> {
     JSONObject post;
     String message, url, url2;
     public Date date;
-
+    String dateS;
     String id, id1;
 
     String postId, imageUrl,linkurl=null;
@@ -36,8 +36,9 @@ public class Post implements Comparable<Post> {
 
             message = post.optString("message");
             url = post.optString("picture");
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-            date = sdf.parse(post.optString("updated_time").substring(0, 10));
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
+            date = sdf.parse(post.optString("created_time").substring(0, 10));
+            dateS=post.optString("created_time").substring(0, 10);
             id = post.getJSONObject("from").getString("name");
             id1 = post.getJSONObject("from").getString("id");
             Log.e("id of fb icon", id1);
@@ -112,5 +113,10 @@ public class Post implements Comparable<Post> {
 
     private static class ImageUrlHolder{
         public String imageUrl = null;
+    }
+
+    public String getDateS()
+    {
+        return dateS;
     }
 }
