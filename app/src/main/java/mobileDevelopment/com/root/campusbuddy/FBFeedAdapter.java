@@ -74,7 +74,7 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
         holder.postmessage.setText(post.getMessage());
         holder.postheader.setText(post.getHeader());
         holder.fbpostpicicon.setImageResource(post.getImageDrawable());
-        holder.dateofpost.setText(post.getDateS());
+        holder.dateofpost.setText(DateFormatter.getTimeAgo(post.getDateS()));
 //        holder.postmessage.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

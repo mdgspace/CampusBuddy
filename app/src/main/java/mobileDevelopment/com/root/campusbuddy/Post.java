@@ -38,7 +38,7 @@ public class Post implements Comparable<Post> {
             url = post.optString("picture");
             SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
             date = sdf.parse(post.optString("created_time").substring(0, 10));
-            dateS=post.optString("created_time").substring(0, 10);
+            dateS=post.optString("created_time");
             id = post.getJSONObject("from").getString("name");
             id1 = post.getJSONObject("from").getString("id");
             Log.e("id of fb icon", id1);
@@ -84,7 +84,7 @@ public class Post implements Comparable<Post> {
 
     @Override
     public int compareTo(Post another) {
-        return getDate().compareTo(another.getDate());
+        return getDateS().compareTo(another.getDateS());
     }
 
     public Date getDate() {

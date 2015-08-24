@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -24,9 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 
 public class fb extends AppCompatActivity{
 
@@ -300,6 +297,7 @@ public class fb extends AppCompatActivity{
                             public void onBatchCompleted(GraphRequestBatch graphRequestBatch) {
                                 posts.addAll(pageSpecificPosts);
                                 Collections.sort(posts);
+                                Collections.reverse(posts);
                                 adapterfb.arrayList = posts;
                                 adapterfb.notifyDataSetChanged();
                             }
@@ -320,6 +318,7 @@ public class fb extends AppCompatActivity{
                 //Display
                 Log.v("Batch", graphRequestBatch.toString());
                 Collections.sort(posts);
+                Collections.reverse(posts);
                 adapterfb.arrayList = posts;
                 adapterfb.notifyDataSetChanged();
             }
