@@ -32,28 +32,29 @@
     </array>
 
     <string-array name="fbpages">
-        <item>Cinema Club</item>
-        <item>MDG, IITR</item>
-        <item>SDSLabs</item>
-        <item>Team Robocon</item>
-        <item>IMG</item>
-        <item>EDC</item>
-        <item>General Notice Board</item>
-        <item>Audio Section</item>
-        <item>Sanskriti Club</item>
-        <item>Group For Interactive Learning, IITR</item>
-        <item>ASHRAE</item>
-        <item>Cognizance</item>
-        <item>Photography Section</item>
-        <item>IIT Roorkee</item>
-        <item>Technologic 2015</item>
-        <item>Electronics Section</item>
-        <item>NCC</item>
-        <item>Cinematic Section</item>
-        <item>Fine Arts Section</item>
         <item>Anushruti</item>
+        <item>ASHRAE</item>
+        <item>Audio Section</item>
+        <item>Cinema Club</item>
+        <item>Cinematic Section</item>
+        <item>Cognizance</item>
+        <item>EDC</item>
+        <item>Electronics Section</item>
+        <item>Fine Arts Section</item>
+        <item>General Notice Board</item>
+        <item>Group For Interactive Learning, IITR</item>
+        <item>IIT Roorkee</item>
+        <item>IMG</item>
+        <item>MDG, IITR</item>
+        <item>NCC</item>
+        <item>Photography Section</item>
         <item>Rhapsody</item>
+        <item>Sanskriti Club</item>
+        <item>SDSLabs</item>
         <item>SHARE IITR</item>
+        <item>Team Robocon</item>
+        <item>Technologic 2015</item>
+
     </string-array>
 
     <string name="drawer_open">Open navigation drawer</string>
