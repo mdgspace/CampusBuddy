@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
+import android.widget.Toast;
 
 import com.etsy.android.grid.StaggeredGridView;
 import com.facebook.AccessToken;
@@ -36,6 +38,7 @@ public class fb extends AppCompatActivity{
     AccessTokenTracker accessTokenTracker;
 //    ListView list;
      int i;
+     int preLast=0;
     static boolean[] fbpls;
     StaggeredGridView staggeredGridView;
     ArrayList<Post> posts;
@@ -311,20 +314,43 @@ public class fb extends AppCompatActivity{
             }));
         }
 
-        GraphRequestBatch graphRequestBatch = new GraphRequestBatch(postsArrayList);
-        graphRequestBatch.addCallback(new GraphRequestBatch.Callback() {
+
+
+
+        staggeredGridView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onBatchCompleted(GraphRequestBatch graphRequestBatch) {
-                //Display
-                Log.v("Batch", graphRequestBatch.toString());
-                Collections.sort(posts);
-                Collections.reverse(posts);
-                adapterfb.arrayList = posts;
-                adapterfb.notifyDataSetChanged();
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                final int lastItem = firstVisibleItem + visibleItemCount;
+                if(lastItem == totalItemCount) {
+
+                    if(preLast!=lastItem){ //to avoid multiple calls for last item
+                        Log.d("Last", "Last");
+                        preLast = lastItem;
+                        Toast.makeText(fb.this,"Reached the end",Toast.LENGTH_LONG).show();
+                        GraphRequestBatch graphRequestBatch = new GraphRequestBatch(postsArrayList);
+                        graphRequestBatch.addCallback(new GraphRequestBatch.Callback() {
+                            @Override
+                            public void onBatchCompleted(GraphRequestBatch graphRequestBatch) {
+                                //Display
+                                Log.v("Batch", graphRequestBatch.toString());
+                                Collections.sort(posts);
+                                Collections.reverse(posts);
+                                adapterfb.arrayList = posts;
+                                adapterfb.notifyDataSetChanged();
+                                graphRequestBatch.executeAsync();
+
+                            }
+                        });
+                    }
+
+                }
             }
         });
-
-        graphRequestBatch.executeAsync();
     }
 
 
