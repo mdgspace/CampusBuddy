@@ -1,6 +1,7 @@
 package mobileDevelopment.com.root.campusbuddy;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
+import android.widget.ProgressBar;
 
 import com.etsy.android.grid.StaggeredGridView;
 import com.facebook.AccessToken;
@@ -38,10 +40,10 @@ public class fb extends AppCompatActivity {
     ArrayList<Post> posts;
     public static Context c;
 
-    int pageNumber = 0;
+    int pageNumber = 0,ongoingpage=0;
 
     int prelast = 0;
-
+    ProgressDialog progressDialog;
     FBFeedAdapter adapterfb;
 
     @Override
@@ -60,7 +62,7 @@ public class fb extends AppCompatActivity {
         fbpliked = PagesSelected.getSelectedPageIds(fb.this);
 
         adapterfb = new FBFeedAdapter(this, R.layout.card_viewfb, posts);
-
+        progressDialog=new ProgressDialog(c);
         try {
             accessTokenTracker = new AccessTokenTracker() {
                 @Override
@@ -88,7 +90,7 @@ public class fb extends AppCompatActivity {
                 int lastVisibleItem = firstVisibleItem + visibleItemCount;
                 if(lastVisibleItem == totalItemCount){
                     if(prelast != lastVisibleItem){
-
+                        ongoingpage++;
                         fetchData(pageNumber, AccessToken.getCurrentAccessToken());
                         prelast = lastVisibleItem;
                     }
@@ -154,8 +156,12 @@ public class fb extends AppCompatActivity {
 
     public void fetchData(final int page, final AccessToken accessToken) {
 
-        final ArrayList<GraphRequest> postsArrayList = new ArrayList<>();
+        if(ongoingpage==page)
+        {
 
+        final ArrayList<GraphRequest> postsArrayList = new ArrayList<>();
+            progressDialog.setMessage("Waiting for the feeds");
+        progressDialog.show();
         for (i = 0; i < fbpliked.size(); i++) {
             postsArrayList.add(GraphRequest.newGraphPathRequest(accessToken, "/" + fbpliked.get(i) +
                     "/posts", new GraphRequest.Callback() {
@@ -239,9 +245,16 @@ public class fb extends AppCompatActivity {
                 adapterfb.arrayList = posts;
                 adapterfb.notifyDataSetChanged();
                 pageNumber++;
+                progressDialog.dismiss();
             }
         });
 
         graphRequestBatch.executeAsync();
+    }
+    else
+        {
+            progressDialog.setMessage("Waiting for the feeds");
+            progressDialog.show();
+        }
     }
 }
