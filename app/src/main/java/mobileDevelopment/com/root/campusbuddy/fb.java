@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ProgressBar;
 
@@ -43,7 +44,7 @@ public class fb extends AppCompatActivity {
     int pageNumber = 0,ongoingpage=0;
 
     int prelast = 0;
-    ProgressDialog progressDialog;
+    ProgressBar progressBar;
     FBFeedAdapter adapterfb;
 
     @Override
@@ -60,9 +61,8 @@ public class fb extends AppCompatActivity {
         posts = new ArrayList<>();
 
         fbpliked = PagesSelected.getSelectedPageIds(fb.this);
-
+        progressBar=(ProgressBar)findViewById(R.id.progressbar);
         adapterfb = new FBFeedAdapter(this, R.layout.card_viewfb, posts);
-        progressDialog=new ProgressDialog(c);
         try {
             accessTokenTracker = new AccessTokenTracker() {
                 @Override
@@ -160,8 +160,8 @@ public class fb extends AppCompatActivity {
         {
 
         final ArrayList<GraphRequest> postsArrayList = new ArrayList<>();
-            progressDialog.setMessage("Waiting for the feeds");
-        progressDialog.show();
+
+                progressBar.setVisibility(View.VISIBLE);
         for (i = 0; i < fbpliked.size(); i++) {
             postsArrayList.add(GraphRequest.newGraphPathRequest(accessToken, "/" + fbpliked.get(i) +
                     "/posts", new GraphRequest.Callback() {
@@ -245,7 +245,7 @@ public class fb extends AppCompatActivity {
                 adapterfb.arrayList = posts;
                 adapterfb.notifyDataSetChanged();
                 pageNumber++;
-                progressDialog.dismiss();
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -253,8 +253,7 @@ public class fb extends AppCompatActivity {
     }
     else
         {
-            progressDialog.setMessage("Waiting for the feeds");
-            progressDialog.show();
+            progressBar.setVisibility(View.VISIBLE);
         }
     }
 }

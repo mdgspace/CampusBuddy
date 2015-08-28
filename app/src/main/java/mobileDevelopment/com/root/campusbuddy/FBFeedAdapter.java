@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.etsy.android.grid.util.DynamicHeightImageView;
@@ -63,7 +64,7 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
             holder.fbpostpic = (DynamicHeightImageView) convertView.findViewById(R.id.fbpostpic);
             holder.fbpostpicicon = (DynamicHeightImageView) convertView.findViewById(R.id.fbpostpicicon);
             holder.dateofpost=(TextView)convertView.findViewById(R.id.dateofpost);
-
+            holder.fblayout=(LinearLayout)convertView.findViewById(R.id.cardviewfb);
             convertView.setTag(holder);
         } else {
           holder = (Holder) convertView.getTag();
@@ -123,7 +124,7 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
                 holder.fbpostpic.setVisibility(View.GONE);
             }
 
-            convertView.setOnClickListener(new View.OnClickListener() {
+            holder.fblayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(post.getLinkUrl()!=null) {
@@ -132,6 +133,16 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
                     }
                 }
             });
+
+        holder.postmessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(post.getLinkUrl()!=null) {
+                    Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(post.getLinkUrl()));
+                    getContext().startActivity(browser);
+                }
+            }
+        });
 
         return convertView;
     }
@@ -142,6 +153,7 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
         TextView postheader,dateofpost;
         DynamicHeightImageView fbpostpic;
         DynamicHeightImageView fbpostpicicon;
+        LinearLayout fblayout;
 
     }
 }
