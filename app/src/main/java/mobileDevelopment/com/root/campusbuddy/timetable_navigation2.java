@@ -1,42 +1,42 @@
 package mobileDevelopment.com.root.campusbuddy;
 
-        import android.content.ContentValues;
-        import android.content.Context;
-        import android.content.DialogInterface;
-        import android.content.Intent;
-        import android.content.SharedPreferences;
-        import android.database.Cursor;
-        import android.database.sqlite.SQLiteDatabase;
-        import android.graphics.Color;
-        import android.graphics.RectF;
-        import android.os.Bundle;
-        import android.app.Activity;
-        import android.support.v7.app.ActionBarActivity;
-        import android.support.v7.app.AlertDialog;
-        import android.util.Log;
-        import android.util.TypedValue;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.RectF;
+import android.os.Bundle;
+import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import com.alamkanak.weekview.DateTimeInterpreter;
-        import com.alamkanak.weekview.WeekView;
-        import com.alamkanak.weekview.WeekViewEvent;
-        import com.getbase.floatingactionbutton.FloatingActionButton;
-        import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.alamkanak.weekview.DateTimeInterpreter;
+import com.alamkanak.weekview.WeekView;
+import com.alamkanak.weekview.WeekViewEvent;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-        import java.text.SimpleDateFormat;
-        import java.util.ArrayList;
-        import java.util.Calendar;
-        import java.util.List;
-        import java.util.Locale;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class timetable_navigation2 extends ActionBarActivity  implements WeekView.MonthChangeListener,
         WeekView.EventClickListener, WeekView.EventLongPressListener ,Dialog_for_more.AlertPositiveListenerforedit,delete_edit_choose.AlertPositiveListener, Dialog_for_more_delete.AlertPositiveListenerfordelete{
 
     SQLiteDatabase db;
-    Cursor cr;
+    Cursor cr, cursor;
 
     ContentValues values;
     long longClickedID;
@@ -55,64 +55,48 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
     public static Activity fa;
     FloatingActionsMenu fab_menu;
 
+    String[] eventList = {
+            CalendarDB.CalendarEntry.COLUMN_NAME_ID,
+            CalendarDB.CalendarEntry.COLUMN_NAME_TITLE,
+            CalendarDB.CalendarEntry.COLUMN_NAME_DAY,
+            CalendarDB.CalendarEntry.COLUMN_NAME_MONTH,
+            CalendarDB.CalendarEntry.COLUMN_NAME_YEAR,
+            CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR,
+            CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN,
+            CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR,
+            CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN,
+            CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL,
+            CalendarDB.CalendarEntry.COLUMN_NAME_VENUE,
+
+    };
 
     public FloatingActionButton fab_new_event, fab_go_today, fab_three_day, fab_one_day;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-         setContentView(R.layout.drawer_layout);
+        setContentView(R.layout.drawer_layout);
 
-fab_menu = (FloatingActionsMenu) findViewById(R.id.right_labels);
+        fab_menu = (FloatingActionsMenu) findViewById(R.id.right_labels);
 
- Calendar cd = Calendar.getInstance();
-
-//        cd.add(Calendar.DAY_OF_MONTH, -1);
-//       cd.add(cd.DATE, -1);
-//        Toast.makeText(this, cd.DAY_OF_MONTH + "he;llo "+ cd.MONTH + " " + cd.YEAR, Toast.LENGTH_LONG).show();
-
-
-// 2.2 Set actionBarDrawerToggle as the DrawerListener
-
-//        Calendar c=Calendar.getInstance();
-//        c.set(Calendar.YEAR,2015);
-//        Toast.makeText(this,c.get(Calendar.YEAR)+"",Toast.LENGTH_LONG).show();
         fa = this;
 
         pref = this.getSharedPreferences(
                 "com.example.appss", Context.MODE_PRIVATE);
-
-        int a = pref.getInt("DELETE_OR_EDIT", 0);
 
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt("DELETE_OR_EDIT", 0);
         editor.commit();
 
 
-
         db = CalendarDBHelper.getInstance(getApplicationContext()).getReadableDatabase();
 
-
-        String[] eventList = {
-                CalendarDB.CalendarEntry.COLUMN_NAME_ID,
-                CalendarDB.CalendarEntry.COLUMN_NAME_TITLE,
-                CalendarDB.CalendarEntry.COLUMN_NAME_DAY,
-                CalendarDB.CalendarEntry.COLUMN_NAME_MONTH,
-                CalendarDB.CalendarEntry.COLUMN_NAME_YEAR,
-                CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR,
-                CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN,
-                CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR,
-                CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN,
-                CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL,
-                CalendarDB.CalendarEntry.COLUMN_NAME_VENUE,
-
-        };
 
         try {
             cr = db.query(CalendarDB.CalendarEntry.TABLE_NAME, eventList, null, null, null, null, null);
         } catch (Exception err) {
-//            Toast.makeText(timetable_navigation2.this, err.toString(), Toast.LENGTH_LONG).show();
+            err.printStackTrace();
         }
-        check_array = new int[cr.getCount()];
+
         cr.moveToFirst();
 
         // Get a reference for the week view in the layout.
@@ -134,14 +118,14 @@ fab_menu = (FloatingActionsMenu) findViewById(R.id.right_labels);
         fab_new_event=(FloatingActionButton)findViewById(R.id.fab_new);
         fab_new_event.setTitle("New Event");
 
-      //  fab_new_event.setLabelText("New Event");
+        //  fab_new_event.setLabelText("New Event");
         fab_one_day=(FloatingActionButton)findViewById(R.id.fab_one);
         fab_three_day=(FloatingActionButton)findViewById(R.id.fab_three);
         fab_go_today=(FloatingActionButton)findViewById(R.id.fab_today);
 
 //        fab_one_day.setBackgroundTintList(getResources().getColorStateList(R.color.fabcolor));
 //        fab_one_day.setIcon(R.drawable.three_day_icon);
-       // fab_one_day.setIconDrawable(getResources().getDrawable(R.drawable.three_day_icon));
+        // fab_one_day.setIconDrawable(getResources().getDrawable(R.drawable.three_day_icon));
         fab_new_event.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,7 +149,7 @@ fab_menu = (FloatingActionsMenu) findViewById(R.id.right_labels);
                     mWeekView.setEventTextSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, getResources().getDisplayMetrics()));
                 }
 
-                }
+            }
         });
 
         fab_three_day.setOnClickListener(new View.OnClickListener() {
@@ -197,15 +181,16 @@ fab_menu = (FloatingActionsMenu) findViewById(R.id.right_labels);
 
     @Override
     public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
+        Log.v("MOnth", "method called  "+String.valueOf(newMonth));
+        check_array = new int[cr.getCount()];
 
-        // Populate the week view with some events.
+        try {
+            cursor = db.query(CalendarDB.CalendarEntry.TABLE_NAME, eventList, CalendarDB.CalendarEntry.COLUMN_NAME_ID + "=" + longClickedID, null, null, null, null);
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+
         List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
-//        int sem = 1;
-//        int month = Calendar.MONTH;
-//        if (month>5) //month values start from 0. So, it is june at 5.
-//            sem=1;
-//        else
-//            sem = 2;
 
         Calendar startTime, endTime;
         WeekViewEvent event;
@@ -213,10 +198,10 @@ fab_menu = (FloatingActionsMenu) findViewById(R.id.right_labels);
 
         int day3, month3, year3;
 
-        if(cr.getCount() >0 && check_array[0] == 0){
+        if(cr.getCount() >0 && check_array[0] == 0 &&  cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH))== newMonth-1){
             startTime = Calendar.getInstance();
 
-check_array[0] = 1;
+            check_array[0] = 1;
             startTime.set(Calendar.DATE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)));
             startTime.set(Calendar.MONTH, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH)));
             startTime.set(Calendar.YEAR, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR)));
@@ -226,7 +211,7 @@ check_array[0] = 1;
             endTime.set(Calendar.HOUR_OF_DAY, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR)));
             endTime.set(Calendar.MINUTE, cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN)));
 
-          //  Toast.makeText(this, "In DB : " + cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)) + "In Start time : " + startTime.get(Calendar.DAY_OF_MONTH ), Toast.LENGTH_LONG).show();
+            //  Toast.makeText(this, "In DB : " + cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY)) + "In Start time : " + startTime.get(Calendar.DAY_OF_MONTH ), Toast.LENGTH_LONG).show();
 
             event = new WeekViewEvent(cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)),
                     cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
@@ -238,8 +223,8 @@ check_array[0] = 1;
         }
 
 
-        while(cr.moveToNext() && check_array[cr.getPosition()]==0){
-
+        while(cr.moveToNext()){
+if (check_array[cr.getPosition()]==0 &&  cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH))==newMonth-1){
             //   Toast.makeText(timetable.this,  String.valueOf(cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH))), Toast.LENGTH_LONG).show();
 
             check_array[cr.getPosition()]=1;
@@ -260,7 +245,7 @@ check_array[0] = 1;
 //            event.setColor(getResources().getColor(R.color.wallet_hint_foreground_holo_light));
             event.setColor(getResources().getColor(R.color.colorPrimaryLight));
             events.add(event);
-        }
+        }}
         return events;
     }
 
@@ -334,9 +319,9 @@ check_array[0] = 1;
             tv_details.setVisibility(View.VISIBLE);
             tv_details.setText("Details: " + detail);
         }
-            else {
-                tv_details.setVisibility(View.GONE);
-            }
+        else {
+            tv_details.setVisibility(View.GONE);
+        }
 
         TextView tv_date = (TextView) dialogView.findViewById(R.id.details_date);
         tv_date.setText("Date: " + day + "-" + month + "-" + year);
@@ -347,11 +332,11 @@ check_array[0] = 1;
             tv_title.setText("Title: " + title);
         }
         else {
-                tv_title.setVisibility(View.GONE);
-            }
+            tv_title.setVisibility(View.GONE);
+        }
 
         TextView tv_time = (TextView) dialogView.findViewById(R.id.details_time);
-            tv_time.setText("Time: " + starthour + ":" + startmin + " - " + endhour + "-" + endmin);
+        tv_time.setText("Time: " + starthour + ":" + startmin + " - " + endhour + "-" + endmin);
 
 
         AlertDialog alertDialog = dialogBuilder.create();
@@ -365,7 +350,6 @@ check_array[0] = 1;
         detailsIntent.putExtra("end", endhour + " : " + endmin);
         detailsIntent.putExtra("date", day + " : " + (month + 1) + " : " + year);
         detailsIntent.putExtra("type",  type);
-
         startActivity(detailsIntent);
 */
 
@@ -467,7 +451,7 @@ check_array[0] = 1;
             while (cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)) != longClickedID && count < cr.getCount()) {
                 cr.moveToNext();
                 count++;
-        }
+            }
             String original_title = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)),
                     original_startminute = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN)),
                     original_starthour = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR)),
@@ -488,19 +472,16 @@ check_array[0] = 1;
                     Toast.makeText(timetable_navigation2.this, e.toString(), Toast.LENGTH_LONG).show();
                 }
              //   db.delete(CalendarDB.CalendarEntry.TABLE_NAME, null, null);
-
               */
             try {
                /*  db.delete(CalendarDB.CalendarEntry.TABLE_NAME,
                                  CalendarDB.CalendarEntry.COLUMN_NAME_TITLE + "=" + original_title + "," +
-
                                  CalendarDB.CalendarEntry.COLUMN_NAME_STARTHOUR + "=" + original_starthour + "," +
                                  CalendarDB.CalendarEntry.COLUMN_NAME_STARTMIN + "=" + original_startminute + "," +
                                  CalendarDB.CalendarEntry.COLUMN_NAME_ENDHOUR + "=" + original_endhour + "," +
                                  CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN + "=" + original_endminute + " AND " +
                                  CalendarDB.CalendarEntry.COLUMN_NAME_VENUE + "=" + original_venue,
                           null);
-
 */
 
                 db.delete(CalendarDB.CalendarEntry.TABLE_NAME,
@@ -515,12 +496,12 @@ check_array[0] = 1;
                 Log.e(e.toString(), "error");
             }
 
-                finish();
+            finish();
             startActivity(getIntent());
 
 
             Log.e("HEY", "HEY"); // Code for check box checked for delete
-            }
+        }
 
 
         else
@@ -553,10 +534,8 @@ check_array[0] = 1;
 
         if(fab_menu.isExpanded())
             fab_menu.collapse();
-       else  super.onBackPressed();
+        else  super.onBackPressed();
 
 
     }
 }
-
-

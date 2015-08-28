@@ -1,42 +1,42 @@
-        package mobileDevelopment.com.root.campusbuddy;
+package mobileDevelopment.com.root.campusbuddy;
 
 
-        import android.content.ContentValues;
-        import android.content.Context;
-        import android.content.DialogInterface;
-        import android.content.Intent;
-        import android.content.SharedPreferences;
-        import android.database.Cursor;
-        import android.database.sqlite.SQLiteDatabase;
-        import android.graphics.Color;
-        import android.opengl.Visibility;
-        import android.os.Bundle;
-        import android.support.v7.app.AppCompatActivity;
-        import android.support.v7.widget.Toolbar;
-        import android.util.Log;
-        import android.view.Menu;
-        import android.view.MenuItem;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.RadioButton;
-        import android.widget.RadioGroup;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.opengl.Visibility;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-        import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
-        import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-        import java.util.Calendar;
+import java.util.Calendar;
 
-        import mobileDevelopment.com.root.campusbuddy.CalendarDB;
-        import mobileDevelopment.com.root.campusbuddy.CalendarDBHelper;
-        import mobileDevelopment.com.root.campusbuddy.R;
-        import mobileDevelopment.com.root.campusbuddy.timetable_navigation2;
+import mobileDevelopment.com.root.campusbuddy.CalendarDB;
+import mobileDevelopment.com.root.campusbuddy.CalendarDBHelper;
+import mobileDevelopment.com.root.campusbuddy.R;
+import mobileDevelopment.com.root.campusbuddy.timetable_navigation2;
 
 
-public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener{
+public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener {
 
     EditText editt_date, editt_start, editt_end, editt_title, editt_details, editt_venue;
     Button submitBut;
@@ -45,7 +45,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     //   CalendarDBHelper mDbHelper;
     ContentValues values;
     int year, day, month, starthour, startminute, endhour, endminute;
-    String title, venue, details, event_type= "once", original_title, original_venue,
+    String title, venue, details, event_type = "once", original_title, original_venue,
             original_starthour, original_startminute, original_endhour, original_endminute;
     Long ID;
 
@@ -58,24 +58,24 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     Cursor cr_edit;
     Toolbar toolbar;
     RadioGroup radioGroup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         //   mDbHelper = new CalendarDBHelper(getApplicationContext());
 
 
-
         overridePendingTransition(R.anim.slide_in_up, R.anim.fade_out);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
-        radioGroup=(RadioGroup)findViewById(R.id.typeofevent);
+        radioGroup = (RadioGroup) findViewById(R.id.typeofevent);
         toolbar = (Toolbar) findViewById(R.id.tool_bar1);
 //        DayNightTheme.setToolbar(toolbar);
         toolbar.setTitle("Add an Event");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);
-        ismultiedit=getIntent().getBooleanExtra("multi_edit",false);
+        ismultiedit = getIntent().getBooleanExtra("multi_edit", false);
 
         db = CalendarDBHelper.getInstance(getApplicationContext()).getWritableDatabase();
         String[] eventList = {
@@ -94,11 +94,9 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         };
         try {
             cr_edit = db.query(CalendarDB.CalendarEntry.TABLE_NAME, eventList, null, null, null, null, null);
-        }
-        catch (Exception err){
+        } catch (Exception err) {
             Toast.makeText(NewEvent.this, err.toString(), Toast.LENGTH_LONG).show();
         }
-
 
 
         // CalendarDBHelper.getInstance(getApplicationContext()).onCreate(db);   added by myself
@@ -112,8 +110,6 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 "com.example.appss", Context.MODE_PRIVATE);
 
 
-
-
         editt_date = (EditText) findViewById(R.id.edit_date);
         editt_start = (EditText) findViewById(R.id.edit_start_time);
         editt_end = (EditText) findViewById(R.id.edit_end_time);
@@ -125,19 +121,17 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
         int check = pref_edit.getInt("DELETE_OR_EDIT", 0);
 
-        if (check==1)
-        {
+        if (check == 1) {
             radioGroup.setVisibility(View.GONE);
-            Intent ne=getIntent();
-            Bundle extra=ne.getExtras();
+            Intent ne = getIntent();
+            Bundle extra = ne.getExtras();
             editvalue = extra.getLong("value for editing");
 
-            int count=0;
+            int count = 0;
 
             cr_edit.moveToFirst();
 
-            while (cr_edit.getLong(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)) != editvalue && count<cr_edit.getCount())
-            {
+            while (cr_edit.getLong(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)) != editvalue && count < cr_edit.getCount()) {
                 cr_edit.moveToNext();
                 count++;
             }
@@ -146,7 +140,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             venue = cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE));
             details = cr_edit.getString(cr_edit.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL));
 
-            original_title =  title;
+            original_title = title;
             original_venue = venue;
 
             ID = editvalue;
@@ -167,13 +161,13 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             editt_title.setText(title, TextView.BufferType.EDITABLE);
             editt_venue.setText(venue, TextView.BufferType.EDITABLE);
             editt_details.setText(details, TextView.BufferType.EDITABLE);
-            editt_date.setText(day+ "/" + (month+1) + "/" + year, TextView.BufferType.EDITABLE);
+            editt_date.setText(day + "/" + (month + 1) + "/" + year, TextView.BufferType.EDITABLE);
             editt_end.setText(endhour + ":" + endminute, TextView.BufferType.EDITABLE);
             editt_start.setText(starthour + ":" + startminute, TextView.BufferType.EDITABLE);
         }
 
 
-        editt_date.setOnClickListener(new View.OnClickListener(){
+        editt_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*
@@ -252,8 +246,8 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                         cd.set(Calendar.YEAR, year);
                         cd.set(Calendar.MONTH, month);
                         cd.set(Calendar.DAY_OF_MONTH, day);
-                        cd.set(Calendar.HOUR_OF_DAY,starthour);
-                        cd.set(Calendar.MINUTE,startminute);
+                        cd.set(Calendar.HOUR_OF_DAY, starthour);
+                        cd.set(Calendar.MINUTE, startminute);
 
                         title = editt_title.getText().toString();
                         details = editt_details.getText().toString();
@@ -277,7 +271,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                                     CalendarDB.CalendarEntry.TABLE_NAME,
                                     null,
                                     values);
-                            Log.d("Req. Toast", "Count:- " + cr_edit.getCount()+ " , title:- " + title);
+                            Log.d("Req. Toast", "Count:- " + cr_edit.getCount() + " , title:- " + title);
                             value++;
                         } else if (event_type.equals("weekly")) {
                             while (cd.get(Calendar.MONTH) <= 10) {
@@ -301,8 +295,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                                 value++;
                                 cd.add(Calendar.DATE, 7);
                             }
-                        }
-                        else if (event_type.equals("monthly")) {
+                        } else if (event_type.equals("monthly")) {
                             while (cd.get(Calendar.MONTH) <= 10) {
                                 values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
                                 values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
@@ -360,8 +353,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                         editor.commit();
                     } else {
 
-                        if (ismultiedit)
-                        {
+                        if (ismultiedit) {
 
                             editt_date.setKeyListener(null);
                             title = editt_title.getText().toString();
@@ -397,13 +389,11 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                                         new String[]{original_title, original_starthour, original_startminute, original_endhour, original_endminute, original_venue});
 
 
-                            }
-                            catch (Exception e){
+                            } catch (Exception e) {
                                 Toast.makeText(NewEvent.this, e.toString(), Toast.LENGTH_LONG).show();
                                 Log.e(e.toString(), "error");
                             }
-   }
-                    else {
+                        } else {
                             // code for single edit.
 
                             title = editt_title.getText().toString();
@@ -446,15 +436,13 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
                 }
             });
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
 
 
@@ -494,7 +482,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year1, int month1, int day1) {
-        editt_date.setText(day1+ "/" + (month1+1) + "/" + year1, TextView.BufferType.EDITABLE);
+        editt_date.setText(day1 + "/" + (month1 + 1) + "/" + year1, TextView.BufferType.EDITABLE);
         year = year1;
         month = month1;
         day = day1;
@@ -504,12 +492,11 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     @Override
     public void onTimeSet(RadialPickerLayout radialPickerLayout, int hour, int minute) {
 
-        if(isStartTime){
+        if (isStartTime) {
             editt_start.setText(hour + ":" + minute, TextView.BufferType.EDITABLE);
             starthour = hour;
             startminute = minute;
-        }
-        else{
+        } else {
             editt_end.setText(hour + ":" + minute, TextView.BufferType.EDITABLE);
             endhour = hour;
             endminute = minute;
@@ -517,7 +504,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         overridePendingTransition(R.anim.fade_in, R.anim.slide_out_up);
 
@@ -528,7 +515,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         boolean checked = ((RadioButton) view).isChecked();
 
         // Check which radio button was clicked
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.radio_once:
                 if (checked)
                     event_type = "once";
@@ -547,7 +534,4 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 break;
         }
     }
-
-
 }
-
