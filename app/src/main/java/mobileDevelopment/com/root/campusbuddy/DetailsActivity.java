@@ -26,8 +26,8 @@ public class DetailsActivity extends Activity {
         tv_details = (TextView) findViewById(R.id.details_details);
         Intent detailsIntent = getIntent();
         Bundle extras = detailsIntent.getExtras();
-        String details = extras.getString("details");
-        String venue = extras.getString("venue");
+        String details = extras.getString("details").trim();
+        String venue = extras.getString("venue").trim();
         String date = extras.getString("date");
         String start = extras.getString("start");
         String end = extras.getString("end");
@@ -46,17 +46,13 @@ public class DetailsActivity extends Activity {
         tv_date.setText("Date: " + date);
 
 
-        if(venue!=null && !venue.isEmpty()){
+        if(!venue.isEmpty()){
+
             tv_venue.setVisibility(View.VISIBLE);
             tv_venue.setText("Venue: " + venue);}
-        if(details!=null && !details.isEmpty()){
+        if(!details.isEmpty()){
             tv_details.setVisibility(View.VISIBLE);
             tv_details.setText("Details: " + details);}
-
-
-
-
-
 
     }
 }

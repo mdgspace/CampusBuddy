@@ -331,8 +331,8 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             while(cr.moveToNext()){
                 if (cr.getLong(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_ID)) == ID)
                 {
-                    detail = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL));
-                    venue = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE));
+                    detail = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL)).trim();
+                    venue = cr.getString(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_VENUE)).trim();
                     day = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_DAY));
                     month = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_MONTH));
                     year = cr.getInt(cr.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_YEAR));
@@ -360,38 +360,32 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         });
 
         TextView tv_venue = (TextView) dialogView.findViewById(R.id.details_Venue);
-        if(!(venue.equals(null))){
+        if(venue.isEmpty() || venue.length() == 0 || venue.equals("") || venue == null){
+            tv_venue.setVisibility(View.GONE);
+        }
+        else {
             tv_venue.setVisibility(View.VISIBLE);
             tv_venue.setText("Venue: " + venue);
         }
-        else {
-            tv_venue.setVisibility(View.GONE);
-        }
 
-
-        TextView tv_details = (TextView) dialogView.findViewById(R.id.details_details);
-        if(!(detail.equals(null))) {
-            tv_details.setVisibility(View.VISIBLE);
-            tv_details.setText("Details: " + detail);
-        }
-        else {
-            tv_details.setVisibility(View.GONE);
-        }
+            TextView tv_details = (TextView) dialogView.findViewById(R.id.details_details);
+            if(detail.isEmpty() || detail.length() == 0 || detail.equals("") || detail == null){
+                tv_details.setVisibility(View.GONE);
+            }
+            else {
+                tv_details.setVisibility(View.VISIBLE);
+                tv_details.setText("Details: " + detail);
+            }
+            TextView tv_title = (TextView) dialogView.findViewById(R.id.details_title);
+            tv_title.setText("Title: "+ title);
 
         TextView tv_date = (TextView) dialogView.findViewById(R.id.details_date);
         tv_date.setText("Date: " + day + "-" + month + "-" + year);
 
-        TextView tv_title = (TextView) dialogView.findViewById(R.id.details_title);
-        if(!(title.equals(null))) {
-            tv_title.setVisibility(View.VISIBLE);
-            tv_title.setText("Title: " + title);
-        }
-        else {
-            tv_title.setVisibility(View.GONE);
-        }
+
 
         TextView tv_time = (TextView) dialogView.findViewById(R.id.details_time);
-        tv_time.setText("Time: " + starthour + ":" + startmin + " - " + endhour + "-" + endmin);
+        tv_time.setText("Time: " + starthour + ":" + startmin + " - " + endhour + ":" + endmin);
 
 
         AlertDialog alertDialog = dialogBuilder.create();
