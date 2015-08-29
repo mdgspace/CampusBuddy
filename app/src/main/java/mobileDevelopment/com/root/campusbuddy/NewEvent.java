@@ -48,7 +48,8 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     LinearLayout color_name;
     TextView color_text;
     ImageButton color_button;
-    String color_returned;
+    String color_returned=Data.getColor_list().get(4).getHash();
+
     int sem_end = 11;
 
     SQLiteDatabase db;
@@ -62,7 +63,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     boolean isStartTime = true, ismultiedit = false;
 
     SharedPreferences prefs, pref_edit;
-
+    String color_name_fortheme="";
     Long editvalue;
     SQLiteDatabase db_edit;
     Cursor cr_edit;
@@ -80,19 +81,56 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         overridePendingTransition(R.anim.slide_in_up, R.anim.fade_out);
 
         super.onCreate(savedInstanceState);
+
+//        switch (color_name_fortheme){
+//            case "Tomato" :
+//                setTheme(R.style.AppTheme_tomato);
+//                break;
+//            case "Tangerine" :
+//                setTheme(R.style.AppTheme_tangerine);
+//                break;
+//            case "Banana" :
+//                setTheme(R.style.AppTheme_banana);
+//                break;
+//            case "Sage" :
+//                setTheme(R.style.AppTheme_sage);
+//                break;
+//            case "Lavendar" :
+//                setTheme(R.style.AppTheme_lavendar);
+//                break;
+//            case "Flamingo" :
+//                setTheme(R.style.AppTheme_flamingo);
+//                break;
+//            default:
+//                setTheme(R.style.AppTheme);
+//
+//        }
+//
         setContentView(R.layout.activity_new_event);
+
+        editt_date = (EditText) findViewById(R.id.edit_date);
+        editt_start = (EditText) findViewById(R.id.edit_start_time);
+        editt_end = (EditText) findViewById(R.id.edit_end_time);
+        editt_title = (EditText) findViewById(R.id.edit_title);
+        editt_details = (EditText) findViewById(R.id.edit_details);
+        editt_venue = (EditText) findViewById(R.id.edit_venue);
+
         radioGroup = (RadioGroup) findViewById(R.id.typeofevent);
         toolbar = (Toolbar) findViewById(R.id.tool_bar1);
 //        DayNightTheme.setToolbar(toolbar);
         toolbar.setTitle("Add an Event");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);
+        toolbar.setBackgroundColor(Color.parseColor(Data.getColor_list().get(4).getHash()));
+
+
         ismultiedit = getIntent().getBooleanExtra("multi_edit", false);
 
         color_name = (LinearLayout) findViewById(R.id.color_layout);
         color_text = (TextView) findViewById(R.id.color_name_text);
         color_button = (ImageButton) findViewById(R.id.color_button);
 
+        color_button.setBackgroundColor(Color.parseColor(Data.getColor_list().get(4).getHash()));
 
         Calendar cal = Calendar.getInstance();
         day = cal.get(Calendar.DAY_OF_MONTH);
@@ -148,12 +186,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 "com.example.appss", Context.MODE_PRIVATE);
 
 
-        editt_date = (EditText) findViewById(R.id.edit_date);
-        editt_start = (EditText) findViewById(R.id.edit_start_time);
-        editt_end = (EditText) findViewById(R.id.edit_end_time);
-        editt_title = (EditText) findViewById(R.id.edit_title);
-        editt_details = (EditText) findViewById(R.id.edit_details);
-        editt_venue = (EditText) findViewById(R.id.edit_venue);
+
 
         submitBut = (Button) findViewById(R.id.submit);
 
@@ -599,13 +632,30 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     @Override
     public void onColorChoose( int position) {
 
-
         newFragment.dismiss();
-
+         color_name_fortheme = Data.getColor_list().get(position).getColor();
        color_returned = Data.getColor_list().get(position).getHash();
         toolbar.setBackgroundColor(Color.parseColor(Data.getColor_list().get(position).getHash()));
-        color_text.setText(Data.getColor_list().get(position).getColor());
+        color_text.setText(color_name_fortheme);
         color_button.setBackgroundColor(Color.parseColor(Data.getColor_list().get(position).getHash()));
 
     }
+//    @Override
+//    public void onSaveInstanceState(Bundle savedInstanceState) {
+//        super.onSaveInstanceState(savedInstanceState);
+//        // Save UI state changes to the savedInstanceState.
+//        // This bundle will be passed to onCreate if the process is
+//        // killed and restarted.
+//        savedInstanceState.putString("color_name", color_name_fortheme);
+//
+//        // etc.
+//    }
+//
+//    @Override
+//    public void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        // Restore UI state from the savedInstanceState.
+//        // This bundle has also been passed to onCreate.
+//        color_name_fortheme = savedInstanceState.getString("color_name");
+//    }
 }
