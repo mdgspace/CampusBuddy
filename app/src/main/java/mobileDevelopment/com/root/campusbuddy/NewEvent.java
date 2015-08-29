@@ -328,6 +328,12 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     int counter = pref_edit.getInt("DELETE_OR_EDIT", 0);
 
                     if(endhour>starthour || (endhour==starthour && endminute>startminute)) {
+
+                        title = editt_title.getText().toString();
+                        details = editt_details.getText().toString();
+                        venue = editt_venue.getText().toString();
+
+                        if (title != null  && !title.isEmpty()){
                         if (counter == 0) {
 
                             cd.set(Calendar.YEAR, year);
@@ -337,9 +343,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                             cd.set(Calendar.MINUTE, startminute);
 
                             if(month<5) sem_end = 4; else sem_end = 10;
-                            title = editt_title.getText().toString();
-                            details = editt_details.getText().toString();
-                            venue = editt_venue.getText().toString();
+
 
 
                             if (event_type.equals("once")) {
@@ -525,6 +529,8 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                         startActivity(ttIntent);
 
                     }
+                else {Toast.makeText(NewEvent.this, "Title can't be empty.", Toast.LENGTH_LONG).show();}
+                }
                 else {
                         Toast.makeText(NewEvent.this, "End time can't be before start time", Toast.LENGTH_LONG).show();
                     }
