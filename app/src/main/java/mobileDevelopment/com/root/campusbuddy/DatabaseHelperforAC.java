@@ -213,7 +213,7 @@ public class DatabaseHelperforAC extends SQLiteOpenHelper {
                     events.month   = Integer.parseInt(cursor.getString(cursor.getColumnIndex("month")));
                     events.year    = Integer.parseInt(cursor.getString(cursor.getColumnIndex("year")));
                     events.starth=Integer.parseInt(cursor.getString(cursor.getColumnIndex("starth")));
-                    events.starth=Integer.parseInt(cursor.getString(cursor.getColumnIndex("startmin")));
+                    events.startmin=Integer.parseInt(cursor.getString(cursor.getColumnIndex("startmin")));
                     events.endh=Integer.parseInt(cursor.getString(cursor.getColumnIndex("endh")));
                     events.endmin=Integer.parseInt(cursor.getString(cursor.getColumnIndex("endmin")));
                     events.title=cursor.getString(cursor.getColumnIndex("title"));

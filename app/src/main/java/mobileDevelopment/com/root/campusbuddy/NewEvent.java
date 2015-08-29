@@ -204,7 +204,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
                 DialogFragment newFragment = new Dialog_color();
                 newFragment.show(getSupportFragmentManager(), "missiles");
-                
+
             }
         });
 

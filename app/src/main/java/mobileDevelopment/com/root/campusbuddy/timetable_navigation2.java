@@ -46,7 +46,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
     int position=0;
     boolean  ismultiedit = false;
     int size,day[],month[],year[],starth[],startmin[],endh[],endmin[];
-    String title[],venue[],details[];
+    String[] title,venue,details;
 
     public static Activity fa;
     FloatingActionsMenu fab_menu;
@@ -224,9 +224,8 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         for(int i=0;i<size;i++)
         {
             startTime = Calendar.getInstance();
-
             startTime.set(Calendar.DATE,day[i]);
-            startTime.set(Calendar.MONTH, month[i]);
+            startTime.set(Calendar.MONTH, month[i]-1);
             startTime.set(Calendar.YEAR, year[i]);
             startTime.set(Calendar.HOUR_OF_DAY,starth[i]);
             startTime.set(Calendar.MINUTE,startmin[i]);
@@ -238,7 +237,6 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             event = new WeekViewEvent(-1,
                     title[i], startTime, endTime);
             Log.v("Id", ""+event.getId());
-            Log.v("Title",title[i]);
             event.setColor(getResources().getColor(R.color.com_facebook_blue));
             events.add(event);
         }
