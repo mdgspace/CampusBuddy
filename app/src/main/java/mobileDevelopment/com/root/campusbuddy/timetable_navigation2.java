@@ -45,6 +45,8 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
     SharedPreferences pref;
     int position=0;
     boolean  ismultiedit = false;
+    int size,day[],month[],year[],starth[],startmin[],endh[],endmin[];
+    String title[],venue[],details[];
 
     public static Activity fa;
     FloatingActionsMenu fab_menu;
@@ -117,6 +119,49 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
         fab_three_day=(FloatingActionButton)findViewById(R.id.fab_three);
         fab_go_today=(FloatingActionButton)findViewById(R.id.fab_today);
 
+
+        try{
+            DatabaseHelperforAC dbhac=new DatabaseHelperforAC(this);
+            dbhac.createDataBase();
+
+            if (dbhac.open())
+            {
+                List<AcadEvents> events=dbhac.getEvents("Acadevents");
+                size=DatabaseHelperforAC.i;
+                title=new String[size];
+                details=new String[size];
+                venue=new String[size];
+                day=new int[size];
+                month=new int[size];
+                year=new int[size];
+                starth=new int[size];
+                startmin=new int[size];
+                endh=new int[size];
+                endmin=new int[size];
+
+                int i=0;
+                for(AcadEvents acadevents:events)
+                {
+                    day[i]=acadevents.day;
+                    month[i]=acadevents.month;
+                    year[i]=acadevents.year;
+                    starth[i]=acadevents.starth;
+                    startmin[i]=acadevents.startmin;
+                    endh[i]=acadevents.endh;
+                    endmin[i]=acadevents.endmin;
+                    title[i]=acadevents.title;
+                    venue[i]=acadevents.venue;
+                    details[i]=acadevents.details;
+                    i++;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();
+
+        }
+
         fab_new_event.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,6 +217,32 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
     @Override
     public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
+        Calendar startTime, endTime;
+        WeekViewEvent event;
+        List<WeekViewEvent> events = new ArrayList<>();
+
+        for(int i=0;i<size;i++)
+        {
+            startTime = Calendar.getInstance();
+
+            startTime.set(Calendar.DATE,day[i]);
+            startTime.set(Calendar.MONTH, month[i]);
+            startTime.set(Calendar.YEAR, year[i]);
+            startTime.set(Calendar.HOUR_OF_DAY,starth[i]);
+            startTime.set(Calendar.MINUTE,startmin[i]);
+            endTime = (Calendar) startTime.clone();
+            endTime.set(Calendar.HOUR_OF_DAY,endh[i]);
+            endTime.set(Calendar.MINUTE, endmin[i]);
+
+
+            event = new WeekViewEvent(-1,
+                    title[i], startTime, endTime);
+            Log.v("Id", ""+event.getId());
+            Log.v("Title",title[i]);
+            event.setColor(getResources().getColor(R.color.com_facebook_blue));
+            events.add(event);
+        }
+
 
         try {
             cursor = db.query(CalendarDB.CalendarEntry.TABLE_NAME, eventList,
@@ -181,10 +252,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             err.printStackTrace();
         }
 
-        List<WeekViewEvent> events = new ArrayList<>();
 
-        Calendar startTime, endTime;
-        WeekViewEvent event;
         cursor.moveToFirst();
 
         if(cursor.getCount() >0 ){
@@ -237,6 +305,8 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
 
         long ID = event.getId();
+        if(ID!=-1)
+        {
         String detail = "", venue = "", title = "", type = "";
         int day = 0, month = 0, year = 0, starthour = 0, startmin = 0, endhour = 0, endmin = 0;
 
@@ -325,7 +395,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
         AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
-    }
+    }}
 
 
     private void setupDateTimeInterpreter(final boolean shortDate) {
@@ -355,12 +425,13 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
     public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
 
         longClickedID = event.getId();
-        delete_edit_choose dialog=new delete_edit_choose();
-        Bundle b=new Bundle();
-        b.putInt("position",0);
-        dialog.setArguments(b);
-        new delete_edit_choose().show(getFragmentManager(), "delete_and_choose");
-
+        if(longClickedID!=-1) {
+            delete_edit_choose dialog = new delete_edit_choose();
+            Bundle b = new Bundle();
+            b.putInt("position", 0);
+            dialog.setArguments(b);
+            new delete_edit_choose().show(getFragmentManager(), "delete_and_choose");
+        }
     }
 
     @Override

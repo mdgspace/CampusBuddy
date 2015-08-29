@@ -11,12 +11,5 @@ public class TelephoneDirectory extends Activity {
     public String name,emailid,contact;
 
     public TelephoneDirectory(){}
-//
-//    @Override
-//    public String toString() {
-//            return "Contacts [id=" + id
-//                    + ",Name=" + name
-//                    + ",Contact=" + contact
-//                    + ",email-id=" + emailid+"]";
-//}
+
 }
