@@ -49,6 +49,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     TextView color_text;
     ImageButton color_button;
     String color_returned;
+    int sem_end = 11;
 
     SQLiteDatabase db;
     //   CalendarDBHelper mDbHelper;
@@ -91,6 +92,28 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         color_name = (LinearLayout) findViewById(R.id.color_layout);
         color_text = (TextView) findViewById(R.id.color_name_text);
         color_button = (ImageButton) findViewById(R.id.color_button);
+
+
+        Calendar cal = Calendar.getInstance();
+        day = cal.get(Calendar.DAY_OF_MONTH);
+        month = cal.get(Calendar.MONTH);
+        year = cal.get(Calendar.YEAR);
+        starthour = cal.get(Calendar.HOUR_OF_DAY);
+        startminute = cal.get(Calendar.MINUTE);
+        if(starthour<23){
+        cal.add(Calendar.HOUR, 1);
+        endhour = cal.get(Calendar.HOUR_OF_DAY);
+        endminute = cal.get(Calendar.MINUTE);}
+        else {
+            endhour = 23;
+            endminute = 59;
+            }
+
+            editt_start.setText(starthour + ":" + startminute, TextView.BufferType.EDITABLE);
+            editt_end.setText(endhour + ":" + endminute, TextView.BufferType.EDITABLE);
+            editt_date.setText(day + "/" + (month + 1) + "/" + year, TextView.BufferType.EDITABLE);
+
+
 
         db = CalendarDBHelper.getInstance(getApplicationContext()).getWritableDatabase();
         String[] eventList = {
@@ -280,6 +303,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                             cd.set(Calendar.HOUR_OF_DAY, starthour);
                             cd.set(Calendar.MINUTE, startminute);
 
+                            if(month<5) sem_end = 4; else sem_end = 10;
                             title = editt_title.getText().toString();
                             details = editt_details.getText().toString();
                             venue = editt_venue.getText().toString();
@@ -307,7 +331,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                                 Log.d("Req. Toast", "Count:- " + cr_edit.getCount() + " , title:- " + title);
                                 value++;
                             } else if (event_type.equals("weekly")) {
-                                while (cd.get(Calendar.MONTH) <= 10) {
+                                while (cd.get(Calendar.MONTH) <= sem_end) {
                                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
                                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
 
@@ -329,7 +353,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                                     cd.add(Calendar.DATE, 7);
                                 }
                             } else if (event_type.equals("monthly")) {
-                                while (cd.get(Calendar.MONTH) <= 10) {
+                                while (cd.get(Calendar.MONTH) <= sem_end) {
                                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
                                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
 
@@ -353,7 +377,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
 
                             } else if (event_type.equals("daily")) {
-                                while (cd.get(Calendar.MONTH) <= 10) {
+                                while (cd.get(Calendar.MONTH) <= sem_end) {
                                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_ID, value);
                                     values.put(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE, title);
 

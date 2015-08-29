@@ -14,25 +14,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/details_title"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:textSize="35dp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/details_date"/>
+        android:id="@+id/details_date"
+        android:textSize="35dp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/details_time"/>
+        android:id="@+id/details_time"
+        android:textSize="35dp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/details_details"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:textSize="35dp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/details_Venue"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:textSize="35dp" />
 
 
 
