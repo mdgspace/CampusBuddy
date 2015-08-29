@@ -2,20 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-       android:src="@drawable/ic_launcher"
-        android:id="@+id/color_image"/>
+    android:layout_height="100dp"
+    android:id="@+id/colorLL">
 
     <TextView
         android:id="@+id/color_text"
-        android:inputType="textPassword"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:fontFamily="sans-serif"
-        android:text="color"
         />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:id="@+id/color_image"/>
+
+
 </LinearLayout>

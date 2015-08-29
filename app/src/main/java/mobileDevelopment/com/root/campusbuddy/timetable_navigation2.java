@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -63,6 +64,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             CalendarDB.CalendarEntry.COLUMN_NAME_ENDMIN,
             CalendarDB.CalendarEntry.COLUMN_NAME_DETAIL,
             CalendarDB.CalendarEntry.COLUMN_NAME_VENUE,
+            CalendarDB.CalendarEntry.COLUMN_NAME_COLOR,
 
     };
 
@@ -223,6 +225,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
 
         for(int i=0;i<size;i++)
         {
+            if(month[i]== newMonth){
             startTime = Calendar.getInstance();
             startTime.set(Calendar.DATE,day[i]);
             startTime.set(Calendar.MONTH, month[i]-1);
@@ -238,7 +241,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
                     title[i], startTime, endTime);
             Log.v("Id", ""+event.getId());
             event.setColor(getResources().getColor(R.color.com_facebook_blue));
-            events.add(event);
+            events.add(event);}
         }
 
 
@@ -270,7 +273,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
                     cursor.getString(cursor.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
             Log.v("Id", ""+event.getId());
             Log.v("Title", cursor.getString(cursor.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)));
-            event.setColor(getResources().getColor(R.color.colorPrimaryLight));
+            event.setColor(Color.parseColor(cursor.getString(cursor.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_COLOR))));
             events.add(event);
         }
 
@@ -293,7 +296,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
                     cursor.getString(cursor.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)), startTime, endTime);
             Log.v("Id", "" + event.getId());
             Log.v("Title", cursor.getString(cursor.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_TITLE)));
-            event.setColor(getResources().getColor(R.color.colorPrimaryLight));
+            event.setColor(Color.parseColor(cursor.getString(cursor.getColumnIndex(CalendarDB.CalendarEntry.COLUMN_NAME_COLOR))));
             events.add(event);
         }
         return events;
