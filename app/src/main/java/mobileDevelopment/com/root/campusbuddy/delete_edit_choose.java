@@ -69,9 +69,6 @@ public class delete_edit_choose extends DialogFragment  {
         builder.setNegativeButton("Cancel", null);
         AlertDialog dialog = builder.create();
 
-
-
-
         return dialog;
 
     }

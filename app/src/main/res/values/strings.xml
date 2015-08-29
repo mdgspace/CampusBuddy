@@ -70,6 +70,16 @@
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="title_activity_fblogin">Fblogin</string>
 
+    <string-array name="colors_array">
+        <item>Blue</item>
+        <item>Red</item>
+        <item>Orange</item>
+        <item>Yellow</item>
+        <item>Green</item>
+        <item>Pink</item>
+        <item>Violet</item>
+
+    </string-array>
 
 
 

@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.opengl.Visibility;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -36,10 +39,11 @@ import mobileDevelopment.com.root.campusbuddy.R;
 import mobileDevelopment.com.root.campusbuddy.timetable_navigation2;
 
 
-public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener {
+public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener, Dialog_color.ColorDialogListener {
 
     EditText editt_date, editt_start, editt_end, editt_title, editt_details, editt_venue;
     Button submitBut;
+    LinearLayout color_name;
 
     SQLiteDatabase db;
     //   CalendarDBHelper mDbHelper;
@@ -58,6 +62,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     Cursor cr_edit;
     Toolbar toolbar;
     RadioGroup radioGroup;
+    ImageButton color_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +81,8 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);
         ismultiedit = getIntent().getBooleanExtra("multi_edit", false);
+
+        color_name = (LinearLayout) findViewById(R.id.color_layout);
 
         db = CalendarDBHelper.getInstance(getApplicationContext()).getWritableDatabase();
         String[] eventList = {
@@ -184,6 +191,20 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
 
                 dpd.show(getFragmentManager(), "Datepickerdialog");
+            }
+        });
+
+        color_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*
+                DialogFragment newFragment = new DateDialog();
+                newFragment.show(getFragmentManager(), "datePicker");
+                */
+
+                DialogFragment newFragment = new Dialog_color();
+                newFragment.show(getSupportFragmentManager(), "missiles");
+                
             }
         });
 
@@ -533,5 +554,11 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                     event_type = "monthly";
                 break;
         }
+    }
+
+
+    @Override
+    public void onColorChoose(DialogFragment dialog, int position) {
+
     }
 }
