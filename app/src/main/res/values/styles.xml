@@ -23,60 +23,6 @@
         <item name="android:actionMenuTextColor">@color/my_secondary_text</item>
         <item name="popupMenuStyle">@style/PopupMenu</item>
     </style>
-    <style name="AppTheme_tomato" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
-        <item name="colorAccent">@color/accent_tomato</item>
-        <item name="android:textColorPrimary">@color/my_primary_text</item>
-        <item name="android:textColorSecondary">@color/my_secondary_text</item>
-        <item name="android:actionMenuTextColor">@color/my_secondary_text</item>
-        <item name="popupMenuStyle">@style/PopupMenu</item>
-    </style>
-    <style name="AppTheme_tangerine" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
-        <item name="colorAccent">@color/accent_tangerine</item>
-        <item name="android:textColorPrimary">@color/my_primary_text</item>
-        <item name="android:textColorSecondary">@color/my_secondary_text</item>
-        <item name="android:actionMenuTextColor">@color/my_secondary_text</item>
-        <item name="popupMenuStyle">@style/PopupMenu</item>
-    </style>
-    <style name="AppTheme_banana" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
-        <item name="colorAccent">@color/accent_banana</item>
-        <item name="android:textColorPrimary">@color/my_primary_text</item>
-        <item name="android:textColorSecondary">@color/my_secondary_text</item>
-        <item name="android:actionMenuTextColor">@color/my_secondary_text</item>
-        <item name="popupMenuStyle">@style/PopupMenu</item>
-    </style>
-    <style name="AppTheme_sage" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
-        <item name="colorAccent">@color/accent_sage</item>
-        <item name="android:textColorPrimary">@color/my_primary_text</item>
-        <item name="android:textColorSecondary">@color/my_secondary_text</item>
-        <item name="android:actionMenuTextColor">@color/my_secondary_text</item>
-        <item name="popupMenuStyle">@style/PopupMenu</item>
-    </style>
-    <style name="AppTheme_lavendar" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
-        <item name="colorAccent">@color/accent_lavendar</item>
-        <item name="android:textColorPrimary">@color/my_primary_text</item>
-        <item name="android:textColorSecondary">@color/my_secondary_text</item>
-        <item name="android:actionMenuTextColor">@color/my_secondary_text</item>
-        <item name="popupMenuStyle">@style/PopupMenu</item>
-    </style>
-    <style name="AppTheme_flamingo" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <!--<item name="colorPrimaryDark">@color/primary_dark</item>-->
-        <item name="colorAccent">@color/accent_flamingo</item>
-        <item name="android:textColorPrimary">@color/my_primary_text</item>
-        <item name="android:textColorSecondary">@color/my_secondary_text</item>
-        <item name="android:actionMenuTextColor">@color/my_secondary_text</item>
-        <item name="popupMenuStyle">@style/PopupMenu</item>
-    </style>
 
     <style name="PopupMenu" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:textColorPrimary">#000000</item>

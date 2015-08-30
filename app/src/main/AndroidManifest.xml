@@ -103,16 +103,7 @@
             android:label="@string/app_name"
             android:theme="@style/Theme_for_newevent" >
         </activity>
-        <activity
-            android:name=".DetailsActivity"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light.Dialog" >
-            <intent-filter>
-                <action android:name="android.intent.action.NEW_EVENT" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".timetable_navigation2"
             android:label="@string/app_name" >

@@ -240,8 +240,9 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             event = new WeekViewEvent(-1,
                     title[i], startTime, endTime);
             Log.v("Id", ""+event.getId());
-            event.setColor(getResources().getColor(R.color.com_facebook_blue));
-            events.add(event);}
+            event.setColor(Color.parseColor("#9C27B0"));
+            events.add(event);
+            }
         }
 
 
