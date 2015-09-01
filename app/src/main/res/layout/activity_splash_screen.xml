@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mobileDevelopment.com.root.campusbuddy.SplashScreen">
+    tools:context="in.co.mdg.campusbuddy.SplashScreen">
 
     <ImageView
         android:layout_width="match_parent"

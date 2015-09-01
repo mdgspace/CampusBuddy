@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="mobileDevelopment.com.root.campusbuddy" >
+    package="in.co.mdg.campusbuddy" >
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -42,14 +42,14 @@
         android:icon="@drawable/buddy_icon_edited2"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:name=".CbApplication">
+        android:name="in.co.mdg.campusbuddy.CbApplication">
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name=".MainActivity"
+            android:name="in.co.mdg.campusbuddy.MainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
@@ -71,7 +71,7 @@
         <!-- </activity> -->
 
         <activity
-            android:name=".Deptt_list"
+            android:name="in.co.mdg.campusbuddy.Deptt_list"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.DEPTT_LIST" />
@@ -99,17 +99,17 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
         <activity
-            android:name=".NewEvent"
+            android:name="in.co.mdg.campusbuddy.NewEvent"
             android:label="@string/app_name"
             android:theme="@style/Theme_for_newevent" >
         </activity>
 
         <activity
-            android:name=".timetable_navigation2"
+            android:name="in.co.mdg.campusbuddy.timetable_navigation2"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".SimpleMap"
+            android:name="in.co.mdg.campusbuddy.SimpleMap"
             android:label="@string/app_name" >
         </activity>
 
@@ -125,25 +125,25 @@
         <!-- android:value="AIzaSyA-X5bozVBQg1gKeK_B1AreRFLFXmguwS8" /> -->
 
         <activity
-            android:name=".TelephoneContacts"
+            android:name="in.co.mdg.campusbuddy.TelephoneContacts"
             android:label="@string/title_activity_telephone_contacts" >
         </activity>
         <activity
-            android:name=".ContactDetails"
+            android:name="in.co.mdg.campusbuddy.ContactDetails"
             android:configChanges="orientation"
             android:label="@string/title_activity_contact_details"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".fb"
+            android:name="in.co.mdg.campusbuddy.fb"
             android:label="@string/title_activity_contact_details" >
         </activity>
         <activity
-            android:name=".Fblist"
+            android:name="in.co.mdg.campusbuddy.Fblist"
             android:label="@string/title_activity_fblist" >
         </activity>
         <activity
-            android:name=".SplashScreen"
+            android:name="in.co.mdg.campusbuddy.SplashScreen"
             android:label="@string/app_name" >
 
             <!-- <intent-filter> -->
@@ -154,11 +154,11 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".Fblogin"
+            android:name="in.co.mdg.campusbuddy.Fblogin"
             android:label="@string/title_activity_fblogin" >
         </activity>
 
-        <receiver android:name=".AlarmReceiver">
+        <receiver android:name="in.co.mdg.campusbuddy.AlarmReceiver">
             <!--<intent-filter>-->
                 <!--<action android:name="abc">-->
                 <!--</action>-->
