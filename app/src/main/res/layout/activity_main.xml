@@ -1,52 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-<LinearLayout
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-<!--
-    <Button
+    android:id="@+id/layout"
+    android:background="@drawable/main_background"
+    >
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click to show simple map..."
-        android:textSize="40dp"
-        android:id="@+id/mapBut1"/>
-
-
-        <Button
+        android:id="@+id/text_CB"
+        android:gravity= "center"
+        android:src = "@drawable/CB_text"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" />
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click to show the Timetable..."
-        android:textSize="40dp"
-        android:id="@+id/tnBut2"/>
+        android:id="@+id/tdbtn"
+        android:src="@drawable/contacts"
+        android:layout_gravity="left"
+        android:layout_marginLeft="38dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="38dp" />
 
-    <Button
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click to show the Telephone Directory..."
-        android:textSize="40dp"
-        android:id="@+id/tdbtn"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Click to show fb"
-        android:textSize="40dp"
-        android:id="@+id/fbbtn"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabtest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:id="@+id/fbbtn"
+        android:src="@drawable/notices"
+        android:layout_gravity="right"
+        android:layout_marginRight="36dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="36dp" />
+</RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/calendar"
+        android:id="@+id/tnBut2"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:src="@drawable/map"
+        android:id="@+id/mapBut1"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="20dp" />
+</RelativeLayout>
+        <!--android:layout_alignRight="@+id/progressBar"-->
+        <!--android:layout_alignEnd="@+id/progressBar" />-->
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/button2"-->
+        <!--android:text="Broadcast Intent"-->
+        <!--android:onClick="broadcastIntent"-->
+        <!--android:layout_centerHorizontal="true" />-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView6"
+            android:layout_gravity="center_horizontal|bottom"
+            android:src="@drawable/main_building_720"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
 
 
--->
+    <!--<ProgressBar-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/progressBar"-->
+        <!--android:layout_below="@+id/fbbtn"-->
+        <!--android:layout_alignRight="@+id/fbbtn"-->
+        <!--android:layout_alignEnd="@+id/fbbtn" />-->
 </LinearLayout>
-</ScrollView>
