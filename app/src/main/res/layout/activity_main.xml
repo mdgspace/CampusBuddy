@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/text_CB"
         android:gravity= "center"
-        android:src = "@drawable/CB_text"
+        android:src = "@drawable/cb_text"
         android:layout_marginTop="20dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp" />

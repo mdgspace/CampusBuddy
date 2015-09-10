@@ -57,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
        LinearLayout layout =(LinearLayout)findViewById(R.id.layout);
             if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                layout.setBackgroundDrawable( getResources().getDrawable(R.drawable.night_720) );
+                layout.setBackgroundDrawable( getResources().getDrawable(R.drawable.main_background) );
             } else {
-                layout.setBackground(getResources().getDrawable(R.drawable.night_720));
+                layout.setBackground(getResources().getDrawable(R.drawable.main_background));
             }
             //  layout.setBackgroundResource(R.drawable.night_720);
 
