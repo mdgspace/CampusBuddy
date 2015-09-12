@@ -381,7 +381,7 @@ public class timetable_navigation2 extends ActionBarActivity  implements WeekVie
             tv_title.setText("Title: "+ title);
 
         TextView tv_date = (TextView) dialogView.findViewById(R.id.details_date);
-        tv_date.setText("Date: " + day + "-" + month + "-" + year);
+        tv_date.setText("Date: " + (day+1) + "-" + month + "-" + year);
 
 
 

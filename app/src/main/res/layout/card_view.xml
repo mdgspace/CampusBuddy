@@ -12,7 +12,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/card"
     android:padding="5dp"
-    card_view:cardCornerRadius="8dp"
+    card_view:cardCornerRadius="0dp"
     android:background="#ffffff"
     card_view:cardElevation="3sp">
 <!--<LinearLayout-->
