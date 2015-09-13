@@ -35,7 +35,7 @@ public class Data {
         fbPageList.add(new Page("SDSLabs", "182484805131346"));
         fbPageList.add(new Page("SHARE IITR", "292035034247"));
         fbPageList.add(new Page("Team Robocon", "257702554250168"));
-        fbPageList.add(new Page("Technologic 2015", "369513426410599"));
+        fbPageList.add(new Page("Thomso IITR", "171774543014513"));
     }
 
     public static void initImages(){
@@ -60,7 +60,7 @@ public class Data {
         images[18] = R.drawable.sds_labs;
         images[19] = R.drawable.share;
         images[20] = R.drawable.robocon;
-        images[21] = R.drawable.technologic;
+        images[21] = R.drawable.thomso;
 
     }
 
