@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -28,7 +29,7 @@ import com.facebook.rebound.SpringSystem;
 
 public class MainActivity extends AppCompatActivity {
 
-   ImageView mapButt1, mapButt2, tnButt2,tdbtt1, fbbtt1;
+   ImageButton mapButt1, mapButt2, tnButt2,tdbtt1, fbbtt1;
     private FloatingActionButton mActionButton;
     ProgressBar p;
 //    SharedPreferences prefsforfb;
@@ -75,10 +76,10 @@ public class MainActivity extends AppCompatActivity {
 //        SharedPreferences.Editor editor = prefsforfb.edit();
 //        editor.putInt("No of times ", 0);
 //        editor.commit();
-        mapButt1 = (ImageView) findViewById(R.id.mapBut1);
-        tnButt2 = (ImageView) findViewById(R.id.tnBut2);
-        tdbtt1=(ImageView)findViewById(R.id.tdbtn);
-        fbbtt1=(ImageView)findViewById(R.id.fbbtn);
+        mapButt1 = (ImageButton) findViewById(R.id.mapBut1);
+        tnButt2 = (ImageButton) findViewById(R.id.tnBut2);
+        tdbtt1=(ImageButton)findViewById(R.id.tdbtn);
+        fbbtt1=(ImageButton)findViewById(R.id.fbbtn);
 
 //        SpringSystem springSystem = SpringSystem.create();
 //// Add a spring to the system.
