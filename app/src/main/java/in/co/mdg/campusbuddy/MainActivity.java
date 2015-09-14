@@ -12,7 +12,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -53,14 +52,11 @@ public class MainActivity extends AppCompatActivity {
        }
        int sdk = android.os.Build.VERSION.SDK_INT;
 
-
-
-
        LinearLayout layout =(LinearLayout)findViewById(R.id.layout);
             if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                layout.setBackgroundDrawable( getResources().getDrawable(R.drawable.main_background) );
+                layout.setBackgroundDrawable( getResources().getDrawable(R.drawable.mainbackground) );
             } else {
-                layout.setBackground(getResources().getDrawable(R.drawable.main_background));
+                layout.setBackground(getResources().getDrawable(R.drawable.mainbackground));
             }
             //  layout.setBackgroundResource(R.drawable.night_720);
 
