@@ -4,6 +4,10 @@ package in.co.mdg.campusbuddy;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
    ImageButton mapButt1, mapButt2, tnButt2,tdbtt1, fbbtt1;
     private FloatingActionButton mActionButton;
+    LinearLayout main_layout;
     ProgressBar p;
 //    SharedPreferences prefsforfb;
 
@@ -38,6 +43,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+       main_layout = (LinearLayout) findViewById(R.id.main_layout);
+
+       BitmapFactory.Options options = new BitmapFactory.Options();
+       options.inJustDecodeBounds = true;
+       BitmapFactory.decodeResource(getResources(), R.drawable.mainbackground, options);
+       int imageHeight = options.outHeight;
+       int imageWidth = options.outWidth;
+       String imageType = options.outMimeType;
+
+     //  Bitmap bmImg = BitmapFactory.decodeStream(is)
+      BitmapDrawable background = new BitmapDrawable(decodeSampledBitmapFromResource(getResources(),
+              R.drawable.mainbackground, imageWidth, imageHeight));
+       main_layout.setBackground(background);
+
+       //main_layout.setBackgroundDrawable(decodeSampledBitmapFromResource(getResources(),  R.drawable.mainbackground, 100, 100));
 
 
        SharedPreferences getPrefs = PreferenceManager
@@ -52,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
        }
        int sdk = android.os.Build.VERSION.SDK_INT;
 
-       LinearLayout layout =(LinearLayout)findViewById(R.id.layout);
+       LinearLayout layout =(LinearLayout)findViewById(R.id.main_layout);
             if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                 layout.setBackgroundDrawable( getResources().getDrawable(R.drawable.mainbackground) );
             } else {
@@ -186,6 +207,46 @@ catch (Exception e){
 //        intent.setAction("abc");
 //        sendBroadcast(intent);
 //    }
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+                                                         int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, resId, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(res, resId, options);
+    }
+
 
 }
 

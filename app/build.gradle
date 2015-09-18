@@ -11,7 +11,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 def versionMajor = 0
-def versionMinor = 9
+def versionMinor = 10
 def versionPatch = 0
 def versionBuild = 0
 
