@@ -48,14 +48,14 @@ public class MainActivity extends AppCompatActivity {
 
        BitmapFactory.Options options = new BitmapFactory.Options();
        options.inJustDecodeBounds = true;
-       BitmapFactory.decodeResource(getResources(), R.drawable.mainbackground, options);
+       BitmapFactory.decodeResource(getResources(), R.drawable.mainbackground_final, options);
        int imageHeight = options.outHeight;
        int imageWidth = options.outWidth;
        String imageType = options.outMimeType;
 
      //  Bitmap bmImg = BitmapFactory.decodeStream(is)
       BitmapDrawable background = new BitmapDrawable(decodeSampledBitmapFromResource(getResources(),
-              R.drawable.mainbackground, imageWidth, imageHeight));
+              R.drawable.mainbackground_final, imageWidth, imageHeight));
        main_layout.setBackground(background);
 
        //main_layout.setBackgroundDrawable(decodeSampledBitmapFromResource(getResources(),  R.drawable.mainbackground, 100, 100));
@@ -73,12 +73,12 @@ public class MainActivity extends AppCompatActivity {
        }
        int sdk = android.os.Build.VERSION.SDK_INT;
 
-       LinearLayout layout =(LinearLayout)findViewById(R.id.main_layout);
-            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                layout.setBackgroundDrawable( getResources().getDrawable(R.drawable.mainbackground) );
-            } else {
-                layout.setBackground(getResources().getDrawable(R.drawable.mainbackground));
-            }
+//       LinearLayout layout =(LinearLayout)findViewById(R.id.main_layout);
+//            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+//                layout.setBackgroundDrawable( getResources().getDrawable(R.drawable.mainbackground_final) );
+//            } else {
+//                layout.setBackground(getResources().getDrawable(R.drawable.mainbackground_final));
+//            }
             //  layout.setBackgroundResource(R.drawable.night_720);
 
 //            ImageView img= (ImageView) findViewById(R.id.sun_moon);

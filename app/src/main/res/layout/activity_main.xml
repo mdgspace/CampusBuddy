@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main_layout"
+    android:background="@drawable/mainbackground_final"
     >
-    <!--android:background="@drawable/mainbackground"-->
+    <!--android:background="@drawable/mainbackground_final"-->
 
     <ImageView
         android:layout_width="300dp"
