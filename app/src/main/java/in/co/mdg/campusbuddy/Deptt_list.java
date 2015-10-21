@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
@@ -11,11 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 /*
@@ -237,10 +241,83 @@ public class Deptt_list extends AppCompatActivity{
             });
 
             TextView tv_dis = (TextView) dialogView.findViewById(R.id.disclaimera);
-            tv_dis.setText("This is an experimental app made by a student's group and we don't take any responsibility for any information present in the app");
+            TextView tv_dis1 = (TextView) dialogView.findViewById(R.id.disclaimera1);
+            TextView tv_dis2 = (TextView) dialogView.findViewById(R.id.disclaimera2);
+            tv_dis.setText("This is an experimental app made by a student's group and we don't take " +
+                    "any responsibility for any information present in the app\n" +
+                    "Data Sources: \n");
+//            tv_dis1.setText(
+//                    Html.fromHtml(
+//                            "<a href=\"http://www.google.com\" color: white>Academic Calendar</a> "));
+//            tv_dis1.setMovementMethod(LinkMovementMethod.getInstance());
+
+            tv_dis1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent browser = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://www.iitr.ac.in/academics/pages/Academic_Calender.html"));
+                    startActivity(browser);
+                }
+            });
+            tv_dis2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent browser = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://www.iitr.ac.in/Main/pages/Telephone+Telephone_Directory.html"));
+                    startActivity(browser);
+                }
+            });
+
+            tv_dis1.setText("Academic Calendar");
+            tv_dis2.setText("Telephone Directory");
             AlertDialog alertDialog = dialogBuilder.create();
             alertDialog.show();}
 
+        if (id==R.id.about_us_menu) {
+
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+// ...Irrelevant code for customizing the buttons and title
+            LayoutInflater inflater = this.getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.about_us, null);
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setTitle("About us");
+            dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            ImageView git_image = (ImageView) dialogView.findViewById(R.id.git_about_us);
+            ImageView fb_image = (ImageView) dialogView.findViewById(R.id.fb_about_us);
+            ImageView play_image = (ImageView) dialogView.findViewById(R.id.play_about_us);
+
+            git_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent browser = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://goo.gl/smpcVZ"));
+                    startActivity(browser);
+                }
+            });
+            fb_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent browser = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://goo.gl/6Cznj6"));
+                    startActivity(browser);
+                }
+            });
+            play_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent browser = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://goo.gl/de2xPm"));
+                    startActivity(browser);
+                }
+            });
+            AlertDialog alertDialog = dialogBuilder.create();
+            alertDialog.show();
+        }
         //noinspection SimplifiableIfStatement
         //  if (id == R.id.action_settings) {
         //     return true;      }

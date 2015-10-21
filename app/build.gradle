@@ -10,8 +10,8 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
-def versionMajor = 0
-def versionMinor = 11
+def versionMajor = 1
+def versionMinor = 0
 def versionPatch = 0
 def versionBuild = 0
 

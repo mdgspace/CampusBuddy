@@ -113,7 +113,14 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         toolbar.setTitle("Add an Event");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setBackgroundColor(Color.parseColor(Data.getColor_list().get(4).getHash()));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
 
         ismultiedit = getIntent().getBooleanExtra("multi_edit", false);
@@ -550,12 +557,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_new_event, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

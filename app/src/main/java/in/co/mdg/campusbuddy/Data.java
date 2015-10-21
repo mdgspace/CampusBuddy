@@ -10,7 +10,7 @@ public class Data {
    public  static ArrayList<Page> fbPageList = new ArrayList<>();
     public  static  ArrayList<Color_item> itemList = new ArrayList<Color_item>();
 
-    public static final int[] images = new int[22];
+    public static final int[] images = new int[23];
 
     public static void init(){
         fbPageList.clear();
@@ -36,6 +36,7 @@ public class Data {
         fbPageList.add(new Page("SHARE IITR", "292035034247"));
         fbPageList.add(new Page("Team Robocon", "257702554250168"));
         fbPageList.add(new Page("Thomso IITR", "171774543014513"));
+        fbPageList.add(new Page("PAG IITR", "537723156291580"));
     }
 
     public static void initImages(){
@@ -61,7 +62,7 @@ public class Data {
         images[19] = R.drawable.share;
         images[20] = R.drawable.robocon;
         images[21] = R.drawable.thomso;
-
+        images[22] = R.drawable.pag;
     }
 
     public static ArrayList<Page> getFbPageList() {

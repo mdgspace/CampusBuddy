@@ -211,10 +211,11 @@ public class Fblist extends AppCompatActivity{
 //                        fbpagesliked[i]=false;
 //                    }
 //                }
-
+int number_liked = 0;
                     for(int i=0;i<fbpages.length;i++)
                     {
                         if(pageList.get(i).isSelected()){
+                            number_liked++;
                             fbpagesliked.add(listofvalues.get(i).getPage_id());
                             values.put(PagesDB.PagesEntry.COLUMN_NAME_Pages_ID, listofvalues.get(i).getPage_id());
                             values.put(PagesDB.PagesEntry.COLUMN_NAME_Page_name, pageList.get(i).getPage_name());
@@ -225,10 +226,11 @@ public class Fblist extends AppCompatActivity{
                         }
                     }
 
+
                     PagesSelected.writeSelectedPageIds(Fblist.this, fbpagesliked);
-                    if(fbpagesliked==null)
+                    if(fbpagesliked==null || number_liked == 0)
                     {
-                        Toast.makeText(Fblist.this,"Please Select atleast one page to get the feeds",Toast.LENGTH_LONG).show();
+                        Toast.makeText(Fblist.this,"Please Select at least one page to get the feeds",Toast.LENGTH_LONG).show();
                         onResume();
                     }
                     else
