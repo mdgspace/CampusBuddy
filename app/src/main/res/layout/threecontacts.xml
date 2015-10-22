@@ -1,0 +1,108 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:id="@+id/c1"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv1"
+            android:textColor="#000000"
+            android:text="IITR Office Number"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_ic_call_black_18dp"
+            android:layout_toRightOf="@id/tv1"
+            android:layout_toEndOf="@id/tv1"
+            android:background="#ffffff"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/call1"
+            />
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="8dp"
+        android:id="@+id/c2"
+        android:layout_below="@id/c1"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv2"
+            android:textColor="#000000"
+
+            android:text="IITR Residential Number"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_ic_call_black_18dp"
+            android:layout_toRightOf="@id/tv2"
+            android:layout_toEndOf="@id/tv2"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="#ffffff"
+            android:id="@+id/call2"
+            />
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="8dp"
+        android:id="@+id/c3"
+        android:layout_below="@id/c2"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv3"
+            android:textColor="#000000"
+
+            android:text="Residential Number"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_ic_call_black_18dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/tv3"
+            android:layout_toEndOf="@id/tv3"
+            android:background="#ffffff"
+            android:id="@+id/call3"
+            />
+
+
+
+    </RelativeLayout>
+    </RelativeLayout>
+    </ScrollView>

@@ -1,5 +1,6 @@
 package in.co.mdg.campusbuddy;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -20,6 +21,7 @@ public class TelephoneContacts extends AppCompatActivity{
     static String[] names,emailids,contactnos_iitr_o, contactnos_iitr_r, contactnos_bsnl;
     CollapsingToolbarLayout ctoolbar;
     RecyclerView recyclerView;
+    static Context c;
 //    double[] contactnos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,7 @@ public class TelephoneContacts extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         try {
             setContentView(R.layout.activity_telephone_contacts);
-
+            c=this;
             toolbar = (Toolbar) findViewById(R.id.tool_bar);
             toolbar.setTitle(getIntent().getExtras().getString("dept_name"));
             toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
