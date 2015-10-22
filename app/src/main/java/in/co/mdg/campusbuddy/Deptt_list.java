@@ -93,12 +93,24 @@ public class Deptt_list extends AppCompatActivity{
                                 table_name = "ARCHI";
                                 break;
 
-                            case "Applied Science and Engineering":
-                                table_name = "APPLIEDSCI";
-                                break;
-
                             case "Biotechnology":
                                 table_name = "BIOTECH";
+                                break;
+
+                            case "Centre for Continuing Education":
+                                table_name = "CCE";
+                                break;
+
+                            case "Centre for Disaster Management":
+                                table_name = "CDM";
+                                break;
+
+                            case "Centre for Nanotechnology":
+                                table_name = "NANO";
+                                break;
+
+                            case "Centre for Transportation":
+                                table_name = "CTRANS";
                                 break;
 
                             case "Chemical Engineering":
@@ -114,7 +126,7 @@ public class Deptt_list extends AppCompatActivity{
                                 break;
 
                             case "Computer Science and Engineering":
-                                table_name = "CSE";
+                                table_name = "CS";
                                 break;
 
                             case "Earthquake Engineering":
@@ -122,11 +134,11 @@ public class Deptt_list extends AppCompatActivity{
                                 break;
 
                             case "Earth Sciences":
-                                table_name = "EARTHSCI";
+                                table_name = "EARTHS";
                                 break;
 
                             case "Electrical Engineering":
-                                table_name = "EE";
+                                table_name = "ELEC";
                                 break;
 
                             case "Electronics and Communication Engineering":
@@ -134,7 +146,7 @@ public class Deptt_list extends AppCompatActivity{
                                 break;
 
                             case "Humanities and Social Sciences":
-                                table_name = "HUMANITIES";
+                                table_name = "HUMS";
                                 break;
 
                             case "Hydrology":
@@ -150,19 +162,23 @@ public class Deptt_list extends AppCompatActivity{
                                 break;
 
                             case "Mechanical and Industrial Engineering":
-                                table_name = "ME_PI";
+                                table_name = "MECH";
                                 break;
 
                             case "Metallurgical and Materials Engineering":
-                                table_name = "META";
+                                table_name = "METAL";
                                 break;
 
                             case "Physics":
-                                table_name = "PHYSICS";
+                                table_name = "PHY";
+                                break;
+
+                            case "Polymer & Process Engineering":
+                                table_name = "POLY";
                                 break;
 
                             case "Water Resources Development and Management":
-                                table_name = "WATERRES";
+                                table_name = "WATER";
                                 break;
 
                         }
@@ -195,8 +211,11 @@ public class Deptt_list extends AppCompatActivity{
         listValues=new ArrayList<>();
 
         listValues.add(new Contact("Architecture and Planning"));
-        listValues.add(new Contact("Applied Science and Engineering"));
         listValues.add(new Contact("Biotechnology"));
+        listValues.add(new Contact("Centre for Continuing Education"));
+        listValues.add(new Contact("Centre for Disaster Management"));
+        listValues.add(new Contact("Centre for Nanotechnology"));
+        listValues.add(new Contact("Centre for Transportation"));
         listValues.add(new Contact("Chemical Engineering"));
         listValues.add(new Contact("Chemistry"));
         listValues.add(new Contact("Civil Engineering"));
@@ -206,13 +225,15 @@ public class Deptt_list extends AppCompatActivity{
         listValues.add(new Contact("Electrical Engineering"));
         listValues.add(new Contact("Electronics and Communication Engineering"));
         listValues.add(new Contact("Humanities and Social Sciences"));
-       // listValues.add(new Contact("Hydrology"));
+        listValues.add(new Contact("Hydrology"));
         listValues.add(new Contact("Management Studies"));
         listValues.add(new Contact("Mathematics"));
         listValues.add(new Contact("Mechanical and Industrial Engineering"));
         listValues.add(new Contact("Metallurgical and Materials Engineering"));
         listValues.add(new Contact("Physics"));
+        listValues.add(new Contact("Polymer & Process Engineering"));
         listValues.add(new Contact("Water Resources Development and Management"));
+
 
 
 

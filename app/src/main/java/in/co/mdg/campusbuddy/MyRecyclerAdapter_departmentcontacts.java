@@ -41,7 +41,7 @@ public class MyRecyclerAdapter_departmentcontacts extends RecyclerView.Adapter<C
         holder.call.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_ic_call_black_18dp));
         holder.email.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_ic_email_black_18dp));
 
-        if(TelephoneContacts.contactnos[position] == null || TelephoneContacts.contactnos[position].length() == 0){
+        if(TelephoneContacts.contactnos_iitr_o[position] == null || TelephoneContacts.contactnos_iitr_o[position].length() == 0){
             valid_phone_number = false;
             holder.call.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_ic_call_grey_18dp));
         }
@@ -56,7 +56,7 @@ public class MyRecyclerAdapter_departmentcontacts extends RecyclerView.Adapter<C
             @Override
             public void onClick(View view) {
                 if(call_status){
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + TelephoneContacts.contactnos[position]));
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + TelephoneContacts.contactnos_iitr_o[position]));
                     view.getContext().startActivity(intent);
                 }else{
                     Toast.makeText(mContext, "Contact Number not available", Toast.LENGTH_SHORT).show();

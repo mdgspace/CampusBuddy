@@ -23,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //The Android's default system path of your application database.
     private static String DB_PATH = "/data/data/in.co.mdg.campusbuddy/databases/";
 
-    private static String DB_NAME = "iitr_final";
+    private static String DB_NAME = "iitr_final1";
 
     private SQLiteDatabase myDataBase6;
     public static int i=0;
@@ -202,10 +202,12 @@ public List<TelephoneDirectory> getContacts(String table_name) {
             do {
                 i++;
                 TelephoneDirectory location  = new TelephoneDirectory();
-                location.id     = Integer.parseInt(cursor.getString(cursor.getColumnIndex("_id")));
-                location.name    = cursor.getString(cursor.getColumnIndex("Name"));
-                location.contact   = cursor.getString(cursor.getColumnIndex("Contact"));
-                location.emailid    = cursor.getString(cursor.getColumnIndex("Mail"));
+               // location.id     = Integer.parseInt(cursor.getString(cursor.getColumnIndex("_id")));
+                location.name    = cursor.getString(cursor.getColumnIndex("field1"));
+                location.contact_iitr_o   = cursor.getString(cursor.getColumnIndex("field2"));
+                location.contact_iitr_r   = cursor.getString(cursor.getColumnIndex("field3"));
+                location.contact_bsnl  = cursor.getString(cursor.getColumnIndex("field4"));
+                location.emailid    = cursor.getString(cursor.getColumnIndex("field5"));
 
                 contacts.add(location);
 

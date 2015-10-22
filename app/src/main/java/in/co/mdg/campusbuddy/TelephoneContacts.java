@@ -17,7 +17,7 @@ import java.util.List;
 public class TelephoneContacts extends AppCompatActivity{
     int size;
     Toolbar toolbar;
-    static String[] names,emailids,contactnos;
+    static String[] names,emailids,contactnos_iitr_o, contactnos_iitr_r, contactnos_bsnl;
     CollapsingToolbarLayout ctoolbar;
     RecyclerView recyclerView;
 //    double[] contactnos;
@@ -60,14 +60,18 @@ try{
             List<TelephoneDirectory> contacts=dbh.getContacts(getIntent().getExtras().getString("table_name"));
             size=DatabaseHelper.i;
              names=new String[size];
-             contactnos=new String[size];
+            contactnos_iitr_o=new String[size];
+            contactnos_iitr_r=new String[size];
+            contactnos_bsnl=new String[size];
              emailids=new String[size];
 
             int i=0;
             for(TelephoneDirectory td:contacts)
             {
                 names[i]=td.name;
-                contactnos[i]=td.contact;
+                contactnos_bsnl[i]=td.contact_bsnl;
+                contactnos_iitr_o[i]=td.contact_iitr_o;
+                contactnos_iitr_r[i]=td.contact_iitr_r;
                 emailids[i]=td.emailid;
                 i++;
             }
