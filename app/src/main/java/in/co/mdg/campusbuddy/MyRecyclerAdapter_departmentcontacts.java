@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -68,12 +69,15 @@ public class MyRecyclerAdapter_departmentcontacts extends RecyclerView.Adapter<C
                         dialogInterface.dismiss();
                     }
                 });
+
+                final AlertDialog alertDialog = dialogBuilder.create();
+                alertDialog.show();
                 RelativeLayout r1=(RelativeLayout)dialogView.findViewById(R.id.c1);
                 RelativeLayout r2=(RelativeLayout)dialogView.findViewById(R.id.c2);
                 RelativeLayout r3=(RelativeLayout)dialogView.findViewById(R.id.c3);
-                ImageButton i1=(ImageButton)dialogView.findViewById(R.id.call1);
-                ImageButton i2=(ImageButton)dialogView.findViewById(R.id.call2);
-                ImageButton i3=(ImageButton)dialogView.findViewById(R.id.call3);
+                ImageView i1=(ImageView)dialogView.findViewById(R.id.call1);
+                ImageView i2=(ImageView)dialogView.findViewById(R.id.call2);
+                ImageView i3=(ImageView)dialogView.findViewById(R.id.call3);
 
 
 
@@ -93,7 +97,8 @@ public class MyRecyclerAdapter_departmentcontacts extends RecyclerView.Adapter<C
                         public void onClick(View view) {
                             if(call_status1){
                             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel: 013322" + TelephoneContacts.contactnos_iitr_o[position]));
-                            view.getContext().startActivity(intent);}
+                            view.getContext().startActivity(intent);
+                            alertDialog.dismiss();}
                             else{
                                 Toast.makeText(mContext, "Contact Number not available", Toast.LENGTH_SHORT).show();
                             }
@@ -121,7 +126,8 @@ public class MyRecyclerAdapter_departmentcontacts extends RecyclerView.Adapter<C
                     public void onClick(View view) {
                         if(call_status2){
                             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel: 013322" + TelephoneContacts.contactnos_iitr_r[position]));
-                            view.getContext().startActivity(intent);}
+                            view.getContext().startActivity(intent);
+                        alertDialog.dismiss();}
                         else{
                             Toast.makeText(mContext, "Contact Number not available", Toast.LENGTH_SHORT).show();
                         }
@@ -149,10 +155,11 @@ public class MyRecyclerAdapter_departmentcontacts extends RecyclerView.Adapter<C
                 r3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(call_status3){
+                        if (call_status3) {
                             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel: 013322" + TelephoneContacts.contactnos_bsnl[position]));
-                            view.getContext().startActivity(intent);}
-                        else{
+                            view.getContext().startActivity(intent);
+                            alertDialog.dismiss();
+                        } else {
                             Toast.makeText(mContext, "Contact Number not available", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -165,8 +172,7 @@ public class MyRecyclerAdapter_departmentcontacts extends RecyclerView.Adapter<C
 
 
 
-                AlertDialog alertDialog = dialogBuilder.create();
-                alertDialog.show();
+
                 }
         });
 

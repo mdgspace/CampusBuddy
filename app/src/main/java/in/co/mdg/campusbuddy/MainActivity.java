@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
    ImageButton mapButt1, mapButt2, tnButt2,tdbtt1, fbbtt1;
     private FloatingActionButton mActionButton;
-    LinearLayout main_layout;
+    RelativeLayout main_layout;
     ProgressBar p;
 //    SharedPreferences prefsforfb;
 
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    main_layout = (LinearLayout) findViewById(R.id.main_layout);
+    main_layout = (RelativeLayout) findViewById(R.id.main_layout);
 
        BitmapFactory.Options options = new BitmapFactory.Options();
        options.inJustDecodeBounds = true;

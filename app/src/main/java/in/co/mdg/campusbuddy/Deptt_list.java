@@ -296,53 +296,9 @@ public class Deptt_list extends AppCompatActivity{
 
         if (id==R.id.about_us_menu) {
 
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-// ...Irrelevant code for customizing the buttons and title
-            LayoutInflater inflater = this.getLayoutInflater();
-            View dialogView = inflater.inflate(R.layout.about_us, null);
-            dialogBuilder.setView(dialogView);
-            dialogBuilder.setTitle("About us");
-            dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
-            ImageView git_image = (ImageView) dialogView.findViewById(R.id.git_about_us);
-            ImageView fb_image = (ImageView) dialogView.findViewById(R.id.fb_about_us);
-            ImageView play_image = (ImageView) dialogView.findViewById(R.id.play_about_us);
-
-            git_image.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent browser = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://goo.gl/smpcVZ"));
-                    startActivity(browser);
-                }
-            });
-            fb_image.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent browser = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://goo.gl/6Cznj6"));
-                    startActivity(browser);
-                }
-            });
-            play_image.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent browser = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://goo.gl/de2xPm"));
-                    startActivity(browser);
-                }
-            });
-            AlertDialog alertDialog = dialogBuilder.create();
-            alertDialog.show();
+            Intent i=new Intent(Deptt_list.this,AboutUs.class);
+            startActivity(i);
         }
-        //noinspection SimplifiableIfStatement
-        //  if (id == R.id.action_settings) {
-        //     return true;      }
-
 
         return super.onOptionsItemSelected(item);
     }
