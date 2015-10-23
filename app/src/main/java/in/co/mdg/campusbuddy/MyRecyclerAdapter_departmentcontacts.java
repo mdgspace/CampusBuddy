@@ -96,7 +96,7 @@ public class MyRecyclerAdapter_departmentcontacts extends RecyclerView.Adapter<C
                         @Override
                         public void onClick(View view) {
                             if(call_status1){
-                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel: 013322" + TelephoneContacts.contactnos_iitr_o[position]));
+                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel: 0133228" + TelephoneContacts.contactnos_iitr_o[position]));
                             view.getContext().startActivity(intent);
                             alertDialog.dismiss();}
                             else{
@@ -125,7 +125,7 @@ public class MyRecyclerAdapter_departmentcontacts extends RecyclerView.Adapter<C
                     @Override
                     public void onClick(View view) {
                         if(call_status2){
-                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel: 013322" + TelephoneContacts.contactnos_iitr_r[position]));
+                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel: 0133228" + TelephoneContacts.contactnos_iitr_r[position]));
                             view.getContext().startActivity(intent);
                         alertDialog.dismiss();}
                         else{
@@ -156,7 +156,7 @@ public class MyRecyclerAdapter_departmentcontacts extends RecyclerView.Adapter<C
                     @Override
                     public void onClick(View view) {
                         if (call_status3) {
-                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel: 013322" + TelephoneContacts.contactnos_bsnl[position]));
+                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel: 0133228" + TelephoneContacts.contactnos_bsnl[position]));
                             view.getContext().startActivity(intent);
                             alertDialog.dismiss();
                         } else {

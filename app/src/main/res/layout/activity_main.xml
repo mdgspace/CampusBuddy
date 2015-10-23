@@ -113,6 +113,7 @@
             android:layout_gravity="center_horizontal|bottom"
             android:src="@drawable/main_building_720"
             android:layout_below="@+id/credit"
+            android:layout_alignParentBottom="true"
             />
 
 

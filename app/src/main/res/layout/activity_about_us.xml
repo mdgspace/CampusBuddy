@@ -14,8 +14,8 @@
         android:layout_centerHorizontal="true"
 
         android:layout_marginTop="12dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
         android:textColor="#ffffff"
         android:textSize="40dp"/>
 
@@ -38,7 +38,7 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/mdg" />
+            android:src="@drawable/mdglogofinal1" />
 
 
         <TextView
@@ -46,21 +46,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="20dp"
-            android:textSize="15dp"
+            android:textSize="18dp"
             android:typeface="serif"
             android:textColor="#ffffff"
             android:text="Mobile development group at IIT Roorkee is an active student group directing its efforts towards creating useful mobile applications and promoting tech based leaning for the same."
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"/>
         <!--android:textColor="#43d2fc"-->
 
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding = "10dp"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_marginBottom="22dp"
+            >
 
 
 
@@ -68,24 +72,27 @@
 
             <ImageView
                 android:id="@+id/git_about_us"
-                android:layout_width="75dp"
+                android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:padding = "10dp"
+                android:layout_weight="1"
                 android:src="@drawable/github" />
 
             <ImageView
                 android:id="@+id/fb_about_us"
-                android:layout_width="75dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="100dp"
                 android:padding = "10dp"
                 android:src="@drawable/facebook_icon" />
 
             <ImageView
                 android:id="@+id/play_about_us"
-                android:layout_width="75dp"
+                android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:padding="10dp"
+                android:layout_weight="1"
                 android:src="@drawable/play_store" />
         </LinearLayout>
     </LinearLayout>
