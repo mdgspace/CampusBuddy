@@ -38,7 +38,7 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/mdglogofinal1" />
+            android:src="@drawable/mdglogowhite" />
 
 
         <TextView
@@ -49,7 +49,7 @@
             android:textSize="18dp"
             android:typeface="serif"
             android:textColor="#ffffff"
-            android:text="Mobile development group at IIT Roorkee is an active student group directing its efforts towards creating useful mobile applications and promoting tech based leaning for the same."
+            android:text="Mobile development group at IIT Roorkee is an active student group directing its efforts towards creating useful mobile applications and promoting tech based learning for the same."
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_marginLeft="6dp"
             android:layout_marginStart="6dp"/>
