@@ -12,6 +12,8 @@
         android:layout_height="50dp"
         android:fontFamily="sans-serif"
         android:textSize="20dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
         android:gravity="center_vertical" />
 
     <ImageButton

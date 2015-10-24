@@ -185,7 +185,7 @@
                 android:id="@+id/color_name_text"
                 android:textSize="20dp"
                 />
-            <ImageButton
+            <ImageView
                 android:layout_width="50dp"
                 android:layout_height="25dp"
                 android:id="@+id/color_button"

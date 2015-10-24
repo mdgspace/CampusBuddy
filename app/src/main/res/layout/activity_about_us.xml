@@ -90,7 +90,6 @@
                 android:id="@+id/play_about_us"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
-                android:layout_gravity="center"
                 android:padding="10dp"
                 android:layout_weight="1"
                 android:src="@drawable/play_store" />

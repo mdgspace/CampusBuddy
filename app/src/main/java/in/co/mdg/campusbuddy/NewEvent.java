@@ -19,7 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -39,7 +39,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     Button submitBut;
     LinearLayout color_name;
     TextView color_text;
-    ImageButton color_button;
+    ImageView color_button;
     String color_returned=Data.getColor_list().get(4).getHash();
 
     int sem_end = 11;
@@ -127,7 +127,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
         color_name = (LinearLayout) findViewById(R.id.color_layout);
         color_text = (TextView) findViewById(R.id.color_name_text);
-        color_button = (ImageButton) findViewById(R.id.color_button);
+        color_button = (ImageView) findViewById(R.id.color_button);
 
         color_button.setBackgroundColor(Color.parseColor(Data.getColor_list().get(4).getHash()));
 

@@ -110,10 +110,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/imageView6"
-            android:layout_gravity="center_horizontal|bottom"
             android:src="@drawable/main_building_720"
             android:layout_below="@+id/credit"
             android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp"
             />
 
 

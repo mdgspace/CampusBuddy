@@ -6,6 +6,8 @@
     android:layout_height="wrap_content"
     android:id="@+id/color_list"
     android:focusable="false"
-    android:focusableInTouchMode="false">
+    android:focusableInTouchMode="false"
+    android:layout_marginLeft="6dp"
+    android:layout_marginStart="6dp">
 
 </ListView>
