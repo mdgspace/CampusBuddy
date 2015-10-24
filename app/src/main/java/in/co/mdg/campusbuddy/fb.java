@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.etsy.android.grid.StaggeredGridView;
 import com.facebook.AccessToken;
@@ -60,6 +61,14 @@ public class fb extends AppCompatActivity {
         posts = new ArrayList<>();
 
         fbpliked = PagesSelected.getSelectedPageIds(fb.this);
+       // Log.e("dta in file",fbpliked.toString());
+        if(fbpliked.size()==0)
+        {
+            Toast.makeText(this,"Select pages to get the feeds",Toast.LENGTH_LONG).show();
+            Intent i=new Intent(fb.this,Fblist.class);
+            startActivity(i);
+            finish();
+        }
         progressBar=(ProgressBar)findViewById(R.id.progressbar);
         adapterfb = new FBFeedAdapter(this, R.layout.card_viewfb, posts);
         try {

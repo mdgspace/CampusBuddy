@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
 
         android:layout_marginTop="12dp"
-        android:layout_marginLeft="18dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginStart="18dp"
         android:textColor="#ffffff"
         android:textSize="40dp"/>
