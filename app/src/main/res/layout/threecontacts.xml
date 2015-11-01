@@ -27,7 +27,7 @@
             android:layout_weight="4"
             android:layout_marginLeft="12dp"
             android:layout_marginStart="12dp"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:text="Office"
             />
 
@@ -69,8 +69,8 @@
             android:layout_marginLeft="12dp"
             android:layout_marginStart="12dp"
             android:layout_weight="4"
-            android:textSize="22sp"
-            android:text="Residential"
+            android:textSize="20sp"
+            android:text="Residence"
             />
 
         <ImageView
@@ -111,8 +111,8 @@
             android:layout_marginLeft="12dp"
             android:layout_marginStart="12dp"
             android:layout_weight="4"
-            android:textSize="22sp"
-            android:text="Residential(BSNL)"
+            android:textSize="20sp"
+            android:text="Residence (BSNL)"
             />
 
         <ImageView
