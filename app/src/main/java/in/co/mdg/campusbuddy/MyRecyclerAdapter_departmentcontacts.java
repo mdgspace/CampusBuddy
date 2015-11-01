@@ -88,15 +88,15 @@ public class MyRecyclerAdapter_departmentcontacts extends RecyclerView.Adapter<C
                 else  std_code = "0133228";
 
                 if (TelephoneContacts.contactnos_iitr_o[position] != null && TelephoneContacts.contactnos_iitr_o[position].length() != 0) {
-                    t1.setText("Office " + std_code + TelephoneContacts.contactnos_iitr_o[position]);
+                    t1.setText("Office " +  "\n(" + std_code + TelephoneContacts.contactnos_iitr_o[position] + ")");
                 }
 
                 if (TelephoneContacts.contactnos_iitr_r[position] != null && TelephoneContacts.contactnos_iitr_r[position].length() != 0) {
-                    t1.setText("Residential " +  std_code + TelephoneContacts.contactnos_iitr_r[position]);
+                    t1.setText("Residential " +  "\n(" + std_code + TelephoneContacts.contactnos_iitr_r[position] + ")");
                 }
 
                 if (TelephoneContacts.contactnos_bsnl[position] != null && TelephoneContacts.contactnos_bsnl[position].length() != 0) {
-                    t1.setText("Residential (BSNL) " +  std_code + TelephoneContacts.contactnos_bsnl[position]);
+                    t1.setText("Residential (BSNL) " + "\n(" + std_code + TelephoneContacts.contactnos_bsnl[position] + ")");
                 }
 
                 i1.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_ic_call_black_18dp));

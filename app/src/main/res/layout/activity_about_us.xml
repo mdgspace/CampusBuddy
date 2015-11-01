@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:textSize="22sp"
         android:text="https://mobile.sdslabs.co/"
-        android:textColor="#0000EE"
+        android:textColor="#ffffff"
         android:paddingLeft="25dp"
         android:paddingBottom="25dp"
         android:id="@+id/blog_link_text"/>
