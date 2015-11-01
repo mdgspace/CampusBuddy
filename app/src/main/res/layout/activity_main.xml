@@ -1,130 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main_layout"
     android:background="@drawable/mainbackground_final"
-    >
+    android:orientation="vertical">
     <!--android:background="@drawable/mainbackground_final"-->
 
     <ImageView
+        android:id="@+id/text_CB"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_centerHorizontal="true"
-        android:id="@+id/text_CB"
-        android:gravity= "center"
-        android:src = "@drawable/cb_text"
-        />
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:paddingLeft="20dp"-->
-        <!--android:paddingRight="20dp" />-->
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_gravity="center_horizontal"
-    android:layout_centerHorizontal="true"
-    android:layout_below="@+id/text_CB"
-    android:id="@+id/rel1">
-    <ImageButton
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:src="@drawable/cb_text" />
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:paddingLeft="20dp"-->
+    <!--android:paddingRight="20dp" />-->
+    <RelativeLayout
+        android:id="@+id/rel1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tdbtn"
-        android:background="@drawable/contacts"
+        android:layout_below="@+id/text_CB"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/tdbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
 
 
-        android:paddingRight="20dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"/>
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/contacts"
+            android:paddingRight="20dp" />
 
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/fbbtn"
-        android:background="@drawable/notices"
+        <ImageButton
+            android:id="@+id/fbbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="150dp"
 
-        android:layout_marginLeft="150dp"
-        android:layout_marginStart="150dp"
+            android:layout_marginStart="150dp"
+            android:background="@drawable/notices"
 
-        android:paddingLeft="20dp" />
-</RelativeLayout>
+            android:paddingLeft="20dp" />
+    </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:id="@+id/rel2"
-        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rel1"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/rel1">
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/calendar"
-        android:id="@+id/tnBut2"
-        android:paddingRight="20dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-       android:background="@drawable/map"
-        android:id="@+id/mapBut1"
-        android:layout_marginLeft="150dp"
-        android:layout_marginStart="150dp"
-
-
-        android:paddingLeft="20dp" />
-</RelativeLayout>
-        <!--android:layout_alignRight="@+id/progressBar"-->
-        <!--android:layout_alignEnd="@+id/progressBar" />-->
-    <!--<Button-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/button2"-->
-        <!--android:text="Broadcast Intent"-->
-        <!--android:onClick="broadcastIntent"-->
-        <!--android:layout_centerHorizontal="true" />-->
-
-
-        <TextView
+        <ImageButton
+            android:id="@+id/tnBut2"
             android:layout_width="wrap_content"
-            android:layout_height="15dp"
-            android:text="Credits: Hobbies Club, IITR"
-            android:textSize="12dp"
-            android:layout_below="@+id/rel2"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/white"
-            android:layout_gravity="center"
-            android:id="@+id/credit"
-            android:alpha="0.6"/>
-
-        <ImageView
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView6"
-            android:src="@drawable/main_building_720"
-            android:layout_below="@+id/credit"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="0dp"
-            />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/calendar"
+            android:paddingRight="20dp" />
+
+        <ImageButton
+            android:id="@+id/mapBut1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="150dp"
+            android:layout_marginStart="150dp"
+            android:background="@drawable/map"
 
 
+            android:paddingLeft="20dp" />
+    </RelativeLayout>
+    <!--android:layout_alignRight="@+id/progressBar"-->
+    <!--android:layout_alignEnd="@+id/progressBar" />-->
+    <!--<Button-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/button2"-->
+    <!--android:text="Broadcast Intent"-->
+    <!--android:onClick="broadcastIntent"-->
+    <!--android:layout_centerHorizontal="true" />-->
 
+
+    <TextView
+        android:id="@+id/credit"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:alpha="0.6"
+        android:text=" Hobbies Club, IIT Roorkee"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:layout_above="@+id/imageView6"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"/>
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/main_building_720"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
     <!--<ProgressBar-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/progressBar"-->
-        <!--android:layout_below="@+id/fbbtn"-->
-        <!--android:layout_alignRight="@+id/fbbtn"-->
-        <!--android:layout_alignEnd="@+id/fbbtn" />-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/progressBar"-->
+    <!--android:layout_below="@+id/fbbtn"-->
+    <!--android:layout_alignRight="@+id/fbbtn"-->
+    <!--android:layout_alignEnd="@+id/fbbtn" />-->
 </RelativeLayout>

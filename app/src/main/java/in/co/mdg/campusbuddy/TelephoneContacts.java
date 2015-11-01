@@ -1,15 +1,22 @@
 package in.co.mdg.campusbuddy;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,6 +26,7 @@ public class TelephoneContacts extends AppCompatActivity{
     int size;
     Toolbar toolbar;
     static String[] names,emailids,contactnos_iitr_o, contactnos_iitr_r, contactnos_bsnl;
+    static String campus_location="roorkee";
     CollapsingToolbarLayout ctoolbar;
     RecyclerView recyclerView;
     static Context c;
@@ -58,7 +66,10 @@ try{
             dbh.createDataBase();
 
         if(dbh.open())
-        {
+        {if(getIntent().getExtras().getString("table_name").equals("POLY")){
+campus_location = "saharanpur";
+        }
+            else campus_location = "roorkee";
             List<TelephoneDirectory> contacts=dbh.getContacts(getIntent().getExtras().getString("table_name"));
             size=DatabaseHelper.i;
              names=new String[size];
@@ -121,13 +132,65 @@ try{
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if(id==R.id.disclaimer)
+        { AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+// ...Irrelevant code for customizing the buttons and title
+            LayoutInflater inflater = this.getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.disclaimer, null);
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setTitle("Disclamer");
+            dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
 
+            TextView tv_dis = (TextView) dialogView.findViewById(R.id.disclaimera);
+            TextView tv_dis1 = (TextView) dialogView.findViewById(R.id.disclaimera1);
+            TextView tv_dis2 = (TextView) dialogView.findViewById(R.id.disclaimera2);
+            tv_dis.setText("This is an experimental app made by a student's group and we don't take " +
+                    "any responsibility for any information present in the app\n" +
+                    "Data Sources: \n");
+//            tv_dis1.setText(
+//                    Html.fromHtml(
+//                            "<a href=\"http://www.google.com\" color: white>Academic Calendar</a> "));
+//            tv_dis1.setMovementMethod(LinkMovementMethod.getInstance());
 
-        //noinspection SimplifiableIfStatement
-      //  if (id == R.id.action_settings) {
-       //     return true;      }
+            tv_dis1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent browser = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://www.iitr.ac.in/academics/pages/Academic_Calender.html"));
+                    startActivity(browser);
+                }
+            });
+            tv_dis2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent browser = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://www.iitr.ac.in/Main/pages/Telephone+Telephone_Directory.html"));
+                    startActivity(browser);
+                }
+            });
 
+            tv_dis1.setText("Academic Calendar");
+            tv_dis2.setText("Telephone Directory");
+            AlertDialog alertDialog = dialogBuilder.create();
+            alertDialog.show();}
+
+        if (id==R.id.about_us_menu) {
+
+            Intent i=new Intent(TelephoneContacts.this,AboutUs.class);
+            startActivity(i);
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_telephone_contacts, menu);
+        return true;
     }
 }

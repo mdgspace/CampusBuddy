@@ -1,40 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/mainbackground_final"
-    >
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tool_bar"
-        android:text="About Us"
-        android:layout_centerHorizontal="true"
-
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="18dp"
-        android:textColor="#ffffff"
-        android:textSize="40dp"/>
+    android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="15dp"
-        android:layout_below="@id/tool_bar"
-        >
-
-
+        android:padding="15dp">
 
 
         <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="168dp"
+            android:layout_height="144dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_marginTop="10dp"
@@ -45,56 +28,71 @@
             android:id="@+id/about_us_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
             android:paddingTop="20dp"
-            android:textSize="18dp"
-            android:typeface="serif"
-            android:textColor="#ffffff"
             android:text="Mobile development group at IIT Roorkee is an active student group directing its efforts towards creating useful mobile applications and promoting tech based learning for the same."
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginLeft="6dp"
-            android:layout_marginStart="6dp"/>
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            android:typeface="serif" />
         <!--android:textColor="#43d2fc"-->
 
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding = "10dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="22dp"
-            >
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:text="Follow us at: "
+        android:textColor="#ffffff"
+        android:paddingLeft="25dp"
+        android:paddingBottom="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:text="https://mobile.sdslabs.co/"
+        android:textColor="#0000EE"
+        android:paddingLeft="25dp"
+        android:paddingBottom="25dp"
+        android:id="@+id/blog_link_text"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal|bottom">
 
 
+        <ImageView
+            android:id="@+id/git_about_us"
+            android:layout_width="72dp"
+            android:layout_height="64dp"
+            android:padding="10dp"
 
+            android:src="@drawable/github" />
 
+        <ImageView
+            android:id="@+id/fb_about_us"
+            android:layout_width="72dp"
 
-            <ImageView
-                android:id="@+id/git_about_us"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:padding = "10dp"
-                android:layout_weight="1"
-                android:src="@drawable/github" />
+            android:layout_height="64dp"
+            android:padding="10dp"
+            android:src="@drawable/facebook_icon" />
 
-            <ImageView
-                android:id="@+id/fb_about_us"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="100dp"
-                android:padding = "10dp"
-                android:src="@drawable/facebook_icon" />
+        <ImageView
+            android:id="@+id/play_about_us"
+            android:layout_width="72dp"
+            android:layout_height="64dp"
+            android:padding="10dp"
 
-            <ImageView
-                android:id="@+id/play_about_us"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:padding="10dp"
-                android:layout_weight="1"
-                android:src="@drawable/play_store" />
-        </LinearLayout>
+            android:src="@drawable/play_store" />
     </LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>

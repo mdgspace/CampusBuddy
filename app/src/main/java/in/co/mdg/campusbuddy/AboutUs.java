@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 public class AboutUs extends ActionBarActivity {
@@ -21,6 +22,7 @@ public class AboutUs extends ActionBarActivity {
         ImageView git_image = (ImageView) findViewById(R.id.git_about_us);
         ImageView fb_image = (ImageView)findViewById(R.id.fb_about_us);
         ImageView play_image = (ImageView)findViewById(R.id.play_about_us);
+        TextView blog_text = (TextView) findViewById(R.id.blog_link_text);
 
         git_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +45,14 @@ public class AboutUs extends ActionBarActivity {
             public void onClick(View view) {
                 Intent browser = new Intent(Intent.ACTION_VIEW,
                         Uri.parse("http://goo.gl/de2xPm"));
+                startActivity(browser);
+            }
+        });
+        blog_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent browser = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://mobile.sdslabs.co/"));
                 startActivity(browser);
             }
         });
