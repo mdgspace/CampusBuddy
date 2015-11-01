@@ -92,11 +92,11 @@ public class MyRecyclerAdapter_departmentcontacts extends RecyclerView.Adapter<C
                 }
 
                 if (TelephoneContacts.contactnos_iitr_r[position] != null && TelephoneContacts.contactnos_iitr_r[position].length() != 0) {
-                    t1.setText("Residential " +  "\n(" + std_code + TelephoneContacts.contactnos_iitr_r[position] + ")");
+                    t2.setText("Residential " +  "\n(" + std_code + TelephoneContacts.contactnos_iitr_r[position] + ")");
                 }
 
                 if (TelephoneContacts.contactnos_bsnl[position] != null && TelephoneContacts.contactnos_bsnl[position].length() != 0) {
-                    t1.setText("Residential (BSNL) " + "\n(" + std_code + TelephoneContacts.contactnos_bsnl[position] + ")");
+                    t3.setText("Residential (BSNL) " + "\n(" + std_code + TelephoneContacts.contactnos_bsnl[position] + ")");
                 }
 
                 i1.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_ic_call_black_18dp));

@@ -9,7 +9,7 @@
         android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         android:padding="8dp"
         android:id="@+id/c1"
@@ -27,7 +27,7 @@
             android:layout_weight="4"
             android:layout_marginLeft="12dp"
             android:layout_marginStart="12dp"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:text="Office"
             />
 
@@ -51,7 +51,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="match_parent"
         android:padding="8dp"
         android:id="@+id/c2"
         android:layout_below="@id/c1"
@@ -69,8 +69,8 @@
             android:layout_marginLeft="12dp"
             android:layout_marginStart="12dp"
             android:layout_weight="4"
-            android:textSize="20sp"
-            android:text="Residence"
+            android:textSize="16sp"
+            android:text="Residential"
             />
 
         <ImageView
@@ -93,7 +93,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="match_parent"
         android:padding="8dp"
         android:id="@+id/c3"
         android:layout_below="@id/c2"
@@ -111,8 +111,8 @@
             android:layout_marginLeft="12dp"
             android:layout_marginStart="12dp"
             android:layout_weight="4"
-            android:textSize="20sp"
-            android:text="Residence (BSNL)"
+            android:textSize="16sp"
+            android:text="Residential(BSNL)"
             />
 
         <ImageView
