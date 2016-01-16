@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rootlayout"
-    tools:context="in.co.mdg.campusbuddy.ContactDetails">
+    tools:context="in.co.mdg.campusBuddy.ContactDetails">
 
     <include
         android:id="@+id/tool_bar1"

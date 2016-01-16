@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="in.co.mdg.campusbuddy" >
+    package="in.co.mdg.campusBuddy" >
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -37,7 +37,7 @@
     <!-- android:smallScreens="true" -->
     <!-- android:xlargeScreens="true" /> -->
     <application
-        android:name=".CbApplication"
+        android:name="in.co.mdg.campusBuddy.CbApplication"
         android:allowBackup="true"
         android:icon="@drawable/buddy_icon_edited2"
         android:label="@string/app_name"
@@ -48,7 +48,7 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name=".MainActivity"
+            android:name="in.co.mdg.campusBuddy.MainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
@@ -70,7 +70,7 @@
         <!-- </activity> -->
 
         <activity
-            android:name=".Deptt_list"
+            android:name="in.co.mdg.campusBuddy.Deptt_list"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.DEPTT_LIST" />
@@ -98,16 +98,16 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
         <activity
-            android:name=".NewEvent"
+            android:name="in.co.mdg.campusBuddy.NewEvent"
             android:label="@string/app_name"
             android:theme="@style/Theme_for_newevent" >
         </activity>
         <activity
-            android:name=".timetable_navigation2"
+            android:name="in.co.mdg.campusBuddy.timetable_navigation2"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".SimpleMap"
+            android:name="in.co.mdg.campusBuddy.SimpleMap"
             android:label="@string/app_name" >
         </activity>
 
@@ -123,29 +123,29 @@
         <!-- android:value="AIzaSyA-X5bozVBQg1gKeK_B1AreRFLFXmguwS8" /> -->
 
         <activity
-            android:name=".TelephoneContacts"
+            android:name="in.co.mdg.campusBuddy.TelephoneContacts"
             android:label="@string/title_activity_telephone_contacts" >
         </activity>
         <activity
-            android:name=".ContactDetails"
+            android:name="in.co.mdg.campusBuddy.ContactDetails"
             android:configChanges="orientation"
             android:label="@string/title_activity_contact_details"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".fb"
+            android:name="in.co.mdg.campusBuddy.fb"
             android:label="@string/title_activity_contact_details" >
         </activity>
         <activity
-            android:name=".Fblist"
+            android:name="in.co.mdg.campusBuddy.Fblist"
             android:label="@string/title_activity_fblist" >
         </activity>
         <activity
-            android:name=".Fblogin"
+            android:name="in.co.mdg.campusBuddy.Fblogin"
             android:label="@string/title_activity_fblogin" >
         </activity>
 
-        <receiver android:name=".AlarmReceiver" >
+        <receiver android:name="in.co.mdg.campusBuddy.AlarmReceiver" >
 
             <!-- <intent-filter> -->
             <!-- <action android:name="abc"> -->
@@ -159,7 +159,7 @@
             android:value="9327903226aef349b7e2cf7c2dfe1e6960f79233" />
 
         <activity
-            android:name=".AboutUs"
+            android:name="in.co.mdg.campusBuddy.AboutUs"
             android:label="@string/title_activity_about_us" >
         </activity>
     </application>
