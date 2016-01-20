@@ -149,8 +149,9 @@ campus_location = "saharanpur";
             TextView tv_dis = (TextView) dialogView.findViewById(R.id.disclaimera);
             TextView tv_dis1 = (TextView) dialogView.findViewById(R.id.disclaimera1);
             TextView tv_dis2 = (TextView) dialogView.findViewById(R.id.disclaimera2);
-            tv_dis.setText("This is an experimental app made by a student's group and we don't take " +
-                    "any responsibility for any information present in the app\n" +
+            tv_dis.setText("This is an test app made by a student's group and we don't take " +
+                    "any responsibility for any information present in the app.\n" +
+                    " However, we welcome any feedback, which can be mailed to us at: sdsmobilelabs@gmail.com\n"+
                     "Data Sources: \n");
 //            tv_dis1.setText(
 //                    Html.fromHtml(
