@@ -18,14 +18,14 @@ import java.util.ArrayList;
 /**
  * Created by rc on 29/8/15.
  */
-public class Color_list_adapter extends BaseAdapter {
+public class ColorListAdapter extends BaseAdapter {
 
-    ArrayList<Color_item> mData;
+    ArrayList<ColorItem> mData;
     Context mContext;
     LayoutInflater inflater;
-    Dialog_color.ColorDialogListener mListener;
+    DialogColor.ColorDialogListener mListener;
 
-    public Color_list_adapter(ArrayList<Color_item> data, Context context, Dialog_color.ColorDialogListener mListener) {
+    public ColorListAdapter(ArrayList<ColorItem> data, Context context, DialogColor.ColorDialogListener mListener) {
         mData = data;
         mContext = context;
         inflater = LayoutInflater.from(context);
@@ -59,7 +59,7 @@ public class Color_list_adapter extends BaseAdapter {
             holder.colorll=(LinearLayout)convertView.findViewById(R.id.colorLL);
             holder.colortext=(TextView)convertView.findViewById(R.id.color_text);
             holder.colorimage=(ImageButton)convertView.findViewById(R.id.color_image);
-            final Color_item color_item=mData.get(position);
+            final ColorItem color_item=mData.get(position);
             try {
                 holder.colortext.setText(color_item.getColor());
                 holder.colorimage.setBackgroundColor(Color.parseColor(color_item.getHash()));

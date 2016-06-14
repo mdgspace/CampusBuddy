@@ -199,8 +199,8 @@ public class ContactDetails extends ActionBarActivity {
         super.onBackPressed();
         overridePendingTransition(R.anim.fade_in, R.anim.slide_out_up);
         /*
-        timetable_navigation2.fa.finish();
-        Intent ttIntent = new Intent(NewEvent.this, timetable_navigation2.class);
+        TimetableNavigation.fa.finish();
+        Intent ttIntent = new Intent(NewEvent.this, TimetableNavigation.class);
         startActivity(ttIntent);
         */
         finish();

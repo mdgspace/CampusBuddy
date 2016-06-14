@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         tnButt2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent ttIntent = new Intent(MainActivity.this, timetable_navigation2.class);
+                Intent ttIntent = new Intent(MainActivity.this, TimetableNavigation.class);
                 startActivity(ttIntent);
             }
         });
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
         tdbtt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent tdIntent = new Intent(MainActivity.this, Deptt_list.class);
+                Intent tdIntent = new Intent(MainActivity.this, DepttList.class);
                 startActivity(tdIntent);
             }
         });
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent tdIntent = new Intent(MainActivity.this, Fblogin.class);
                     startActivity(tdIntent);
                 } else {
-                    Intent tdIntent = new Intent(MainActivity.this,fb.class);
+                    Intent tdIntent = new Intent(MainActivity.this,Fb.class);
                     startActivity(tdIntent);
                     
                 }

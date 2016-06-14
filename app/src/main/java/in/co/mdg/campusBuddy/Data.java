@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Data {
 
    public  static ArrayList<Page> fbPageList = new ArrayList<>();
-    public  static  ArrayList<Color_item> itemList = new ArrayList<Color_item>();
+    public  static  ArrayList<ColorItem> itemList = new ArrayList<ColorItem>();
 
     public static final int[] images = new int[23];
 
@@ -75,13 +75,13 @@ public class Data {
         return images;
     }
 
-public static ArrayList<Color_item> getColor_list() {
+public static ArrayList<ColorItem> getColor_list() {
 itemList.clear();
-    itemList.add(new Color_item("Tomato", "#FF6347"));
-    itemList.add(new Color_item("Tangerine", "#F28500"));
-    itemList.add(new Color_item("Banana", "#FFE135"));
-    itemList.add(new Color_item("Sage", "#8B9476"));
-    itemList.add(new Color_item("Lavendar", "#B378D3"));
-    itemList.add(new Color_item("Flamingo", "#FC8EAC"));
+    itemList.add(new ColorItem("Tomato", "#FF6347"));
+    itemList.add(new ColorItem("Tangerine", "#F28500"));
+    itemList.add(new ColorItem("Banana", "#FFE135"));
+    itemList.add(new ColorItem("Sage", "#8B9476"));
+    itemList.add(new ColorItem("Lavendar", "#B378D3"));
+    itemList.add(new ColorItem("Flamingo", "#FC8EAC"));
     return itemList;
 }}

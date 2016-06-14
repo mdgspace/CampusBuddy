@@ -29,7 +29,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class fb extends AppCompatActivity {
+public class Fb extends AppCompatActivity {
 
     Toolbar toolbar;
     ArrayList<String> fbpliked;
@@ -60,12 +60,12 @@ public class fb extends AppCompatActivity {
 
         posts = new ArrayList<>();
 
-        fbpliked = PagesSelected.getSelectedPageIds(fb.this);
+        fbpliked = PagesSelected.getSelectedPageIds(Fb.this);
        // Log.e("dta in file",fbpliked.toString());
         if(fbpliked.size()==0)
         {
             Toast.makeText(this,"Select pages to get the feeds",Toast.LENGTH_LONG).show();
-            Intent i=new Intent(fb.this,Fblist.class);
+            Intent i=new Intent(Fb.this,Fblist.class);
             startActivity(i);
             finish();
         }
@@ -125,7 +125,7 @@ public class fb extends AppCompatActivity {
         try {
             accessTokenTracker.stopTracking();
         } catch (Exception e) {
-//            Toast.makeText(fb.this, "error is: "+e.toString(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(Fb.this, "error is: "+e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -147,12 +147,12 @@ public class fb extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.logout) {
             LoginManager.getInstance().logOut();
-            Intent i = new Intent(fb.this, MainActivity.class);
+            Intent i = new Intent(Fb.this, MainActivity.class);
             finish();
             startActivity(i);
             return true;
         } else if (id == R.id.addpages) {
-            Intent i = new Intent(fb.this, Fblist.class);
+            Intent i = new Intent(Fb.this, Fblist.class);
             finish();
             startActivity(i);
 

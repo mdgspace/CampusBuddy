@@ -14,7 +14,12 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+
+import in.co.mdg.campusBuddy.calendar.data_models.user_events.UserEvent;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by root on 25/7/15.
@@ -22,68 +27,48 @@ import java.util.HashMap;
 public class AlarmReceiver extends BroadcastReceiver {
 
     Intent in;
-    PendingIntent pendingIntent;
-    Notification mBuilder;
+    private PendingIntent pendingIntent;
+    private Notification mBuilder;
+    private Realm realm;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d("alarm","start");
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         PowerManager.WakeLock wl = pm.newWakeLock(
                 PowerManager.PARTIAL_WAKE_LOCK, "YOUR TAG");
         // Acquire the lock
         wl.acquire();
-
+        int i=1;
+        NotificationManager mNotificationManager = (NotificationManager) context
+                .getSystemService(Context.NOTIFICATION_SERVICE);
         Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        int hour=c.get(Calendar.HOUR_OF_DAY);
-        int min=c.get(Calendar.MINUTE);
-        StringBuilder s = new StringBuilder().append(month + 1).append("-")
-                .append(day).append("-").append(year).append(" ");
+        Date now = c.getTime();
+        c.add(Calendar.HOUR_OF_DAY,1);
+        Date anHourLater = c.getTime();
+        realm = Realm.getDefaultInstance();
+        RealmResults<UserEvent> userEvents = realm.where(UserEvent.class).greaterThan("time.start",now).lessThan("time.start",anHourLater).findAll();
+        for(UserEvent userEvent:userEvents)
+        {
 
-       CalendarDBHelper dbh;
-        try {
-            dbh = CalendarDBHelper.getInstance(context);
+            in = new Intent(context, TimetableNavigation.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("year", c.get(Calendar.YEAR));
+            in.putExtras(bundle);
+            in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            pendingIntent = PendingIntent
+                    .getActivity(context, 0, in, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            ArrayList<HashMap<String, Integer>> data =
-                    dbh.fetchNotificationData(year,month,day,hour,min);
+            mBuilder = new NotificationCompat.Builder(context)
+                    .setSmallIcon(R.drawable.buddy_icon)
+                    .setContentTitle("You have an event in another one hour")
+                    .setContentText(userEvent.getTitle())
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true).build();
 
-            if (data != null) {
-
-                for (int i = 0; i < data.size(); i++) {
-					/*Toast.makeText(context, i + "", Toast.LENGTH_LONG).show();*/
-                    in = new Intent(context, timetable_navigation2.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("year", data.get(i).get("Start year"));
-
-
-                    Log.e("hour in the receiver", data.get(i).get("Start hour")+"");
-
-                    in.putExtras(bundle);
-//                    in.putExtra("id", Integer.parseInt(data.get(i).get("id")));
-                    in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    pendingIntent = PendingIntent
-                            .getActivity(context, 0, in, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                    mBuilder = new NotificationCompat.Builder(context)
-                            .setSmallIcon(R.drawable.buddy_icon)
-                            .setContentTitle("You have an event in another one hour")
-//                            .setContentText(data.get(i).get("balance"))
-                            .setContentIntent(pendingIntent)
-                            .setAutoCancel(true).build();
-
-                    NotificationManager mNotificationManager = (NotificationManager) context
-                            .getSystemService(Context.NOTIFICATION_SERVICE);
-
-                    mNotificationManager.notify(i, mBuilder);
-
-                }
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            mNotificationManager.notify(i++, mBuilder);
         }
+
         // Release the lock
         wl.release();
     }

@@ -3,7 +3,7 @@ package in.co.mdg.campusBuddy;
 /**
  * Created by rc on 29/8/15.
  */
-public class Color_item {
+public class ColorItem {
 
     String color,hash;
 
@@ -23,7 +23,7 @@ public class Color_item {
         this.hash = hash;
     }
 
-    public Color_item(String color,String hash) {
+    public ColorItem(String color, String hash) {
         super();
         this.color=color;
         this.hash=hash;

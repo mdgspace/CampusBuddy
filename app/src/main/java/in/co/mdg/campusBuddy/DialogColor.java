@@ -12,7 +12,7 @@ import android.widget.ListView;
 /**
  * Created by rc on 29/8/15.
  */
-public class Dialog_color extends DialogFragment {
+public class DialogColor extends DialogFragment {
 
     public interface ColorDialogListener {
         public void onColorChoose(int position);
@@ -49,7 +49,7 @@ public class Dialog_color extends DialogFragment {
         ListView listView = (ListView) customView.findViewById(R.id.color_list);
 
 
-        Color_list_adapter mAdapter = new Color_list_adapter(Data.getColor_list(), getActivity(), mListener);
+        ColorListAdapter mAdapter = new ColorListAdapter(Data.getColor_list(), getActivity(), mListener);
 
         listView.setAdapter(mAdapter);
        // listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);

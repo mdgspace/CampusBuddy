@@ -14,10 +14,10 @@
     <com.alamkanak.weekview.WeekView
         android:id="@+id/weekView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:eventTextColor="@android:color/white"
         app:textSize="12sp"
-        app:hourHeight="60dp"
+        app:hourHeight="30dp"
         app:headerColumnPadding="8dp"
         app:headerColumnTextColor="#8f000000"
         app:headerRowPadding="12dp"
@@ -122,8 +122,16 @@
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
-    
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/calendarLoad"
+        android:layout_alignBottom="@+id/right_labels"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
-    </RelativeLayout>
+
+</RelativeLayout>
     <!-- The navigation drawer -->
 

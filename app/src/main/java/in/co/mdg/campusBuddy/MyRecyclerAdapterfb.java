@@ -71,7 +71,7 @@ public class MyRecyclerAdapterfb extends RecyclerView.Adapter<RecyclerView.ViewH
             if(viewType==1) {
                 Post post = posts.get(position);
                 ((PostViewHolder)holder).postmessage.setText(post.getMessage());
-                    Picasso.with(fb.c).load(post.getURL()).fit().centerCrop().into(((PostViewHolder)holder).fbpostpic);
+                    Picasso.with(Fb.c).load(post.getURL()).fit().centerCrop().into(((PostViewHolder)holder).fbpostpic);
 
                 Log.e(position+"",post.getURL());
             }
@@ -82,11 +82,11 @@ public class MyRecyclerAdapterfb extends RecyclerView.Adapter<RecyclerView.ViewH
             }
 //            else
 //                holder.fbpostpic.setVisibility(View.GONE);
-//            holder.postheader.setText(pages[fb.i]);
+//            holder.postheader.setText(pages[Fb.i]);
         }
         catch(Exception e)
         {
-//            Toast.makeText(fb.c,"Error: "+e.toString(),Toast.LENGTH_LONG).show();
+//            Toast.makeText(Fb.c,"Error: "+e.toString(),Toast.LENGTH_LONG).show();
 //            Log.d("Error: ",e.toString());
         }
     }

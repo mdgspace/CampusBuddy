@@ -56,7 +56,7 @@ public class Fblist extends AppCompatActivity{
 
         setContentView(R.layout.activity_fblist);
 
-        final SQLiteDatabase db = Pages_db_helper.getInstance(getApplicationContext()).getWritableDatabase();
+        final SQLiteDatabase db = PagesDBHelper.getInstance(getApplicationContext()).getWritableDatabase();
 
 
         String[] eventList = {
@@ -235,7 +235,7 @@ int number_liked = 0;
                     }
                     else
                     {
-                        Intent intent = new Intent(Fblist.this, fb.class);
+                        Intent intent = new Intent(Fblist.this, Fb.class);
                         finish();
                         startActivity(intent);}
 //                try{
@@ -280,8 +280,8 @@ int number_liked = 0;
 //                    }
 //                    else
 //                    {
-//                        fb.fbpls=fbpagesliked;
-//                        Intent intent = new Intent(Fblist.this, fb.class);
+//                        Fb.fbpls=fbpagesliked;
+//                        Intent intent = new Intent(Fblist.this, Fb.class);
 //                        Bundle b = new Bundle();
 //                        b.putBooleanArray("pagesliked", fbpagesliked);
 //                        intent.putExtras(b);
@@ -290,7 +290,7 @@ int number_liked = 0;
 //                    }
 
 //                onPause();
-//                Intent intent = new Intent(Fblist.this, fb.class);
+//                Intent intent = new Intent(Fblist.this, Fb.class);
 //                Bundle b = new Bundle();
 //                b.putBooleanArray("pagesliked", fbpagesliked);
 //                intent.putExtras(b);
@@ -362,7 +362,7 @@ int number_liked = 0;
 //        }
 //        else
 //        {
-//            Intent intent = new Intent(Fblist.this, fb.class);
+//            Intent intent = new Intent(Fblist.this, Fb.class);
 //            Bundle b = new Bundle();
 //            b.putBooleanArray("pagesliked", fbpagesliked);
 //            intent.putExtras(b);

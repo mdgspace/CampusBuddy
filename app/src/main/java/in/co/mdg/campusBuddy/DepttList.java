@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * Created by rc on 29/6/15.
  */
 
-public class Deptt_list extends AppCompatActivity{
+public class DepttList extends AppCompatActivity{
 
     SharedPreferences pref;
     Toolbar toolbar;
@@ -181,12 +181,12 @@ public class Deptt_list extends AppCompatActivity{
                         }
                         try {
 
-                            Intent deptt_intent = new Intent(Deptt_list.this, TelephoneContacts.class);
+                            Intent deptt_intent = new Intent(DepttList.this, TelephoneContacts.class);
                             deptt_intent.putExtra("table_name", table_name);
                             deptt_intent.putExtra("dept_name", selectedItem);
                             startActivity(deptt_intent);
                         } catch (Exception e) {
-                            Toast.makeText(Deptt_list.this, e.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(DepttList.this, e.toString(), Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -296,7 +296,7 @@ public class Deptt_list extends AppCompatActivity{
 
         if (id==R.id.about_us_menu) {
 
-            Intent i=new Intent(Deptt_list.this,AboutUs.class);
+            Intent i=new Intent(DepttList.this,AboutUs.class);
             startActivity(i);
         }
 

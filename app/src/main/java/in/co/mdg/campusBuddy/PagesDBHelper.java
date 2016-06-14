@@ -18,7 +18,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 
 
-public class Pages_db_helper extends SQLiteOpenHelper {
+public class PagesDBHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "pages_fb_liked.db";
@@ -35,19 +35,19 @@ public class Pages_db_helper extends SQLiteOpenHelper {
                     " )";
 
     private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + CalendarDB.CalendarEntry.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + PagesDB.PagesEntry.TABLE_NAME;
 
-    private static Pages_db_helper instance;
+    private static PagesDBHelper instance;
 
 
-    private Pages_db_helper(Context context) {
+    private PagesDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public static synchronized Pages_db_helper getInstance(Context context)
+    public static synchronized PagesDBHelper getInstance(Context context)
     {
         if (instance == null)
-            instance = new Pages_db_helper(context);
+            instance = new PagesDBHelper(context);
 
         return instance;
     }
