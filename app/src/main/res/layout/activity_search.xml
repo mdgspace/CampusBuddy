@@ -7,41 +7,42 @@
     android:layout_height="match_parent"
     android:id="@+id/coordinatorlayout"
     android:theme="@style/ContactsTheme"
+    android:background="#F5F5F5"
+    android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true">
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white_pure"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:paddingTop="80dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="10dp"
         android:id="@+id/recyclerview"
-        android:clipToPadding="false"/>
-
-    <in.co.mdg.campusBuddy.contacts.RecyclerViewFastScroller
-        android:layout_height="match_parent"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:id="@+id/fastscroller"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_gravity="end"/>
-
+        android:background="@color/pink_transparent"
+        android:clipToPadding="false"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/dim_layout"
         android:foreground="@color/black_transparent"
-        android:visibility="gone"
-        android:clickable="true"/>
-
+        android:visibility="gone"/>
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         android:id="@+id/appbarlayout"
-        android:background="@drawable/gradient_pink">
+        app:elevation="0dp"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
         <LinearLayout
             android:id="@+id/searchbar"
             android:layout_width="match_parent"
@@ -49,11 +50,12 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
+            app:elevation="10dp"
             android:padding="10dp"
             android:background="@drawable/round_corners"
             android:orientation="horizontal"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:layout_scrollFlags="scroll|enterAlways|snap">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,19 +67,19 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:inputType="textAutoComplete"
-                android:hint="Contacts"
+                android:hint="Search Contacts"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:fontFamily="sans-serif-condensed"
-                android:textSize="25sp"
+                android:textSize="16sp"
                 android:imeOptions="actionSearch"
                 android:imeActionLabel="Search"
-                android:textColorHint="#A1A1A1"
+                android:textColorHint="#929292"
                 android:background="@color/white_pure"
                 android:id="@+id/searchbox"
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical"
-                tools:targetApi="jelly_bean" />
+                android:nextFocusUp="@id/searchbox"
+                android:nextFocusLeft="@id/searchbox"/>
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -86,13 +88,8 @@
                 android:layout_gravity="center_vertical"
                 android:contentDescription="Speech Button" />
         </LinearLayout>
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways"/>
     </android.support.design.widget.AppBarLayout>
+
 
 
 

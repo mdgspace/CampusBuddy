@@ -1,22 +1,31 @@
 package in.co.mdg.campusBuddy;
 
-import android.content.DialogInterface;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.Uri;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.AlertDialog;
+import android.speech.RecognizerIntent;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 /*
@@ -24,290 +33,415 @@ import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
 */
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+
+import in.co.mdg.campusBuddy.MyRecyclerAdapter.ClickListener;
+import in.co.mdg.campusBuddy.contacts.DividerItemDecoration;
+import in.co.mdg.campusBuddy.contacts.RecyclerViewFastScroller;
+import in.co.mdg.campusBuddy.contacts.SearchActivity;
+import in.co.mdg.campusBuddy.contacts.ShowContact;
+import in.co.mdg.campusBuddy.contacts.ShowDepartmentContacts;
+import in.co.mdg.campusBuddy.contacts.data_models.*;
+import in.co.mdg.campusBuddy.contacts.SearchSuggestionAdapter;
+import io.realm.Realm;
 
 /**
  * Created by rc on 29/6/15.
  */
 
-public class DepttList extends AppCompatActivity{
+public class DepttList extends AppCompatActivity implements ClickListener{
 
-    SharedPreferences pref;
-    Toolbar toolbar;
-    //ListView list;
-    RecyclerView recyclerView;
-    ArrayList<Contact> listValues;
+    private AutoCompleteTextView searchBox;
+    private static final int REQ_CODE_SPEECH_INPUT = 100;
+    private static final int SEARCH_ACTIVITY = 101;
+    private static final int DEPT_ACTIVITY = 102;
+    private static int SPEECHORCLEAR = 1;
+    private Realm realm;
+    private MyRecyclerAdapter adapter;
+    private SearchSuggestionAdapter searchAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telephone_contacts);
+        realm = Realm.getDefaultInstance();
+        try {
+            checkDbExists();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-       // list=(ListView)findViewById(R.id.list);
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
-//        DayNightTheme.setToolbar(toolbar);
-//        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
-        toolbar.setTitle("List of departments");
-        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
+        final FrameLayout dimLayout = (FrameLayout) findViewById(R.id.dim_layout);
+        final ImageView speechButton = (ImageView) findViewById(R.id.speechbutton);
+        final ImageView backButton = (ImageView) findViewById(R.id.backbutton);
+        searchBox = (AutoCompleteTextView) findViewById(R.id.searchbox);
+        LinearLayout searchBar = (LinearLayout) findViewById(R.id.searchbar);
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("Department List"));
+        tabLayout.addTab(tabLayout.newTab().setText("A to Z List"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#F5F5F5"));
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,R.drawable.divider,metrics.density));
+        adapter = new MyRecyclerAdapter();
+        adapter.setClicklistener(this);
+        adapter.setListData(1,null);
+        recyclerView.setAdapter(adapter);
+        RecyclerViewFastScroller fastScroller = (RecyclerViewFastScroller) findViewById(R.id.fastscroller);
+        fastScroller.setRecyclerView(recyclerView);
+        fastScroller.setViewsToUse(R.layout.recycler_view_fast_scroller,R.id.fastscroller_bubble,R.id.fastscroller_handle);
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        adapter.setListData(1,null);
+                        break;
+                    case 1:
+                        adapter.setListData(2,null);
+                        break;
+                }
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        searchAdapter = new SearchSuggestionAdapter(this,R.layout.search_suggestion_listitem);
+        searchBox.setThreshold(1);
+        searchBox.setDropDownAnchor(R.id.searchbar);
+        searchBox.setAdapter(searchAdapter);
+        searchBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                final ContactSearchModel contact = searchAdapter.getItem(position);
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        ContactSearchModel historySearch = realm.where(ContactSearchModel.class).equalTo("name",contact.getName()).findFirst();
+                        if(historySearch == null)
+                        {
+                            contact.setDateAdded(new Date());
+                            contact.setHistorySearch(true);
+                            realm.copyToRealm(contact);
+                        }
+                        else
+                        {
+                           historySearch.setDateAdded(new Date());
+                        }
+                    }
+                });
+                showContact(contact.getName(),getDept(contact.getName()));
+            }
+        });
+        dimLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchBox.clearFocus();
+            }
+        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            searchBox.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    Log.d("dropdown","dismissed");
+                }
+            });
+        }
+        searchBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("searchBox","clicked");
+                searchBox.showDropDown();
+            }
+        });
+        searchBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus)
+                {
+                    Log.d("searchBox","has focus");
+                    dimLayout.setVisibility(View.VISIBLE);
+                    if(searchBox.getText().toString().equals(""))
+                    {
+                        searchAdapter.getFilter().filter(null);
+                        searchBox.setHint("Search Contacts");
+                        searchBox.setHintTextColor(Color.parseColor("#929292"));
+                        searchBox.setTextSize(16);
+                    }
+                    searchBox.performClick();
+                }
+                else
+                {
+                    Log.d("searchBox","lost focus");
+                    dimLayout.setVisibility(View.GONE);
+                    Log.d("Focus lost",searchBox.getText().toString());
+                    if(searchBox.getText().toString().equals(""))
+                    {
+                        searchBox.setHint("Contacts");
+                        searchBox.setTextSize(25);
+                        searchBox.setHintTextColor(Color.parseColor("#A1A1A1"));
+                    }
+                }
+            }
+        });
+
+        searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_NULL)
+                {
+                    search(v.getText().toString());
+                }
+                return false;
+            }
+        });
+        searchBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()>0)
+                {
+                    SPEECHORCLEAR =2;
+                    speechButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_clear_black_24dp));
+                }
+                else
+                {
+                    SPEECHORCLEAR =1;
+                    speechButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_mic_black_24dp));
+                }
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
 
-        recyclerView=(RecyclerView)findViewById(R.id.recyclerview);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(new MyRecyclerAdapter(generateContacts()));
-
-        recyclerView.setOnScrollListener(new MyScrollListener(this) {
+        speechButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onMoved(int distance) {
-              //  toolbar.setTranslationY(-distance);
+            public void onClick(View v) {
+                switch (SPEECHORCLEAR)
+                {
+                    case 1:
+                        promptSpeechInput();
+                        break;
+                    case 2:
+                        searchBox.setText("");
+                        SPEECHORCLEAR =1;
+                        Picasso.with(getApplicationContext()).load(R.drawable.ic_mic_black_24dp).into(speechButton);
+                        break;
+                }
             }
         });
+    }
 
-        recyclerView.addOnItemTouchListener(new MyItemClickListener(this, new MyItemClickListener.OnItemClickListener() {
-            @Override
-            public void OnItemClick(View v, int i, MotionEvent e) {
+    private void showContact(String name,String dept) {
+        Intent in = new Intent(this, ShowContact.class);
+        in.putExtra("name", name);
+        in.putExtra("dept",dept);
+        startActivity(in);
+    }
+    private void showDepartmentContacts(String deptName) {
+        Intent in = new Intent(this, ShowDepartmentContacts.class);
+        in.putExtra("dept_name", deptName);
+        startActivityForResult(in,DEPT_ACTIVITY);
+    }
 
-            final int position = i;
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        String selectedItem = listValues.get(position).getName();
-                        String table_name = "";
-                        //String selectedItem = (String) getListAdapter().getItem(position);
-
-                        switch (selectedItem) {
-                            case "Architecture and Planning":
-                                table_name = "ARCHI";
-                                break;
-
-                            case "Biotechnology":
-                                table_name = "BIOTECH";
-                                break;
-
-                            case "Centre for Continuing Education":
-                                table_name = "CCE";
-                                break;
-
-                            case "Centre for Disaster Management":
-                                table_name = "CDM";
-                                break;
-
-                            case "Centre for Nanotechnology":
-                                table_name = "NANO";
-                                break;
-
-                            case "Centre for Transportation":
-                                table_name = "CTRANS";
-                                break;
-
-                            case "Chemical Engineering":
-                                table_name = "CHEMICAL";
-                                break;
-
-                            case "Chemistry":
-                                table_name = "CHEMISTRY";
-                                break;
-
-                            case "Civil Engineering":
-                                table_name = "CIVIL";
-                                break;
-
-                            case "Computer Science and Engineering":
-                                table_name = "CS";
-                                break;
-
-                            case "Earthquake Engineering":
-                                table_name = "EARTHQUAKE";
-                                break;
-
-                            case "Earth Sciences":
-                                table_name = "EARTHS";
-                                break;
-
-                            case "Electrical Engineering":
-                                table_name = "ELEC";
-                                break;
-
-                            case "Electronics and Communication Engineering":
-                                table_name = "ECE";
-                                break;
-
-                            case "Humanities and Social Sciences":
-                                table_name = "HUMS";
-                                break;
-
-                            case "Hydrology":
-                                table_name = "HYDRO";
-                                break;
-
-                            case "Management Studies":
-                                table_name = "DOMS";
-                                break;
-
-                            case "Mathematics":
-                                table_name = "MATHS";
-                                break;
-
-                            case "Mechanical and Industrial Engineering":
-                                table_name = "MECH";
-                                break;
-
-                            case "Metallurgical and Materials Engineering":
-                                table_name = "METAL";
-                                break;
-
-                            case "Physics":
-                                table_name = "PHY";
-                                break;
-
-                            case "Polymer & Process Engineering":
-                                table_name = "POLY";
-                                break;
-
-                            case "Water Resources Development and Management":
-                                table_name = "WATER";
-                                break;
-
-                        }
-                        try {
-
-                            Intent deptt_intent = new Intent(DepttList.this, TelephoneContacts.class);
-                            deptt_intent.putExtra("table_name", table_name);
-                            deptt_intent.putExtra("dept_name", selectedItem);
-                            startActivity(deptt_intent);
-                        } catch (Exception e) {
-                            Toast.makeText(DepttList.this, e.toString(), Toast.LENGTH_LONG).show();
-                        }
-
+    private void checkDbExists() throws IOException {
+        long count = realm.where(Department.class).count();
+        if(count==0)
+        {
+            final InputStream stream = getAssets().open("contacts.json");
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    try {
+                        realm.createAllFromJson(Department.class,stream);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                }, 500);
-
-
-            }
-        }));
+                }
+            });
+        }
     }
 
     @Override
     public void onBackPressed(){
-        super.onBackPressed();
-        // Toast.makeText(this, "Back button works", Toast.LENGTH_LONG).show();
+        if(searchBox.isFocused())
+            searchBox.clearFocus();
+        else
+            super.onBackPressed();
     }
-
-    public ArrayList<Contact> generateContacts()
-    {
-        listValues=new ArrayList<>();
-
-        listValues.add(new Contact("Architecture and Planning"));
-        listValues.add(new Contact("Biotechnology"));
-        listValues.add(new Contact("Centre for Continuing Education"));
-        listValues.add(new Contact("Centre for Disaster Management"));
-        listValues.add(new Contact("Centre for Nanotechnology"));
-        listValues.add(new Contact("Centre for Transportation"));
-        listValues.add(new Contact("Chemical Engineering"));
-        listValues.add(new Contact("Chemistry"));
-        listValues.add(new Contact("Civil Engineering"));
-        listValues.add(new Contact("Computer Science and Engineering"));
-        listValues.add(new Contact("Earthquake Engineering"));
-        listValues.add(new Contact("Earth Sciences"));
-        listValues.add(new Contact("Electrical Engineering"));
-        listValues.add(new Contact("Electronics and Communication Engineering"));
-        listValues.add(new Contact("Humanities and Social Sciences"));
-        listValues.add(new Contact("Hydrology"));
-        listValues.add(new Contact("Management Studies"));
-        listValues.add(new Contact("Mathematics"));
-        listValues.add(new Contact("Mechanical and Industrial Engineering"));
-        listValues.add(new Contact("Metallurgical and Materials Engineering"));
-        listValues.add(new Contact("Physics"));
-        listValues.add(new Contact("Polymer & Process Engineering"));
-        listValues.add(new Contact("Water Resources Development and Management"));
-
-
-
-
-        return listValues;
-    }
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public void onDestroy() {
+        adapter.closeRealm();
+        realm.close();
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_out_up);
+        super.onDestroy();
+    }
 
-        if(id==R.id.disclaimer)
-        { AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-// ...Irrelevant code for customizing the buttons and title
-            LayoutInflater inflater = this.getLayoutInflater();
-            View dialogView = inflater.inflate(R.layout.disclaimer, null);
-            dialogBuilder.setView(dialogView);
-            dialogBuilder.setTitle("Disclamer");
-            dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
-
-            TextView tv_dis = (TextView) dialogView.findViewById(R.id.disclaimera);
-            TextView tv_dis1 = (TextView) dialogView.findViewById(R.id.disclaimera1);
-            TextView tv_dis2 = (TextView) dialogView.findViewById(R.id.disclaimera2);
-
-            tv_dis.setText("This is an test app made by a student's group and we don't take " +
-                    "any responsibility for any information present in the app.\n" +
-                    "However, we welcome any feedback, which can be mailed to us at: sdsmobilelabs@gmail.com\n"+
-                    "Data Sources: \n");
-
-//            tv_dis1.setText(
-//                    Html.fromHtml(
-//                            "<a href=\"http://www.google.com\" color: white>Academic Calendar</a> "));
-//            tv_dis1.setMovementMethod(LinkMovementMethod.getInstance());
-
-            tv_dis1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent browser = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://www.iitr.ac.in/academics/pages/Academic_Calender.html"));
-                    startActivity(browser);
-                }
-            });
-            tv_dis2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent browser = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://www.iitr.ac.in/Main/pages/Telephone+Telephone_Directory.html"));
-                    startActivity(browser);
-                }
-            });
-
-            tv_dis1.setText("Academic Calendar");
-            tv_dis2.setText("Telephone Directory");
-            AlertDialog alertDialog = dialogBuilder.create();
-            alertDialog.show();}
-
-        if (id==R.id.about_us_menu) {
-
-            Intent i=new Intent(DepttList.this,AboutUs.class);
-            startActivity(i);
+    private void search(String query) {
+        if(!query.equals("")) {
+            Intent in = new Intent(this, SearchActivity.class);
+            in.putExtra("query", query);
+            startActivityForResult(in,SEARCH_ACTIVITY);
         }
+    }
+    private void promptSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                getString(R.string.speech_prompt));
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getApplicationContext(),
+                    getString(R.string.speech_not_supported),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
 
-        return super.onOptionsItemSelected(item);
-    }
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_telephone_contacts, menu);
-        return true;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT:
+                if (resultCode == RESULT_OK && null != data) {
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    searchBox.append(result.get(0));
+                }
+                break;
+            case SEARCH_ACTIVITY:
+                if(resultCode == RESULT_OK)
+                {
+                    searchBox.setText(data.getStringExtra("searchText"));
+                }
+                break;
+            case DEPT_ACTIVITY:
+                if(resultCode == RESULT_OK)
+                {
+                    adapter.setClicklistener(this);
+                }
+        }
     }
+
+    @Override
+    public void itemClicked(int type,String name) {
+        switch (type)
+        {
+            case 1:
+                showDepartmentContacts(name);
+                break;
+            case 2:case 3:
+                showContact(name,getDept(name));
+                break;
+        }
+    }
+
+    private String getDept(String name)
+    {
+        return realm.where(Department.class).equalTo("contacts.name",name).findFirst().getName();
+    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        if(id==R.id.disclaimer)
+//        { AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+//// ...Irrelevant code for customizing the buttons and title
+//            LayoutInflater inflater = this.getLayoutInflater();
+//            View dialogView = inflater.inflate(R.layout.disclaimer, null);
+//            dialogBuilder.setView(dialogView);
+//            dialogBuilder.setTitle("Disclamer");
+//            dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialogInterface, int i) {
+//                    dialogInterface.dismiss();
+//                }
+//            });
+//
+//            TextView tv_dis = (TextView) dialogView.findViewById(R.id.disclaimera);
+//            TextView tv_dis1 = (TextView) dialogView.findViewById(R.id.disclaimera1);
+//            TextView tv_dis2 = (TextView) dialogView.findViewById(R.id.disclaimera2);
+//
+//            tv_dis.setText("This is an test app made by a student's group and we don't take " +
+//                    "any responsibility for any information present in the app.\n" +
+//                    "However, we welcome any feedback, which can be mailed to us at: sdsmobilelabs@gmail.com\n"+
+//                    "Data Sources: \n");
+//
+////            tv_dis1.setText(
+////                    Html.fromHtml(
+////                            "<a href=\"http://www.google.com\" color: white>Academic Calendar</a> "));
+////            tv_dis1.setMovementMethod(LinkMovementMethod.getInstance());
+//
+//            tv_dis1.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent browser = new Intent(Intent.ACTION_VIEW,
+//                    Uri.parse("http://www.iitr.ac.in/academics/pages/Academic_Calender.html"));
+//                    startActivity(browser);
+//                }
+//            });
+//            tv_dis2.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent browser = new Intent(Intent.ACTION_VIEW,
+//                            Uri.parse("http://www.iitr.ac.in/Main/pages/Telephone+Telephone_Directory.html"));
+//                    startActivity(browser);
+//                }
+//            });
+//
+//            tv_dis1.setText("Academic Calendar");
+//            tv_dis2.setText("Telephone Directory");
+//            AlertDialog alertDialog = dialogBuilder.create();
+//            alertDialog.show();}
+//
+//        if (id==R.id.about_us_menu) {
+//
+//            Intent i=new Intent(DepttList.this,AboutUs.class);
+//            startActivity(i);
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_telephone_contacts, menu);
+//        return true;
+//    }
 
 
 }

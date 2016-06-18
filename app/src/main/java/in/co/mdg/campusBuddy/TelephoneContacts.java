@@ -24,7 +24,7 @@ import java.util.List;
 
 public class TelephoneContacts extends AppCompatActivity{
     int size;
-    Toolbar toolbar;
+//    Toolbar toolbar;
     static String[] names,emailids,contactnos_iitr_o, contactnos_iitr_r, contactnos_bsnl;
     static String campus_location="roorkee";
     CollapsingToolbarLayout ctoolbar;
@@ -39,19 +39,19 @@ public class TelephoneContacts extends AppCompatActivity{
         try {
             setContentView(R.layout.activity_telephone_contacts);
             c=this;
-            toolbar = (Toolbar) findViewById(R.id.tool_bar);
-            toolbar.setTitle(getIntent().getExtras().getString("dept_name"));
-            toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//            toolbar = (Toolbar) findViewById(R.id.tool_bar);
+//            toolbar.setTitle(getIntent().getExtras().getString("dept_name"));
+//            toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+//            setSupportActionBar(toolbar);
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onBackPressed();
-                }
-            });
+//            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    onBackPressed();
+//                }
+//            });
 
         }
         catch(Exception e)

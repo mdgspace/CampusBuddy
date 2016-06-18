@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="in.co.mdg.campusBuddy" >
+    package="in.co.mdg.campusBuddy">
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -37,21 +37,21 @@
     <!-- android:smallScreens="true" -->
     <!-- android:xlargeScreens="true" /> -->
     <application
-        android:name="in.co.mdg.campusBuddy.CbApplication"
+        android:name=".CbApplication"
         android:allowBackup="true"
         android:icon="@drawable/buddy_icon_edited2"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name="in.co.mdg.campusBuddy.MainActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -70,8 +70,9 @@
         <!-- </activity> -->
 
         <activity
-            android:name="in.co.mdg.campusBuddy.DepttList"
-            android:label="@string/app_name" >
+            android:name=".DepttList"
+            android:label="@string/app_name"
+            android:theme="@style/ContactsTheme">
             <intent-filter>
                 <action android:name="android.intent.action.DEPTT_LIST" />
 
@@ -98,18 +99,15 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
         <activity
-            android:name="in.co.mdg.campusBuddy.NewEvent"
+            android:name=".NewEvent"
             android:label="@string/app_name"
-            android:theme="@style/Theme_for_newevent" >
-        </activity>
+            android:theme="@style/Theme_for_newevent" />
         <activity
-            android:name="in.co.mdg.campusBuddy.TimetableNavigation"
-            android:label="@string/app_name" >
-        </activity>
+            android:name=".TimetableNavigation"
+            android:label="@string/app_name" />
         <activity
-            android:name="in.co.mdg.campusBuddy.SimpleMap"
-            android:label="@string/app_name" >
-        </activity>
+            android:name=".SimpleMap"
+            android:label="@string/app_name" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -123,29 +121,25 @@
         <!-- android:value="AIzaSyA-X5bozVBQg1gKeK_B1AreRFLFXmguwS8" /> -->
 
         <activity
-            android:name="in.co.mdg.campusBuddy.TelephoneContacts"
-            android:label="@string/title_activity_telephone_contacts" >
-        </activity>
+            android:name=".TelephoneContacts"
+            android:label="@string/title_activity_telephone_contacts"
+            android:theme="@style/ContactsTheme" />
         <activity
-            android:name="in.co.mdg.campusBuddy.ContactDetails"
+            android:name=".ContactDetails"
             android:configChanges="orientation"
             android:label="@string/title_activity_contact_details"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
-            android:name="in.co.mdg.campusBuddy.Fb"
-            android:label="@string/title_activity_contact_details" >
-        </activity>
+            android:name=".Fb"
+            android:label="@string/title_activity_contact_details" />
         <activity
-            android:name="in.co.mdg.campusBuddy.Fblist"
-            android:label="@string/title_activity_fblist" >
-        </activity>
+            android:name=".Fblist"
+            android:label="@string/title_activity_fblist" />
         <activity
-            android:name="in.co.mdg.campusBuddy.Fblogin"
-            android:label="@string/title_activity_fblogin" >
-        </activity>
+            android:name=".Fblogin"
+            android:label="@string/title_activity_fblogin" />
 
-        <receiver android:name="in.co.mdg.campusBuddy.AlarmReceiver" >
+        <receiver android:name=".AlarmReceiver">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="abc"> -->
@@ -159,9 +153,13 @@
             android:value="9327903226aef349b7e2cf7c2dfe1e6960f79233" />
 
         <activity
-            android:name="in.co.mdg.campusBuddy.AboutUs"
-            android:label="@string/title_activity_about_us" >
-        </activity>
+            android:name=".AboutUs"
+            android:label="@string/title_activity_about_us" />
+        <activity android:name=".contacts.SearchActivity" />
+        <activity
+            android:name=".contacts.ShowContact"
+            android:theme="@style/ShowContact" />
+        <activity android:name=".contacts.ShowDepartmentContacts"></activity>
     </application>
 
 </manifest> <!-- Pro KD, chu rc -->
