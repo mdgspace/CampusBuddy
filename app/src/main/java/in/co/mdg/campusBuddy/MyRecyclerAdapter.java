@@ -16,45 +16,52 @@ import in.co.mdg.campusBuddy.contacts.data_models.Contact;
 import in.co.mdg.campusBuddy.contacts.data_models.Department;
 import io.realm.Realm;
 import io.realm.RealmList;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 /**
  * Created by root on 13/6/15.
  */
 public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.ContactViewHolder> implements RecyclerViewFastScroller.BubbleTextGetter {
-    private Realm realm = Realm.getDefaultInstance();
+    private static Realm realm = Realm.getDefaultInstance();
     private RealmResults<Department> depts = realm.where(Department.class).findAll().sort("name");
     private RealmResults<Contact> contacts = realm.where(Contact.class).isNotNull("profilePic").findAll().sort("name");
     private RealmList<Contact> deptContacts;
-    private static MyRecyclerAdapter instance;
     private int type = 1;
     private static ClickListener clicklistener;
-    public interface ClickListener {
-        void itemClicked(int type,String name);
+    interface ClickListener {
+        void itemClicked(int type,String contactName,String deptName);
     }
     public MyRecyclerAdapter() {
     }
 
-    public static synchronized MyRecyclerAdapter getInstance() {
-        if (instance == null) {
-            instance = new MyRecyclerAdapter();
-        }
-        return instance;
-    }
     public void setListData(int option,String deptName) {
         if(option==3)
         {
-            deptContacts = realm.where(Department.class).equalTo("name",deptName).findFirst().getContacts();
+            deptContacts = realm.where(Department.class).equalTo("name", deptName).findFirst().getContacts();
         }
         type = option;
         notifyDataSetChanged();
     }
-    public void setClicklistener (ClickListener clickListener)
+    private static String getDept(Contact contact)
+    {
+        RealmQuery<Department> deptSearch = realm
+                .where(Department.class)
+                .equalTo("contacts.name",contact.getName());
+        if(contact.getIitr_o() != null)
+            deptSearch.equalTo("contacts.iitr_o",contact.getIitr_o());
+        else if(contact.getIitr_r() != null)
+            deptSearch.equalTo("contacts.iitr_r",contact.getIitr_r());
+        else if(contact.getPhoneBSNL() != null)
+            deptSearch.equalTo("contacts.phoneBSNL",contact.getPhoneBSNL());
+        return deptSearch.findFirst().getName();
+    }
+    public void setClickListener(ClickListener clickListener)
     {
        clicklistener = clickListener;
     }
 
-    void closeRealm() {
+    public void closeRealm() {
         realm.close();
     }
 
@@ -167,7 +174,15 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Co
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    clicklistener.itemClicked(type,name.getText().toString());
+                    if(type == 1)
+                    {
+                        clicklistener.itemClicked(type,null,name.getText().toString());
+                    }
+                    else if(type == 2 || type ==3)
+                    {
+                        clicklistener.itemClicked(type,name.getText().toString(),getDept((Contact)item));
+                    }
+
                 }
             });
             }

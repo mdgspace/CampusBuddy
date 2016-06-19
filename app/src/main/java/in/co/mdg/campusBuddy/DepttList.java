@@ -10,6 +10,7 @@ import android.speech.RecognizerIntent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,11 +43,13 @@ import java.util.Date;
 import java.util.Locale;
 
 import in.co.mdg.campusBuddy.MyRecyclerAdapter.ClickListener;
+import in.co.mdg.campusBuddy.contacts.DeptListFragment;
 import in.co.mdg.campusBuddy.contacts.DividerItemDecoration;
 import in.co.mdg.campusBuddy.contacts.RecyclerViewFastScroller;
 import in.co.mdg.campusBuddy.contacts.SearchActivity;
 import in.co.mdg.campusBuddy.contacts.ShowContact;
 import in.co.mdg.campusBuddy.contacts.ShowDepartmentContacts;
+import in.co.mdg.campusBuddy.contacts.ViewPagerAdapter;
 import in.co.mdg.campusBuddy.contacts.data_models.*;
 import in.co.mdg.campusBuddy.contacts.SearchSuggestionAdapter;
 import io.realm.Realm;
@@ -60,10 +63,8 @@ public class DepttList extends AppCompatActivity implements ClickListener{
     private AutoCompleteTextView searchBox;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
     private static final int SEARCH_ACTIVITY = 101;
-    private static final int DEPT_ACTIVITY = 102;
     private static int SPEECHORCLEAR = 1;
     private Realm realm;
-    private MyRecyclerAdapter adapter;
     private SearchSuggestionAdapter searchAdapter;
 
     @Override
@@ -84,42 +85,12 @@ public class DepttList extends AppCompatActivity implements ClickListener{
         searchBox = (AutoCompleteTextView) findViewById(R.id.searchbox);
         LinearLayout searchBar = (LinearLayout) findViewById(R.id.searchbar);
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Department List"));
-        tabLayout.addTab(tabLayout.newTab().setText("A to Z List"));
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        setUpViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#F5F5F5"));
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this,R.drawable.divider,metrics.density));
-        adapter = new MyRecyclerAdapter();
-        adapter.setClicklistener(this);
-        adapter.setListData(1,null);
-        recyclerView.setAdapter(adapter);
-        RecyclerViewFastScroller fastScroller = (RecyclerViewFastScroller) findViewById(R.id.fastscroller);
-        fastScroller.setRecyclerView(recyclerView);
-        fastScroller.setViewsToUse(R.layout.recycler_view_fast_scroller,R.id.fastscroller_bubble,R.id.fastscroller_handle);
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        adapter.setListData(1,null);
-                        break;
-                    case 1:
-                        adapter.setListData(2,null);
-                        break;
-                }
-            }
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
+        tabLayout.setTabTextColors(Color.parseColor("#A1F5F5F5"),Color.parseColor("#FFF5F5F5"));
 
         searchAdapter = new SearchSuggestionAdapter(this,R.layout.search_suggestion_listitem);
         searchBox.setThreshold(1);
@@ -145,7 +116,7 @@ public class DepttList extends AppCompatActivity implements ClickListener{
                         }
                     }
                 });
-                showContact(contact.getName(),getDept(contact.getName()));
+                showContact(contact.getName(),contact.getDept());
             }
         });
         dimLayout.setOnClickListener(new View.OnClickListener() {
@@ -260,6 +231,13 @@ public class DepttList extends AppCompatActivity implements ClickListener{
         });
     }
 
+    private void setUpViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(DeptListFragment.newInstance(1), "DEPARTMENT LIST");
+        adapter.addFrag(DeptListFragment.newInstance(2), "A TO Z LIST");
+        viewPager.setAdapter(adapter);
+    }
+
     private void showContact(String name,String dept) {
         Intent in = new Intent(this, ShowContact.class);
         in.putExtra("name", name);
@@ -269,7 +247,7 @@ public class DepttList extends AppCompatActivity implements ClickListener{
     private void showDepartmentContacts(String deptName) {
         Intent in = new Intent(this, ShowDepartmentContacts.class);
         in.putExtra("dept_name", deptName);
-        startActivityForResult(in,DEPT_ACTIVITY);
+        startActivity(in);
     }
 
     private void checkDbExists() throws IOException {
@@ -299,7 +277,6 @@ public class DepttList extends AppCompatActivity implements ClickListener{
     }
     @Override
     public void onDestroy() {
-        adapter.closeRealm();
         realm.close();
         overridePendingTransition(R.anim.fade_in, R.anim.slide_out_up);
         super.onDestroy();
@@ -345,30 +322,20 @@ public class DepttList extends AppCompatActivity implements ClickListener{
                     searchBox.setText(data.getStringExtra("searchText"));
                 }
                 break;
-            case DEPT_ACTIVITY:
-                if(resultCode == RESULT_OK)
-                {
-                    adapter.setClicklistener(this);
-                }
         }
     }
 
     @Override
-    public void itemClicked(int type,String name) {
+    public void itemClicked(int type,String contactName,String deptName) {
         switch (type)
         {
             case 1:
-                showDepartmentContacts(name);
+                showDepartmentContacts(deptName);
                 break;
             case 2:case 3:
-                showContact(name,getDept(name));
+                showContact(contactName,deptName);
                 break;
         }
-    }
-
-    private String getDept(String name)
-    {
-        return realm.where(Department.class).equalTo("contacts.name",name).findFirst().getName();
     }
 
 //    @Override

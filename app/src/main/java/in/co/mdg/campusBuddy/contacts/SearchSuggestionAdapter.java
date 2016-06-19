@@ -2,7 +2,6 @@ package in.co.mdg.campusBuddy.contacts;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import java.util.ArrayList;
 import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.data_models.Contact;
 import in.co.mdg.campusBuddy.contacts.data_models.ContactSearchModel;
+import in.co.mdg.campusBuddy.contacts.data_models.Department;
 import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -85,7 +85,7 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                                 getContext()
                                 ,R.drawable.ic_account_circle_black_24dp));
             }
-            if(contact.getHistorySearch())
+            if(contact.isHistorySearch())
                 holder.icon.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_history_black_24dp));
             else
                 holder.icon.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_search_black_24dp));
@@ -94,7 +94,7 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
     }
     private static class ViewHolder {
         TextView contactName;
-        ImageView icon,profilePic;
+        ImageView icon, profilePic;
     }
 
     @Override
@@ -133,7 +133,8 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                 ContactSearchModel contactSearchModel = new ContactSearchModel();
                 contactSearchModel.setName(historySearches.get(i).getName());
                 contactSearchModel.setProfilePic(historySearches.get(i).getProfilePic());
-                contactSearchModel.setHistorySearch(historySearches.get(i).getHistorySearch());
+                contactSearchModel.setHistorySearch(historySearches.get(i).isHistorySearch());
+                contactSearchModel.setDept(historySearches.get(i).getDept());
                 suggestions.add(contactSearchModel);
 
             }
@@ -142,10 +143,22 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                 int limitSearch = TOTAL_ITEM_LIMIT - (historySearches.size() > HISTORY_ITEM_LIMIT ? HISTORY_ITEM_LIMIT : historySearches.size());
                 limitSearch = (limitSearch >contacts.size())?contacts.size(): limitSearch;
                 for (int i = 0; i< limitSearch; i++) {
+                    Contact contact = contacts.get(i);
                     ContactSearchModel contactSearchModel = new ContactSearchModel();
-                    contactSearchModel.setName(contacts.get(i).getName());
+                    contactSearchModel.setName(contact.getName());
                     contactSearchModel.setHistorySearch(false);
-                    contactSearchModel.setProfilePic(contacts.get(i).getProfilePic());
+                    contactSearchModel.setProfilePic(contact.getProfilePic());
+                    RealmQuery<Department> deptSearch = realm
+                            .where(Department.class)
+                            .equalTo("contacts.name",contact.getName());
+                    if(contact.getIitr_o() != null)
+                        deptSearch.equalTo("contacts.iitr_o",contact.getIitr_o());
+                    else if(contact.getIitr_r() != null)
+                        deptSearch.equalTo("contacts.iitr_r",contact.getIitr_r());
+                    else if(contact.getPhoneBSNL() != null)
+                        deptSearch.equalTo("contacts.phoneBSNL",contact.getPhoneBSNL());
+                    String dept = deptSearch.findFirst().getName();
+                    contactSearchModel.setDept(dept);
                     suggestions.add(contactSearchModel);
                 }
             }

@@ -14,13 +14,16 @@ public class ContactSearchModel extends RealmObject {
     private boolean historySearch;
     private String profilePic;
     private Date dateAdded;
+    private String dept;
 
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}
     public String getProfilePic() {return profilePic;}
     public void setProfilePic(String profilePic) {this.profilePic = profilePic;}
-    public boolean getHistorySearch() {return historySearch;}
+    public boolean isHistorySearch() {return historySearch;}
     public void setHistorySearch(boolean historySearch) {this.historySearch = historySearch;}
     public Date getDateAdded() {return dateAdded;}
     public void setDateAdded(Date dateAdded) {this.dateAdded = dateAdded;}
+    public String getDept() {return dept;}
+    public void setDept(String dept) {this.dept = dept;}
 }
