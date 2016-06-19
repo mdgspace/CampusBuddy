@@ -1,19 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/coordinatorlayout"
-    android:theme="@style/ContactsTheme"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
+    android:layout_height="match_parent" >
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:id="@+id/coordinatorlayout"
+        android:theme="@style/ContactsTheme"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/appbarlayout"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:background="@drawable/gradient_pink">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:title="Contacts">
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="?attr/actionBarSize"
+                    app:title="Contacts"
+                    android:theme="@style/Theme.AppCompat.NoActionBar"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    style="@style/ToolBarWithNavigationBack"/>
+                <android.support.design.widget.TabLayout
+                    android:layout_marginTop="?attr/actionBarSize"
+                    android:id="@+id/tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -22,65 +57,46 @@
         android:foreground="@color/black_transparent"
         android:visibility="gone"
         android:clickable="true"/>
-
-    <android.support.design.widget.AppBarLayout
+    <LinearLayout
+        android:id="@+id/searchbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:id="@+id/appbarlayout"
-        android:background="@drawable/gradient_pink">
-        <LinearLayout
-            android:id="@+id/searchbar"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:padding="10dp"
+        android:background="@drawable/round_corners"
+        android:orientation="horizontal"
+        app:layout_scrollFlags="scroll|enterAlways"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/backbutton"
+            android:src="@drawable/ic_keyboard_backspace_black_24dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="Back Button" />
+        <AutoCompleteTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textAutoComplete"
+            android:hint="Search Contacts"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="15dp"
-            android:padding="10dp"
-            android:background="@drawable/round_corners"
-            android:orientation="horizontal"
-            app:layout_scrollFlags="scroll|enterAlways">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/backbutton"
-                android:src="@drawable/ic_keyboard_backspace_black_24dp"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="Back Button" />
-            <AutoCompleteTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:inputType="textAutoComplete"
-                android:hint="Contacts"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:fontFamily="sans-serif-condensed"
-                android:textSize="25sp"
-                android:imeOptions="actionSearch"
-                android:imeActionLabel="Search"
-                android:textColorHint="#A1A1A1"
-                android:background="@color/white_pure"
-                android:id="@+id/searchbox"
-                android:layout_weight="1"
-                android:layout_gravity="center_vertical"
-                tools:targetApi="jelly_bean" />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/speechbutton"
-                android:src="@drawable/ic_mic_black_24dp"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="Speech Button" />
-        </LinearLayout>
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
+            android:textSize="16sp"
+            android:imeOptions="actionNone"
+            android:imeActionLabel="Search"
+            android:textColorHint="#A1A1A1"
+            android:background="@color/white_pure"
+            android:id="@+id/searchbox"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical" />
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways"/>
-    </android.support.design.widget.AppBarLayout>
-
-
-
-</android.support.design.widget.CoordinatorLayout>
+            android:id="@+id/speechbutton"
+            android:src="@drawable/ic_mic_black_24dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="Speech Button" />
+    </LinearLayout>
+    </FrameLayout>

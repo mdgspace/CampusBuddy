@@ -1,9 +1,11 @@
 package in.co.mdg.campusBuddy;
 
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -11,14 +13,19 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -44,9 +51,6 @@ import java.util.Locale;
 
 import in.co.mdg.campusBuddy.MyRecyclerAdapter.ClickListener;
 import in.co.mdg.campusBuddy.contacts.DeptListFragment;
-import in.co.mdg.campusBuddy.contacts.DividerItemDecoration;
-import in.co.mdg.campusBuddy.contacts.RecyclerViewFastScroller;
-import in.co.mdg.campusBuddy.contacts.SearchActivity;
 import in.co.mdg.campusBuddy.contacts.ShowContact;
 import in.co.mdg.campusBuddy.contacts.ShowDepartmentContacts;
 import in.co.mdg.campusBuddy.contacts.ViewPagerAdapter;
@@ -66,6 +70,9 @@ public class DepttList extends AppCompatActivity implements ClickListener{
     private static int SPEECHORCLEAR = 1;
     private Realm realm;
     private SearchSuggestionAdapter searchAdapter;
+    private FrameLayout dimLayout;
+    private LinearLayout searchBar;
+    private ImageView backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,19 +84,28 @@ public class DepttList extends AppCompatActivity implements ClickListener{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Contacts");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
-        final FrameLayout dimLayout = (FrameLayout) findViewById(R.id.dim_layout);
+        dimLayout = (FrameLayout) findViewById(R.id.dim_layout);
         final ImageView speechButton = (ImageView) findViewById(R.id.speechbutton);
-        final ImageView backButton = (ImageView) findViewById(R.id.backbutton);
+        backButton = (ImageView) findViewById(R.id.backbutton);
         searchBox = (AutoCompleteTextView) findViewById(R.id.searchbox);
-        LinearLayout searchBar = (LinearLayout) findViewById(R.id.searchbar);
+        searchBar = (LinearLayout) findViewById(R.id.searchbar);
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         setUpViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#F5F5F5"));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this,R.color.primary_light));
         tabLayout.setTabTextColors(Color.parseColor("#A1F5F5F5"),Color.parseColor("#FFF5F5F5"));
 
         searchAdapter = new SearchSuggestionAdapter(this,R.layout.search_suggestion_listitem);
@@ -117,70 +133,33 @@ public class DepttList extends AppCompatActivity implements ClickListener{
                     }
                 });
                 showContact(contact.getName(),contact.getDept());
+                searchBox.setText("");
+                backButton.performClick();
             }
         });
         dimLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchBox.clearFocus();
+                backButton.performClick();
             }
         });
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            searchBox.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    Log.d("dropdown","dismissed");
-                }
-            });
-        }
         searchBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("searchBox","clicked");
                 searchBox.showDropDown();
             }
         });
-        searchBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus)
-                {
-                    Log.d("searchBox","has focus");
-                    dimLayout.setVisibility(View.VISIBLE);
-                    if(searchBox.getText().toString().equals(""))
-                    {
-                        searchAdapter.getFilter().filter(null);
-                        searchBox.setHint("Search Contacts");
-                        searchBox.setHintTextColor(Color.parseColor("#929292"));
-                        searchBox.setTextSize(16);
-                    }
-                    searchBox.performClick();
-                }
-                else
-                {
-                    Log.d("searchBox","lost focus");
-                    dimLayout.setVisibility(View.GONE);
-                    Log.d("Focus lost",searchBox.getText().toString());
-                    if(searchBox.getText().toString().equals(""))
-                    {
-                        searchBox.setHint("Contacts");
-                        searchBox.setTextSize(25);
-                        searchBox.setHintTextColor(Color.parseColor("#A1A1A1"));
-                    }
-                }
-            }
-        });
 
-        searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_NULL)
-                {
-                    search(v.getText().toString());
-                }
-                return false;
-            }
-        });
+//        searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if(actionId == EditorInfo.IME_NULL)
+//                {
+//                    search(v.getText().toString());
+//                }
+//                return true;
+//            }
+//        });
         searchBox.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -209,7 +188,9 @@ public class DepttList extends AppCompatActivity implements ClickListener{
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                searchBox.clearFocus();
+                dimLayout.setVisibility(View.GONE);
+                searchBar.setVisibility(View.GONE);
             }
         });
 
@@ -239,6 +220,7 @@ public class DepttList extends AppCompatActivity implements ClickListener{
     }
 
     private void showContact(String name,String dept) {
+        searchBox.setText("");
         Intent in = new Intent(this, ShowContact.class);
         in.putExtra("name", name);
         in.putExtra("dept",dept);
@@ -270,8 +252,8 @@ public class DepttList extends AppCompatActivity implements ClickListener{
 
     @Override
     public void onBackPressed(){
-        if(searchBox.isFocused())
-            searchBox.clearFocus();
+        if(searchBar.getVisibility() == View.VISIBLE)
+            backButton.performClick();
         else
             super.onBackPressed();
     }
@@ -282,13 +264,6 @@ public class DepttList extends AppCompatActivity implements ClickListener{
         super.onDestroy();
     }
 
-    private void search(String query) {
-        if(!query.equals("")) {
-            Intent in = new Intent(this, SearchActivity.class);
-            in.putExtra("query", query);
-            startActivityForResult(in,SEARCH_ACTIVITY);
-        }
-    }
     private void promptSpeechInput() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
@@ -338,77 +313,88 @@ public class DepttList extends AppCompatActivity implements ClickListener{
         }
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        if(id==R.id.disclaimer)
-//        { AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-//// ...Irrelevant code for customizing the buttons and title
-//            LayoutInflater inflater = this.getLayoutInflater();
-//            View dialogView = inflater.inflate(R.layout.disclaimer, null);
-//            dialogBuilder.setView(dialogView);
-//            dialogBuilder.setTitle("Disclamer");
-//            dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialogInterface, int i) {
-//                    dialogInterface.dismiss();
-//                }
-//            });
-//
-//            TextView tv_dis = (TextView) dialogView.findViewById(R.id.disclaimera);
-//            TextView tv_dis1 = (TextView) dialogView.findViewById(R.id.disclaimera1);
-//            TextView tv_dis2 = (TextView) dialogView.findViewById(R.id.disclaimera2);
-//
-//            tv_dis.setText("This is an test app made by a student's group and we don't take " +
-//                    "any responsibility for any information present in the app.\n" +
-//                    "However, we welcome any feedback, which can be mailed to us at: sdsmobilelabs@gmail.com\n"+
-//                    "Data Sources: \n");
-//
-////            tv_dis1.setText(
-////                    Html.fromHtml(
-////                            "<a href=\"http://www.google.com\" color: white>Academic Calendar</a> "));
-////            tv_dis1.setMovementMethod(LinkMovementMethod.getInstance());
-//
-//            tv_dis1.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent browser = new Intent(Intent.ACTION_VIEW,
-//                    Uri.parse("http://www.iitr.ac.in/academics/pages/Academic_Calender.html"));
-//                    startActivity(browser);
-//                }
-//            });
-//            tv_dis2.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent browser = new Intent(Intent.ACTION_VIEW,
-//                            Uri.parse("http://www.iitr.ac.in/Main/pages/Telephone+Telephone_Directory.html"));
-//                    startActivity(browser);
-//                }
-//            });
-//
-//            tv_dis1.setText("Academic Calendar");
-//            tv_dis2.setText("Telephone Directory");
-//            AlertDialog alertDialog = dialogBuilder.create();
-//            alertDialog.show();}
-//
-//        if (id==R.id.about_us_menu) {
-//
-//            Intent i=new Intent(DepttList.this,AboutUs.class);
-//            startActivity(i);
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_telephone_contacts, menu);
-//        return true;
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if(id==R.id.disclaimer)
+        { AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+// ...Irrelevant code for customizing the buttons and title
+            LayoutInflater inflater = this.getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.disclaimer, null);
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setTitle("Disclamer");
+            dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            TextView tv_dis = (TextView) dialogView.findViewById(R.id.disclaimera);
+            TextView tv_dis1 = (TextView) dialogView.findViewById(R.id.disclaimera1);
+            TextView tv_dis2 = (TextView) dialogView.findViewById(R.id.disclaimera2);
+
+            tv_dis.setText("This is an test app made by a student's group and we don't take " +
+                    "any responsibility for any information present in the app.\n" +
+                    "However, we welcome any feedback, which can be mailed to us at: sdsmobilelabs@gmail.com\n"+
+                    "Data Sources: \n");
+
+//            tv_dis1.setText(
+//                    Html.fromHtml(
+//                            "<a href=\"http://www.google.com\" color: white>Academic Calendar</a> "));
+//            tv_dis1.setMovementMethod(LinkMovementMethod.getInstance());
+
+            tv_dis1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent browser = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://www.iitr.ac.in/academics/pages/Academic_Calender.html"));
+                    startActivity(browser);
+                }
+            });
+            tv_dis2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent browser = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://www.iitr.ac.in/Main/pages/Telephone+Telephone_Directory.html"));
+                    startActivity(browser);
+                }
+            });
+
+            tv_dis1.setText("Academic Calendar");
+            tv_dis2.setText("Telephone Directory");
+            AlertDialog alertDialog = dialogBuilder.create();
+            alertDialog.show();}
+
+        else if (id==R.id.about_us_menu) {
+
+            Intent i=new Intent(DepttList.this,AboutUs.class);
+            startActivity(i);
+        }
+
+        else if (id==R.id.search)
+        {
+            searchBar.setVisibility(View.VISIBLE);
+            dimLayout.setVisibility(View.VISIBLE);
+            if(searchBox.getText().toString().equals(""))
+            {
+                searchAdapter.getFilter().filter(null);
+            }
+            searchBox.requestFocus();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_telephone_contacts, menu);
+        return true;
+    }
 
 
 }

@@ -24,8 +24,8 @@ import io.realm.RealmResults;
  */
 public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.ContactViewHolder> implements RecyclerViewFastScroller.BubbleTextGetter {
     private static Realm realm = Realm.getDefaultInstance();
-    private RealmResults<Department> depts = realm.where(Department.class).findAll().sort("name");
-    private RealmResults<Contact> contacts = realm.where(Contact.class).isNotNull("profilePic").findAll().sort("name");
+    private RealmResults<Department> depts;
+    private RealmResults<Contact> contacts;
     private RealmList<Contact> deptContacts;
     private int type = 1;
     private static ClickListener clicklistener;
@@ -33,12 +33,21 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Co
         void itemClicked(int type,String contactName,String deptName);
     }
     public MyRecyclerAdapter() {
+        if(realm.isClosed()) {realm = Realm.getDefaultInstance();}
     }
 
     public void setListData(int option,String deptName) {
-        if(option==3)
+        switch(option)
         {
-            deptContacts = realm.where(Department.class).equalTo("name", deptName).findFirst().getContacts();
+            case 1:
+                if(depts==null) {depts = realm.where(Department.class).findAll().sort("name");}
+                break;
+            case 2:
+                if(contacts==null) {contacts = realm.where(Contact.class).isNotNull("profilePic").findAll().sort("name");}
+                break;
+            case 3:
+                deptContacts = realm.where(Department.class).equalTo("name", deptName).findFirst().getContacts();
+                break;
         }
         type = option;
         notifyDataSetChanged();

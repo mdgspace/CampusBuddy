@@ -155,7 +155,6 @@
         <activity
             android:name=".AboutUs"
             android:label="@string/title_activity_about_us" />
-        <activity android:name=".contacts.SearchActivity" />
         <activity
             android:name=".contacts.ShowContact"
             android:theme="@style/ShowContact" />
