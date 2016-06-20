@@ -1,7 +1,12 @@
 package in.co.mdg.campusBuddy.contacts;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +40,8 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
     private LayoutInflater mInflater;
     private final static int HISTORY_ITEM_LIMIT = 2;
     private final static int TOTAL_ITEM_LIMIT = 5;
+    private String queryString;
+    private final ForegroundColorSpan fcs = new ForegroundColorSpan(Color.parseColor("#be5e00"));
 
     public SearchSuggestionAdapter(Context context, int viewResourceId) {
         super(context, viewResourceId);
@@ -59,7 +66,13 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
         }
         ContactSearchModel contact = getItem(position);
         if (contact != null) {
-            holder.contactName.setText(contact.getName());
+            SpannableStringBuilder sb = new SpannableStringBuilder(contact.getName());
+            if(!queryString.equals(""))
+            {
+                int searchMatchPosition = contact.getName().toLowerCase().indexOf(queryString.toLowerCase());
+                sb.setSpan(fcs, searchMatchPosition, searchMatchPosition+ queryString.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            }
+            holder.contactName.setText(sb);
             if(contact.getProfilePic() != null)
             {
                 if(contact.getProfilePic().equals("") || contact.getProfilePic().equals("default.jpg"))
@@ -114,13 +127,18 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
             RealmResults<ContactSearchModel> historySearches = null;
             RealmResults<Contact> contacts = null;
             if (constraint == null) {
+                queryString = "";
                 historySearches = realm.where(ContactSearchModel.class).findAll().sort("dateAdded", Sort.DESCENDING);
             }
             else
             {
-                historySearches = realm.where(ContactSearchModel.class).beginsWith("name",constraint.toString(), Case.INSENSITIVE).findAll().sort("dateAdded",Sort.DESCENDING);
+                queryString = constraint.toString();
+                historySearches = realm.where(ContactSearchModel.class)
+                        .contains("name",constraint.toString(), Case.INSENSITIVE)
+                        .findAll()
+                        .sort("dateAdded",Sort.DESCENDING);
                 RealmQuery<Contact> contactRealmQuery = realm.where(Contact.class)
-                        .beginsWith("name", constraint.toString(), Case.INSENSITIVE);
+                        .contains("name", constraint.toString(), Case.INSENSITIVE);
                 if(historySearches.size()>0) {
                     contactRealmQuery.notEqualTo("name", historySearches.get(0).getName());
                     if (historySearches.size()>1)
