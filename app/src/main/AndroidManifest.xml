@@ -71,7 +71,7 @@
 
         <activity
             android:name=".DepttList"
-            android:label="@string/app_name"
+            android:label="Contacts"
             android:theme="@style/ContactsTheme">
             <intent-filter>
                 <action android:name="android.intent.action.DEPTT_LIST" />

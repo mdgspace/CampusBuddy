@@ -41,7 +41,13 @@
         <item name="colorPrimary">@color/pink</item>
         <item name="colorPrimaryDark">@color/pink_dark</item>
     </style>
+    <style name="CollapsedAppBarTitle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">normal</item>
+    </style>
     <style name="ToolBarWithNavigationBack">
+        <item name="actionBarItemBackground">?attr/selectableItemBackground</item>
         <item name="navigationIcon">@drawable/ic_keyboard_backspace_white_24dp</item>
     </style>
 

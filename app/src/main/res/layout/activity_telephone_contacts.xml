@@ -22,28 +22,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/appbarlayout"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:background="@drawable/gradient_pink">
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <android.support.design.widget.CollapsingToolbarLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:title="Contacts">
+                android:layout_width="match_parent"
+                android:layout_height="121dp"
+                app:contentScrim="@drawable/gradient_pink"
+                android:background="@drawable/gradient_pink"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:expandedTitleMarginStart="60dp"
+                app:expandedTitleMarginEnd="64dp"
+                app:expandedTitleGravity="top"
+                app:expandedTitleMarginTop="-34dp"
+                app:expandedTitleTextAppearance="@style/CollapsedAppBarTitle">
+
+            <android.support.design.widget.TabLayout
+                    android:layout_gravity="bottom"
+                    android:id="@+id/tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="?attr/actionBarSize"
-                    app:title="Contacts"
-                    android:theme="@style/Theme.AppCompat.NoActionBar"
+                    android:layout_height="?attr/actionBarSize"
+                    android:theme="@style/Theme.AppCompat"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                    style="@style/ToolBarWithNavigationBack"/>
-                <android.support.design.widget.TabLayout
-                    android:layout_marginTop="?attr/actionBarSize"
-                    android:id="@+id/tab_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    style="@style/ToolBarWithNavigationBack"
+                    app:title="Contacts"
+                    android:background="@android:color/transparent"
+                    app:layout_collapseMode="pin"/>
             </android.support.design.widget.CollapsingToolbarLayout>
 
         </android.support.design.widget.AppBarLayout>

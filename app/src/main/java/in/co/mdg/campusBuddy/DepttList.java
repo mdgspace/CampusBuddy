@@ -66,7 +66,6 @@ public class DepttList extends AppCompatActivity implements ClickListener{
 
     private AutoCompleteTextView searchBox;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
-    private static final int SEARCH_ACTIVITY = 101;
     private static int SPEECHORCLEAR = 1;
     private Realm realm;
     private SearchSuggestionAdapter searchAdapter;
@@ -86,8 +85,6 @@ public class DepttList extends AppCompatActivity implements ClickListener{
         }
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("Contacts");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -255,7 +252,10 @@ public class DepttList extends AppCompatActivity implements ClickListener{
         if(searchBar.getVisibility() == View.VISIBLE)
             backButton.performClick();
         else
+        {
+            finish();
             super.onBackPressed();
+        }
     }
     @Override
     public void onDestroy() {
@@ -289,12 +289,7 @@ public class DepttList extends AppCompatActivity implements ClickListener{
                     ArrayList<String> result = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     searchBox.append(result.get(0));
-                }
-                break;
-            case SEARCH_ACTIVITY:
-                if(resultCode == RESULT_OK)
-                {
-                    searchBox.setText(data.getStringExtra("searchText"));
+                    searchBox.requestFocus();
                 }
                 break;
         }
