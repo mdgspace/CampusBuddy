@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Callback;
 
-import in.co.mdg.campusBuddy.MyRecyclerAdapter;
 import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.data_models.Department;
 import io.realm.Realm;
@@ -50,7 +49,7 @@ public class ShowDepartmentContacts extends AppCompatActivity{
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         recyclerView.addItemDecoration(new DividerItemDecoration(this,R.drawable.divider,metrics.density));
-        MyRecyclerAdapter adapter = new MyRecyclerAdapter();
+        ContactsRecyclerAdapter adapter = new ContactsRecyclerAdapter();
         adapter.setListData(3,deptName);
         recyclerView.setAdapter(adapter);
         RecyclerViewFastScroller fastScroller = (RecyclerViewFastScroller) findViewById(R.id.fastscroller);

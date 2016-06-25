@@ -28,6 +28,7 @@ import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 
 import codetail.graphics.drawables.LollipopDrawablesCompat;
+import in.co.mdg.campusBuddy.contacts.ContactsMainActivity;
 
 /*
 import com.facebook.rebound.SimpleSpringListener;
@@ -209,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         tdbtt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent tdIntent = new Intent(MainActivity.this, DepttList.class);
+                Intent tdIntent = new Intent(MainActivity.this, ContactsMainActivity.class);
                 startActivity(tdIntent);
             }
         });

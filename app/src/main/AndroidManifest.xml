@@ -70,7 +70,7 @@
         <!-- </activity> -->
 
         <activity
-            android:name=".DepttList"
+            android:name=".contacts.ContactsMainActivity"
             android:label="Contacts"
             android:theme="@style/ContactsTheme">
             <intent-filter>
@@ -120,15 +120,6 @@
             android:value="AIzaSyD8LQckj7h5s6w_rAzk5UyP3WzpfkO3BCE" />
         <!-- android:value="AIzaSyA-X5bozVBQg1gKeK_B1AreRFLFXmguwS8" /> -->
 
-        <activity
-            android:name=".TelephoneContacts"
-            android:label="@string/title_activity_telephone_contacts"
-            android:theme="@style/ContactsTheme" />
-        <activity
-            android:name=".ContactDetails"
-            android:configChanges="orientation"
-            android:label="@string/title_activity_contact_details"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".Fb"
             android:label="@string/title_activity_contact_details" />

@@ -1,12 +1,10 @@
-package in.co.mdg.campusBuddy;
+package in.co.mdg.campusBuddy.contacts;
 
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.AppBarLayout;
@@ -15,20 +13,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
@@ -49,20 +40,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import in.co.mdg.campusBuddy.MyRecyclerAdapter.ClickListener;
-import in.co.mdg.campusBuddy.contacts.DeptListFragment;
-import in.co.mdg.campusBuddy.contacts.ShowContact;
-import in.co.mdg.campusBuddy.contacts.ShowDepartmentContacts;
-import in.co.mdg.campusBuddy.contacts.ViewPagerAdapter;
+import in.co.mdg.campusBuddy.AboutUs;
+import in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.ClickListener;
+import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.data_models.*;
-import in.co.mdg.campusBuddy.contacts.SearchSuggestionAdapter;
 import io.realm.Realm;
 
 /**
  * Created by rc on 29/6/15.
  */
 
-public class DepttList extends AppCompatActivity implements ClickListener{
+public class ContactsMainActivity extends AppCompatActivity implements ClickListener{
 
     private AutoCompleteTextView searchBox;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
@@ -367,7 +355,7 @@ public class DepttList extends AppCompatActivity implements ClickListener{
 
         else if (id==R.id.about_us_menu) {
 
-            Intent i=new Intent(DepttList.this,AboutUs.class);
+            Intent i=new Intent(ContactsMainActivity.this,AboutUs.class);
             startActivity(i);
         }
 

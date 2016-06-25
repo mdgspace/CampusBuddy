@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import in.co.mdg.campusBuddy.DepttList;
-import in.co.mdg.campusBuddy.MyRecyclerAdapter;
 import in.co.mdg.campusBuddy.R;
 
 
@@ -19,7 +17,7 @@ public class DeptListFragment extends Fragment{
     private static final String ARG_TYPE = "type";
 
     private int mType;
-    private MyRecyclerAdapter adapter;
+    private ContactsRecyclerAdapter adapter;
 
 
     public DeptListFragment() {
@@ -52,9 +50,9 @@ public class DeptListFragment extends Fragment{
         DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity().getBaseContext(),R.drawable.divider,metrics.density));
-        adapter = new MyRecyclerAdapter();
-        DepttList depttList = (DepttList) getActivity();
-        adapter.setClickListener(depttList);
+        adapter = new ContactsRecyclerAdapter();
+        ContactsMainActivity contactsMainActivity = (ContactsMainActivity) getActivity();
+        adapter.setClickListener(contactsMainActivity);
         adapter.setListData(mType,null);
         recyclerView.setAdapter(adapter);
         RecyclerViewFastScroller fastScroller = (RecyclerViewFastScroller) view.findViewById(R.id.fastscroller);

@@ -1,9 +1,8 @@
-package in.co.mdg.campusBuddy;
+package in.co.mdg.campusBuddy.contacts;
 
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import in.co.mdg.campusBuddy.contacts.RecyclerViewFastScroller;
+import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.data_models.Contact;
 import in.co.mdg.campusBuddy.contacts.data_models.Department;
 import io.realm.Realm;
@@ -22,7 +21,7 @@ import io.realm.RealmResults;
 /**
  * Created by root on 13/6/15.
  */
-public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.ContactViewHolder> implements RecyclerViewFastScroller.BubbleTextGetter {
+class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapter.ContactViewHolder> implements RecyclerViewFastScroller.BubbleTextGetter {
     private static Realm realm = Realm.getDefaultInstance();
     private RealmResults<Department> depts;
     private RealmResults<Contact> contacts;
@@ -32,11 +31,11 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Co
     interface ClickListener {
         void itemClicked(int type,String contactName,String deptName);
     }
-    public MyRecyclerAdapter() {
+    ContactsRecyclerAdapter() {
         if(realm.isClosed()) {realm = Realm.getDefaultInstance();}
     }
 
-    public void setListData(int option,String deptName) {
+    void setListData(int option, String deptName) {
         switch(option)
         {
             case 1:
@@ -65,18 +64,18 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Co
             deptSearch.equalTo("contacts.phoneBSNL",contact.getPhoneBSNL());
         return deptSearch.findFirst().getName();
     }
-    public void setClickListener(ClickListener clickListener)
+    void setClickListener(ClickListener clickListener)
     {
        clicklistener = clickListener;
     }
 
-    public void closeRealm() {
+    void closeRealm() {
         realm.close();
     }
 
     @Override
     public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.contact_list_item, parent, false);
         return new ContactViewHolder(itemView);
     }
 
