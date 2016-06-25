@@ -139,11 +139,23 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Co
                 case 1:
                     Department dept = (Department) item;
                     name.setText(dept.getName());
-                    Picasso.with(profilePic.getContext())
-                            .load("http://www.iitr.ac.in/departments/" + dept.getPhoto() + "/assets/images/top1.jpg")
-                            .noFade()
-                            .error(R.drawable.iit_roorkee)
-                            .into(profilePic);
+                    if(dept.getPhoto() != null)
+                    {
+                        String deptPhoto;
+                        if(dept.getPhoto().length()>4)
+                            deptPhoto = dept.getPhoto();
+                        else
+                            deptPhoto = "http://www.iitr.ac.in/departments/" + dept.getPhoto() + "/assets/images/top1.jpg";
+                        Picasso.with(profilePic.getContext())
+                                .load(deptPhoto)
+                                .noFade()
+                                .fit()
+                                .into(profilePic);
+                    }
+                    else
+                    {
+                        Picasso.with(profilePic.getContext()).load(R.drawable.iit_roorkee).noFade().fit().into(profilePic);
+                    }
                     break;
                 case 2:case 3:
                     Contact contact = (Contact) item;
