@@ -1,9 +1,12 @@
 package in.co.mdg.campusBuddy.contacts;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.inputmethodservice.Keyboard;
+import android.inputmethodservice.KeyboardView;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -15,11 +18,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
@@ -176,6 +182,8 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
                 searchBox.clearFocus();
                 dimLayout.setVisibility(View.GONE);
                 searchBar.setVisibility(View.GONE);
+                InputMethodManager inputMethodManager=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
             }
         });
 
@@ -309,7 +317,7 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
             LayoutInflater inflater = this.getLayoutInflater();
             View dialogView = inflater.inflate(R.layout.disclaimer, null);
             dialogBuilder.setView(dialogView);
-            dialogBuilder.setTitle("Disclamer");
+            dialogBuilder.setTitle("Disclaimer");
             dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -318,38 +326,8 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
             });
 
             TextView tv_dis = (TextView) dialogView.findViewById(R.id.disclaimera);
-            TextView tv_dis1 = (TextView) dialogView.findViewById(R.id.disclaimera1);
-            TextView tv_dis2 = (TextView) dialogView.findViewById(R.id.disclaimera2);
-
-            tv_dis.setText("This is an test app made by a student's group and we don't take " +
-                    "any responsibility for any information present in the app.\n" +
-                    "However, we welcome any feedback, which can be mailed to us at: sdsmobilelabs@gmail.com\n"+
-                    "Data Sources: \n");
-
-//            tv_dis1.setText(
-//                    Html.fromHtml(
-//                            "<a href=\"http://www.google.com\" color: white>Academic Calendar</a> "));
-//            tv_dis1.setMovementMethod(LinkMovementMethod.getInstance());
-
-            tv_dis1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent browser = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://www.iitr.ac.in/academics/pages/Academic_Calender.html"));
-                    startActivity(browser);
-                }
-            });
-            tv_dis2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent browser = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://www.iitr.ac.in/Main/pages/Telephone+Telephone_Directory.html"));
-                    startActivity(browser);
-                }
-            });
-
-            tv_dis1.setText("Academic Calendar");
-            tv_dis2.setText("Telephone Directory");
+            tv_dis.setText(Html.fromHtml(getString(R.string.disclaimer_text)));
+            tv_dis.setMovementMethod(LinkMovementMethod.getInstance());
             AlertDialog alertDialog = dialogBuilder.create();
             alertDialog.show();}
 
@@ -367,7 +345,10 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
             {
                 searchAdapter.getFilter().filter(null);
             }
+            InputMethodManager inputMethodManager=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
             searchBox.requestFocus();
+            searchBox.showDropDown();
         }
 
         return super.onOptionsItemSelected(item);

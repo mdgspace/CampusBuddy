@@ -1,6 +1,7 @@
 package in.co.mdg.campusBuddy.contacts;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -45,7 +46,7 @@ public class DeptListFragment extends Fragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contact_list, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity().getBaseContext());
+        final LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity().getBaseContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);

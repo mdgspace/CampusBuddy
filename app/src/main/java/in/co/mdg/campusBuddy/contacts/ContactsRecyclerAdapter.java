@@ -133,7 +133,8 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
         }
 
         void bind(final int type,final Object item) {
-
+            Picasso.with(profilePic.getContext())
+                    .cancelRequest(profilePic);
             switch(type){
                 case 1:
                     Department dept = (Department) item;
@@ -147,6 +148,7 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
                             deptPhoto = "http://www.iitr.ac.in/departments/" + dept.getPhoto() + "/assets/images/top1.jpg";
                         Picasso.with(profilePic.getContext())
                                 .load(deptPhoto)
+                                .placeholder(R.drawable.iit_roorkee)
                                 .noFade()
                                 .fit()
                                 .into(profilePic);
@@ -172,6 +174,7 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
                     } else {
                         Picasso.with(profilePic.getContext())
                                 .load("http://people.iitr.ernet.in/facultyphoto/" + picAddress)
+                                .placeholder(R.drawable.com_facebook_profile_picture_blank_portrait)
                                 .noFade()
                                 .error(R.drawable.com_facebook_profile_picture_blank_portrait)
                                 .into(profilePic);

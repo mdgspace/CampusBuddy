@@ -1,6 +1,8 @@
 package in.co.mdg.campusBuddy.contacts;
 
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 
 
@@ -14,12 +16,15 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -47,6 +52,7 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
     private Toolbar toolbar;
     private NestedScrollView nestedScrollView;
     private AppBarLayout mAppBarLayout;
+    private FrameLayout titleFrame;
     private TextView name_text;
     private TextView dept_text;
     private TextView desg_text;
@@ -61,6 +67,12 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         setContentView(R.layout.activity_show_contact);
         initializeVariables();
         setData();
+        titleFrame.post(new Runnable() {
+            @Override
+            public void run() {
+                profileBackdrop.setPadding(0,0,0,titleFrame.getHeight());
+            }
+        });
         startAlphaAnimation(mTitle, 0, View.INVISIBLE);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
@@ -79,6 +91,7 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         dept_text = (TextView) findViewById(R.id.dept);
         desg_text = (TextView) findViewById(R.id.desg);
         mTitle = (TextView) findViewById(R.id.action_bar_title);
+        titleFrame = (FrameLayout) findViewById(R.id.framelayout_title);
         nestedScrollView = (NestedScrollView) findViewById(R.id.nested_scroll_view);
         mTitleContainer = (LinearLayout) findViewById(R.id.linearlayout_title);
         profilePic = (ImageView) findViewById(R.id.profile_pic);
@@ -104,17 +117,6 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         dept_text.setText(dept);
         mTitle.setText(name);
 
-        Picasso.with(this).load("http://timesofindia.indiatimes.com/photo/48010944.cms").into(profileBackdrop, new Callback() {
-            @Override
-            public void onSuccess() {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    getWindow().setStatusBarColor(Color.TRANSPARENT);
-//                }
-            }
-            @Override
-            public void onError() {}
-        });
-
         if(contact.getDesignation() != null)
             desg_text.setText(contact.getDesignation());
         else
@@ -124,6 +126,7 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
             if (!contact.getProfilePic().equals("") && !contact.getProfilePic().equals("default.jpg")) {
                 Picasso.with(this)
                         .load("http://people.iitr.ernet.in/facultyphoto/" + contact.getProfilePic())
+                        .placeholder(R.drawable.com_facebook_profile_picture_blank_portrait)
                         .noFade()
                         .error(R.drawable.com_facebook_profile_picture_blank_portrait)
                         .into(profilePic);
@@ -145,6 +148,12 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
                     startActivity(intent);
                 }
             });
+            contactOffice.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return copyToClipboard(name,iitr_o.getText().toString().replace(" ", ""));
+                }
+            });
         } else {
             findViewById(R.id.divider2).setVisibility(View.GONE);
             contactOffice.setVisibility(View.GONE);
@@ -159,6 +168,12 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
                 public void onClick(View v) {
                     Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + iitr_r.getText().toString().replace(" ", "")));
                     startActivity(intent);
+                }
+            });
+            contactResidence.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return copyToClipboard(name,iitr_r.getText().toString().replace(" ", ""));
                 }
             });
         } else {
@@ -183,6 +198,12 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
                     startActivity(intent);
                 }
             });
+            contactBsnl.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return copyToClipboard(name,phoneBsnl.getText().toString().replace(" ", ""));
+                }
+            });
         } else {
             findViewById(R.id.divider4).setVisibility(View.GONE);
             contactBsnl.setVisibility(View.GONE);
@@ -195,11 +216,14 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
             contactEmail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setType("plain/text");
-                    intent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
-                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{email.getText().toString()});
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + email.getText().toString()));
                     startActivity(intent);
+                }
+            });
+            contactEmail.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return copyToClipboard(name,email.getText().toString());
                 }
             });
         } else {
@@ -218,13 +242,26 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
                     startActivity(browserIntent);
                 }
             });
+            contactWebsite.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                     return copyToClipboard(name,website.getText().toString());
+                }
+            });
 
         } else {
             findViewById(R.id.divider6).setVisibility(View.GONE);
             contactWebsite.setVisibility(View.GONE);
         }
     }
-
+    private boolean copyToClipboard(String label,String data)
+    {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(label, data);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(getApplicationContext(), "Copied to Clipboard!", Toast.LENGTH_SHORT).show();
+        return true;
+    }
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
         if(maxScrollSize == 0)

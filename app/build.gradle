@@ -37,8 +37,8 @@ android
                 compile fileTree(include: ['*.jar'], dir: 'libs')
                 compile 'com.github.alamkanak:android-week-view:1.2.6'
                 //compile 'com.google.android.gms:play-services:9.0.0'
-                compile 'com.google.android.gms:play-services-maps:9.0.0'
-                compile 'com.google.android.gms:play-services-wallet:9.0.0'
+                compile 'com.google.android.gms:play-services-maps:9.2.1'
+                compile 'com.google.android.gms:play-services-wallet:9.2.1'
 
                 compile 'com.facebook.android:facebook-android-sdk:4.0.0'
                 // compile project(':facebook')

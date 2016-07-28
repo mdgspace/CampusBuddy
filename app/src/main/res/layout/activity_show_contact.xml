@@ -16,22 +16,26 @@
                 android:id="@+id/main.collapsing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/brand_primary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <ImageView
                     android:id="@+id/profile_backdrop"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:paddingBottom="120dp"
+                    android:paddingBottom="110dp"
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.9"
+                    android:src="@drawable/main_building"
+                    android:tint="#353E50B4"
                     android:contentDescription="Background Image" />
 
                 <FrameLayout
                     android:id="@+id/framelayout_title"
                     android:layout_width="match_parent"
-                    android:layout_height="125dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="25dp"
                     android:layout_gravity="bottom"
                     android:orientation="vertical"
                     app:layout_collapseMode="parallax"
@@ -291,8 +295,7 @@
             android:background="@color/brand_primary"
             style="@style/ToolBarWithNavigationBack"
             app:theme="@style/ThemeOverlay.AppCompat.Dark"
-            app:title=""
-            android:fitsSystemWindows="false">
+            app:title="">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -320,7 +323,7 @@
             android:layout_gravity="center_horizontal"
             app:civ_border_color="@android:color/white"
             app:civ_border_width="2dp"
-            app:finalYPosition="2dp"
+            app:finalYPosition="1dp"
             app:finalHeight="45dp"
             app:finalXPosition="54dp"
             android:id="@+id/profile_pic"

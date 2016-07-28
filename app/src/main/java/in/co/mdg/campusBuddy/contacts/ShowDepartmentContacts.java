@@ -1,10 +1,14 @@
 package in.co.mdg.campusBuddy.contacts;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,12 +16,17 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.EdgeEffect;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Callback;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.data_models.Department;
@@ -26,6 +35,9 @@ import io.realm.Realm;
 public class ShowDepartmentContacts extends AppCompatActivity{
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private RecyclerView recyclerView;
+    private int primaryDark;
+    private int primary;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +53,12 @@ public class ShowDepartmentContacts extends AppCompatActivity{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
-
+        primary = ContextCompat.getColor(this,R.color.primary);
+        primaryDark = ContextCompat.getColor(this,R.color.primary_dark);
         String deptName = getIntent().getStringExtra("dept_name");
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
+        final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        final LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -56,6 +70,20 @@ public class ShowDepartmentContacts extends AppCompatActivity{
         fastScroller.setVisibility(View.GONE);
 //        fastScroller.setRecyclerView(recyclerView);
 //        fastScroller.setViewsToUse(R.layout.recycler_view_fast_scroller,R.id.fastscroller_bubble,R.id.fastscroller_handle);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    int firstVisiblePosition = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+                    if (firstVisiblePosition == 0) {
+                        appBarLayout.setExpanded(true, true);
+                    }
+                }
+            }
+        });
 
         collapsingToolbarLayout.setTitle(deptName);
         collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this,android.R.color.transparent));
@@ -80,6 +108,7 @@ public class ShowDepartmentContacts extends AppCompatActivity{
                             Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                                 public void onGenerated(Palette palette) {
                                     applyPalette(palette);
+                                    setEdgeGlowColor(recyclerView, primary);
                                 }
                             });
                         }
@@ -92,11 +121,33 @@ public class ShowDepartmentContacts extends AppCompatActivity{
 
     }
     private void applyPalette(Palette palette) {
-        int primaryDark = ContextCompat.getColor(this,R.color.primary_dark);
-        int primary = ContextCompat.getColor(this,R.color.primary);
-        collapsingToolbarLayout.setContentScrimColor(palette.getMutedColor(primary));
-        collapsingToolbarLayout.setStatusBarScrimColor(palette.getDarkMutedColor(primaryDark));
+
+        primary = palette.getMutedColor(primary);
+        primaryDark = palette.getDarkMutedColor(primaryDark);
+        collapsingToolbarLayout.setContentScrimColor(primary);
+        collapsingToolbarLayout.setStatusBarScrimColor(primaryDark);
         supportStartPostponedEnterTransition();
     }
+    private static void setEdgeGlowColor(final RecyclerView recyclerView, final int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            try {
+                final Class<?> clazz = RecyclerView.class;
+                for (final String name : new String[] {"ensureTopGlow", "ensureBottomGlow"}) {
+                    Method method = clazz.getDeclaredMethod(name);
+                    method.setAccessible(true);
+                    method.invoke(recyclerView);
+                }
+                for (final String name : new String[] {"mTopGlow", "mBottomGlow"}) {
+                    final Field field = clazz.getDeclaredField(name);
+                    field.setAccessible(true);
+                    final Object edge = field.get(recyclerView); // android.support.v4.widget.EdgeEffectCompat
+                    final Field fEdgeEffect = edge.getClass().getDeclaredField("mEdgeEffect");
+                    fEdgeEffect.setAccessible(true);
+                    ((EdgeEffect) fEdgeEffect.get(edge)).setColor(color);
+                }
+            } catch (final Exception ignored) {}
+        }
+    }
+
 
 }

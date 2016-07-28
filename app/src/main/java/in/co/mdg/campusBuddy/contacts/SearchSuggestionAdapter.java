@@ -63,6 +63,7 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
+
         }
         ContactSearchModel contact = getItem(position);
         if (contact != null) {
@@ -70,9 +71,12 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
             if(!queryString.equals(""))
             {
                 int searchMatchPosition = contact.getName().toLowerCase().indexOf(queryString.toLowerCase());
-                sb.setSpan(fcs, searchMatchPosition, searchMatchPosition+ queryString.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                if(searchMatchPosition != -1)
+                    sb.setSpan(fcs, searchMatchPosition, searchMatchPosition+ queryString.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             }
             holder.contactName.setText(sb);
+            Picasso.with(getContext())
+                    .cancelRequest(holder.profilePic);
             if(contact.getProfilePic() != null)
             {
                 if(contact.getProfilePic().equals("") || contact.getProfilePic().equals("default.jpg"))

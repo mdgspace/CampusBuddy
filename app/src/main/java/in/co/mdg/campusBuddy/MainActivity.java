@@ -17,8 +17,11 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
            LayoutInflater inflater = this.getLayoutInflater();
            View dialogView = inflater.inflate(R.layout.disclaimer, null);
            dialogBuilder.setView(dialogView);
-           dialogBuilder.setTitle("Disclamer");
+           dialogBuilder.setTitle("Disclaimer");
            dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                @Override
                public void onClick(DialogInterface dialogInterface, int i) {
@@ -69,36 +72,9 @@ public class MainActivity extends AppCompatActivity {
            });
 
            TextView tv_dis = (TextView) dialogView.findViewById(R.id.disclaimera);
-           TextView tv_dis1 = (TextView) dialogView.findViewById(R.id.disclaimera1);
-           TextView tv_dis2 = (TextView) dialogView.findViewById(R.id.disclaimera2);
-           tv_dis.setText("This is an test app made by a student's group and we don't take " +
-                   "any responsibility for any information present in the app.\n" +
-                   " However, we welcome any feedback, which can be mailed to us at: sdsmobilelabs@gmail.com\n"+
-                   "Data Sources: \n");
-//            tv_dis1.setText(
-//                    Html.fromHtml(
-//                            "<a href=\"http://www.google.com\" color: white>Academic Calendar</a> "));
-//            tv_dis1.setMovementMethod(LinkMovementMethod.getInstance());
+           tv_dis.setText(Html.fromHtml(getString(R.string.disclaimer_text)));
+           tv_dis.setMovementMethod(LinkMovementMethod.getInstance());
 
-           tv_dis1.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                   Intent browser = new Intent(Intent.ACTION_VIEW,
-                           Uri.parse("http://www.iitr.ac.in/academics/pages/Academic_Calender.html"));
-                   startActivity(browser);
-               }
-           });
-           tv_dis2.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                   Intent browser = new Intent(Intent.ACTION_VIEW,
-                           Uri.parse("http://www.iitr.ac.in/Main/pages/Telephone+Telephone_Directory.html"));
-                   startActivity(browser);
-               }
-           });
-
-           tv_dis1.setText("Academic Calendar");
-           tv_dis2.setText("Telephone Directory");
            AlertDialog alertDialog = dialogBuilder.create();
            alertDialog.show();
 
