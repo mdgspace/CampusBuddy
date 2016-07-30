@@ -24,5 +24,15 @@
     <color name="accent_lavendar">#B378D3</color>
     <color name="accent_flamingo">#FC8EAC</color>
     <color name="color_acad_events">#9C27B0</color>
-
+    <color name="green">#56C431</color>
+    <color name="green_dark">#207107</color>
+    <color name="pink">#DA49C0</color>
+    <color name="pink_dark">#9d0c8e</color>
+    <color name="pink_transparent">#109D0C8E</color>
+    <color name="black_transparent">#40000000</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="white_pure">#FFFFFF</color>
+    <color name="brown_light">#A28551</color>
+    <color name="brown_dark">#806030</color>
+    <color name="gray_light_trans">#33999999</color>
 </resources>

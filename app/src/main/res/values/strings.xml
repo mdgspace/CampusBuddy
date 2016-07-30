@@ -12,10 +12,10 @@
         opened</string>
          <string name="navigation_drawer_close">Navigation Drawer
         closed</string>
-        <string name="action_today">Today</string>
-        <string name="action_day_view">Day view</string>
-        <string name="action_three_day_view">3 day view</string>
-        <string name="action_week_view">Week view</string>
+    <string name="action_today">Today</string>
+    <string name="action_day_view">Day view</string>
+    <string name="action_three_day_view">3 day view</string>
+    <string name="action_week_view">Week view</string>
     <string name="facebook_app_id">772744622840259</string>
 
 
@@ -83,6 +83,16 @@
     </string-array>
     <string name="title_activity_about_us">AboutUs</string>
 
-
-
+    <string name="speech_prompt">Say something&#8230;</string>
+    <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
+    <string name="tap_on_mic">Tap on mic to speak</string>
+    <string name="disclaimer_text">
+        &lt;p&gt;
+        This is a test app made by a student\'s group and we don\'t take any responsibility for any information present in the app.&lt;br /&gt;
+        However, we welcome any feedback, which can be mailed to us at:&lt;a href="mailto:sdsmobilelabs@gmail.com"&gt; sdsmobilelabs@gmail.com&lt;/a&gt;&lt;br/&gt;
+        &lt;/p&gt;&lt;p&gt;
+        Data Sources: &lt;br/&gt;&lt;a href="http://www.iitr.ac.in/academics/pages/Academic_Calender.html"&gt;Academic Calendar&lt;/a&gt;&lt;br /&gt;
+        &lt;a href="http://www.iitr.ac.in/Main/pages/Telephone+Telephone_Directory.html"&gt;Telephone Directory&lt;/a&gt;
+        &lt;/p&gt;
+    </string>
 </resources>

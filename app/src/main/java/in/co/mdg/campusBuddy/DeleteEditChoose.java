@@ -62,8 +62,6 @@ public class DeleteEditChoose extends DialogFragment  {
 
         builder.setView(view);
 
-        //builder.setSingleChoiceItems(RadioButtons.dae, 0, null);
-
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -1,17 +1,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="in.co.mdg.campusBuddy.TelephoneContacts">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/search"
+        android:title="Search"
+        android:icon="@drawable/ic_search_white_24dp"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="100"/>
 
     <item android:id="@+id/disclaimer"
         android:title="Disclaimer"
-        android:orderInCategory="100"
+        android:orderInCategory="101"
         app:showAsAction="never"/>
 
     <item android:id="@+id/about_us_menu"
         android:title="About us"
-        android:orderInCategory="100"
+        android:orderInCategory="102"
         app:showAsAction="never"/>
-
 </menu>

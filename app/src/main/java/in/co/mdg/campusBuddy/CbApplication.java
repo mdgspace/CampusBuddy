@@ -18,7 +18,7 @@ public class CbApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+//        Fabric.with(this, new Crashlytics());
         RealmConfiguration config = new RealmConfiguration
                 .Builder(this)
                 .name("CBData.realm")
