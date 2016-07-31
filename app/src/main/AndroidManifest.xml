@@ -47,6 +47,7 @@
             android:name=".MainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
+            android:theme="@style/MainAcitvityTheme"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -67,8 +68,7 @@
 
         <activity
             android:name=".contacts.ContactsMainActivity"
-            android:label="Contacts"
-            android:theme="@style/ContactsTheme">
+            android:label="Contacts">
             <intent-filter>
                 <action android:name="android.intent.action.DEPTT_LIST" />
 
@@ -96,8 +96,7 @@
         <!-- </activity> -->
         <activity
             android:name=".NewEvent"
-            android:label="@string/app_name"
-            android:theme="@style/Theme_for_newevent" />
+            android:label="@string/app_name"/>
         <activity
             android:name=".TimetableNavigation"
             android:label="@string/app_name" />
@@ -145,7 +144,7 @@
         <activity
             android:name=".contacts.ShowContact"
             android:theme="@style/ShowContact" />
-        <activity android:name=".contacts.ShowDepartmentContacts"></activity>
+        <activity android:name=".contacts.ShowDepartmentContacts"/>
     </application>
 
 </manifest> <!-- Pro KD, chu rc -->

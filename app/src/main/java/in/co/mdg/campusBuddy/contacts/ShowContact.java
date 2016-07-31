@@ -67,12 +67,12 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         setContentView(R.layout.activity_show_contact);
         initializeVariables();
         setData();
-        titleFrame.post(new Runnable() {
-            @Override
-            public void run() {
-                profileBackdrop.setPadding(0,0,0,titleFrame.getHeight());
-            }
-        });
+//        titleFrame.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                profileBackdrop.setPadding(0,0,0,titleFrame.getHeight());
+//            }
+//        });
         startAlphaAnimation(mTitle, 0, View.INVISIBLE);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {

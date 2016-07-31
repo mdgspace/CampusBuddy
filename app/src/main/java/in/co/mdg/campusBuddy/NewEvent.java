@@ -41,7 +41,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     private EditText editt_date, editt_start, editt_end, editt_title, editt_details, editt_venue;
     private TextView color_text,typeOfEvent;
     private ImageView color_button;
-    private String color_returned = Data.getColor_list().get(4).getHash();
+    private String color_returned = Data.getColor_list().get(0).getHash();
 
     private int year, day, month, starthour, startminute, endhour, endminute;
     private String title, venue, details, eventType = "once",date;

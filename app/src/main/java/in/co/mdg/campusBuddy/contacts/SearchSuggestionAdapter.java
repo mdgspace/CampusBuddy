@@ -90,8 +90,6 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                 {
                     Picasso.with(getContext())
                             .load("http://people.iitr.ernet.in/facultyphoto/"+contact.getProfilePic())
-                            .fit()
-                            .error(R.drawable.com_facebook_profile_picture_blank_portrait)
                             .into(holder.profilePic);
                 }
             }

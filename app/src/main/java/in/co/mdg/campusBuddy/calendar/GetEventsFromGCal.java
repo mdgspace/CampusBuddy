@@ -59,6 +59,10 @@ public class GetEventsFromGCal {
 
 
     public void getEvents(final WeekView mWeekView, final ProgressBar calendarLoad) {
+        if(realm.isClosed())
+        {
+            realm = Realm.getDefaultInstance();
+        }
         //first get the last updated date from realm database
         LastUpdated lastUpdated = realm.where(LastUpdated.class).findFirst();
         String date=(lastUpdated != null)?lastUpdated.getDate():"0000000000";

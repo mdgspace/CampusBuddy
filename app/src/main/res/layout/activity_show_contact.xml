@@ -23,7 +23,6 @@
                     android:id="@+id/profile_backdrop"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:paddingBottom="110dp"
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.9"
