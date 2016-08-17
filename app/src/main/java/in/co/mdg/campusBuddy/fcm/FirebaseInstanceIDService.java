@@ -1,4 +1,4 @@
-package in.co.mdg.campusBuddy;
+package in.co.mdg.campusBuddy.fcm;
 
 /**
  * Created by mohit on 17/8/16.

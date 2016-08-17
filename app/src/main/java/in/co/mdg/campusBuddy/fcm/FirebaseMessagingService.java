@@ -1,4 +1,4 @@
-package in.co.mdg.campusBuddy;
+package in.co.mdg.campusBuddy.fcm;
 
 /**
  * Created by mohit on 17/8/16.
@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.support.v7.app.NotificationCompat;
 
 import com.google.firebase.messaging.RemoteMessage;
+
+import in.co.mdg.campusBuddy.MainActivity;
+import in.co.mdg.campusBuddy.R;
 
 /**
  * Created by mohit on 11/8/16.

@@ -156,7 +156,7 @@
         <activity android:name=".contacts.ShowContact"/>
         <activity android:name=".contacts.ShowDepartmentContacts"/>
 
-        <service android:name=".FirebaseMessagingService" >
+        <service android:name=".fcm.FirebaseMessagingService" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
