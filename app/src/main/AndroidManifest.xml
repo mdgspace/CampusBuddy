@@ -141,9 +141,7 @@
         <activity
             android:name=".AboutUs"
             android:label="@string/title_activity_about_us" />
-        <activity
-            android:name=".contacts.ShowContact"
-            android:theme="@style/ShowContact" />
+        <activity android:name=".contacts.ShowContact"/>
         <activity android:name=".contacts.ShowDepartmentContacts"/>
     </application>
 

@@ -84,7 +84,7 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                     holder.profilePic.setImageDrawable(
                             ContextCompat.getDrawable(
                                     getContext()
-                                    ,R.drawable.com_facebook_profile_picture_blank_portrait));
+                                    ,R.drawable.contact_icon));
                 }
                 else
                 {

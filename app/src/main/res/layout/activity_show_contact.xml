@@ -16,7 +16,7 @@
                 android:id="@+id/main.collapsing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/brand_primary"
+                android:background="@color/primary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <ImageView
@@ -26,8 +26,7 @@
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.9"
-                    android:src="@drawable/main_building"
-                    android:tint="#353E50B4"
+                    android:background="@color/primary"
                     android:contentDescription="Background Image" />
 
                 <FrameLayout
@@ -124,7 +123,7 @@
                         android:paddingRight="20dp"
                         android:text="01332 22 4891"
                         android:clickable="true"
-                        android:textColor="@color/brown_dark"
+                        android:textColor="@color/contact_dark"
                         android:id="@+id/iitr_o"
                         android:textSize="15sp"/>
                     <TextView
@@ -132,6 +131,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
                         android:layout_marginLeft="20dp"
+                        android:textColor="@color/contact_secondayText"
                         android:text="Main | Office"/>
 
                 </LinearLayout>
@@ -161,13 +161,14 @@
                         android:text="01332 22 4891"
                         android:clickable="true"
                         android:id="@+id/iitr_r"
-                        android:textColor="@color/brown_dark"
+                        android:textColor="@color/contact_dark"
                         android:textSize="15sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
                         android:layout_marginLeft="20dp"
+                        android:textColor="@color/contact_secondayText"
                         android:text="Main | Residence"/>
 
                 </LinearLayout>
@@ -197,13 +198,14 @@
                         android:text="01332 22 4891"
                         android:clickable="true"
                         android:id="@+id/phone_bsnl"
-                        android:textColor="@color/brown_dark"
+                        android:textColor="@color/contact_dark"
                         android:textSize="15sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
                         android:layout_marginLeft="20dp"
+                        android:textColor="@color/contact_secondayText"
                         android:id="@+id/bsnl_text"
                         android:text="BSNL" />
                 </LinearLayout>
@@ -233,13 +235,14 @@
                         android:text="example@iitr.ac.in"
                         android:clickable="true"
                         android:id="@+id/email"
-                        android:textColor="@color/brown_dark"
+                        android:textColor="@color/contact_dark"
                         android:textSize="15sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
                         android:layout_marginLeft="20dp"
+                        android:textColor="@color/contact_secondayText"
                         android:text="IITR Email"/>
                 </LinearLayout>
                 <View
@@ -267,13 +270,14 @@
                         android:layout_marginRight="20dp"
                         android:text="http://faculty.iitr.ac.in/~example/"
                         android:id="@+id/website_link"
-                        android:textColor="@color/brown_dark"
+                        android:textColor="@color/contact_dark"
                         android:textSize="15sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
                         android:layout_marginLeft="20dp"
+                        android:textColor="@color/contact_secondayText"
                         android:text="Website"/>
                 </LinearLayout>
                 <View
@@ -291,7 +295,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_anchor="@id/framelayout_title"
-            android:background="@color/brand_primary"
+            android:background="@color/primary"
             style="@style/ToolBarWithNavigationBack"
             app:theme="@style/ThemeOverlay.AppCompat.Dark"
             app:title="">
@@ -318,7 +322,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="108dp"
             android:layout_height="108dp"
-            android:src="@drawable/com_facebook_profile_picture_blank_portrait"
+            android:src="@drawable/contact_icon"
             android:layout_gravity="center_horizontal"
             app:civ_border_color="@android:color/white"
             app:civ_border_width="2dp"

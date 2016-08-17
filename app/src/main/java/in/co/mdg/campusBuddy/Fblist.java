@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -36,14 +35,11 @@ public class Fblist extends AppCompatActivity{
     ArrayList<String> fbpagesliked;
     public ArrayList<Page> pageList;
     //    ArrayAdapter<String> adapter;
-    LoginButton loginButton;
     CallbackManager callbackManager;
     Button submitb;
-    ViewGroup v;
-    int i,count=0;
+    int i;
     public static boolean flag=true;
     Toolbar toolbar;
-    CheckBox c;
     public ArrayList<Page> listofvalues;
 
     @Override
@@ -74,9 +70,6 @@ public class Fblist extends AppCompatActivity{
 
 
         toolbar = (Toolbar) findViewById(R.id.tool_barfblist);
-//        DayNightTheme.setToolbar(toolbar);
-
-//        ctoolbar=(CollapsingToolbarLayout)findViewById(R.id.collapsingtoolbar);
         toolbar.setTitle("Facebook page list");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);

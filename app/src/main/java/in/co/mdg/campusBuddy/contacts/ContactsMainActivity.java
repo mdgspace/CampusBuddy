@@ -96,7 +96,7 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
         setUpViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this,R.color.primary_light));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this,R.color.accent));
         tabLayout.setTabTextColors(Color.parseColor("#A1F5F5F5"),Color.parseColor("#FFF5F5F5"));
 
         searchAdapter = new SearchSuggestionAdapter(this,R.layout.search_suggestion_listitem);

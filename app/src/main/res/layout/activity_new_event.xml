@@ -16,7 +16,9 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
 
         <android.support.design.widget.TextInputLayout
 
@@ -168,17 +170,15 @@
                 android:id="@+id/color_button"
                 android:contentDescription="color_button" />
         </LinearLayout>
-
-
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:text="Submit"
+            android:background="@color/primary"
+            android:textColor="@color/white_pure"
+            android:id="@+id/submit"
+            android:onClick="submitButton"/>
     </LinearLayout>
 </ScrollView>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:text="Submit"
-        android:layout_alignParentBottom="true"
-        android:background="@color/primary"
-        android:textColor="@color/white_pure"
-        android:id="@+id/submit"
-        android:onClick="submitButton"/>
+
 </RelativeLayout>

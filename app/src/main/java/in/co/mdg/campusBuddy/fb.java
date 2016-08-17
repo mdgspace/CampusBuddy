@@ -57,6 +57,13 @@ public class Fb extends AppCompatActivity {
         toolbar.setTitle("Facebook posts");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         posts = new ArrayList<>();
 

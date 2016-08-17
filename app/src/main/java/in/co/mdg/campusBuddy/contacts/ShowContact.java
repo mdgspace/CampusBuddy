@@ -3,6 +3,7 @@ package in.co.mdg.campusBuddy.contacts;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ContentProviderOperation;
 import android.content.Intent;
 
 
@@ -10,6 +11,8 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Contacts;
+import android.provider.ContactsContract;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -17,6 +20,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
@@ -28,6 +33,8 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.data_models.Contact;
@@ -52,11 +59,9 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
     private Toolbar toolbar;
     private NestedScrollView nestedScrollView;
     private AppBarLayout mAppBarLayout;
-    private FrameLayout titleFrame;
     private TextView name_text;
     private TextView dept_text;
     private TextView desg_text;
-    private ImageView profileBackdrop;
     private String name;
     private String dept;
 
@@ -74,6 +79,8 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
 //            }
 //        });
         startAlphaAnimation(mTitle, 0, View.INVISIBLE);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 onBackPressed();
@@ -83,6 +90,22 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         toolbar.getBackground().setAlpha(0);
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_contact_details, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id==R.id.action_addtocontacts)
+        {
+            addToContacts();
+        }
+            return super.onOptionsItemSelected(item);
+    }
 
     private void initializeVariables() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -91,11 +114,9 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         dept_text = (TextView) findViewById(R.id.dept);
         desg_text = (TextView) findViewById(R.id.desg);
         mTitle = (TextView) findViewById(R.id.action_bar_title);
-        titleFrame = (FrameLayout) findViewById(R.id.framelayout_title);
         nestedScrollView = (NestedScrollView) findViewById(R.id.nested_scroll_view);
         mTitleContainer = (LinearLayout) findViewById(R.id.linearlayout_title);
         profilePic = (ImageView) findViewById(R.id.profile_pic);
-        profileBackdrop  = (ImageView) findViewById(R.id.profile_backdrop);
 
         maxScrollSize = mAppBarLayout.getTotalScrollRange();
         name = getIntent().getStringExtra("name");
@@ -126,9 +147,9 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
             if (!contact.getProfilePic().equals("") && !contact.getProfilePic().equals("default.jpg")) {
                 Picasso.with(this)
                         .load("http://people.iitr.ernet.in/facultyphoto/" + contact.getProfilePic())
-                        .placeholder(R.drawable.com_facebook_profile_picture_blank_portrait)
+                        .placeholder(R.drawable.contact_icon)
                         .noFade()
-                        .error(R.drawable.com_facebook_profile_picture_blank_portrait)
+                        .error(R.drawable.contact_icon)
                         .into(profilePic);
             }
         }
@@ -262,6 +283,43 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         Toast.makeText(getApplicationContext(), "Copied to Clipboard!", Toast.LENGTH_SHORT).show();
         return true;
     }
+
+    private boolean addToContacts()
+    {
+        final Intent addContact = new Intent(Intent.ACTION_INSERT_OR_EDIT);
+        addContact.putExtra(ContactsContract.Intents.Insert.NAME,name);
+        addContact.putExtra(ContactsContract.Intents.Insert.COMPANY,dept);
+        if(contact.getDesignation() != null)
+            addContact.putExtra(ContactsContract.Intents.Insert.JOB_TITLE,contact.getDesignation());
+        if(contact.getIitr_o() != null)
+        {
+            addContact.putExtra(ContactsContract.Intents.Insert.PHONE,(std_code_res_off + contact.getIitr_o()).replace(" ", ""));
+            addContact.putExtra(ContactsContract.Intents.Insert.PHONE_TYPE,"Office");
+            addContact.putExtra(ContactsContract.Intents.Insert.PHONE_ISPRIMARY,"True");
+        }
+        if(contact.getIitr_r() != null)
+        {
+            addContact.putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE,(std_code_res_off + contact.getIitr_r()).replace(" ", ""));
+            addContact.putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE_TYPE,"Residence");
+        }
+        if(contact.getPhoneBSNL() != null)
+        {
+            if (contact.getPhoneBSNL().startsWith("9") || contact.getPhoneBSNL().startsWith("8")) {
+                addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE,contact.getPhoneBSNL());
+                addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE_TYPE,"Mobile");
+            } else {
+                addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE,std_code_bsnl + contact.getPhoneBSNL());
+                addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE_TYPE,"Bsnl Landline");
+            }
+        }
+        if(contact.getEmail() != null)
+            addContact.putExtra(ContactsContract.Intents.Insert.EMAIL,contact.getEmail()+"@iitr.ac.in");
+
+        addContact.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
+        startActivity(addContact);
+        return true;
+    }
+
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
         if(maxScrollSize == 0)
@@ -276,11 +334,9 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
 
         if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
             float modifiedPercent = getModifiedPercent(percentage,PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR);
-            toolbar.getBackground().setAlpha((int)(255*modifiedPercent));
             nestedScrollView.setPadding(0,(int)(toolbar.getMeasuredHeight()*modifiedPercent),0,0);
             if(!mIsTheTitleVisible) {
-//                mAppBarLayout.setFitsSystemWindows(false);
-//                profilePic.setFitsSystemWindows(false);
+                toolbar.getBackground().setAlpha(255);
                 startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                    getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.brand_primary_dark));
@@ -293,8 +349,6 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
             if (mIsTheTitleVisible) {
                 startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
                 toolbar.getBackground().setAlpha(0);
-//                mAppBarLayout.setFitsSystemWindows(true);
-//                profilePic.setFitsSystemWindows(true);
                 nestedScrollView.setPadding(0,0,0,0);
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                    getWindow().setStatusBarColor(Color.TRANSPARENT);
