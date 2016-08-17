@@ -29,7 +29,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setAutoCancel(true)
                 .setContentTitle("test")
                 .setContentText(message)
-                .setSmallIcon(R.drawable.facebook_icon)
+                .setSmallIcon(R.drawable.buddy_icon)
                 .setContentIntent(pendingIntent);
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
