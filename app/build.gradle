@@ -39,6 +39,9 @@ android
                 compile 'com.google.android.gms:play-services-maps:9.4.0'
                 compile 'com.google.android.gms:play-services-wallet:9.4.0'
 
+                //for firebase cloud messaging
+                compile 'com.google.firebase:firebase-messaging:9.4.0'
+
                 compile 'com.facebook.android:facebook-android-sdk:4.0.0'
                 // compile project(':facebook')
                 compile 'com.squareup.picasso:picasso:2.3.2'
@@ -64,8 +67,8 @@ android
                 compile 'de.hdodenhof:circleimageview:2.0.0'
             }
         }
-
-
+//Intentionally added to the bottom.
+apply plugin: 'com.google.gms.google-services'
 
 
 
