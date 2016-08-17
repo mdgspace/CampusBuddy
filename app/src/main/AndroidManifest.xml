@@ -25,6 +25,18 @@
         android:name="com.example.googlemapstesting.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"/>
+    <permission android:name="com.test.push.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
+    <uses-permission android:name="com.test.push.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <!-- <supports-screens -->
     <!-- android:anyDensity="true" -->
     <!-- android:largeScreens="true" -->
