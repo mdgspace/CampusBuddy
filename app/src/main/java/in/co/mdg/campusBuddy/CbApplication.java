@@ -3,6 +3,7 @@ package in.co.mdg.campusBuddy;
 import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
+import com.facebook.FacebookSdk;
 
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
@@ -25,5 +26,6 @@ public class CbApplication extends Application {
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(config);
+        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 }

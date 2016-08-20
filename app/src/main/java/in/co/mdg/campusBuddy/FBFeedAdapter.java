@@ -76,18 +76,6 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
         holder.postheader.setText(post.getHeader());
         holder.fbpostpicicon.setImageResource(post.getImageDrawable());
         holder.dateofpost.setText(DateFormatter.getTimeAgo(post.getDateS()));
-//        holder.postmessage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(post.getLinkUrl()!=null) {
-//                    Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(post.getLinkUrl()));
-//                    getContext().startActivity(browser);
-//                }
-//            }
-//        });
-
-        Log.v("FBMessage", post.getMessage());
-        Log.e("FBPic", post.getURL());
 
         Transformation  transformation = new Transformation(){
 

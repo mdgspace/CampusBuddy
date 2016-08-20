@@ -15,6 +15,7 @@ public class ContactSearchModel extends RealmObject {
     private String profilePic;
     private Date dateAdded;
     private String dept;
+    private boolean isDept;
 
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}
@@ -26,4 +27,6 @@ public class ContactSearchModel extends RealmObject {
     public void setDateAdded(Date dateAdded) {this.dateAdded = dateAdded;}
     public String getDept() {return dept;}
     public void setDept(String dept) {this.dept = dept;}
+    public boolean isDept() {return isDept;}
+    public void setDept(boolean dept) {isDept = dept;}
 }

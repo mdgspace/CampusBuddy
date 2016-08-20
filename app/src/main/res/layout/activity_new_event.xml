@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <include
         android:id="@+id/tool_bar1"
         layout="@layout/tool_bar"
@@ -12,6 +13,10 @@
     android:layout_height="match_parent"
     android:layout_below="@id/tool_bar1"
     android:id="@+id/scroll">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
         android:orientation="vertical"
@@ -116,11 +121,10 @@
                 android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
 
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:text="Type Of Event: "
+            android:text="Event Type: "
             android:id="@+id/text"/>
         <RadioGroup
             android:layout_width="fill_parent"
@@ -150,8 +154,6 @@
                 android:onClick="onRadioButtonClicked" />
         </RadioGroup>
 
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -164,21 +166,26 @@
                 android:text="Default Color"
                 android:id="@+id/color_name_text"
                 android:textSize="20sp" />
-            <ImageView
+            <View
                 android:layout_width="50dp"
                 android:layout_height="25dp"
                 android:id="@+id/color_button"
-                android:contentDescription="color_button" />
+                android:contentDescription="color_button"
+                android:background="@drawable/round_corners_new_event"/>
         </LinearLayout>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:text="Submit"
-            android:background="@color/primary"
-            android:textColor="@color/white_pure"
-            android:id="@+id/submit"
-            android:onClick="submitButton"/>
+
     </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="20dp"
+        android:text="Submit"
+        android:background="@color/primary"
+        android:textColor="@color/white_pure"
+        android:id="@+id/submit"
+        android:onClick="submitButton"/>
+</LinearLayout>
+
 </ScrollView>
 
 </RelativeLayout>

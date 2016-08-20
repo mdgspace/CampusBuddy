@@ -71,7 +71,16 @@ function cron () {
   			foreach ($result['data'] as $post) {
 				$created_time = strtotime($post['created_time']);
 				if(time() <= ($created_time + (60 * refreshMins)))
+        {
+          if(!array_key_exists('message',$post))
+          {
+            if(array_key_exists('story', $post))
+              $post['message'] = $post['story'];
+            else
+              $post['getTitle'] = true;
+          }
 					array_push($newPosts,$post);
+        }
 			}
   		}
   	}
@@ -101,21 +110,25 @@ function cron () {
   			} else {
   				$result = $response->getDecodedBody();
   				foreach ($result['data'] as $data) {
-					if (array_key_exists("media",$data)) {
-						if(array_key_exists("image", $data['media']))
-						{
-							$img_src = $data['media']['image']['src'];
-							$newPosts[$i]['img_src'] = $img_src;
-							break;
-						}
-					}
-				}
+            if(array_key_exists('getTitle', $newPosts[$i])) {
+              if(array_key_exists('title', $data))
+                $newPosts[$i]['message'] = $data['title'];
+            }
+            if (array_key_exists("media",$data)) {
+						  if(array_key_exists("image", $data['media']))
+						  {
+							 $img_src = $data['media']['image']['src'];
+							 $newPosts[$i]['img_src'] = $img_src;
+							 break;
+						  }
+            }
+				  }
   			}
   			$i += 1;
   		}
   		foreach ($newPosts as $post) {
   			$page_id = explode('_',$post['id'])[0];
-  			$message = substr($post['message'],0,100);
+  			$message = $post['message'];
   			$page_name = array_search ($page_id, $GLOBALS['pageList']);
   			$img_src = array_key_exists('img_src',$post)?$post['img_src']:'';
   			send_notification ($page_id,$message,$page_name,$img_src);

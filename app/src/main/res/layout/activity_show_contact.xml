@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <android.support.design.widget.AppBarLayout
+    <android.support.design.widget.AppBarLayout
             android:id="@+id/appbarlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,13 +19,11 @@
                 android:background="@color/primary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-                <ImageView
+                <View
                     android:id="@+id/profile_backdrop"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     android:scaleType="centerCrop"
-                    app:layout_collapseMode="parallax"
-                    app:layout_collapseParallaxMultiplier="0.9"
                     android:background="@color/primary"
                     android:contentDescription="Background Image" />
 
@@ -39,6 +37,7 @@
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.3">
 
+
                     <LinearLayout
                         android:id="@+id/linearlayout_title"
                         android:layout_width="wrap_content"
@@ -46,6 +45,14 @@
                         android:layout_gravity="center_horizontal|bottom"
                         android:layout_marginBottom="10dp"
                         android:orientation="vertical">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="108dp"
+                            android:layout_height="108dp"
+                            android:src="@drawable/contact_icon"
+                            android:layout_gravity="center_horizontal"
+                            app:civ_border_color="@android:color/white"
+                            app:civ_border_width="2dp"
+                            android:id="@+id/profile_pic" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -79,7 +86,40 @@
                 </FrameLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary"
+        style="@style/ToolBarWithNavigationBack"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:title="">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/contact_icon"
+                app:civ_border_color="@android:color/white"
+                app:civ_border_width="1dp"
+                android:id="@+id/small_profile_pic"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"/>
+            <TextView
+                android:id="@+id/action_bar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:text="Title"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -290,47 +330,9 @@
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_anchor="@id/framelayout_title"
-            android:background="@color/primary"
-            style="@style/ToolBarWithNavigationBack"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark"
-            app:title="">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <Space
-                    android:layout_width="50dp"
-                    android:layout_height="50dp" />
-                <TextView
-                    android:id="@+id/action_bar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
-                    android:text="Title"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp" />
-            </LinearLayout>
-        </android.support.v7.widget.Toolbar>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="108dp"
-            android:layout_height="108dp"
-            android:src="@drawable/contact_icon"
-            android:layout_gravity="center_horizontal"
-            app:civ_border_color="@android:color/white"
-            app:civ_border_width="2dp"
-            app:finalYPosition="1dp"
-            app:finalHeight="45dp"
-            app:finalXPosition="54dp"
-            android:id="@+id/profile_pic"
-            app:layout_behavior=".contacts.AvatarImageBehaviour" />
+
 
     </android.support.design.widget.CoordinatorLayout>
 

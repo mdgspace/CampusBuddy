@@ -26,7 +26,6 @@ class PagesSelected {
                 idString += idList.get(i) + "\n";
                 FirebaseMessaging.getInstance().subscribeToTopic(idList.get(i));
             }
-
             FileOutputStream outputStream = context.openFileOutput(preferences_file, Context.MODE_PRIVATE);
             outputStream.write(idString.getBytes());
             outputStream.close();
@@ -43,16 +42,12 @@ class PagesSelected {
             inputStream = context.openFileInput(preferences_file);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-//            StringBuilder stringBuilder = new StringBuilder();
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-//                stringBuilder.append(line);
                 String id = line.replace('\n','\0');
                 id = id.replace('\r','\0');
-                Log.e("ID",id+"");
                 idList.add(id);
             }
-
             return idList;
         } catch (Exception e) {
             e.printStackTrace();
