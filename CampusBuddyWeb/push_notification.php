@@ -1,4 +1,23 @@
 <?php
+error_reporting(E_ALL);
+	// this is for weebhook verification
+	if($_REQUEST['hub_mode'] === 'subscribe')
+	{
+		$challenge = $_REQUEST['hub_challenge'];
+		$verify_token = $_REQUEST['hub_verify_token'];
+		if ($verify_token === 'campusbuddy') {
+			die($challenge);
+		}
+	}
+	else
+	{
+		$myfile = fopen("/home/vhosts/www.sdsmdg.ml/cb/pushnotif/newfile.txt", "a");
+		fwrite($myfile, $_REQUEST['hub_mode']);
+		fclose($myfile);
+	}
+	// $message = array("message" => " FCM PUSH NOTIFICATION TEST MESSAGE");
+	// $message_status = send_notification('fuck', $message);
+	// echo $message_status;
 
 	function send_notification ($topic, $message)
 	{
@@ -10,7 +29,7 @@
 			);
 
 		$headers = array(
-			'Authorization:key = AIzaSyCeTQCMHCkE2cJntnNA3LsRvJNpSxIBKAw',
+			'Authorization:key = AIzaSyAqZjwNuKzCvgFZw5KPgsMx6ksLRXpmLcA',
 				'Content-Type: application/json'
 			);
 		$ch = curl_init();
@@ -39,11 +58,4 @@
 	// 		$tokens[] = $row["Token"];
 	// 	}
 	// }
-	mysqli_close($conn);
-	$message = array("message" => " FCM PUSH NOTIFICATION TEST MESSAGE");
-	$message_status = send_notification('fuck', $message);
-	echo $message_status;
-	
-
-
 ?>
