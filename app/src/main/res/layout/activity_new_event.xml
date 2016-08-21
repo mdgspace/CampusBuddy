@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include
+        android:id="@+id/tool_bar1"
+        layout="@layout/tool_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
 <ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/scroll"
-    >
+    android:layout_below="@id/tool_bar1"
+    android:id="@+id/scroll">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
 
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="center"-->
-            <!--android:text="Details Of Event"-->
-            <!--android:textSize="24sp"/>-->
+        <android.support.design.widget.TextInputLayout
 
-        <include
-            android:id="@+id/tool_bar1"
-            layout="@layout/tool_bar"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-             />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
 
-     <android.support.design.widget.TextInputLayout
-
-                android:layout_width="match_parent"
+            <EditText
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-         android:layout_marginTop="10dp">
-
-                <EditText
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:id="@+id/edit_title"
-                    android:hint="Title"
-                    android:textColor="#000000"
-                    android:singleLine="true"
-                    />
-            </android.support.design.widget.TextInputLayout>
+                android:text=""
+                android:id="@+id/edit_title"
+                android:hint="Title"
+                android:textColor="#000000"
+                android:maxLines="1" />
+        </android.support.design.widget.TextInputLayout>
 
 
         <android.support.design.widget.TextInputLayout
@@ -54,8 +55,7 @@
                 android:id="@+id/edit_date"
                 android:hint="Date"
                 android:textColor="#000000"
-                android:singleLine="true"
-                />
+                android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -72,8 +72,7 @@
                 android:id="@+id/edit_start_time"
                 android:hint="Starting Time"
                 android:textColor="#000000"
-                android:singleLine="true"
-                />
+                android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
 
@@ -89,8 +88,7 @@
                 android:id="@+id/edit_end_time"
                 android:hint="Ending Time"
                 android:textColor="#000000"
-                android:singleLine="true"
-                />
+                android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
 
@@ -105,8 +103,7 @@
                 android:id="@+id/edit_details"
                 android:hint="Details"
                 android:textColor="#000000"
-                android:singleLine="true"
-                />
+                android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
 
@@ -121,56 +118,41 @@
                 android:id="@+id/edit_venue"
                 android:hint="Venue"
                 android:textColor="#000000"
-                android:singleLine="true"/>
+                android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="30dp"
-    android:text="Type Of Event: "
-    android:id="@+id/text"/>
-    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Event Type: "
+            android:id="@+id/text"/>
+        <RadioGroup
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-        android:layout_below="@id/text"
-        android:id="@+id/typeofevent">
+            android:id="@+id/typeofevent">
             <RadioButton android:id="@+id/radio_once"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="once"
                 android:onClick="onRadioButtonClicked"
-                android:checked="true"
-
-                />
+                android:checked="true" />
             <RadioButton android:id="@+id/radio_daily"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Daily"
-                android:onClick="onRadioButtonClicked"
-                />
+                android:onClick="onRadioButtonClicked" />
             <RadioButton android:id="@+id/radio_weekly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Weekly"
-                android:onClick="onRadioButtonClicked"
-               />
-        <RadioButton android:id="@+id/radio_monthly"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Monthly"
-            android:onClick="onRadioButtonClicked"
-            />
-
+                android:onClick="onRadioButtonClicked"/>
+            <RadioButton android:id="@+id/radio_monthly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Monthly"
+                android:onClick="onRadioButtonClicked" />
         </RadioGroup>
-</RelativeLayout>
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -183,19 +165,27 @@
                 android:layout_height="25dp"
                 android:text="Default Color"
                 android:id="@+id/color_name_text"
-                android:textSize="20dp"
-                />
-            <ImageView
+                android:textSize="20sp" />
+            <View
                 android:layout_width="50dp"
                 android:layout_height="25dp"
                 android:id="@+id/color_button"
-                />
+                android:contentDescription="color_button"
+                android:background="@drawable/round_corners_new_event"/>
         </LinearLayout>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            android:textColor="#000000"
-            android:id="@+id/submit"/>
+
+    </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="20dp"
+        android:text="Submit"
+        android:background="@color/primary"
+        android:textColor="@color/white_pure"
+        android:id="@+id/submit"
+        android:onClick="submitButton"/>
 </LinearLayout>
+
 </ScrollView>
+
+</RelativeLayout>

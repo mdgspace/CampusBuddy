@@ -1,10 +1,11 @@
 package in.co.mdg.campusBuddy;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -26,10 +27,11 @@ import com.facebook.login.LoginManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class fb extends AppCompatActivity {
+public class Fb extends AppCompatActivity {
 
     Toolbar toolbar;
     ArrayList<String> fbpliked;
@@ -39,7 +41,6 @@ public class fb extends AppCompatActivity {
     int i;
     StaggeredGridView staggeredGridView;
     ArrayList<Post> posts;
-    public static Context c;
 
     int pageNumber = 0,ongoingpage=0;
 
@@ -52,24 +53,80 @@ public class fb extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fb);
 
-        c = this;
         toolbar = (Toolbar) findViewById(R.id.tool_barfb);
         toolbar.setTitle("Facebook posts");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        progressBar=(ProgressBar)findViewById(R.id.progressbar);
+        new checkNetwork().execute();
+    }
+
+
+    private class checkNetwork extends AsyncTask<Void, Void, Boolean>{
+
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            return isNetConnected();
+        }
+        @Override
+        protected void onPostExecute(Boolean result)
+        {
+            if(result)
+                processFeeds();
+            else
+            {
+                progressBar.setVisibility(View.INVISIBLE);
+                final Snackbar sb = Snackbar.make(findViewById(R.id.main_layout), "No Internet Detected!", Snackbar.LENGTH_INDEFINITE);
+                sb.setAction("Retry", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new checkNetwork().execute();
+                    }
+                });
+                sb.show();
+            }
+        }
+    }
+
+    private boolean isNetConnected() {
+        Runtime runtime = Runtime.getRuntime();
+        try
+        {
+            Process  mIpAddrProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int mExitValue = mIpAddrProcess.waitFor();
+            return mExitValue == 0;
+        }
+        catch (InterruptedException | IOException e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private void processFeeds() {
 
         posts = new ArrayList<>();
 
-        fbpliked = PagesSelected.getSelectedPageIds(fb.this);
-       // Log.e("dta in file",fbpliked.toString());
+        fbpliked = PagesSelected.getSelectedPageIds(Fb.this);
+        // Log.e("dta in file",fbpliked.toString());
         if(fbpliked.size()==0)
         {
             Toast.makeText(this,"Select pages to get the feeds",Toast.LENGTH_LONG).show();
-            Intent i=new Intent(fb.this,Fblist.class);
+            Intent i=new Intent(Fb.this,Fblist.class);
             startActivity(i);
             finish();
         }
-        progressBar=(ProgressBar)findViewById(R.id.progressbar);
         adapterfb = new FBFeedAdapter(this, R.layout.card_viewfb, posts);
         try {
             accessTokenTracker = new AccessTokenTracker() {
@@ -85,7 +142,6 @@ public class fb extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         staggeredGridView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -107,14 +163,10 @@ public class fb extends AppCompatActivity {
         });
     }
 
-
     public void getUserData(final AccessToken accessToken) {
 
         staggeredGridView = (StaggeredGridView) findViewById(R.id.grid_view);
-        // final MyRecyclerAdapterfb adapterfb = new MyRecyclerAdapterfb(posts);
-
         staggeredGridView.setAdapter(adapterfb);
-
         fetchData(0, accessToken);
     }
 
@@ -125,7 +177,7 @@ public class fb extends AppCompatActivity {
         try {
             accessTokenTracker.stopTracking();
         } catch (Exception e) {
-//            Toast.makeText(fb.this, "error is: "+e.toString(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(Fb.this, "error is: "+e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -147,12 +199,12 @@ public class fb extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.logout) {
             LoginManager.getInstance().logOut();
-            Intent i = new Intent(fb.this, MainActivity.class);
+            Intent i = new Intent(Fb.this, MainActivity.class);
             finish();
             startActivity(i);
             return true;
         } else if (id == R.id.addpages) {
-            Intent i = new Intent(fb.this, Fblist.class);
+            Intent i = new Intent(Fb.this, Fblist.class);
             finish();
             startActivity(i);
 

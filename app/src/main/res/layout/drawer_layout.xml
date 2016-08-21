@@ -14,17 +14,18 @@
     <com.alamkanak.weekview.WeekView
         android:id="@+id/weekView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:eventTextColor="@android:color/white"
         app:textSize="12sp"
-        app:hourHeight="60dp"
+        app:hourHeight="30dp"
         app:headerColumnPadding="8dp"
         app:headerColumnTextColor="#8f000000"
+        fab:todayHeaderTextColor="@color/primary"
         app:headerRowPadding="12dp"
         app:columnGap="8dp"
         app:noOfVisibleDays="3"
         app:dayBackgroundColor="#05000000"
-        app:todayBackgroundColor="#1848adff"
+        app:todayBackgroundColor="#50E1BEE7"
         app:headerColumnBackground="#ffffffff"
         app:overlappingEventGap="0dp"
         />
@@ -56,8 +57,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         fab:fab_labelStyle="@style/menu_labels_style"
-
         fab:fab_labelsPosition="left"
+        fab:fab_addButtonColorPressed="@color/primary_dark"
         android:layout_marginBottom="12dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
@@ -122,8 +123,16 @@
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
-    
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/calendarLoad"
+        android:layout_alignBottom="@+id/right_labels"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
-    </RelativeLayout>
+
+</RelativeLayout>
     <!-- The navigation drawer -->
 

@@ -1,28 +1,56 @@
 package in.co.mdg.campusBuddy;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
-public class AboutUs extends ActionBarActivity {
+public class AboutUs extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
 
-        ImageView git_image = (ImageView) findViewById(R.id.git_about_us);
-        ImageView fb_image = (ImageView)findViewById(R.id.fb_about_us);
-        ImageView play_image = (ImageView)findViewById(R.id.play_about_us);
-        TextView blog_text = (TextView) findViewById(R.id.blog_link_text);
+        ImageView gitImage = (ImageView) findViewById(R.id.git_about_us);
+        ImageView fbImage = (ImageView)findViewById(R.id.fb_about_us);
+        ImageView playImage = (ImageView)findViewById(R.id.play_about_us);
+        TextView blogText = (TextView) findViewById(R.id.blog_link_text);
+        final ScrollView mainScrollView = (ScrollView) findViewById(R.id.scrollview);
+        Picasso.with(this).load(R.drawable.mainbackground_final).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    mainScrollView.setBackground(new BitmapDrawable(getResources(),bitmap));
+                }
+            }
 
-        git_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+
+        gitImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent browser = new Intent(Intent.ACTION_VIEW,
@@ -30,7 +58,7 @@ public class AboutUs extends ActionBarActivity {
                 startActivity(browser);
             }
         });
-        fb_image.setOnClickListener(new View.OnClickListener() {
+        fbImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent browser = new Intent(Intent.ACTION_VIEW,
@@ -38,15 +66,15 @@ public class AboutUs extends ActionBarActivity {
                 startActivity(browser);
             }
         });
-        play_image.setOnClickListener(new View.OnClickListener() {
+        playImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent browser = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://goo.gl/de2xPm"));
+                        Uri.parse("https://play.google.com/store/apps/developer?id=MDG,+SDS"));
                 startActivity(browser);
             }
         });
-        blog_text.setOnClickListener(new View.OnClickListener() {
+        blogText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent browser = new Intent(Intent.ACTION_VIEW,

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Facebook Login For Campus Buddy</title>
+<link rel="shortcut icon" href="../../public/favicon.ico">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<meta charset="UTF-8">
+<style>
+#page_list {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 50%;
+}
+
+#page_list td, #page_list th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#page_list tr:nth-child(even){background-color: #f2f2f2;}
+
+#page_list tr:hover {background-color: #ddd;}
+
+#page_list th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+#page_list td span.wait {
+  color:#999;
+}
+#page_list td span.subscribed {
+  color:#526f00;
+}
+#page_list td span.unsubscribed {
+  color:#999e00;
+}
+#page_list td span.error {
+  color:#CA3232;
+}
+</style>
+</head>
+<body>
+<script>
+var app_id = '772744622840259';
+  // This is called with the results from from FB.getLoginStatus().
+  function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      $(".pages").show();
+      $('.login_button').hide();
+      $('#status').html('');
+      testAPI();
+    } else if (response.status === 'not_authorized') {
+      // The person is logged into Facebook, but not your app.
+      $(".pages").hide();
+      $('#status').html('Please log into this app.');
+    } else {
+      // The person is not logged into Facebook, so we're not sure if
+      // they are logged into this app or not.
+      $(".pages").hide();
+      $('#status').html('Please log into Facebook.');
+    }
+  }
+
+  // This function is called when someone finishes with the Login
+  // Button.  See the onlogin handler attached to it in the sample
+  // code below.
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
+
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : app_id,
+    cookie     : true,  // enable cookies to allow the server to access the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.7' // use graph api version 2.7
+  });
+
+  // Now that we've initialized the JavaScript SDK, we call 
+  // FB.getLoginStatus().  This function gets the state of the
+  // person visiting this page and can return one of three states to
+  // the callback you provide.  They can be:
+  //
+  // 1. Logged into your app ('connected')
+  // 2. Logged into Facebook, but not your app ('not_authorized')
+  // 3. Not logged into Facebook and can't tell if they are logged into
+  //    your app or not.
+  //
+  // These three cases are handled in the callback function.
+
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+
+  };
+
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  function registerPages() {
+    $(this).prop('disabled', true);
+    $("#page_list input:checkbox:checked").each(function(){
+      var $cb = $(this);
+      var $status = $cb.closest('tr').find('#subs_status');
+      $status.removeClass();
+      $status.addClass('wait');
+      FB.api('/me/subscribed_apps','POST',{access_token : $cb.attr('access_token')},
+        function(response) {
+          if(response.hasOwnProperty('success')) {
+            console.log("Subscribed " + $cb.val() + " (" + response.success + ")");
+            $status.removeClass();
+            $status.addClass('subscribed');$status.html('subscribed');
+          }
+          else {
+            console.log("Error subscribing " + $cb.val() + " (" + response.error.message + ")");
+            $status.removeClass();
+            $status.addClass('error');$status.html('error');
+          }
+      });
+    $cb.removeAttr('checked');
+    });
+    $(this).removeAttr('disabled');
+  }
+  function deregisterPages() {
+    $(this).prop('disabled', true);
+    $("#page_list input:checkbox:checked").each(function(){
+      var $cb = $(this);
+      var $status = $cb.closest('tr').find('#subs_status');
+      $status.removeClass();
+      $status.addClass('wait');
+      FB.api('/me/subscribed_apps','DELETE',{access_token : $cb.attr('access_token')},
+        function(response) {
+          if(response.hasOwnProperty('success')) {
+            console.log("Deleted " + $cb.val() + " (" + response.success + ")");
+            $status.removeClass();
+            $status.addClass('unsubscribed');$status.html('inactive');
+          }
+          else {
+            console.log("Error deleting " + $cb.val() + " (" + response.error.message + ")");
+            $status.removeClass();
+            $status.addClass('error');$status.html('error');
+          }
+      });
+      $cb.removeAttr('checked');
+    });
+    $(this).removeAttr('disabled');
+  }
+  function checkSubscription() {
+    $("#page_list input:checkbox").each(function(){
+      var $cb = $(this);
+      var $status = $cb.closest('tr').find('#subs_status');
+      FB.api('/me/subscribed_apps','GET',{access_token : $cb.attr('access_token')},
+          function(response) {
+            $status.removeClass();
+            if(response.data.some(function(item){return (item.id === app_id);})) {
+              $status.html('active');
+              $status.addClass('subscribed');
+            }
+            else {
+              $status.html('inactive');
+              $status.addClass('unsubscribed');
+            }
+        });
+      $cb.removeAttr('checked');
+    });
+  }
+  function createTableRow(item,index){
+    var tr = '<tr id="page_'+index+'">';
+    tr += '<td><input id="'+item.id+'" type="checkbox" value="'+item.name+'" access_token="'+item.access_token+'"></td>';
+    tr += '<td><span class="page_title">'+item.name+'</span></td>';
+    tr += '<td><span id="subs_status" class="wait">wait</span></td>';
+    tr += '</tr>';
+    $("#page_list").append(tr);
+  }
+  // Here we run a very simple test of the Graph API after login is
+  // successful.  See statusChangeCallback() for when this call is made.
+  function testAPI() {
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me/accounts', function(response) {
+      
+      if(response.data.length > 0) {
+        response.data.forEach(createTableRow);
+        checkSubscription();
+      } else {
+        $('#status').html('Looks like you do not administer any pages.');
+      }
+      
+      // $(".pages").append($("<button>",{"id": "register","value": "Register","onClick":"registerPages()"}));
+      // $("#register").html("Register");
+    });
+  }
+</script>
+
+<!--
+  Below we include the Login Button social plugin. This button uses
+  the JavaScript SDK to present a graphical Login button that triggers
+  the FB.login() function when clicked.
+-->
+
+<div class="pages">
+  <table id="page_list">
+    <tr>
+      <th>Select</th>
+      <th>Page Name</th>
+      <th>Status</th>
+    </tr>
+  </table>
+  <br>
+  <button onClick="registerPages()">Register</button>
+  <button onClick="deregisterPages()">Deregister</button>
+</div>
+<div class="login_button">
+  <fb:login-button scope="public_profile,manage_pages" onlogin="checkLoginState();">
+  </fb:login-button>
+</div>
+
+<div id="status">
+</div>
+
+
+</body>
+</html>
