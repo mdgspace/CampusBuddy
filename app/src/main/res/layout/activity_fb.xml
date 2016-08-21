@@ -3,6 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -47,13 +48,4 @@
         android:layout_width="wrap_content"
         android:id="@+id/progressbar"
         android:layout_centerInParent="true"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="No Internet Detected"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/progressbar"
-        android:textColor="@color/contact_secondayText"
-        android:textSize="16sp"
-        android:visibility="gone"/>
 </RelativeLayout>

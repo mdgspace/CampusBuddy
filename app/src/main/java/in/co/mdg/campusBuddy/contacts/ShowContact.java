@@ -339,8 +339,8 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
     private void handleToolbarTitleVisibility(float percentage) {
 
         if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
-            float modifiedPercent = getModifiedPercent(percentage, PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR);
-            nestedScrollView.setPadding(0, (int) (toolbar.getMeasuredHeight() * modifiedPercent), 0, 0);
+//            float modifiedPercent = getModifiedPercent(percentage, PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR);
+//            nestedScrollView.setPadding(0, (int) (toolbar.getMeasuredHeight() * modifiedPercent), 0, 0);
             if (!mIsTheTitleVisible) {
                 toolbar.getBackground().setAlpha(255);
                 startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
@@ -393,8 +393,8 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         v.startAnimation(alphaAnimation);
     }
 
-    private float getModifiedPercent(float percentage, float leastValue) {
-        return (percentage - leastValue) / (1f - leastValue);
-    }
+//    private float getModifiedPercent(float percentage, float leastValue) {
+//        return (percentage - leastValue) / (1f - leastValue);
+//    }
 
 }
