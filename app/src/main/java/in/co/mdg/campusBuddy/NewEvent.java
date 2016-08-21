@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -42,7 +43,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     private EditText editt_date, editt_start, editt_end, editt_title, editt_details, editt_venue;
     private TextView color_text, typeOfEvent;
     private Button submitButton;
-    private View color_button;
+    private CardView color_button;
     private String color_returned = Data.getColor_list().get(0).getHash();
 
     private int year, day, month, starthour, startminute, endhour, endminute;
@@ -97,7 +98,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
         LinearLayout color_name = (LinearLayout) findViewById(R.id.color_layout);
         color_text = (TextView) findViewById(R.id.color_name_text);
-        color_button = findViewById(R.id.color_button);
+        color_button = (CardView) findViewById(R.id.color_button);
 
         realm = Realm.getDefaultInstance();
 
@@ -124,7 +125,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
                 color_returned = userEvent.getColor();
                 toolbar.setBackgroundColor(Color.parseColor(color_returned));
-                color_button.setBackgroundColor(Color.parseColor(color_returned));
+                color_button.setCardBackgroundColor(Color.parseColor(color_returned));
 
                 startCal = Calendar.getInstance();
                 endCal = Calendar.getInstance();
@@ -162,7 +163,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             editt_date.setText(String.format(Locale.US, "%02d", day) + "/" + String.format(Locale.US, "%02d", (month + 1)) + "/" + year, TextView.BufferType.EDITABLE);
 
             toolbar.setBackgroundColor(Color.parseColor(color_returned));
-            color_button.setBackgroundColor(Color.parseColor(color_returned));
+            color_button.setCardBackgroundColor(Color.parseColor(color_returned));
         }
 
         editt_date.setOnClickListener(new View.OnClickListener() {
@@ -482,7 +483,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         color_returned = Data.getColor_list().get(position).getHash();
         toolbar.setBackgroundColor(Color.parseColor(color_returned));
         color_text.setText(Data.getColor_list().get(position).getColor());
-        color_button.setBackgroundColor(Color.parseColor(color_returned));
+        color_button.setCardBackgroundColor(Color.parseColor(color_returned));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = this.getWindow();
             window.setStatusBarColor(Color.parseColor(color_returned));
