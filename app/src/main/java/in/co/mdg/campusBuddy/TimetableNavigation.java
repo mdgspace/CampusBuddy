@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -187,7 +188,7 @@ public class TimetableNavigation extends AppCompatActivity implements MonthLoade
                     endCal.setTime(acadEvent.getTime().getEnd());
                     event = new WeekViewEvent(-1, acadEvent.getTitle(), startCal, endCal);
                     //Log.v("AcadEventsADD","StartDate:"+event.getStartTime().get(Calendar.DATE)+"/"+event.getStartTime().get(Calendar.MONTH)+"/"+event.getStartTime().get(Calendar.YEAR)+" | Name:"+event.getName());
-                    event.setColor(Color.parseColor("#9C27B0"));
+                    event.setColor(ContextCompat.getColor(this,R.color.primary));
                     events.add(event);
                 } catch (Exception e) {
                     e.printStackTrace();

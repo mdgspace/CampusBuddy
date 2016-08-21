@@ -1,10 +1,10 @@
 package in.co.mdg.campusBuddy;
 
 
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -36,15 +37,16 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 
-public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener, DialogColor.ColorDialogListener {
+public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, DialogColor.ColorDialogListener {
 
     private EditText editt_date, editt_start, editt_end, editt_title, editt_details, editt_venue;
-    private TextView color_text,typeOfEvent;
-    private ImageView color_button;
-    private String color_returned = Data.getColor_list().get(4).getHash();
+    private TextView color_text, typeOfEvent;
+    private Button submitButton;
+    private View color_button;
+    private String color_returned = Data.getColor_list().get(0).getHash();
 
     private int year, day, month, starthour, startminute, endhour, endminute;
-    private String title, venue, details, eventType = "once",date;
+    private String title, venue, details, eventType = "once", date;
 
     private boolean isStartTime = true, isMultiEdit = false;
     private int check = 0;
@@ -53,11 +55,11 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     private Toolbar toolbar;
     private DialogFragment newFragment;
     private Realm realm;
-    private SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM/yyyy",Locale.getDefault());
-    private SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm",Locale.getDefault());
-    private SimpleDateFormat sdfDateTime = new SimpleDateFormat("dd/MM/yyyy HH:mm",Locale.getDefault());
-    private Date startDate = new Date(),endDate = new Date();
-    private Calendar startCal,endCal;
+    private SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private SimpleDateFormat sdfDateTime = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+    private Date startDate = new Date(), endDate = new Date();
+    private Calendar startCal, endCal;
 
 
     @Override
@@ -76,6 +78,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         editt_details = (EditText) findViewById(R.id.edit_details);
         editt_venue = (EditText) findViewById(R.id.edit_venue);
         typeOfEvent = (TextView) findViewById(R.id.text);
+        submitButton = (Button) findViewById(R.id.submit);
 
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.typeofevent);
         toolbar = (Toolbar) findViewById(R.id.tool_bar1);
@@ -92,14 +95,13 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         });
 
 
-
         LinearLayout color_name = (LinearLayout) findViewById(R.id.color_layout);
         color_text = (TextView) findViewById(R.id.color_name_text);
-        color_button = (ImageView) findViewById(R.id.color_button);
+        color_button = findViewById(R.id.color_button);
 
         realm = Realm.getDefaultInstance();
 
-        check = getIntent().getIntExtra("ADD_OR_EDIT",0);
+        check = getIntent().getIntExtra("ADD_OR_EDIT", 0);
 
         if (check == 1) {
             //To edit an event
@@ -109,8 +111,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             editValue = extra.getLong("value for editing");
             isMultiEdit = extra.getBoolean("multi_edit");
             UserEvent userEvent = realm.where(UserEvent.class).equalTo("id", editValue).findFirst();
-            if(userEvent != null)
-            {
+            if (userEvent != null) {
                 title = userEvent.getTitle();
                 venue = userEvent.getVenue();
                 details = userEvent.getDetails();
@@ -125,7 +126,8 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 toolbar.setBackgroundColor(Color.parseColor(color_returned));
                 color_button.setBackgroundColor(Color.parseColor(color_returned));
 
-                startCal = Calendar.getInstance();endCal=Calendar.getInstance();
+                startCal = Calendar.getInstance();
+                endCal = Calendar.getInstance();
                 startCal.setTime(userEvent.getTime().getStart());
                 endCal.setTime(userEvent.getTime().getEnd());
                 starthour = startCal.get(Calendar.HOUR_OF_DAY);
@@ -135,15 +137,11 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 year = startCal.get(Calendar.YEAR);
                 month = startCal.get(Calendar.MONTH);
                 day = startCal.get(Calendar.DAY_OF_MONTH);
-            }
-            else
-            {
-                Toast.makeText(NewEvent.this,"Event not found",Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(NewEvent.this, "Event not found", Toast.LENGTH_LONG).show();
                 onBackPressed();
             }
-        }
-        else
-        {
+        } else {
             //To Create new event
             Calendar cal = Calendar.getInstance();
             day = cal.get(Calendar.DAY_OF_MONTH);
@@ -151,17 +149,17 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             year = cal.get(Calendar.YEAR);
             starthour = cal.get(Calendar.HOUR_OF_DAY);
             startminute = cal.get(Calendar.MINUTE);
-            if(starthour<23){
+            if (starthour < 23) {
                 cal.add(Calendar.HOUR, 1);
                 endhour = cal.get(Calendar.HOUR_OF_DAY);
-                endminute = cal.get(Calendar.MINUTE);}
-            else {
+                endminute = cal.get(Calendar.MINUTE);
+            } else {
                 endhour = 23;
                 endminute = 59;
             }
-            editt_start.setText(String.format(Locale.US,"%02d",starthour) + ":" + String.format(Locale.US,"%02d",startminute), TextView.BufferType.EDITABLE);
-            editt_end.setText(String.format(Locale.US,"%02d",endhour) + ":" + String.format(Locale.US,"%02d",endminute), TextView.BufferType.EDITABLE);
-            editt_date.setText(String.format(Locale.US,"%02d",day) + "/" + String.format(Locale.US,"%02d",(month + 1)) + "/" + year, TextView.BufferType.EDITABLE);
+            editt_start.setText(String.format(Locale.US, "%02d", starthour) + ":" + String.format(Locale.US, "%02d", startminute), TextView.BufferType.EDITABLE);
+            editt_end.setText(String.format(Locale.US, "%02d", endhour) + ":" + String.format(Locale.US, "%02d", endminute), TextView.BufferType.EDITABLE);
+            editt_date.setText(String.format(Locale.US, "%02d", day) + "/" + String.format(Locale.US, "%02d", (month + 1)) + "/" + year, TextView.BufferType.EDITABLE);
 
             toolbar.setBackgroundColor(Color.parseColor(color_returned));
             color_button.setBackgroundColor(Color.parseColor(color_returned));
@@ -174,8 +172,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 DialogFragment newFragment = new DateDialog();
                 newFragment.show(getFragmentManager(), "datePicker");
                 */
-                if(check==0)
-                {
+                if (check == 0) {
                     Calendar now = Calendar.getInstance();
                     year = now.get(Calendar.YEAR);
                     month = now.get(Calendar.MONTH);
@@ -194,7 +191,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         color_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 newFragment = new DialogColor();
+                newFragment = new DialogColor();
                 newFragment.show(getSupportFragmentManager(), "colors");
             }
         });
@@ -203,8 +200,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             @Override
             public void onClick(View v) {
                 isStartTime = true;
-                if(check==0)
-                {
+                if (check == 0) {
                     Calendar now = Calendar.getInstance();
                     starthour = now.get(Calendar.HOUR_OF_DAY);
                     startminute = now.get(Calendar.MINUTE);
@@ -229,8 +225,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             @Override
             public void onClick(View v) {
                 isStartTime = false;
-                if(check==0)
-                {
+                if (check == 0) {
                     Calendar now = Calendar.getInstance();
                     endhour = now.get(Calendar.HOUR_OF_DAY) + 1;
                     endminute = now.get(Calendar.MINUTE);
@@ -254,50 +249,51 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
     }
 
-    public void submitButton(View view)
-    {
-        startCal = Calendar.getInstance();endCal = Calendar.getInstance();
+    public void submitButton(View view) {
+        startCal = Calendar.getInstance();
+        endCal = Calendar.getInstance();
 
         Number id = realm.where(UserEvent.class).max("id");
-        long value = (id==null)?0:(id.longValue()+1);
+        long value = (id == null) ? 0 : (id.longValue() + 1);
 
         try {
-            date = String.format(Locale.US,"%02d",day)+"/"+String.format(Locale.US,"%02d",(month+1))+"/"+year;
-            startDate = sdfDateTime.parse(date+" "+ starthour+":"+startminute);
-            endDate = sdfDateTime.parse(date+" "+ endhour+":"+endminute);
+            date = String.format(Locale.US, "%02d", day) + "/" + String.format(Locale.US, "%02d", (month + 1)) + "/" + year;
+            startDate = sdfDateTime.parse(date + " " + starthour + ":" + startminute);
+            endDate = sdfDateTime.parse(date + " " + endhour + ":" + endminute);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if(endDate.after(startDate)) {
+        if (endDate.after(startDate)) {
 
             title = editt_title.getText().toString();
             details = editt_details.getText().toString();
             venue = editt_venue.getText().toString();
 
-            if (title != null  && !title.isEmpty()){
+            if (title != null && !title.isEmpty()) {
                 if (check == 0) { //Code for inserting new event to database
                     startCal.setTime(startDate);
                     endCal.setTime(endDate);
                     int semEnd;
-                    if(month<5) semEnd = 4; else semEnd = 10;
+                    if (month < 5) semEnd = 4;
+                    else semEnd = 10;
 
                     long groupId = value;
                     switch (eventType) {
                         case "once":
-                            createEvent(value,-1);
+                            createEvent(value, -1);
                             break;
                         case "weekly":
                             while (startCal.get(Calendar.MONTH) <= semEnd) {
-                                createEvent(value++,groupId);
+                                createEvent(value++, groupId);
                                 startCal.add(Calendar.DATE, 7);
-                                endCal.add(Calendar.DATE,7);
+                                endCal.add(Calendar.DATE, 7);
                                 startDate = startCal.getTime();
                                 endDate = endCal.getTime();
                             }
                             break;
                         case "monthly":
                             while (startCal.get(Calendar.MONTH) <= semEnd) {
-                                createEvent(value++,groupId);
+                                createEvent(value++, groupId);
                                 startCal.add(Calendar.MONTH, 1);
                                 endCal.add(Calendar.MONTH, 1);
                                 startDate = startCal.getTime();
@@ -306,9 +302,9 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                             break;
                         case "daily":
                             while (startCal.get(Calendar.MONTH) <= semEnd) {
-                                createEvent(value++,groupId);
+                                createEvent(value++, groupId);
                                 startCal.add(Calendar.DATE, 1);
-                                endCal.add(Calendar.DATE,1);
+                                endCal.add(Calendar.DATE, 1);
                                 startDate = startCal.getTime();
                                 endDate = endCal.getTime();
                             }
@@ -334,18 +330,19 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
                 returnIntent.putExtra("Result", "Details Updated");
                 setResult(RESULT_OK, returnIntent);
                 finish();
+            } else {
+                Toast.makeText(NewEvent.this, "Title can't be empty.", Toast.LENGTH_LONG).show();
             }
-            else {Toast.makeText(NewEvent.this, "Title can't be empty.", Toast.LENGTH_LONG).show();}
+        } else {
+            Toast.makeText(NewEvent.this, "End time can't be before start time", Toast.LENGTH_LONG).show();
         }
-        else {Toast.makeText(NewEvent.this, "End time can't be before start time", Toast.LENGTH_LONG).show();}
     }
 
-    private void createEvent(final long id,final long groupId)
-    {
+    private void createEvent(final long id, final long groupId) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                UserEvent userEvent = realm.createObject(UserEvent.class,id);
+                UserEvent userEvent = realm.createObject(UserEvent.class, id);
                 userEvent.setGroupId(groupId);
                 userEvent.setTitle(title);
                 userEvent.setVenue(venue);
@@ -359,12 +356,12 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             }
         });
     }
-    private void editEvent(final long id)
-    {
+
+    private void editEvent(final long id) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                UserEvent userEvent = realm.where(UserEvent.class).equalTo("id",id).findFirst();
+                UserEvent userEvent = realm.where(UserEvent.class).equalTo("id", id).findFirst();
                 userEvent.setTitle(title);
                 userEvent.setVenue(venue);
                 userEvent.setDetails(details);
@@ -374,20 +371,19 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
             }
         });
     }
-    private void editMultipleEvents (final long id)
-    {
+
+    private void editMultipleEvents(final long id) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                long groupId = realm.where(UserEvent.class).equalTo("id",id).findFirst().getGroupId();
-                RealmResults<UserEvent> userEvents = realm.where(UserEvent.class).equalTo("groupId",groupId).findAll().sort("id");
-                for(UserEvent userEvent:userEvents)
-                {
+                long groupId = realm.where(UserEvent.class).equalTo("id", id).findFirst().getGroupId();
+                RealmResults<UserEvent> userEvents = realm.where(UserEvent.class).equalTo("groupId", groupId).findAll().sort("id");
+                for (UserEvent userEvent : userEvents) {
 
                     try {
                         date = sdfDate.format(userEvent.getTime().getStart());
-                        startDate = sdfDateTime.parse(date+" "+ starthour+":"+startminute);
-                        endDate = sdfDateTime.parse(date+" "+ endhour+":"+endminute);
+                        startDate = sdfDateTime.parse(date + " " + starthour + ":" + startminute);
+                        endDate = sdfDateTime.parse(date + " " + endhour + ":" + endminute);
                         userEvent.setTitle(title);
                         userEvent.setVenue(venue);
                         userEvent.setDetails(details);
@@ -427,7 +423,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year1, int month1, int day1) {
-        editt_date.setText(String.format(Locale.US,"%02d",day1) + "/" + String.format(Locale.US,"%02d",(month1 + 1)) + "/" + year1, TextView.BufferType.EDITABLE);
+        editt_date.setText(String.format(Locale.US, "%02d", day1) + "/" + String.format(Locale.US, "%02d", (month1 + 1)) + "/" + year1, TextView.BufferType.EDITABLE);
         year = year1;
         month = month1;
         day = day1;
@@ -437,11 +433,11 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     public void onTimeSet(RadialPickerLayout radialPickerLayout, int hour, int minute) {
 
         if (isStartTime) {
-            editt_start.setText(String.format(Locale.US,"%02d",hour) + ":" + String.format(Locale.US,"%02d",minute), TextView.BufferType.EDITABLE);
+            editt_start.setText(String.format(Locale.US, "%02d", hour) + ":" + String.format(Locale.US, "%02d", minute), TextView.BufferType.EDITABLE);
             starthour = hour;
             startminute = minute;
         } else {
-            editt_end.setText(String.format(Locale.US,"%02d",hour) + ":" + String.format(Locale.US,"%02d",minute), TextView.BufferType.EDITABLE);
+            editt_end.setText(String.format(Locale.US, "%02d", hour) + ":" + String.format(Locale.US, "%02d", minute), TextView.BufferType.EDITABLE);
             endhour = hour;
             endminute = minute;
         }
@@ -480,14 +476,18 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     }
 
     @Override
-    public void onColorChoose( int position) {
+    public void onColorChoose(int position) {
 
         newFragment.dismiss();
         color_returned = Data.getColor_list().get(position).getHash();
         toolbar.setBackgroundColor(Color.parseColor(color_returned));
         color_text.setText(Data.getColor_list().get(position).getColor());
         color_button.setBackgroundColor(Color.parseColor(color_returned));
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = this.getWindow();
+            window.setStatusBarColor(Color.parseColor(color_returned));
+        }
+        submitButton.setBackgroundColor(Color.parseColor(color_returned));
     }
 //    @Override
 //    public void onSaveInstanceState(Bundle savedInstanceState) {

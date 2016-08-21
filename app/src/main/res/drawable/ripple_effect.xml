@@ -5,10 +5,4 @@
             <solid android:color="@color/gray_light_trans" />
         </shape>
     </item>
-
-    <item >
-        <shape>
-            <solid android:color="@color/white_pure" />
-        </shape>
-    </item>
 </selector>

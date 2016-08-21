@@ -5,9 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.inputmethodservice.Keyboard;
-import android.inputmethodservice.KeyboardView;
-import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.AppBarLayout;
@@ -33,11 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-/*
-import com.facebook.rebound.SimpleSpringListener;
-import com.facebook.rebound.Spring;
-import com.facebook.rebound.SpringSystem;
-*/
+
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -47,16 +40,23 @@ import java.util.Date;
 import java.util.Locale;
 
 import in.co.mdg.campusBuddy.AboutUs;
-import in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.ClickListener;
 import in.co.mdg.campusBuddy.R;
-import in.co.mdg.campusBuddy.contacts.data_models.*;
+import in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.ClickListener;
+import in.co.mdg.campusBuddy.contacts.data_models.ContactSearchModel;
+import in.co.mdg.campusBuddy.contacts.data_models.Department;
 import io.realm.Realm;
+
+/*
+import com.facebook.rebound.SimpleSpringListener;
+import com.facebook.rebound.Spring;
+import com.facebook.rebound.SpringSystem;
+*/
 
 /**
  * Created by rc on 29/6/15.
  */
 
-public class ContactsMainActivity extends AppCompatActivity implements ClickListener{
+public class ContactsMainActivity extends AppCompatActivity implements ClickListener {
 
     private AutoCompleteTextView searchBox;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
@@ -96,10 +96,10 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
         setUpViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this,R.color.primary_light));
-        tabLayout.setTabTextColors(Color.parseColor("#A1F5F5F5"),Color.parseColor("#FFF5F5F5"));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.accent));
+        tabLayout.setTabTextColors(Color.parseColor("#A1F5F5F5"), Color.parseColor("#FFF5F5F5"));
 
-        searchAdapter = new SearchSuggestionAdapter(this,R.layout.search_suggestion_listitem);
+        searchAdapter = new SearchSuggestionAdapter(this, R.layout.search_suggestion_listitem);
         searchBox.setThreshold(1);
         searchBox.setDropDownAnchor(R.id.searchbar);
         searchBox.setAdapter(searchAdapter);
@@ -110,20 +110,22 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        ContactSearchModel historySearch = realm.where(ContactSearchModel.class).equalTo("name",contact.getName()).findFirst();
-                        if(historySearch == null)
-                        {
-                            contact.setDateAdded(new Date());
-                            contact.setHistorySearch(true);
-                            realm.copyToRealm(contact);
+                        ContactSearchModel historySearch = realm.where(ContactSearchModel.class).equalTo("name", contact.getName()).findFirst();
+                        if (contact.isDept()) {
+                            showDepartmentContacts(contact.getName());
+                        } else {
+                            if (historySearch == null) {
+                                contact.setDateAdded(new Date());
+                                contact.setHistorySearch(true);
+                                realm.copyToRealm(contact);
+                            } else {
+                                historySearch.setDateAdded(new Date());
+                            }
+                            showContact(contact.getName(), contact.getDept());
                         }
-                        else
-                        {
-                           historySearch.setDateAdded(new Date());
-                        }
+
                     }
                 });
-                showContact(contact.getName(),contact.getDept());
                 searchBox.setText("");
                 backButton.performClick();
             }
@@ -163,15 +165,12 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length()>0)
-                {
-                    SPEECHORCLEAR =2;
-                    speechButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_clear_black_24dp));
-                }
-                else
-                {
-                    SPEECHORCLEAR =1;
-                    speechButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_mic_black_24dp));
+                if (s.length() > 0) {
+                    SPEECHORCLEAR = 2;
+                    speechButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_clear_black_24dp));
+                } else {
+                    SPEECHORCLEAR = 1;
+                    speechButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_mic_black_24dp));
                 }
             }
         });
@@ -182,22 +181,21 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
                 searchBox.clearFocus();
                 dimLayout.setVisibility(View.GONE);
                 searchBar.setVisibility(View.GONE);
-                InputMethodManager inputMethodManager=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
             }
         });
 
         speechButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (SPEECHORCLEAR)
-                {
+                switch (SPEECHORCLEAR) {
                     case 1:
                         promptSpeechInput();
                         break;
                     case 2:
                         searchBox.setText("");
-                        SPEECHORCLEAR =1;
+                        SPEECHORCLEAR = 1;
                         Picasso.with(getApplicationContext()).load(R.drawable.ic_mic_black_24dp).into(speechButton);
                         break;
                 }
@@ -212,13 +210,14 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
         viewPager.setAdapter(adapter);
     }
 
-    private void showContact(String name,String dept) {
+    private void showContact(String name, String dept) {
         searchBox.setText("");
         Intent in = new Intent(this, ShowContact.class);
         in.putExtra("name", name);
-        in.putExtra("dept",dept);
+        in.putExtra("dept", dept);
         startActivity(in);
     }
+
     private void showDepartmentContacts(String deptName) {
         Intent in = new Intent(this, ShowDepartmentContacts.class);
         in.putExtra("dept_name", deptName);
@@ -227,14 +226,13 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
 
     private void checkDbExists() throws IOException {
         long count = realm.where(Department.class).count();
-        if(count==0)
-        {
+        if (count == 0) {
             final InputStream stream = getAssets().open("contacts.json");
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
                     try {
-                        realm.createAllFromJson(Department.class,stream);
+                        realm.createAllFromJson(Department.class, stream);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -244,15 +242,15 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
     }
 
     @Override
-    public void onBackPressed(){
-        if(searchBar.getVisibility() == View.VISIBLE)
+    public void onBackPressed() {
+        if (searchBar.getVisibility() == View.VISIBLE)
             backButton.performClick();
-        else
-        {
+        else {
             finish();
             super.onBackPressed();
         }
     }
+
     @Override
     public void onDestroy() {
         realm.close();
@@ -292,14 +290,14 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
     }
 
     @Override
-    public void itemClicked(int type,String contactName,String deptName) {
-        switch (type)
-        {
+    public void itemClicked(int type, String contactName, String deptName) {
+        switch (type) {
             case 1:
                 showDepartmentContacts(deptName);
                 break;
-            case 2:case 3:
-                showContact(contactName,deptName);
+            case 2:
+            case 3:
+                showContact(contactName, deptName);
                 break;
         }
     }
@@ -311,8 +309,8 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if(id==R.id.disclaimer)
-        { AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        if (id == R.id.disclaimer) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 // ...Irrelevant code for customizing the buttons and title
             LayoutInflater inflater = this.getLayoutInflater();
             View dialogView = inflater.inflate(R.layout.disclaimer, null);
@@ -329,23 +327,18 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
             tv_dis.setText(Html.fromHtml(getString(R.string.disclaimer_text)));
             tv_dis.setMovementMethod(LinkMovementMethod.getInstance());
             AlertDialog alertDialog = dialogBuilder.create();
-            alertDialog.show();}
+            alertDialog.show();
+        } else if (id == R.id.about_us_menu) {
 
-        else if (id==R.id.about_us_menu) {
-
-            Intent i=new Intent(ContactsMainActivity.this,AboutUs.class);
+            Intent i = new Intent(ContactsMainActivity.this, AboutUs.class);
             startActivity(i);
-        }
-
-        else if (id==R.id.search)
-        {
+        } else if (id == R.id.search) {
             searchBar.setVisibility(View.VISIBLE);
             dimLayout.setVisibility(View.VISIBLE);
-            if(searchBox.getText().toString().equals(""))
-            {
+            if (searchBox.getText().toString().equals("")) {
                 searchAdapter.getFilter().filter(null);
             }
-            InputMethodManager inputMethodManager=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
             searchBox.requestFocus();
             searchBox.showDropDown();
@@ -353,6 +346,7 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

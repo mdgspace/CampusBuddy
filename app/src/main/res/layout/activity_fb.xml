@@ -10,9 +10,7 @@
         android:id="@+id/tool_barfb"
         layout="@layout/tool_bar"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-
-        />
+        android:layout_width="match_parent" />
 
     <!--<com.facebook.login.widget.LoginButton-->
         <!--android:id="@+id/login_button"-->
@@ -49,4 +47,13 @@
         android:layout_width="wrap_content"
         android:id="@+id/progressbar"
         android:layout_centerInParent="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Internet Detected"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/progressbar"
+        android:textColor="@color/contact_secondayText"
+        android:textSize="16sp"
+        android:visibility="gone"/>
 </RelativeLayout>

@@ -77,6 +77,7 @@ public class Data {
 
 public static ArrayList<ColorItem> getColor_list() {
 itemList.clear();
+    itemList.add(new ColorItem("Default","#5c3bb5"));
     itemList.add(new ColorItem("Tomato", "#FF6347"));
     itemList.add(new ColorItem("Tangerine", "#F28500"));
     itemList.add(new ColorItem("Banana", "#FFE135"));

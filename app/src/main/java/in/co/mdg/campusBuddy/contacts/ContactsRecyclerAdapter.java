@@ -148,14 +148,14 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
                             deptPhoto = "http://www.iitr.ac.in/departments/" + dept.getPhoto() + "/assets/images/top1.jpg";
                         Picasso.with(profilePic.getContext())
                                 .load(deptPhoto)
-                                .placeholder(R.drawable.iit_roorkee)
+                                .placeholder(R.drawable.dept_icon)
                                 .noFade()
                                 .fit()
                                 .into(profilePic);
                     }
                     else
                     {
-                        Picasso.with(profilePic.getContext()).load(R.drawable.iit_roorkee).noFade().fit().into(profilePic);
+                        Picasso.with(profilePic.getContext()).load(R.drawable.dept_icon).noFade().fit().into(profilePic);
                     }
                     break;
                 case 2:case 3:
@@ -170,13 +170,13 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
                         profilePic.setImageDrawable(
                                 ContextCompat.getDrawable(
                                         profilePic.getContext()
-                                        , R.drawable.com_facebook_profile_picture_blank_portrait));
+                                        , R.drawable.contact_icon));
                     } else {
                         Picasso.with(profilePic.getContext())
                                 .load("http://people.iitr.ernet.in/facultyphoto/" + picAddress)
-                                .placeholder(R.drawable.com_facebook_profile_picture_blank_portrait)
+                                .placeholder(R.drawable.contact_icon)
                                 .noFade()
-                                .error(R.drawable.com_facebook_profile_picture_blank_portrait)
+                                .error(R.drawable.contact_icon)
                                 .into(profilePic);
                     }
 
