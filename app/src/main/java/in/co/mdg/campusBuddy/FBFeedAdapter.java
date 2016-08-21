@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -26,13 +27,13 @@ import java.util.ArrayList;
  * @version 1.0.0
  * @since 25-Jul-15
  */
-public class FBFeedAdapter extends ArrayAdapter<Post> {
+class FBFeedAdapter extends ArrayAdapter<Post> {
 
     ArrayList<Post> arrayList;
-    Context context;
+    private Context context;
     private static LayoutInflater inflater;
 
-    public FBFeedAdapter(Context context, int resource, ArrayList<Post> arrayList) {
+    FBFeedAdapter(Context context, int resource, ArrayList<Post> arrayList) {
         super(context, resource,arrayList);
         this.arrayList = arrayList;
         this.context = context;
@@ -49,8 +50,9 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
         return position;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         final Holder holder;
 
@@ -135,7 +137,7 @@ public class FBFeedAdapter extends ArrayAdapter<Post> {
         return convertView;
     }
 
-    public static class Holder{
+    private static class Holder{
 
         DynamicHeightTextView postmessage;
         TextView postheader,dateofpost;

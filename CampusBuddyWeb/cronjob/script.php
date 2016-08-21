@@ -1,9 +1,8 @@
 <?php
 
-// API access key from Google API's Console
-	define( 'FCM_API_ACCESS_KEY', 'AIzaSyAqZjwNuKzCvgFZw5KPgsMx6ksLRXpmLcA' );
-	define( 'refreshMins', 5);
-
+require_once("config.php");
+  
+  define( 'refreshMins', 60);
 	$pageList = array 
 (
 	"Anushruti" 		=> "272394492879208",
@@ -36,13 +35,11 @@
 function cron () {
 	require_once __DIR__ . '/vendor/autoload.php';
 
-
-
 	$fb = new Facebook\Facebook([
-  		'app_id' => '772744622840259',
-  		'app_secret' => '63e7300f4f21c5f430ecb740b428a10e',
+  		'app_id' => FB_APP_ID,
+  		'app_secret' => FB_APP_SECRET,
   		'default_graph_version' => 'v2.7',
-  		'default_access_token'	=> '772744622840259|63e7300f4f21c5f430ecb740b428a10e'
+  		'default_access_token'	=> FB_APP_ID.'|'.FB_APP_SECRET
   	]);
   	$newPosts = array();
   	$batch = array();
@@ -146,9 +143,7 @@ function send_notification ($topic, $message, $name, $img_src)
 	(
 		'content' 	=> $message,
 		'name'		=> $name,
-		'img'		=> $img_src,
-		'vibrate'	=> 1,
-		'sound'		=> 1
+		'img'		=> $img_src
 	);
 	// $notification = array
 	// (

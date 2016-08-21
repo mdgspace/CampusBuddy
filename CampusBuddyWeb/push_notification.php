@@ -1,5 +1,6 @@
 <?php
 error_reporting(E_ALL);
+
 	// this is for weebhook verification
 	if($_REQUEST['hub_mode'] === 'subscribe')
 	{
@@ -11,7 +12,7 @@ error_reporting(E_ALL);
 	}
 	else
 	{
-		$myfile = fopen("/home/vhosts/www.sdsmdg.ml/cb/pushnotif/newfile.txt", "a");
+		$myfile = fopen("newfile.txt", "a");
 		fwrite($myfile, $_REQUEST['hub_mode']);
 		fclose($myfile);
 	}
@@ -29,7 +30,7 @@ error_reporting(E_ALL);
 			);
 
 		$headers = array(
-			'Authorization:key = AIzaSyAqZjwNuKzCvgFZw5KPgsMx6ksLRXpmLcA',
+			'Authorization:key = '.FCM_API_ACCESS_KEY,
 				'Content-Type: application/json'
 			);
 		$ch = curl_init();

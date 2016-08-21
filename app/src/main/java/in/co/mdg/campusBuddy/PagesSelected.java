@@ -21,7 +21,7 @@ class PagesSelected {
     static void writeSelectedPageIds(Context context, ArrayList<String> idList){
         try {
             String idString = "";
-//            FirebaseMessaging.getInstance().subscribeToTopic("1558962134412332"); //test page subscription
+            FirebaseMessaging.getInstance().subscribeToTopic("1558962134412332"); //test page subscription
             for(int i=0;i<idList.size();i++){
                 idString += idList.get(i) + "\n";
                 FirebaseMessaging.getInstance().subscribeToTopic(idList.get(i));
