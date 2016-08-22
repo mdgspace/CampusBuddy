@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.AppBarLayout;
@@ -45,12 +46,6 @@ import in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.ClickListener;
 import in.co.mdg.campusBuddy.contacts.data_models.ContactSearchModel;
 import in.co.mdg.campusBuddy.contacts.data_models.Department;
 import io.realm.Realm;
-
-/*
-import com.facebook.rebound.SimpleSpringListener;
-import com.facebook.rebound.Spring;
-import com.facebook.rebound.SpringSystem;
-*/
 
 /**
  * Created by rc on 29/6/15.
@@ -324,7 +319,10 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
             });
 
             TextView tv_dis = (TextView) dialogView.findViewById(R.id.disclaimera);
-            tv_dis.setText(Html.fromHtml(getString(R.string.disclaimer_text)));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                tv_dis.setText(Html.fromHtml(getString(R.string.disclaimer_text), Html.FROM_HTML_MODE_LEGACY));
+            else
+                tv_dis.setText(Html.fromHtml(getString(R.string.disclaimer_text)));
             tv_dis.setMovementMethod(LinkMovementMethod.getInstance());
             AlertDialog alertDialog = dialogBuilder.create();
             alertDialog.show();

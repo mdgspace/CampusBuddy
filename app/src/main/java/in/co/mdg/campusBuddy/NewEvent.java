@@ -329,6 +329,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("Result", "Details Updated");
+                returnIntent.putExtra("Date", date);
                 setResult(RESULT_OK, returnIntent);
                 finish();
             } else {
