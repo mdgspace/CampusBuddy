@@ -56,8 +56,10 @@ class LoadingImages {
                                 profilePic.getContext()
                                 , R.drawable.contact_icon));
             } else {
+                if(!profilePicAddr.contains("http"))
+                    profilePicAddr = "http://people.iitr.ernet.in/facultyphoto/" + profilePicAddr;
                 Picasso.with(profilePic.getContext())
-                        .load("http://people.iitr.ernet.in/facultyphoto/" + profilePicAddr)
+                        .load(profilePicAddr)
                         .placeholder(R.drawable.contact_icon)
                         .noFade()
                         .error(R.drawable.contact_icon)

@@ -43,6 +43,7 @@ import java.util.Locale;
 import in.co.mdg.campusBuddy.AboutUs;
 import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.ClickListener;
+import in.co.mdg.campusBuddy.contacts.data_models.Contact;
 import in.co.mdg.campusBuddy.contacts.data_models.ContactSearchModel;
 import in.co.mdg.campusBuddy.contacts.data_models.Department;
 import io.realm.Realm;
@@ -116,6 +117,8 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
                             } else {
                                 historySearch.setDateAdded(new Date());
                             }
+                            if(contact.getDept().equals("Administration"))
+                                contact.setName(realm.where(Contact.class).equalTo("designation",contact.getName()).findFirst().getName());
                             showContact(contact.getName(), contact.getDept());
                         }
 
