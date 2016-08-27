@@ -3,6 +3,7 @@ package in.co.mdg.campusBuddy;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,15 +59,14 @@ public class ColorListAdapter extends BaseAdapter {
             holder=new Holder();
             holder.colorll=(LinearLayout)convertView.findViewById(R.id.colorLL);
             holder.colortext=(TextView)convertView.findViewById(R.id.color_text);
-            holder.colorimage=(ImageButton)convertView.findViewById(R.id.color_image);
+            holder.colorimage=(CardView) convertView.findViewById(R.id.color_image);
             final ColorItem color_item=mData.get(position);
             try {
                 holder.colortext.setText(color_item.getColor());
-                holder.colorimage.setBackgroundColor(Color.parseColor(color_item.getHash()));
+                holder.colorimage.setCardBackgroundColor(Color.parseColor(color_item.getHash()));
                 holder.colorll.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.e("Hey", "Hey");
                         mListener.onColorChoose(position);
                     }
                 });
@@ -74,7 +74,7 @@ public class ColorListAdapter extends BaseAdapter {
             }
             catch(Exception e)
             {
-                Log.e("HEY", e.toString());
+                e.printStackTrace();
             }
         }
 
@@ -88,6 +88,6 @@ public class ColorListAdapter extends BaseAdapter {
 
         LinearLayout colorll;
         TextView colortext;
-        ImageButton colorimage;
+        CardView colorimage;
     }
 }

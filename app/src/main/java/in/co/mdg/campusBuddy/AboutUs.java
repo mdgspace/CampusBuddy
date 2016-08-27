@@ -1,24 +1,14 @@
 package in.co.mdg.campusBuddy;
 
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 public class AboutUs extends AppCompatActivity {
     @Override
@@ -27,28 +17,9 @@ public class AboutUs extends AppCompatActivity {
         setContentView(R.layout.activity_about_us);
 
         ImageView gitImage = (ImageView) findViewById(R.id.git_about_us);
-        ImageView fbImage = (ImageView)findViewById(R.id.fb_about_us);
-        ImageView playImage = (ImageView)findViewById(R.id.play_about_us);
+        ImageView fbImage = (ImageView) findViewById(R.id.fb_about_us);
+        ImageView playImage = (ImageView) findViewById(R.id.play_about_us);
         TextView blogText = (TextView) findViewById(R.id.blog_link_text);
-        final ScrollView mainScrollView = (ScrollView) findViewById(R.id.scrollview);
-        Picasso.with(this).load(R.drawable.mainbackground_final).into(new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    mainScrollView.setBackground(new BitmapDrawable(getResources(),bitmap));
-                }
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        });
 
         gitImage.setOnClickListener(new View.OnClickListener() {
             @Override

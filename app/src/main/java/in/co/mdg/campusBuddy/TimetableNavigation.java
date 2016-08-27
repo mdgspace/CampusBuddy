@@ -52,6 +52,7 @@ public class TimetableNavigation extends AppCompatActivity implements MonthLoade
     private boolean calledNetwork = false;
     private Realm realm;
     private SimpleDateFormat sdfDate = new SimpleDateFormat("EEE, dd MMM yyyy",Locale.getDefault());
+    private SimpleDateFormat sdfDateString = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm",Locale.getDefault());
 
     private FloatingActionsMenu fab_menu;
@@ -359,6 +360,13 @@ public class TimetableNavigation extends AppCompatActivity implements MonthLoade
 
             if(resultCode == RESULT_OK){
                 mWeekView.notifyDatasetChanged();
+                try {
+                    Calendar eventDate = Calendar.getInstance();
+                    eventDate.setTime(sdfDateString.parse(data.getStringExtra("Date")));
+                    mWeekView.goToDate(eventDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 if(fab_menu.isExpanded())
                     fab_menu.collapse();
             }

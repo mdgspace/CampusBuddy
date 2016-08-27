@@ -138,31 +138,8 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         else
             desg_text.setVisibility(View.GONE);
 
-        if (contact.getProfilePic() != null) {
-            if (!contact.getProfilePic().equals("") && !contact.getProfilePic().equals("default.jpg")) {
-                Picasso.with(this)
-                        .load("http://people.iitr.ernet.in/facultyphoto/" + contact.getProfilePic())
-                        .into(new Target() {
-                            @Override
-                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                                profilePic.setImageBitmap(bitmap);
-                                smallProfilePic.setImageBitmap(bitmap);
-                            }
+        LoadingImages.loadContactImageForContactView(contact.getProfilePic(),profilePic,smallProfilePic);
 
-                            @Override
-                            public void onBitmapFailed(Drawable errorDrawable) {
-                                profilePic.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.contact_icon));
-                                smallProfilePic.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.contact_icon));
-                            }
-
-                            @Override
-                            public void onPrepareLoad(Drawable placeHolderDrawable) {
-                                profilePic.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.contact_icon));
-                                smallProfilePic.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.contact_icon));
-                            }
-                        });
-            }
-        }
         if (dept.equals("Polymer & Paper Pulp")) {
             std_code_res_off = "0132 271 ";
             std_code_bsnl = "0132 ";

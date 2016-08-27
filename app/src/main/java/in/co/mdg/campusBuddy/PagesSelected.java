@@ -51,7 +51,7 @@ class PagesSelected {
             return idList;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 }
