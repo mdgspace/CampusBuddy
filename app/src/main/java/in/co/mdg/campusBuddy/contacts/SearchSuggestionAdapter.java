@@ -77,35 +77,9 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
             Picasso.with(getContext())
                     .cancelRequest(holder.profilePic);
             if (contact.isDept()) {
-                if (contact.getProfilePic() != null) {
-                    String deptPhoto;
-                    if (contact.getProfilePic().length() > 4)
-                        deptPhoto = contact.getProfilePic();
-                    else
-                        deptPhoto = "http://www.iitr.ac.in/departments/" + contact.getProfilePic() + "/assets/images/top1.jpg";
-                    Picasso.with(getContext())
-                            .load(deptPhoto)
-                            .fit()
-                            .into(holder.profilePic);
-                }
+                LoadingImages.loadDeptImages(contact.getProfilePic(),holder.profilePic,null);
             } else {
-                if (contact.getProfilePic() != null) {
-                    if (contact.getProfilePic().equals("") || contact.getProfilePic().equals("default.jpg")) {
-                        holder.profilePic.setImageDrawable(
-                                ContextCompat.getDrawable(
-                                        getContext()
-                                        , R.drawable.contact_icon));
-                    } else {
-                        Picasso.with(getContext())
-                                .load("http://people.iitr.ernet.in/facultyphoto/" + contact.getProfilePic())
-                                .into(holder.profilePic);
-                    }
-                } else {
-                    holder.profilePic.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                    getContext()
-                                    , R.drawable.ic_account_circle_black_24dp));
-                }
+                LoadingImages.loadContactImages(contact.getProfilePic(),holder.profilePic);
                 if (contact.isHistorySearch())
                     holder.icon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_history_black_24dp));
                 else

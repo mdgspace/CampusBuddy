@@ -228,6 +228,7 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
                 public void execute(Realm realm) {
                     try {
                         realm.createAllFromJson(Department.class, stream);
+                        //Do write something
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

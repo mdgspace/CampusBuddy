@@ -89,32 +89,23 @@ public class ShowDepartmentContacts extends AppCompatActivity {
         Realm realm = Realm.getDefaultInstance();
         Department dept = realm.where(Department.class).equalTo("name", deptName).findFirst();
         final ImageView deptBackdrop = (ImageView) findViewById(R.id.dept_backdrop);
-        String deptPhoto;
-        if (dept.getPhoto() != null) {
-            if (dept.getPhoto().length() > 4)
-                deptPhoto = dept.getPhoto();
-            else
-                deptPhoto = "http://www.iitr.ac.in/departments/" + dept.getPhoto() + "/assets/images/top1.jpg";
-            Picasso.with(this)
-                    .load(deptPhoto)
-                    .fit()
-                    .into(deptBackdrop, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            Bitmap bitmap = ((BitmapDrawable) deptBackdrop.getDrawable()).getBitmap();
-                            Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                                public void onGenerated(Palette palette) {
-                                    applyPalette(palette);
-                                    setEdgeGlowColor(recyclerView, primary);
-                                }
-                            });
-                        }
+        Callback callback = new Callback() {
+            @Override
+            public void onSuccess() {
+                Bitmap bitmap = ((BitmapDrawable) deptBackdrop.getDrawable()).getBitmap();
+                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                    public void onGenerated(Palette palette) {
+                        applyPalette(palette);
+                        setEdgeGlowColor(recyclerView, primary);
+                    }
+                });
+            }
 
-                        @Override
-                        public void onError() {
-                        }
-                    });
-        }
+            @Override
+            public void onError() {
+            }
+        };
+        LoadingImages.loadDeptImages(dept.getPhoto(),deptBackdrop,callback);
 
 
     }

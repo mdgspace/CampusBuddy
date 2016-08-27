@@ -139,48 +139,12 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
                 case 1:
                     Department dept = (Department) item;
                     name.setText(dept.getName());
-                    if(dept.getPhoto() != null)
-                    {
-                        String deptPhoto;
-                        if(dept.getPhoto().length()>4)
-                            deptPhoto = dept.getPhoto();
-                        else
-                            deptPhoto = "http://www.iitr.ac.in/departments/" + dept.getPhoto() + "/assets/images/top1.jpg";
-                        Picasso.with(profilePic.getContext())
-                                .load(deptPhoto)
-                                .placeholder(R.drawable.dept_icon)
-                                .noFade()
-                                .fit()
-                                .into(profilePic);
-                    }
-                    else
-                    {
-                        Picasso.with(profilePic.getContext()).load(R.drawable.dept_icon).noFade().fit().into(profilePic);
-                    }
+                    LoadingImages.loadDeptImages(dept.getPhoto(),profilePic,null);
                     break;
                 case 2:case 3:
                     Contact contact = (Contact) item;
                     name.setText(contact.getName());
-                    String picAddress = contact.getProfilePic();
-                    if(picAddress == null)
-                    {
-                        picAddress ="default.jpg";
-                    }
-                    if (picAddress.equals("") || picAddress.equals("default.jpg")) {
-                        profilePic.setImageDrawable(
-                                ContextCompat.getDrawable(
-                                        profilePic.getContext()
-                                        , R.drawable.contact_icon));
-                    } else {
-                        Picasso.with(profilePic.getContext())
-                                .load("http://people.iitr.ernet.in/facultyphoto/" + picAddress)
-                                .placeholder(R.drawable.contact_icon)
-                                .noFade()
-                                .error(R.drawable.contact_icon)
-                                .into(profilePic);
-                    }
-
-
+                    LoadingImages.loadContactImages(contact.getProfilePic(),profilePic);
                     break;
             }
 //            itemView.setOnTouchListener(new View.OnTouchListener() {
