@@ -68,6 +68,9 @@ android
                 compile 'com.squareup.retrofit2:converter-gson:2.0.2'
                 //for circular image view
                 compile 'de.hdodenhof:circleimageview:2.0.0'
+
+                compile 'com.yalantis:contextmenu:1.0.7'
+
             }
         }
 //Intentionally added to the bottom.

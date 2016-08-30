@@ -32,6 +32,7 @@ import java.util.Locale;
 
 import in.co.mdg.campusBuddy.calendar.data_models.acad.Event;
 import in.co.mdg.campusBuddy.calendar.GetEventsFromGCal;
+import in.co.mdg.campusBuddy.calendar.data_models.acad.LastUpdated;
 import in.co.mdg.campusBuddy.calendar.data_models.user_events.UserEvent;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -67,7 +68,6 @@ public class TimetableNavigation extends AppCompatActivity implements MonthLoade
         fab_menu = (FloatingActionsMenu) findViewById(R.id.right_labels);
 
         calendarLoad = (ProgressBar) findViewById(R.id.calendarLoad);
-
         realm = Realm.getDefaultInstance();
 
         // Get a reference for the week view in the layout.
@@ -153,10 +153,13 @@ public class TimetableNavigation extends AppCompatActivity implements MonthLoade
         if(!calledNetwork)
         {
             calledNetwork=true;
-            calendarLoad.setVisibility(View.VISIBLE);
-            GetEventsFromGCal g = GetEventsFromGCal.getInstance();
-            g.getEvents(mWeekView,calendarLoad);
-
+            String lastUpdatedDate=(realm.where(LastUpdated.class).findFirst() != null)?realm.where(LastUpdated.class).findFirst().getDate():null;
+            String todaysDate = sdfDateString.format(new Date());
+            if(lastUpdatedDate==null) {
+                calendarLoad.setVisibility(View.VISIBLE);
+                GetEventsFromGCal g = GetEventsFromGCal.getInstance();
+                g.getAcadEvents(mWeekView,calendarLoad);
+            }
         }
 
         Calendar startCal, endCal;
