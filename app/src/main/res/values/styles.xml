@@ -24,7 +24,11 @@
         <item name="popupMenuStyle">@style/PopupMenu</item>
     </style>
     <style name="MainAcitvityTheme" parent="AppTheme">
-        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorPrimaryDark">@color/primary</item>
+    </style>
+
+    <style name="NewEventTheme" parent="AppTheme">
+        <item name="colorAccent">@color/mdtp_accent_color</item>
     </style>
 
     <style name="PopupMenu" parent="Theme.AppCompat.Light.DarkActionBar">

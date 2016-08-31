@@ -10,10 +10,12 @@
     <item android:id="@+id/disclaimer"
         android:title="Disclaimer"
         android:orderInCategory="101"
+        android:icon="@drawable/disclaimer"
         app:showAsAction="never"/>
 
     <item android:id="@+id/about_us_menu"
         android:title="About us"
         android:orderInCategory="102"
+        android:icon="@drawable/about_us"
         app:showAsAction="never"/>
 </menu>

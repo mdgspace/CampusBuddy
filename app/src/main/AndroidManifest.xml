@@ -90,7 +90,8 @@
         <!-- </activity> -->
         <activity
             android:name=".NewEvent"
-            android:label="@string/app_name"/>
+            android:label="@string/app_name"
+            android:theme="@style/NewEventTheme"/>
         <activity
             android:name=".TimetableNavigation"
             android:label="@string/app_name" />

@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -16,86 +15,55 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
+import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
+import com.yalantis.contextmenu.lib.MenuObject;
+import com.yalantis.contextmenu.lib.MenuParams;
+import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import in.co.mdg.campusBuddy.contacts.ContactsMainActivity;
 
-/*
-import com.facebook.rebound.SimpleSpringListener;
-import com.facebook.rebound.Spring;
-import com.facebook.rebound.SpringSystem;
-*/
+public class MainActivity extends AppCompatActivity implements OnMenuItemClickListener{
 
-public class MainActivity extends AppCompatActivity {
-
-    ImageButton mapButt1, mapButt2, tnButt2, tdbtt1, fbbtt1;
-    private FloatingActionButton mActionButton;
-    RelativeLayout main_layout;
-    ProgressBar p;
-//    SharedPreferences prefsforfb;
-
-
+    ImageButton mapButt1, tnButt2, tdbtt1, fbbtt1, infobt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MenuObject close = new MenuObject("About Us");
+        close.setResource(R.drawable.about_us);
+
+        MenuObject send = new MenuObject("Disclaimer");
+        send.setResource(R.drawable.disclaimer);
+
+        List<MenuObject> menuObjects = new ArrayList<>();
+        menuObjects.add(close);
+        menuObjects.add(send);
+        MenuParams menuParams = new MenuParams();
+        menuParams.setActionBarSize((int) getResources().getDimension(R.dimen.menu_item_height));
+        menuParams.setMenuObjects(menuObjects);
+        menuParams.setClosableOutside(true);
+        final ContextMenuDialogFragment mMenuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
+        mMenuDialogFragment.setItemClickListener(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (!prefs.getBoolean("firstTime", false)) {
-            // <---- run your one time code here
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-// ...Irrelevant code for customizing the buttons and title
-            LayoutInflater inflater = this.getLayoutInflater();
-            View dialogView = inflater.inflate(R.layout.disclaimer, null);
-            dialogBuilder.setView(dialogView);
-            dialogBuilder.setTitle("Disclaimer");
-            dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
+            showDisclaimer();
 
-            TextView tv_dis = (TextView) dialogView.findViewById(R.id.disclaimera);
-            tv_dis.setText(Html.fromHtml(getString(R.string.disclaimer_text)));
-            tv_dis.setMovementMethod(LinkMovementMethod.getInstance());
-
-            AlertDialog alertDialog = dialogBuilder.create();
-            alertDialog.show();
-
-
-            // mark first time has runned.
+            // mark first time app run.
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("firstTime", true);
             editor.commit();
         }
-
-
-//
-//    main_layout = (RelativeLayout) findViewById(R.id.main_layout);
-//
-//       BitmapFactory.Options options = new BitmapFactory.Options();
-//       options.inJustDecodeBounds = true;
-//       BitmapFactory.decodeResource(getResources(), R.drawable.mainbackground_final, options);
-//       int imageHeight = options.outHeight;
-//       int imageWidth = options.outWidth;
-//       String imageType = options.outMimeType;
-
-        //  Bitmap bmImg = BitmapFactory.decodeStream(is)
-//      BitmapDrawable background = new BitmapDrawable(decodeSampledBitmapFromResource(getResources(),
-//              R.drawable.mainbackground_final, imageWidth, imageHeight));
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//            main_layout.setBackground(background);
-//        }
-
-        //main_layout.setBackgroundDrawable(decodeSampledBitmapFromResource(getResources(),  R.drawable.mainbackground, 100, 100));
 
 
         SharedPreferences getPrefs = PreferenceManager
@@ -108,57 +76,19 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean("alarm_set", true);
             editor.commit();
         }
-//       int sdk = Build.VERSION.SDK_INT;
 
-//       LinearLayout layout =(LinearLayout)findViewById(R.id.main_layout);
-//            if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-//                layout.setBackgroundDrawable( getResources().getDrawable(R.drawable.mainbackground_final) );
-//            } else {
-//                layout.setBackground(getResources().getDrawable(R.drawable.mainbackground_final));
-//            }
-        //  layout.setBackgroundResource(R.drawable.night_720);
-
-//            ImageView img= (ImageView) findViewById(R.id.sun_moon);
-//            img.setImageResource(R.drawable.moon_360);
-
-
-//        prefsforfb=this.getSharedPreferences("com.example.appfb", Context.MODE_PRIVATE);
-
-//        SharedPreferences.Editor editor = prefsforfb.edit();
-//        editor.putInt("No of times ", 0);
-//        editor.commit();
         mapButt1 = (ImageButton) findViewById(R.id.mapBut1);
         tnButt2 = (ImageButton) findViewById(R.id.tnBut2);
         tdbtt1 = (ImageButton) findViewById(R.id.tdbtn);
         fbbtt1 = (ImageButton) findViewById(R.id.fbbtn);
+        infobt = (ImageButton) findViewById(R.id.info_menu);
 
-//        SpringSystem springSystem = SpringSystem.create();
-//// Add a spring to the system.
-//        final Spring spring = springSystem.createSpring();
-//
-//        mapButt1.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                spring.addListener(new SimpleSpringListener() {
-//
-//                    @Override
-//                    public void onSpringUpdate(Spring spring) {
-//                        // You can observe the updates in the spring
-//                        // state by asking its current value in onSpringUpdate.
-//                        float value = (float) spring.getCurrentValue();
-//                        float scale = 1f - (value * 0.5f);
-//                        mapButt1.setScaleX(scale);
-//                        mapButt1.setScaleY(scale);
-//                    }
-//                });
-//
-//// Set the spring in motion; moving from 0 to 1
-//                spring.setEndValue(1);
-//
-//                return false;
-//            }
-//        });
-// Add a listener to observe the motion of the spring.
+        infobt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMenuDialogFragment.show(getSupportFragmentManager(), "ContextMenuDialogFragment");
+            }
+        });
         mapButt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,10 +115,6 @@ public class MainActivity extends AppCompatActivity {
         fbbtt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                count=prefsforfb.getInt("No of times ",0);
-
-
-//                count=prefsforfb.getInt("No of times ",0);
 
                 if (AccessToken.getCurrentAccessToken() == null) {
                     Intent tdIntent = new Intent(MainActivity.this, Fblogin.class);
@@ -200,88 +126,45 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-        /*
-try {
-    mActionButton = (FloatingActionButton) findViewById(R.id.fabtest);
-    mActionButton.setBackgroundDrawable(getDrawable2(R.drawable.fab_background));
-    mActionButton.setClickable(true);// if we don't set it true, ripple will not be played
-    mActionButton.setOnTouchListener(
-            new DrawableHotspotTouch((LollipopDrawable) mActionButton.getBackground()));
-    Toast.makeText(this, "hello.... try completed", Toast.LENGTH_LONG).show();
-}
-catch (Exception e){
-    Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
-    Toast.makeText(this, "reached catch", Toast.LENGTH_LONG).show();
-}
-*/
-
     }
 
+    private void showDisclaimer() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.disclaimer, null);
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setTitle("Disclaimer");
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
 
-//    /**
-//     * {@link #getDrawable(int)} is already taken by Android API
-//     * and method is final, so we need to give another name :(
-//     */
-//    public Drawable getDrawable2(int id){
-//        return LollipopDrawablesCompat.getDrawable(getResources(), id, getTheme());
-//    }
+        TextView tv_dis = (TextView) dialogView.findViewById(R.id.disclaimera);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            tv_dis.setText(Html.fromHtml(getString(R.string.disclaimer_text), Html.FROM_HTML_MODE_LEGACY));
+        else
+            tv_dis.setText(Html.fromHtml(getString(R.string.disclaimer_text)));
+        tv_dis.setMovementMethod(LinkMovementMethod.getInstance());
 
-//    @Override
-//    public void onPause()
-//    {
-//
-//        SharedPreferences.Editor editor = prefsforfb.edit();
-//        editor.putInt("No of times ", count + 1);
-//        editor.commit();
-//    }
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+    }
 
-//    public void broadcastIntent(View view){
-//        Intent intent = new Intent();
-//        intent.setAction("abc");
-//        sendBroadcast(intent);
-//    }
+    @Override
+    public void onMenuItemClick(View clickedView, int position) {
+        switch (position) {
+            case 0:
+                Intent i = new Intent(this, AboutUs.class);
+                startActivity(i);
+                break;
+            case 1:
+                showDisclaimer();
+                break;
 
-//    public static int calculateInSampleSize(
-//            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-//        // Raw height and width of image
-//        final int height = options.outHeight;
-//        final int width = options.outWidth;
-//        int inSampleSize = 1;
-//
-//        if (height > reqHeight || width > reqWidth) {
-//
-//            final int halfHeight = height / 2;
-//            final int halfWidth = width / 2;
-//
-//            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-//            // height and width larger than the requested height and width.
-//            while ((halfHeight / inSampleSize) > reqHeight
-//                    && (halfWidth / inSampleSize) > reqWidth) {
-//                inSampleSize *= 2;
-//            }
-//        }
-//
-//        return inSampleSize;
-//    }
-
-//    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
-//                                                         int reqWidth, int reqHeight) {
-//
-//        // First decode with inJustDecodeBounds=true to check dimensions
-//        final BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inJustDecodeBounds = true;
-//        BitmapFactory.decodeResource(res, resId, options);
-//
-//        // Calculate inSampleSize
-//        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-//
-//        // Decode bitmap with inSampleSize set
-//        options.inJustDecodeBounds = false;
-//        return BitmapFactory.decodeResource(res, resId, options);
-//    }
-
-
+        }
+    }
 }
 
 

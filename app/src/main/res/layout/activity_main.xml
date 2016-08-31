@@ -3,15 +3,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/mainbackground_final"
+    android:background="@drawable/bg_new"
     android:fitsSystemWindows="true">
 
     <RelativeLayout
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <!--android:background="@drawable/mainbackground_final"-->
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/quarter_circle">
+            <ImageButton
+                android:id="@+id/info_menu"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/i_icon"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/ripple_circular"/>
+        </FrameLayout>
 
     <ImageView
         android:id="@+id/text_CB"
@@ -21,9 +39,7 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:src="@drawable/cb_text" />
-    <!--android:layout_marginTop="20dp"-->
-    <!--android:paddingLeft="20dp"-->
-    <!--android:paddingRight="20dp" />-->
+
         <RelativeLayout
             android:id="@+id/rel1"
             android:layout_width="wrap_content"
@@ -113,16 +129,6 @@
             android:scaleType="fitCenter"
             android:background="@drawable/ripple_circular" />
     </RelativeLayout>
-    <!--android:layout_alignRight="@+id/progressBar"-->
-    <!--android:layout_alignEnd="@+id/progressBar" />-->
-    <!--<Button-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:id="@+id/button2"-->
-    <!--android:text="Broadcast Intent"-->
-    <!--android:onClick="broadcastIntent"-->
-    <!--android:layout_centerHorizontal="true" />-->
-
 
     <TextView
         android:id="@+id/credit"
@@ -143,18 +149,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/main_building_720"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
 
-
-
-
-        <!--<ProgressBar-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:id="@+id/progressBar"-->
-    <!--android:layout_below="@+id/fbbtn"-->
-    <!--android:layout_alignRight="@+id/fbbtn"-->
-    <!--android:layout_alignEnd="@+id/fbbtn" />-->
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

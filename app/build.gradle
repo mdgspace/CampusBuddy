@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'realm-android'
 
-def versionMajor = 1
-def versionMinor = 7
+def versionMajor = 2
+def versionMinor = 0
 def versionPatch = 0
 def versionBuild = 0
 
@@ -41,6 +41,9 @@ android
 
                 //for firebase cloud messaging
                 compile 'com.google.firebase:firebase-messaging:9.4.0'
+                //for firebase storage
+                compile 'com.google.firebase:firebase-storage:9.4.0'
+                compile 'com.google.firebase:firebase-auth:9.4.0'
 
                 compile 'com.facebook.android:facebook-android-sdk:4.0.0'
                 // compile project(':facebook')
@@ -65,6 +68,9 @@ android
                 compile 'com.squareup.retrofit2:converter-gson:2.0.2'
                 //for circular image view
                 compile 'de.hdodenhof:circleimageview:2.0.0'
+
+                compile 'com.yalantis:contextmenu:1.0.7'
+
             }
         }
 //Intentionally added to the bottom.
