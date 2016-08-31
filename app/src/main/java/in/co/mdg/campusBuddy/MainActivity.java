@@ -37,10 +37,10 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
         setContentView(R.layout.activity_main);
 
         MenuObject close = new MenuObject("About Us");
-        close.setResource(R.drawable.i_icon);
+        close.setResource(R.drawable.about_us);
 
         MenuObject send = new MenuObject("Disclaimer");
-        send.setResource(R.drawable.i_icon);
+        send.setResource(R.drawable.disclaimer);
 
         List<MenuObject> menuObjects = new ArrayList<>();
         menuObjects.add(close);

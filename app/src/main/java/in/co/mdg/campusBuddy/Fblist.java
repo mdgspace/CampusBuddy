@@ -9,9 +9,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -30,13 +34,14 @@ public class Fblist extends AppCompatActivity {
     ListView listview;
     String[] fbpages;
     ArrayList<String> fbpagesliked;
-    public ArrayList<Page> pageList;
+    private ArrayList<Page> pageList;
     CallbackManager callbackManager;
     Button submitb;
+    CustomList adapter;
     int i;
-    public static boolean flag = true;
+//    private static boolean flag = true;
     Toolbar toolbar;
-    public ArrayList<Page> listofvalues;
+    private ArrayList<Page> listofvalues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +76,7 @@ public class Fblist extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        flag = false;
+//        flag = false;
         listofvalues = Data.getFbPageList();
 
 
@@ -82,7 +87,7 @@ public class Fblist extends AppCompatActivity {
 
             listview = (ListView) findViewById(R.id.listfbpages);
             fbpages = getResources().getStringArray(R.array.fbpages);
-            pageList = new ArrayList<Page>();
+            pageList = new ArrayList<>();
             for (int i = 0; i < fbpages.length; i++) {
                 Page page = new Page(fbpages[i]);
                 page.page_id = listofvalues.get(i).getPage_id();
@@ -102,7 +107,7 @@ public class Fblist extends AppCompatActivity {
                     }
                 } while (cr.moveToNext());
             }
-            CustomList adapter = new CustomList(Fblist.this, pageList);
+            adapter = new CustomList(Fblist.this, pageList);
             listview.setAdapter(adapter);
 
 
@@ -114,8 +119,8 @@ public class Fblist extends AppCompatActivity {
                         do {
                             String page_id = cr.getString(cr.getColumnIndex(PagesDB.PagesEntry.COLUMN_NAME_Pages_ID));
                             FirebaseMessaging.getInstance().unsubscribeFromTopic(page_id);
-                            Log.d("pageID",page_id);
-                        } while (cr.moveToNext()) ;
+                            Log.d("pageID", page_id);
+                        } while (cr.moveToNext());
                     }
                     db.delete(PagesDB.PagesEntry.TABLE_NAME, null, null);
                     int number_liked = 0;
@@ -151,12 +156,38 @@ public class Fblist extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_fblist, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
+        if(adapter != null) {
 
+
+            switch (id) {
+                case R.id.action_select_all:
+                    for (int i = 0; i < adapter.getCount(); i++)
+                        adapter.getItem(i).setIsSelected(true);
+                    adapter.notifyDataSetChanged();
+                    return true;
+                case R.id.action_select_none:
+                    for (int i = 0; i < adapter.getCount(); i++)
+                        adapter.getItem(i).setIsSelected(false);
+                    adapter.notifyDataSetChanged();
+                    return true;
+                case R.id.action_select_invert:
+                    for (int i = 0; i < adapter.getCount(); i++)
+                        adapter.getItem(i).setIsSelected(!adapter.getItem(i).isSelected);
+                    adapter.notifyDataSetChanged();
+                    return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

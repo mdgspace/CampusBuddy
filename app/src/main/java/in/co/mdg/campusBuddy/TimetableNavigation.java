@@ -154,11 +154,28 @@ public class TimetableNavigation extends AppCompatActivity implements MonthLoade
         {
             calledNetwork=true;
             String lastUpdatedDate=(realm.where(LastUpdated.class).findFirst() != null)?realm.where(LastUpdated.class).findFirst().getDate():null;
-            String todaysDate = sdfDateString.format(new Date());
             if(lastUpdatedDate==null) {
-                calendarLoad.setVisibility(View.VISIBLE);
-                GetEventsFromGCal g = GetEventsFromGCal.getInstance();
-                g.getAcadEvents(mWeekView,calendarLoad);
+                updateAcadEvents();
+            }
+            else {
+                try {
+                    Calendar todaysDate = Calendar.getInstance();
+                    Calendar lastUpdated = Calendar.getInstance();
+                    lastUpdated.setTime(sdfDateString.parse(lastUpdatedDate));
+                    if(todaysDate.get(Calendar.MONTH)<7)
+                    {
+                        Calendar springSem = Calendar.getInstance();
+                        springSem.set(todaysDate.get(Calendar.YEAR),1,1,0,0,0);
+                        if(lastUpdated.before(springSem)) updateAcadEvents();
+                    }
+                    else {
+                        Calendar autumnSem = Calendar.getInstance();
+                        autumnSem.set(todaysDate.get(Calendar.YEAR),7,1,0,0,0);
+                        if(lastUpdated.before(autumnSem)) updateAcadEvents();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -220,6 +237,12 @@ public class TimetableNavigation extends AppCompatActivity implements MonthLoade
         }
 
         return events;
+    }
+
+    private void updateAcadEvents() {
+        calendarLoad.setVisibility(View.VISIBLE);
+        GetEventsFromGCal g = GetEventsFromGCal.getInstance();
+        g.getAcadEvents(mWeekView,calendarLoad);
     }
 
     @Override

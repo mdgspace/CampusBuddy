@@ -1,54 +1,41 @@
 package in.co.mdg.campusBuddy.contacts;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.ImageView;
 
-import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 import com.squareup.picasso.Target;
 
-import java.io.IOException;
-
 import in.co.mdg.campusBuddy.R;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by Chirag on 27-08-2016.
  */
 
 class LoadingImages {
-    static void loadDeptImages(String deptPhoto, final ImageView deptBackDrop, final Callback callback)
-    {
-        if(deptPhoto != null)
-        {
-            if(deptPhoto.length()<4)
+    static void loadDeptImages(String deptPhoto, final ImageView deptBackDrop, final Callback callback) {
+        if (deptPhoto != null) {
+            if (deptPhoto.length() < 4)
                 deptPhoto = "http://www.iitr.ac.in/departments/" + deptPhoto + "/assets/images/top1.jpg";
             RequestCreator requestCreator = Picasso.with(deptBackDrop.getContext())
                     .load(deptPhoto)
                     .noFade()
                     .fit();
-            if(callback != null)
-                requestCreator.into(deptBackDrop,callback);
+            if (callback != null)
+                requestCreator.into(deptBackDrop, callback);
             else
                 requestCreator.placeholder(R.drawable.dept_icon).into(deptBackDrop);
-        }
-        else
-        {
-            if(callback == null)
+        } else {
+            if (callback == null)
                 Picasso.with(deptBackDrop.getContext()).load(R.drawable.dept_icon).noFade().fit().into(deptBackDrop);
         }
     }
-    static void loadContactImages(String profilePicAddr,ImageView profilePic)
-    {
+
+    static void loadContactImages(String profilePicAddr, ImageView profilePic) {
         if (profilePicAddr != null) {
             if (profilePicAddr.equals("") || profilePicAddr.equals("default.jpg")) {
                 profilePic.setImageDrawable(
@@ -56,7 +43,7 @@ class LoadingImages {
                                 profilePic.getContext()
                                 , R.drawable.contact_icon));
             } else {
-                if(!profilePicAddr.contains("http"))
+                if (!profilePicAddr.contains("http"))
                     profilePicAddr = "http://people.iitr.ernet.in/facultyphoto/" + profilePicAddr;
                 Picasso.with(profilePic.getContext())
                         .load(profilePicAddr)
@@ -91,12 +78,17 @@ class LoadingImages {
 //        }
 
     }
-    static void loadContactImageForContactView(String profilePicAddr, final ImageView profilePic,final ImageView smallProfilePic)
-    {
+
+    static void loadContactImageForContactView(String profilePicAddr, final ImageView profilePic, final ImageView smallProfilePic) {
         if (profilePicAddr != null) {
-            if (!profilePicAddr.equals("") && !profilePicAddr.equals("default.jpg")) {
+            if (!(profilePicAddr.equals("") || profilePicAddr.equals("default.jpg"))) {
+                if (!profilePicAddr.contains("http"))
+                    profilePicAddr = "http://people.iitr.ernet.in/facultyphoto/" + profilePicAddr;
                 Picasso.with(profilePic.getContext())
-                        .load("http://people.iitr.ernet.in/facultyphoto/" + profilePicAddr)
+                        .load(profilePicAddr)
+                        .noFade()
+//                        .error(ContextCompat.getDrawable(smallProfilePic.getContext(), R.drawable.contact_icon))
+//                        .placeholder(ContextCompat.getDrawable(smallProfilePic.getContext(), R.drawable.contact_icon))
                         .into(new Target() {
                             @Override
                             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -106,14 +98,14 @@ class LoadingImages {
 
                             @Override
                             public void onBitmapFailed(Drawable errorDrawable) {
-                                profilePic.setImageDrawable(ContextCompat.getDrawable(profilePic.getContext(), R.drawable.contact_icon));
-                                smallProfilePic.setImageDrawable(ContextCompat.getDrawable(smallProfilePic.getContext(), R.drawable.contact_icon));
+//                                profilePic.setImageDrawable(errorDrawable);
+//                                smallProfilePic.setImageDrawable(errorDrawable);
                             }
 
                             @Override
                             public void onPrepareLoad(Drawable placeHolderDrawable) {
-                                profilePic.setImageDrawable(ContextCompat.getDrawable(profilePic.getContext(), R.drawable.contact_icon));
-                                smallProfilePic.setImageDrawable(ContextCompat.getDrawable(smallProfilePic.getContext(), R.drawable.contact_icon));
+//                                profilePic.setImageDrawable(placeHolderDrawable);
+//                                smallProfilePic.setImageDrawable(placeHolderDrawable);
                             }
                         });
             }
