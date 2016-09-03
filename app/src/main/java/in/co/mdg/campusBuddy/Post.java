@@ -1,5 +1,6 @@
 package in.co.mdg.campusBuddy;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -7,32 +8,33 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by root on 13/6/15.
  */
-public class Post implements Comparable<Post> {
+class Post implements Comparable<Post> {
 
-    JSONObject post;
-    String message, url, url2;
+    private JSONObject post;
+    private String message, url;
     public Date date;
-    String dateS;
-    String id, id1;
+    private String dateS;
+    private String id, id1;
 
-    String postId, imageUrl,linkurl=null;
+    private String postId, imageUrl, linkurl = null;
 
     //TODO: Data class
 
-    public Post(JSONObject obj) {
+    Post(JSONObject obj) {
 
         try {
             this.post = obj;
 
             message = post.optString("message");
             url = post.optString("picture");
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy", Locale.getDefault());
             date = sdf.parse(post.optString("created_time").substring(0, 10));
-            dateS=post.optString("created_time");
+            dateS = post.optString("created_time");
             id = post.getJSONObject("from").getString("name");
             id1 = post.getJSONObject("from").getString("id");
 //            Log.e("id of Fb icon", id1);
@@ -44,19 +46,14 @@ public class Post implements Comparable<Post> {
 
     }
 
-    public int getImageDrawable() {
-
-        int a = 0;
-
+    int getImageDrawable() {
         ArrayList<Page> listOfValues = Data.getFbPageList();
-        for(int i=0; i<listOfValues.size();i++){
-            if(id1.equals(listOfValues.get(i).getPage_id())){
-                a = i;
+        for (int i = 0; i < listOfValues.size(); i++) {
+            if (id1.equals(listOfValues.get(i).getPage_id())) {
+                return listOfValues.get(i).getImageId();
             }
         }
-//        Log.e("id of Fb icon", a + "");
-
-        return Data.getImages()[a];
+        return -1;
     }
 
     public String getMessage() {
@@ -67,17 +64,17 @@ public class Post implements Comparable<Post> {
         return url;
     }
 
-    public String getHeader() {
+    String getHeader() {
         return id + "";
     }
 
-    public String getPostId(){
+    String getPostId() {
         return postId;
     }
 
 
     @Override
-    public int compareTo(Post another) {
+    public int compareTo(@NonNull Post another) {
         return getDateS().compareTo(another.getDateS());
     }
 
@@ -86,31 +83,34 @@ public class Post implements Comparable<Post> {
 
     }
 
-    public void setLinkUrl(String linkurl){this.linkurl=linkurl;}
-    public  String getLinkUrl(){
-        if(linkurl!=null)
-        return linkurl;
-    else
-    return null;}
+    void setLinkUrl(String linkurl) {
+        this.linkurl = linkurl;
+    }
+
+    String getLinkUrl() {
+        if (linkurl != null)
+            return linkurl;
+        else
+            return null;
+    }
 
     public void setDate(Date date) {
         this.date = date;
     }
 
-    public String getImageUrl(){
+    String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl){
+    void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
-    private static class ImageUrlHolder{
+    private static class ImageUrlHolder {
         public String imageUrl = null;
     }
 
-    public String getDateS()
-    {
+    String getDateS() {
         return dateS;
     }
 }

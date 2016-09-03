@@ -32,14 +32,11 @@ public class Fblist extends AppCompatActivity {
     ContentValues values;
     String page_name;
     ListView listview;
-    String[] fbpages;
     ArrayList<String> fbpagesliked;
-    private ArrayList<Page> pageList;
     CallbackManager callbackManager;
     Button submitb;
     CustomList adapter;
     int i;
-//    private static boolean flag = true;
     Toolbar toolbar;
     private ArrayList<Page> listofvalues;
 
@@ -80,34 +77,25 @@ public class Fblist extends AppCompatActivity {
         listofvalues = Data.getFbPageList();
 
 
-        fbpagesliked = new ArrayList<String>();
+        fbpagesliked = new ArrayList<>();
         callbackManager = CallbackManager.Factory.create();
         submitb = (Button) findViewById(R.id.submitbutton);
         try {
 
             listview = (ListView) findViewById(R.id.listfbpages);
-            fbpages = getResources().getStringArray(R.array.fbpages);
-            pageList = new ArrayList<>();
-            for (int i = 0; i < fbpages.length; i++) {
-                Page page = new Page(fbpages[i]);
-                page.page_id = listofvalues.get(i).getPage_id();
-                pageList.add(page);
-            }
-
-
             listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
             cr.moveToFirst();
             if (cr.getCount() > 0) {
                 do {
                     page_name = cr.getString(cr.getColumnIndex(PagesDB.PagesEntry.COLUMN_NAME_Page_name));
-                    for (int i = 0; i < fbpages.length; i++) {
-                        if (page_name.equals(pageList.get(i).getPage_name())) {
-                            pageList.get(i).setIsSelected(true);
+                    for (int i = 0; i < listofvalues.size(); i++) {
+                        if (page_name.equals(listofvalues.get(i).getPage_name())) {
+                            listofvalues.get(i).setIsSelected(true);
                         }
                     }
                 } while (cr.moveToNext());
             }
-            adapter = new CustomList(Fblist.this, pageList);
+            adapter = new CustomList(Fblist.this, listofvalues);
             listview.setAdapter(adapter);
 
 
@@ -125,12 +113,12 @@ public class Fblist extends AppCompatActivity {
                     db.delete(PagesDB.PagesEntry.TABLE_NAME, null, null);
                     int number_liked = 0;
 
-                    for (int i = 0; i < fbpages.length; i++) {
-                        if (pageList.get(i).isSelected()) {
+                    for (int i = 0; i < listofvalues.size(); i++) {
+                        if (listofvalues.get(i).isSelected()) {
                             number_liked++;
                             fbpagesliked.add(listofvalues.get(i).getPage_id());
                             values.put(PagesDB.PagesEntry.COLUMN_NAME_Pages_ID, listofvalues.get(i).getPage_id());
-                            values.put(PagesDB.PagesEntry.COLUMN_NAME_Page_name, pageList.get(i).getPage_name());
+                            values.put(PagesDB.PagesEntry.COLUMN_NAME_Page_name, listofvalues.get(i).getPage_name());
                             db.insert(
                                     PagesDB.PagesEntry.TABLE_NAME,
                                     null,
@@ -153,6 +141,7 @@ public class Fblist extends AppCompatActivity {
             });
         } catch (Exception e) {
             Toast.makeText(Fblist.this, e.toString(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
     }
 
@@ -182,7 +171,7 @@ public class Fblist extends AppCompatActivity {
                     return true;
                 case R.id.action_select_invert:
                     for (int i = 0; i < adapter.getCount(); i++)
-                        adapter.getItem(i).setIsSelected(!adapter.getItem(i).isSelected);
+                        adapter.getItem(i).setIsSelected(!adapter.getItem(i).isSelected());
                     adapter.notifyDataSetChanged();
                     return true;
             }

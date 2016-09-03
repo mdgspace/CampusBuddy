@@ -2,24 +2,18 @@ package in.co.mdg.campusBuddy.contacts;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,10 +23,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import in.co.mdg.campusBuddy.AboutUs;
 import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.ClickListener;
 import in.co.mdg.campusBuddy.contacts.data_models.Contact;
@@ -194,7 +184,10 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
                     case 2:
                         searchBox.setText("");
                         SPEECHORCLEAR = 1;
-                        Picasso.with(getApplicationContext()).load(R.drawable.ic_mic_black_24dp).into(speechButton);
+                        speechButton.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                        speechButton.getContext()
+                                        , R.drawable.ic_mic_black_24dp));
                         break;
                 }
             }
@@ -303,38 +296,8 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        if (id == R.id.disclaimer) {
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-// ...Irrelevant code for customizing the buttons and title
-            LayoutInflater inflater = this.getLayoutInflater();
-            View dialogView = inflater.inflate(R.layout.disclaimer, null);
-            dialogBuilder.setView(dialogView);
-            dialogBuilder.setTitle("Disclaimer");
-            dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
-
-            TextView tv_dis = (TextView) dialogView.findViewById(R.id.disclaimera);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                tv_dis.setText(Html.fromHtml(getString(R.string.disclaimer_text), Html.FROM_HTML_MODE_LEGACY));
-            else
-                tv_dis.setText(Html.fromHtml(getString(R.string.disclaimer_text)));
-            tv_dis.setMovementMethod(LinkMovementMethod.getInstance());
-            AlertDialog alertDialog = dialogBuilder.create();
-            alertDialog.show();
-        } else if (id == R.id.about_us_menu) {
-
-            Intent i = new Intent(ContactsMainActivity.this, AboutUs.class);
-            startActivity(i);
-        } else if (id == R.id.search) {
+        if (id == R.id.search) {
             searchBar.setVisibility(View.VISIBLE);
             dimLayout.setVisibility(View.VISIBLE);
             if (searchBox.getText().toString().equals("")) {
@@ -344,8 +307,8 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
             inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
             searchBox.requestFocus();
             searchBox.showDropDown();
+            return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

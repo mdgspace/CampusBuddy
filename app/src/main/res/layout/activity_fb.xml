@@ -5,7 +5,8 @@
     android:orientation="vertical"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/gray_light_trans">
 
     <include
         android:id="@+id/tool_barfb"
@@ -39,7 +40,7 @@
         android:id="@+id/grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:item_margin="8dp"
+        app:item_margin="12dp"
         app:column_count="1"
         android:layout_below="@id/tool_barfb"/>
 

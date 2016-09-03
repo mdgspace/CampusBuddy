@@ -18,8 +18,11 @@ import android.view.View;
 import android.widget.EdgeEffect;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.target.Target;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -89,10 +92,11 @@ public class ShowDepartmentContacts extends AppCompatActivity {
         Realm realm = Realm.getDefaultInstance();
         Department dept = realm.where(Department.class).equalTo("name", deptName).findFirst();
         final ImageView deptBackdrop = (ImageView) findViewById(R.id.dept_backdrop);
-        Callback callback = new Callback() {
+
+        BitmapImageViewTarget target = new BitmapImageViewTarget(deptBackdrop) {
             @Override
-            public void onSuccess() {
-                Bitmap bitmap = ((BitmapDrawable) deptBackdrop.getDrawable()).getBitmap();
+            public void onResourceReady(Bitmap bitmap, GlideAnimation anim) {
+                super.onResourceReady(bitmap, anim);
                 Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                     public void onGenerated(Palette palette) {
                         applyPalette(palette);
@@ -100,12 +104,8 @@ public class ShowDepartmentContacts extends AppCompatActivity {
                     }
                 });
             }
-
-            @Override
-            public void onError() {
-            }
         };
-        LoadingImages.loadDeptImages(dept.getPhoto(),deptBackdrop,callback);
+        LoadingImages.loadDeptImages(dept.getPhoto(),target );
 
 
     }

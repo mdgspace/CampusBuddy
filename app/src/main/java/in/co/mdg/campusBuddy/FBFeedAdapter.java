@@ -2,12 +2,10 @@ package in.co.mdg.campusBuddy;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +13,9 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.etsy.android.grid.util.DynamicHeightImageView;
 import com.etsy.android.grid.util.DynamicHeightTextView;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 
@@ -79,33 +76,31 @@ class FBFeedAdapter extends ArrayAdapter<Post> {
         holder.fbpostpicicon.setImageResource(post.getImageDrawable());
         holder.dateofpost.setText(DateFormatter.getTimeAgo(post.getDateS()));
 
-        Transformation  transformation = new Transformation(){
-
-            @Override
-            public Bitmap transform(Bitmap source) {
-                int targetWidth = holder.fbpostpic.getWidth();
-
-                double aspectRatio = (double) source.getHeight() / (double) source.getWidth();
-                int targetHeight = (int) (targetWidth * aspectRatio);
-                Bitmap result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false);
-                if (result != source) {
-                    // Same bitmap is returned if sizes are the same
-                    source.recycle();
-                }
-                return result;
-            }
-
-            @Override
-            public String key() {
-                return null;
-            }
-        };
+//        Transformation  transformation = new Transformation(){
+//
+//            @Override
+//            public Resource transform(Resource resource, int outWidth, int outHeight) {
+//                int targetWidth = holder.fbpostpic.getWidth();
+//                double aspectRatio = (double) resource.getHeight() / (double) source.getWidth();
+//                int targetHeight = (int) (targetWidth * aspectRatio);
+//                Bitmap result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false);
+//                if (result != source) {
+//                    // Same bitmap is returned if sizes are the same
+//                    source.recycle();
+//                }
+//                return result;
+//            }
+//
+//            @Override
+//            public String getId() {
+//                return null;
+//            }
+//        };
         holder.fbpostpic.setVisibility(View.VISIBLE);
 
             if(post.getImageUrl()!=null){
                 try {
-                    Picasso.with(context).load(post.getImageUrl()).transform(transformation).
-                            into(holder.fbpostpic);
+                    Glide.with(context).load(post.getImageUrl()).fitCenter().into(holder.fbpostpic);
                 }catch (Exception e){
                     e.printStackTrace();
                     holder.fbpostpic.setVisibility(View.GONE);

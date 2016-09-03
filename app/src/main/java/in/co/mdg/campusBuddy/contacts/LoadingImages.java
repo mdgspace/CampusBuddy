@@ -1,14 +1,15 @@
 package in.co.mdg.campusBuddy.contacts;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
-import com.squareup.picasso.Target;
+import com.bumptech.glide.DrawableRequestBuilder;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import in.co.mdg.campusBuddy.R;
 
@@ -17,21 +18,31 @@ import in.co.mdg.campusBuddy.R;
  */
 
 class LoadingImages {
-    static void loadDeptImages(String deptPhoto, final ImageView deptBackDrop, final Callback callback) {
+    static void loadDeptImages(String deptPhoto, final ImageView deptBackDrop) {
         if (deptPhoto != null) {
             if (deptPhoto.length() < 4)
                 deptPhoto = "http://www.iitr.ac.in/departments/" + deptPhoto + "/assets/images/top1.jpg";
-            RequestCreator requestCreator = Picasso.with(deptBackDrop.getContext())
+
+            Glide.with(deptBackDrop.getContext())
                     .load(deptPhoto)
-                    .noFade()
-                    .fit();
-            if (callback != null)
-                requestCreator.into(deptBackDrop, callback);
-            else
-                requestCreator.placeholder(R.drawable.dept_icon).into(deptBackDrop);
-        } else {
-            if (callback == null)
-                Picasso.with(deptBackDrop.getContext()).load(R.drawable.dept_icon).noFade().fit().into(deptBackDrop);
+                    .centerCrop()
+                    .dontAnimate()
+                    .placeholder(R.drawable.dept_icon)
+                    .into(deptBackDrop);
+        }
+    }
+    static void loadDeptImages(String deptPhoto, final BitmapImageViewTarget target ) {
+        if (deptPhoto != null) {
+            if (deptPhoto.length() < 4)
+                deptPhoto = "http://www.iitr.ac.in/departments/" + deptPhoto + "/assets/images/top1.jpg";
+
+            Glide.with(target.getView().getContext())
+                    .load(deptPhoto)
+                    .asBitmap()
+                    .centerCrop()
+                    .dontAnimate()
+                    .placeholder(R.drawable.dept_default)
+                    .into(target);
         }
     }
 
@@ -45,10 +56,11 @@ class LoadingImages {
             } else {
                 if (!profilePicAddr.contains("http"))
                     profilePicAddr = "http://people.iitr.ernet.in/facultyphoto/" + profilePicAddr;
-                Picasso.with(profilePic.getContext())
+                Glide.with(profilePic.getContext())
                         .load(profilePicAddr)
                         .placeholder(R.drawable.contact_icon)
-                        .noFade()
+                        .centerCrop()
+                        .dontAnimate()
                         .error(R.drawable.contact_icon)
                         .into(profilePic);
             }
@@ -84,28 +96,17 @@ class LoadingImages {
             if (!(profilePicAddr.equals("") || profilePicAddr.equals("default.jpg"))) {
                 if (!profilePicAddr.contains("http"))
                     profilePicAddr = "http://people.iitr.ernet.in/facultyphoto/" + profilePicAddr;
-                Picasso.with(profilePic.getContext())
+                Glide.with(profilePic.getContext())
                         .load(profilePicAddr)
-                        .noFade()
+                        .dontAnimate()
+                        .centerCrop()
 //                        .error(ContextCompat.getDrawable(smallProfilePic.getContext(), R.drawable.contact_icon))
 //                        .placeholder(ContextCompat.getDrawable(smallProfilePic.getContext(), R.drawable.contact_icon))
-                        .into(new Target() {
+                        .into(new SimpleTarget<GlideDrawable>() {
                             @Override
-                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                                profilePic.setImageBitmap(bitmap);
-                                smallProfilePic.setImageBitmap(bitmap);
-                            }
-
-                            @Override
-                            public void onBitmapFailed(Drawable errorDrawable) {
-//                                profilePic.setImageDrawable(errorDrawable);
-//                                smallProfilePic.setImageDrawable(errorDrawable);
-                            }
-
-                            @Override
-                            public void onPrepareLoad(Drawable placeHolderDrawable) {
-//                                profilePic.setImageDrawable(placeHolderDrawable);
-//                                smallProfilePic.setImageDrawable(placeHolderDrawable);
+                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                                profilePic.setImageDrawable(resource);
+                                smallProfilePic.setImageDrawable(resource);
                             }
                         });
             }

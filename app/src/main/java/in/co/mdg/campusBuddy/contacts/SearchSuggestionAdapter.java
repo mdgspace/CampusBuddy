@@ -15,7 +15,7 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -73,10 +73,9 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                     sb.setSpan(fcs, searchMatchPosition, searchMatchPosition + queryString.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             }
             holder.contactName.setText(sb);
-            Picasso.with(getContext())
-                    .cancelRequest(holder.profilePic);
+            Glide.clear(holder.profilePic);
             if (contact.isDept()) {
-                LoadingImages.loadDeptImages(contact.getProfilePic(),holder.profilePic,null);
+                LoadingImages.loadDeptImages(contact.getProfilePic(),holder.profilePic);
             } else {
                 LoadingImages.loadContactImages(contact.getProfilePic(),holder.profilePic);
                 if (contact.isHistorySearch())

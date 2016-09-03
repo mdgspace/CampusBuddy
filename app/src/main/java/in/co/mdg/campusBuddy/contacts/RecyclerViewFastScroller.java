@@ -91,10 +91,12 @@ public class RecyclerViewFastScroller extends LinearLayout {
                     return false;
                 if (currentAnimator != null)
                     currentAnimator.cancel();
-                if (bubble != null && bubble.getVisibility() == INVISIBLE)
+                if (bubble != null && bubble.getVisibility() == INVISIBLE && ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() != 0 )
                     showBubble();
                 handle.setSelected(true);
             case MotionEvent.ACTION_MOVE:
+                if (bubble != null && bubble.getVisibility() == INVISIBLE && ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition() != 0 )
+                    showBubble();
                 final float y = event.getY();
                 setBubbleAndHandlePosition(y);
                 setRecyclerViewPosition(y);
@@ -140,9 +142,11 @@ public class RecyclerViewFastScroller extends LinearLayout {
                 proportion = y / (float) height;
             final int targetPos = getValueInRange(0, itemCount - 1, (int) (proportion * (float) itemCount));
             ((LinearLayoutManager) recyclerView.getLayoutManager()).scrollToPositionWithOffset(targetPos, 0);
-            final String bubbleText = ((BubbleTextGetter) recyclerView.getAdapter()).getTextToShowInBubble(targetPos);
-            if (bubble != null)
-                bubble.setText(bubbleText);
+            if(targetPos != 0) {
+                final String bubbleText = ((BubbleTextGetter) recyclerView.getAdapter()).getTextToShowInBubble(targetPos);
+                if (bubble != null)
+                    bubble.setText(bubbleText);
+            }
         }
     }
 

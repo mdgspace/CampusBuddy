@@ -1,6 +1,5 @@
 package in.co.mdg.campusBuddy.contacts;
 
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.data_models.Contact;
@@ -23,7 +22,7 @@ import io.realm.RealmResults;
  */
 class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapter.ContactViewHolder> implements RecyclerViewFastScroller.BubbleTextGetter {
     private static Realm realm = Realm.getDefaultInstance();
-    private RealmResults<Department> depts;
+    private RealmList<Department> depts = new RealmList<>();
     private RealmResults<Contact> contacts;
     private RealmList<Contact> deptContacts;
     private int type = 1;
@@ -39,7 +38,11 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
         switch(option)
         {
             case 1:
-                if(depts==null) {depts = realm.where(Department.class).findAll().sort("name");}
+                if(depts.size() == 0) {
+                    RealmResults<Department> results = realm.where(Department.class).notEqualTo("name","Medical Aid").findAll().sort("name");
+                    depts.add(0,realm.where(Department.class).equalTo("name","Medical Aid").findFirst());
+                    depts.addAll(results);
+                }
                 break;
             case 2:
                 if(contacts==null) {contacts = realm.where(Contact.class).isNotNull("profilePic").findAll().sort("name");}
@@ -122,28 +125,35 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
         return "";
     }
     static class ContactViewHolder extends RecyclerView.ViewHolder {
-        TextView name;
+        TextView name,desg;
         ImageView profilePic;
 
         ContactViewHolder(View itemView)
         {
             super(itemView);
             name =(TextView)itemView.findViewById(R.id.name);
+            desg =(TextView)itemView.findViewById(R.id.desg);
             profilePic=(ImageView) itemView.findViewById(R.id.profile_pic);
         }
 
         void bind(final int type,final Object item) {
-            Picasso.with(profilePic.getContext())
-                    .cancelRequest(profilePic);
+            Glide.clear(profilePic);
             switch(type){
                 case 1:
                     Department dept = (Department) item;
                     name.setText(dept.getName());
-                    LoadingImages.loadDeptImages(dept.getPhoto(),profilePic,null);
+                    desg.setVisibility(View.GONE);
+                    LoadingImages.loadDeptImages(dept.getPhoto(),profilePic);
                     break;
                 case 2:case 3:
                     Contact contact = (Contact) item;
                     name.setText(contact.getName());
+                    if(contact.getDesignation() == null)
+                        desg.setVisibility(View.GONE);
+                    else{
+                        desg.setVisibility(View.VISIBLE);
+                        desg.setText(contact.getDesignation());
+                    }
                     LoadingImages.loadContactImages(contact.getProfilePic(),profilePic);
                     break;
             }

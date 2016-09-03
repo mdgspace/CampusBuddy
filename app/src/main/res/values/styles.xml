@@ -25,9 +25,10 @@
     </style>
     <style name="MainAcitvityTheme" parent="AppTheme">
         <item name="colorPrimaryDark">@color/primary</item>
+        <item name="colorAccent">@color/mdtp_accent_color</item>
     </style>
 
-    <style name="NewEventTheme" parent="AppTheme">
+    <style name="DefaultAccentTheme" parent="AppTheme">
         <item name="colorAccent">@color/mdtp_accent_color</item>
     </style>
 
