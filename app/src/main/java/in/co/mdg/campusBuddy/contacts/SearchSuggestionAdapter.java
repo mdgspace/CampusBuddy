@@ -76,16 +76,16 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
             holder.contactName.setText(sb);
             Glide.clear(holder.profilePic);
             if (contact.isDept()) {
-
-                LoadingImages.loadDeptImages(contact.getProfilePic(),holder.profilePic);
+                holder.dept.setVisibility(View.GONE);
+                LoadingImages.loadDeptImages(contact.getProfilePic(), holder.profilePic);
             } else {
-                if( contact.getProfilePic() != null)
+                if (contact.getProfilePic() != null)
                     holder.dept.setVisibility(View.GONE);
-                else{
+                else {
                     holder.dept.setVisibility(View.VISIBLE);
                     holder.dept.setText(contact.getDept());
                 }
-                LoadingImages.loadContactImages(contact.getProfilePic(),holder.profilePic);
+                LoadingImages.loadContactImages(contact.getProfilePic(), holder.profilePic);
                 if (contact.isHistorySearch())
                     holder.icon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_history_black_24dp));
                 else
@@ -97,7 +97,7 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
     }
 
     private static class ViewHolder {
-        TextView contactName,dept;
+        TextView contactName, dept;
         ImageView icon, profilePic;
     }
 
@@ -140,11 +140,11 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                 contacts = contactRealmQuery.findAll().sort("name");
                 depts = realm.where(Department.class).contains("name", queryString, Case.INSENSITIVE).findAll().sort("name");
                 adminContacts = realm.where(Department.class)
-                        .equalTo("name","Administration")
+                        .equalTo("name", "Administration")
                         .findFirst()
                         .getContacts()
                         .where()
-                        .contains("designation",queryString,Case.INSENSITIVE)
+                        .contains("designation", queryString, Case.INSENSITIVE)
                         .findAll()
                         .sort("name");
             }
