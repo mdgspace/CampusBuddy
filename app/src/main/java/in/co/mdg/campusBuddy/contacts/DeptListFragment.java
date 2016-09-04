@@ -18,7 +18,7 @@ public class DeptListFragment extends Fragment{
     private static final String ARG_TYPE = "type";
 
     private int mType;
-    private ContactsRecyclerAdapter adapter;
+    public ContactsRecyclerAdapter adapter;
 
 
     public DeptListFragment() {

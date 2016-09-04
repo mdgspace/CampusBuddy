@@ -1,5 +1,7 @@
 package in.co.mdg.campusBuddy;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,7 +13,7 @@ import java.util.Locale;
  * @version 1.0.0
  * @since 24-Aug-15
  */
-public class DateFormatter {
+class DateFormatter {
 
     private static final int SECOND_MILLIS = 1000;
     private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
@@ -20,8 +22,8 @@ public class DateFormatter {
 
     public static String formatDate(String dateText) {
         if (dateText != null) {
-            DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            DateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy");
+            DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            DateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             Date date = null;
             try {
                 date = originalFormat.parse(dateText);
@@ -35,20 +37,21 @@ public class DateFormatter {
 
     }
 
-    public static String getTimeAgo(String timestamp) {
+    static String getTimeAgo(String timestamp) {
 
         long time = formatTimestamp(timestamp);
-        if (time < 1000000000000L) {
-            // if timestamp given in seconds, convert to millis
-            time *= 1000;
-        }
+//        if (time < 1000000000000L) {
+//            // if timestamp given in seconds, convert to millis
+//            time *= 1000;
+//        }
 
-        long now = System.currentTimeMillis();
+//        long now = System.currentTimeMillis();
 //        if (time > now || time <= 0) {
 //            return null;
 //        }
+        long now = new Date().getTime();
 
-        final long diff = now - time;
+        final long diff = now - time - (5*HOUR_MILLIS + 30*MINUTE_MILLIS);
         if (diff < MINUTE_MILLIS) {
             return "Just now";
         } else if (diff < 2 * MINUTE_MILLIS) {
@@ -71,21 +74,21 @@ public class DateFormatter {
 
     }
 
-    public static long formatTimestamp(String dateText) {
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
-        Date date = null;
+    private static long formatTimestamp(String dateText) {
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
         try {
-            date = originalFormat.parse(dateText);
+            Date date = originalFormat.parse(dateText);
+            return date.getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return date.getTime();
+        return 0;
     }
 
     public static String getDate(String dateText) {
 
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
-        DateFormat dateValue = new SimpleDateFormat("d MMM, yyyy");
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+        DateFormat dateValue = new SimpleDateFormat("d MMM, yyyy",Locale.getDefault());
         Date date = null;
         try {
             date = originalFormat.parse(dateText);
@@ -96,10 +99,10 @@ public class DateFormatter {
         return dateValue.format(date);
     }
 
-    public static String getTime(String dateText) {
+    private static String getTime(String dateText) {
 
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
-        DateFormat timeValue = new SimpleDateFormat("HH:mm");
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+        DateFormat timeValue = new SimpleDateFormat("HH:mm", Locale.getDefault());
         Date date = null;
         try {
             date = originalFormat.parse(dateText);

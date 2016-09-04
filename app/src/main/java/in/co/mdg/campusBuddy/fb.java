@@ -77,7 +77,7 @@ public class Fb extends AppCompatActivity {
         }
         @Override
         protected Boolean doInBackground(Void... voids) {
-            return isNetConnected();
+            return NetworkCheck.isNetConnected();
         }
         @Override
         protected void onPostExecute(Boolean result)
@@ -97,21 +97,6 @@ public class Fb extends AppCompatActivity {
                 sb.show();
             }
         }
-    }
-
-    private boolean isNetConnected() {
-        Runtime runtime = Runtime.getRuntime();
-        try
-        {
-            Process  mIpAddrProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
-            int mExitValue = mIpAddrProcess.waitFor();
-            return mExitValue == 0;
-        }
-        catch (InterruptedException | IOException e)
-        {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     private void processFeeds() {

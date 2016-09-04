@@ -40,7 +40,10 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
             case 1:
                 if(depts.size() == 0) {
                     RealmResults<Department> results = realm.where(Department.class).notEqualTo("name","Medical Aid").findAll().sort("name");
-                    depts.add(0,realm.where(Department.class).equalTo("name","Medical Aid").findFirst());
+                    Department medicalAid = realm.where(Department.class).equalTo("name","Medical Aid").findFirst();
+                    if(medicalAid != null) {
+                        depts.add(0,medicalAid);
+                    }
                     depts.addAll(results);
                 }
                 break;

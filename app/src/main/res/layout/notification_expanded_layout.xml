@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:contentDescription="Post Image"
         android:id="@+id/post_image"
         android:scaleType="centerCrop"
@@ -41,18 +41,17 @@
             android:layout_below="@id/title"
             android:textColor="@color/white"
             android:id="@+id/message"
-            android:maxLines="2"/>
+            android:maxLines="2"
+            android:ellipsize="end"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@id/title"
-            android:layout_marginTop="5dp"
+            android:textSize="10sp"
             android:text="time"
             android:textColor="#fff"
             android:id="@+id/time"/>
     </RelativeLayout>
-
-
 </RelativeLayout>

@@ -4,9 +4,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -23,14 +23,20 @@ import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import in.co.mdg.campusBuddy.NetworkCheck;
 import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.ClickListener;
 import in.co.mdg.campusBuddy.contacts.data_models.Contact;
@@ -52,17 +58,14 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
     private FrameLayout dimLayout;
     private LinearLayout searchBar;
     private ImageView backButton;
+    private ProgressBar progressBar;
+    private DeptListFragment deptList, AToZ;
+    private String contactsUrl = "https://www.sdsmdg.ml/cb/contacts.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telephone_contacts);
-        realm = Realm.getDefaultInstance();
-        try {
-            checkDbExists();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -71,19 +74,25 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
                 onBackPressed();
             }
         });
-        final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
+//        final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
         dimLayout = (FrameLayout) findViewById(R.id.dim_layout);
         final ImageView speechButton = (ImageView) findViewById(R.id.speechbutton);
         backButton = (ImageView) findViewById(R.id.backbutton);
         searchBox = (AutoCompleteTextView) findViewById(R.id.searchbox);
         searchBar = (LinearLayout) findViewById(R.id.searchbar);
+        progressBar = (ProgressBar) findViewById(R.id.progressbar);
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        deptList = DeptListFragment.newInstance(1);
+        AToZ = DeptListFragment.newInstance(2);
         setUpViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.accent));
         tabLayout.setTabTextColors(Color.parseColor("#A1F5F5F5"), Color.parseColor("#FFF5F5F5"));
+
+        realm = Realm.getDefaultInstance();
+        checkDbExists();
 
         searchAdapter = new SearchSuggestionAdapter(this, R.layout.search_suggestion_listitem);
         searchBox.setThreshold(1);
@@ -107,11 +116,13 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
                             } else {
                                 historySearch.setDateAdded(new Date());
                             }
-                            if(contact.getDept().equals("Administration"))
-                                contact.setName(realm.where(Contact.class).equalTo("designation",contact.getName()).findFirst().getName());
+                            if (contact.getDept().equals("Administration")) {
+                                Contact contact1 = realm.where(Contact.class).equalTo("designation", contact.getName()).findFirst();
+                                if (contact1 != null)
+                                    contact.setName(contact1.getName());
+                            }
                             showContact(contact.getName(), contact.getDept());
                         }
-
                     }
                 });
                 searchBox.setText("");
@@ -196,8 +207,8 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
 
     private void setUpViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(DeptListFragment.newInstance(1), "DEPARTMENT LIST");
-        adapter.addFrag(DeptListFragment.newInstance(2), "A TO Z LIST");
+        adapter.addFrag(deptList, "DEPARTMENT LIST");
+        adapter.addFrag(AToZ, "A TO Z LIST");
         viewPager.setAdapter(adapter);
     }
 
@@ -215,21 +226,111 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
         startActivity(in);
     }
 
-    private void checkDbExists() throws IOException {
-        long count = realm.where(Department.class).count();
-        if (count == 0) {
-            final InputStream stream = getAssets().open("contacts.json");
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
+    private void checkDbExists() {
+        if (realm.where(Department.class).count() == 0) {
+            final InputStream stream;
+            try {
+                stream = getAssets().open("contacts.json");
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        try {
+                            realm.createOrUpdateAllFromJson(Department.class, stream);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            new JSONTask().execute();
+        }
+    }
+
+    private void updateContacts(final String finalJson) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.createOrUpdateAllFromJson(Department.class, finalJson);
+                //Do write something
+            }
+        });
+        deptList.adapter.notifyDataSetChanged();
+        AToZ.adapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
+        Toast.makeText(this, "Contacts Updated", Toast.LENGTH_LONG).show();
+    }
+
+    public class JSONTask extends AsyncTask<Void, String, Boolean> {
+        String finalJson = "";
+
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            if (NetworkCheck.isNetConnected()) {
+                HttpURLConnection connection = null;
+                BufferedReader reader = null;
+                try {
+                    URL url = new URL(contactsUrl);
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.connect();
+                    InputStream stream = connection.getInputStream();
+                    reader = new BufferedReader(new InputStreamReader(stream));
+                    String line;
+                    StringBuilder buffer = new StringBuilder();
+                    while ((line = reader.readLine()) != null) {
+                        buffer.append(line);
+                    }
+                    finalJson = buffer.toString();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
                     try {
-                        realm.createAllFromJson(Department.class, stream);
-                        //Do write something
+                        if (reader != null) {
+                            reader.close();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-            });
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            final InputStream stream;
+            try {
+                stream = getAssets().open("contacts.json");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                String line;
+                StringBuilder buffer = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
+                String initialJson = buffer.toString();
+                if (result && finalJson.length() > 0 && !initialJson.contentEquals(finalJson)) {
+                    updateContacts(finalJson);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 

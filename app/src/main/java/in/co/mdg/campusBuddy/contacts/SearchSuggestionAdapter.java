@@ -57,6 +57,7 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
             convertView = mInflater.inflate(viewResourceId, parent, false);
             holder = new ViewHolder();
             holder.contactName = (TextView) convertView.findViewById(R.id.contact_name);
+            holder.dept = (TextView) convertView.findViewById(R.id.contact_dept);
             holder.profilePic = (ImageView) convertView.findViewById(R.id.profile_pic);
             holder.icon = (ImageView) convertView.findViewById(R.id.history_icon);
             convertView.setTag(holder);
@@ -75,8 +76,15 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
             holder.contactName.setText(sb);
             Glide.clear(holder.profilePic);
             if (contact.isDept()) {
+
                 LoadingImages.loadDeptImages(contact.getProfilePic(),holder.profilePic);
             } else {
+                if( contact.getProfilePic() != null)
+                    holder.dept.setVisibility(View.GONE);
+                else{
+                    holder.dept.setVisibility(View.VISIBLE);
+                    holder.dept.setText(contact.getDept());
+                }
                 LoadingImages.loadContactImages(contact.getProfilePic(),holder.profilePic);
                 if (contact.isHistorySearch())
                     holder.icon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_history_black_24dp));
@@ -89,7 +97,7 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
     }
 
     private static class ViewHolder {
-        TextView contactName;
+        TextView contactName,dept;
         ImageView icon, profilePic;
     }
 

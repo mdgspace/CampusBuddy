@@ -2,12 +2,15 @@ package in.co.mdg.campusBuddy.contacts.data_models;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Chirag on 13-06-2016.
  */
 
 public class Department extends RealmObject {
+    @PrimaryKey
+    private int primary_key;
     private String name;
     private String photo; //full url: http://www.iitr.ac.in/departments/{photo}/assets/images/top1.jpg
     private RealmList<Contact> contacts;

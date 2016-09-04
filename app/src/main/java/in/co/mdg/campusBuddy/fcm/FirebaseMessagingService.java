@@ -9,6 +9,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.NotificationCompat.BigTextStyle;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.NotificationCompat;
@@ -54,15 +56,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         if (img.equals("")) {
             showNotification(name, content);
         } else {
-//            Handler uiHandler = new Handler(Looper.getMainLooper());
-//            uiHandler.post(new Runnable() {
-//                @Override
-//                public void run() {
-//
-//                }
-//            });
             showPictureNotification(name, content, img);
-
         }
     }
 
@@ -70,12 +64,11 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         BigTextStyle bigTextStyle = new BigTextStyle();
         bigTextStyle.setBigContentTitle(title);
         bigTextStyle.bigText(message);
-        String shortText = message.length()>100?message.substring(0,100).concat("..."):message;
         Notification notification = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.buddy_icon)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(true)
                 .setContentTitle(title)
-                .setContentText(shortText)
+                .setContentText(message)
                 .setContentIntent(pi)
                 .setStyle(bigTextStyle)
                 .build();
@@ -89,13 +82,12 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     public void showPictureNotification(final String title, final String message, final String img) {
         final int id = random;
         RemoteViews collapsedView = new RemoteViews(getPackageName(), R.layout.notification_collapsed_layout);
-//        String shortText = message.length()>100?message.substring(0,100).concat("..."):message;
         collapsedView.setTextViewText(R.id.title, title);
         collapsedView.setTextViewText(R.id.message, message);
         collapsedView.setTextViewText(R.id.time, currentTime);
 
         final android.support.v4.app.NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.buddy_icon)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(true)
                 .setContentIntent(pi)
                 .setCustomContentView(collapsedView);
@@ -106,26 +98,30 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         manager.notify(id, notification);
 
-        Glide.with(getApplicationContext()).load(img).asBitmap().into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
+        Handler uiHandler = new Handler(Looper.getMainLooper());
+        uiHandler.post(new Runnable() {
             @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                RemoteViews collapsedView = new RemoteViews(getPackageName(), R.layout.notification_collapsed_layout);
-                collapsedView.setTextViewText(R.id.title, title);
-                collapsedView.setTextViewText(R.id.message, message);
-                collapsedView.setTextViewText(R.id.time, currentTime);
-                final RemoteViews expandedView = new RemoteViews(getPackageName(), R.layout.notification_expanded_layout);
-                expandedView.setTextViewText(R.id.title, title);
-                expandedView.setTextViewText(R.id.message, message);
-                expandedView.setImageViewBitmap(R.id.post_image, resource);
-                builder.setCustomContentView(collapsedView);
-                builder.setCustomBigContentView(expandedView);
-                Notification notification = builder.build();
-                notification.defaults |= Notification.DEFAULT_VIBRATE; //Vibration
-                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                manager.notify(id, notification);
+            public void run() {
+                Glide.with(getApplicationContext()).load(img).asBitmap().into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        RemoteViews collapsedView = new RemoteViews(getPackageName(), R.layout.notification_collapsed_layout);
+                        collapsedView.setTextViewText(R.id.title, title);
+                        collapsedView.setTextViewText(R.id.message, message);
+                        collapsedView.setTextViewText(R.id.time, currentTime);
+                        final RemoteViews expandedView = new RemoteViews(getPackageName(), R.layout.notification_expanded_layout);
+                        expandedView.setTextViewText(R.id.title, title);
+                        expandedView.setTextViewText(R.id.message, message);
+                        expandedView.setTextViewText(R.id.time, currentTime);
+                        expandedView.setImageViewBitmap(R.id.post_image, resource);
+                        builder.setCustomContentView(collapsedView);
+                        builder.setCustomBigContentView(expandedView);
+                        Notification notification = builder.build();
+                        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        manager.notify(id, notification);
+                    }
+                });
             }
         });
-
-
     }
 }
