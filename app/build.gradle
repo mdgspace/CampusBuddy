@@ -26,6 +26,9 @@ android
                     proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
                 }
             }
+            buildTypes.each {
+                it.buildConfigField 'String', 'CB_APP_SECRET', CampusBuddyFacebookAppSecret
+            }
             dependencies {
                 compile 'com.android.support:appcompat-v7:24.1.1'
                 compile 'com.android.support:design:24.1.1'

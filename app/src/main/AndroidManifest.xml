@@ -114,9 +114,6 @@
         <activity
             android:name=".Fblist"
             android:label="@string/title_activity_fblist" />
-        <activity
-            android:name=".Fblogin"
-            android:label="@string/title_activity_fblogin" />
 
         <receiver android:name=".AlarmReceiver">
 

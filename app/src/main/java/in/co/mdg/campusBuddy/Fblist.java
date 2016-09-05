@@ -13,9 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -102,27 +99,22 @@ public class Fblist extends AppCompatActivity {
             submitb.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    cr.moveToFirst();
-                    if (cr.getCount() > 0) {
-                        do {
-                            String page_id = cr.getString(cr.getColumnIndex(PagesDB.PagesEntry.COLUMN_NAME_Pages_ID));
-                            FirebaseMessaging.getInstance().unsubscribeFromTopic(page_id);
-                            Log.d("pageID", page_id);
-                        } while (cr.moveToNext());
-                    }
                     db.delete(PagesDB.PagesEntry.TABLE_NAME, null, null);
                     int number_liked = 0;
-
                     for (int i = 0; i < listofvalues.size(); i++) {
+                        String page_id = listofvalues.get(i).getPage_id();
                         if (listofvalues.get(i).isSelected()) {
                             number_liked++;
-                            fbpagesliked.add(listofvalues.get(i).getPage_id());
-                            values.put(PagesDB.PagesEntry.COLUMN_NAME_Pages_ID, listofvalues.get(i).getPage_id());
+                            fbpagesliked.add(page_id);
+                            values.put(PagesDB.PagesEntry.COLUMN_NAME_Pages_ID, page_id);
                             values.put(PagesDB.PagesEntry.COLUMN_NAME_Page_name, listofvalues.get(i).getPage_name());
                             db.insert(
                                     PagesDB.PagesEntry.TABLE_NAME,
                                     null,
                                     values);
+                        } else {
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic(page_id);
+                            Log.d("pageID", page_id);
                         }
                     }
                     PagesSelected.writeSelectedPageIds(Fblist.this, fbpagesliked);
@@ -134,7 +126,6 @@ public class Fblist extends AppCompatActivity {
                         finish();
                         startActivity(intent);
                     }
-
                 }
 
 
@@ -155,7 +146,7 @@ public class Fblist extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(adapter != null) {
+        if (adapter != null) {
 
 
             switch (id) {

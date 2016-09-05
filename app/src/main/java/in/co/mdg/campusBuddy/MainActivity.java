@@ -115,15 +115,8 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
         fbbtt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (AccessToken.getCurrentAccessToken() == null) {
-                    Intent tdIntent = new Intent(MainActivity.this, Fblogin.class);
-                    startActivity(tdIntent);
-                } else {
-                    Intent tdIntent = new Intent(MainActivity.this, Fb.class);
-                    startActivity(tdIntent);
-
-                }
+            Intent tdIntent = new Intent(MainActivity.this, Fb.class);
+            startActivity(tdIntent);
             }
         });
     }
