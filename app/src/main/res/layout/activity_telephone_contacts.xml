@@ -100,4 +100,10 @@
             android:layout_gravity="center_vertical"
             android:contentDescription="Speech Button" />
     </LinearLayout>
-    </FrameLayout>
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/settings"
+        android:visibility="gone"
+        layout="@layout/contacts_settings_overlay" />
+</FrameLayout>

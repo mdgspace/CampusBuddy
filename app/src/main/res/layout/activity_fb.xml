@@ -36,17 +36,28 @@
                 <!--android:layout_below="@+id/tool_barfb"-->
                 <!--android:layout_alignParentRight="true"-->
                 <!--android:layout_alignParentEnd="true" />-->
-    <com.etsy.android.grid.StaggeredGridView
-        android:id="@+id/grid_view"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tool_barfb">
+        <com.etsy.android.grid.StaggeredGridView
+            android:id="@+id/grid_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:item_margin="12dp"
+            app:column_count="1"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <!--<ProgressBar-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:id="@+id/progressbar"-->
+        <!--android:layout_centerInParent="true"/>-->
+    <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:item_margin="12dp"
-        app:column_count="1"
-        android:layout_below="@id/tool_barfb"/>
-
-    <ProgressBar
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:id="@+id/progressbar"
-        android:layout_centerInParent="true"/>
+        android:id="@+id/settings"
+        android:visibility="gone"
+        layout="@layout/contacts_settings_overlay" />
 </RelativeLayout>

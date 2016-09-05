@@ -95,4 +95,9 @@
         &lt;a href="http://www.iitr.ac.in/Main/pages/Telephone+Telephone_Directory.html"&gt;Telephone Directory&lt;/a&gt;
         &lt;/p&gt;
     </string>
+    <string name="data_warning"><i>It looks like you are on Data Pack!</i>\nStandard data charges may apply.</string>
+
+    <string name="title_activity_fullscreen_image_view">FullscreenImageView</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

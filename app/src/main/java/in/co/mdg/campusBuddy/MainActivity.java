@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.facebook.AccessToken;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -27,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.co.mdg.campusBuddy.contacts.ContactsMainActivity;
+import in.co.mdg.campusBuddy.fb.Fb;
 
 public class MainActivity extends AppCompatActivity implements OnMenuItemClickListener{
 

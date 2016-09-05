@@ -2,10 +2,12 @@ package in.co.mdg.campusBuddy;
 
 import java.util.ArrayList;
 
+import in.co.mdg.campusBuddy.fb.Page;
+
 /**
  * Created by rc on 19/8/15.
  */
-class Data {
+public class Data {
 
    private static ArrayList<Page> fbPageList = new ArrayList<>();
     private static  ArrayList<ColorItem> itemList = new ArrayList<>();
@@ -42,7 +44,7 @@ class Data {
             fbPageList.add(new Page("WatchOut NewsAgency","293084260715524",R.drawable.wona));
         }
     }
-    static ArrayList<Page> getFbPageList() {
+    public static ArrayList<Page> getFbPageList() {
         init();
         return fbPageList;
     }

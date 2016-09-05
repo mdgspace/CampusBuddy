@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import in.co.mdg.campusBuddy.fb.Page;
+
 /**
  * Created by root on 9/7/15.
  */

@@ -4,10 +4,13 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -20,10 +23,13 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -50,6 +56,7 @@ import io.realm.Realm;
 
 public class ContactsMainActivity extends AppCompatActivity implements ClickListener {
 
+    public static Boolean loadImages = true;
     private AutoCompleteTextView searchBox;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
     private static int SPEECHORCLEAR = 1;
@@ -60,6 +67,11 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
     private ImageView backButton;
     private ProgressBar progressBar;
     private DeptListFragment deptList, AToZ;
+    private View overlay;
+    private ImageButton closeBtn;
+    private CheckedTextView checkedTextView;
+    private TextView dataPackTV;
+    private ConnectivityManager connMgr;
     private String contactsUrl = "https://www.sdsmdg.ml/cb/contacts.json";
 
     @Override
@@ -74,7 +86,12 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
                 onBackPressed();
             }
         });
-//        final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
+        connMgr = (ConnectivityManager)
+                this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        overlay = findViewById(R.id.settings);
+        closeBtn = (ImageButton) overlay.findViewById(R.id.close_btn);
+        checkedTextView = (CheckedTextView) overlay.findViewById(R.id.enable_images);
+        dataPackTV = (TextView) overlay.findViewById(R.id.data_pack_notif_tv);
         dimLayout = (FrameLayout) findViewById(R.id.dim_layout);
         final ImageView speechButton = (ImageView) findViewById(R.id.speechbutton);
         backButton = (ImageView) findViewById(R.id.backbutton);
@@ -88,11 +105,29 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
         setUpViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.accent));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.white));
         tabLayout.setTabTextColors(Color.parseColor("#A1F5F5F5"), Color.parseColor("#FFF5F5F5"));
 
         realm = Realm.getDefaultInstance();
         checkDbExists();
+
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                overlay.setVisibility(View.GONE);
+            }
+        });
+        checkedTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((CheckedTextView) view).toggle();
+                loadImages = ((CheckedTextView) view).isChecked();
+                if(loadImages) {
+                    deptList.adapter.notifyDataSetChanged();
+                    AToZ.adapter.notifyDataSetChanged();
+                }
+            }
+        });
 
         searchAdapter = new SearchSuggestionAdapter(this, R.layout.search_suggestion_listitem);
         searchBox.setThreshold(1);
@@ -227,6 +262,7 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
     }
 
     private void checkDbExists() {
+        int status = NetworkCheck.chkStatus(connMgr);
         if (realm.where(Department.class).count() == 0) {
             final InputStream stream;
             try {
@@ -245,7 +281,15 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
                 e.printStackTrace();
             }
         } else {
-            new JSONTask().execute();
+
+            if(status == 1 || status == 2)
+                new JSONTask().execute();
+        }
+        if(status == 2) {//mobile data warning
+            overlay.setVisibility(View.VISIBLE);
+            loadImages = false;
+            checkedTextView.setChecked(false);
+            dataPackTV.setVisibility(View.VISIBLE);
         }
     }
 
@@ -409,6 +453,15 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
             searchBox.requestFocus();
             searchBox.showDropDown();
             return true;
+        }
+        else if(id == R.id.settings) {
+            int status = NetworkCheck.chkStatus(connMgr);
+            overlay.setVisibility(View.VISIBLE);
+            if(status == 2) {
+                dataPackTV.setVisibility(View.VISIBLE);
+            } else {
+                dataPackTV.setVisibility(View.GONE);
+            }
         }
         return super.onOptionsItemSelected(item);
     }

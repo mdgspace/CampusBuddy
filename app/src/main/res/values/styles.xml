@@ -13,7 +13,7 @@
         <item name="android:actionMenuTextColor">@color/my_secondary_text</item>
         <item name="popupMenuStyle">@style/PopupMenu</item>
     -->
-        <!--<item name="android:textColor">#000000</item>-->
+    <!--<item name="android:textColor">#000000</item>-->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
@@ -23,6 +23,7 @@
         <item name="android:actionMenuTextColor">@color/primary_text</item>
         <item name="popupMenuStyle">@style/PopupMenu</item>
     </style>
+
     <style name="MainAcitvityTheme" parent="AppTheme">
         <item name="colorPrimaryDark">@color/primary</item>
     </style>
@@ -42,9 +43,23 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">normal</item>
     </style>
+
     <style name="ToolBarWithNavigationBack">
         <item name="actionBarItemBackground">?attr/selectableItemBackground</item>
         <item name="navigationIcon">@drawable/ic_keyboard_backspace_white_24dp</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+        <item name="colorPrimaryDark">@color/black</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
     </style>
 
     <!--<color name="brand_primary">#3E50B4</color>-->
@@ -52,9 +67,9 @@
     <!--<color name="brand_accent">#FE3E80</color>-->
 
     <!--<style name="ShowContact" parent="Theme.AppCompat.Light.NoActionBar">-->
-        <!--<item name="colorPrimary">@color/brand_primary</item>-->
-        <!--<item name="colorPrimaryDark">@color/brand_primary_dark</item>-->
-        <!--<item name="colorAccent">@color/brand_accent</item>-->
+    <!--<item name="colorPrimary">@color/brand_primary</item>-->
+    <!--<item name="colorPrimaryDark">@color/brand_primary_dark</item>-->
+    <!--<item name="colorAccent">@color/brand_accent</item>-->
     <!--</style>-->
 
 

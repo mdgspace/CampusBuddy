@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
@@ -31,6 +31,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -44,6 +45,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -88,7 +90,7 @@
         <!-- </activity> -->
         <activity
             android:name=".NewEvent"
-            android:label="@string/app_name"/>
+            android:label="@string/app_name" />
         <activity
             android:name=".TimetableNavigation"
             android:label="@string/app_name" />
@@ -108,11 +110,11 @@
         <!-- android:value="AIzaSyA-X5bozVBQg1gKeK_B1AreRFLFXmguwS8" /> -->
 
         <activity
-            android:name=".Fb"
+            android:name=".fb.Fb"
             android:label="@string/title_activity_fb"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".Fblist"
+            android:name=".fb.Fblist"
             android:label="@string/title_activity_fblist" />
 
         <receiver android:name=".AlarmReceiver">
@@ -131,21 +133,30 @@
         <activity
             android:name=".AboutUs"
             android:label="@string/title_activity_about_us" />
-        <activity android:name=".contacts.ShowContact"/>
-        <activity android:name=".contacts.ShowDepartmentContacts"/>
+        <activity android:name=".contacts.ShowContact" />
+        <activity android:name=".contacts.ShowDepartmentContacts" />
 
-        <service android:name=".fcm.FirebaseMessagingService" >
+        <service android:name=".fcm.FirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name=".fcm.FirebaseInstanceIDService">
+        <service android:name=".fcm.FirebaseInstanceIDService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
+        <activity
+            android:name=".fb.FullscreenImageView"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_fullscreen_image_view"
+            android:parentActivityName=".fb.Fb"
+            android:theme="@style/FullscreenTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="in.co.mdg.campusBuddy.fb.Fb" />
+        </activity>
     </application>
 
 </manifest> <!-- Pro KD, chu rc -->

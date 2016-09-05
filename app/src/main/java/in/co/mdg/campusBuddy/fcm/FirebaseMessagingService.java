@@ -28,7 +28,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Random;
 
-import in.co.mdg.campusBuddy.Fb;
+import in.co.mdg.campusBuddy.fb.Fb;
 import in.co.mdg.campusBuddy.R;
 
 /**
