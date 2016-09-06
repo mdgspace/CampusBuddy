@@ -7,8 +7,7 @@
     android:id="@+id/map"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name="com.google.android.gms.maps.MapFragment"
-
+    android:name="com.google.android.gms.maps.SupportMapFragment"
     app:cameraBearing="112.5"
     app:cameraTargetLat="29.86621840000"
     app:cameraTargetLng="77.89531809999"
@@ -20,8 +19,7 @@
     app:uiScrollGestures="true"
     app:uiTiltGestures="true"
     app:uiZoomControls="false"
-    app:uiZoomGestures="true"
-    />
+    app:uiZoomGestures="true" />
 
 
 

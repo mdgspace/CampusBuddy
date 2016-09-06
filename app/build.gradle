@@ -4,7 +4,7 @@ apply plugin: 'realm-android'
 
 def versionMajor = 2
 def versionMinor = 0
-def versionPatch = 2
+def versionPatch = 4
 def versionBuild = 0
 
 android
@@ -40,6 +40,7 @@ android
                 compile fileTree(include: ['*.jar'], dir: 'libs')
                 compile 'com.github.alamkanak:android-week-view:1.2.6'
                 compile 'com.google.android.gms:play-services-maps:9.4.0'
+                compile 'com.google.android.gms:play-services-location:9.4.0'
                 compile 'com.google.android.gms:play-services-wallet:9.4.0'
 
                 //for firebase cloud messaging
