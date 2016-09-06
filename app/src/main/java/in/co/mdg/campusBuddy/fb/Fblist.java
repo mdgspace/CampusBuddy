@@ -82,19 +82,22 @@ public class Fblist extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         submitb = (Button) findViewById(R.id.submitbutton);
         try {
-
             listview = (ListView) findViewById(R.id.listfbpages);
             listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-            cr.moveToFirst();
-            if (cr.getCount() > 0) {
-                do {
-                    page_name = cr.getString(cr.getColumnIndex(PagesDB.PagesEntry.COLUMN_NAME_Page_name));
-                    for (int i = 0; i < listofvalues.size(); i++) {
-                        if (page_name.equals(listofvalues.get(i).getPage_name())) {
-                            listofvalues.get(i).setIsSelected(true);
+            if(getIntent().getBooleanExtra("firstTime",false))
+                listofvalues.get(16).setIsSelected(true);
+            else {
+                cr.moveToFirst();
+                if (cr.getCount() > 0) {
+                    do {
+                        page_name = cr.getString(cr.getColumnIndex(PagesDB.PagesEntry.COLUMN_NAME_Page_name));
+                        for (int i = 0; i < listofvalues.size(); i++) {
+                            if (page_name.equals(listofvalues.get(i).getPage_name())) {
+                                listofvalues.get(i).setIsSelected(true);
+                            }
                         }
-                    }
-                } while (cr.moveToNext());
+                    } while (cr.moveToNext());
+                }
             }
             adapter = new CustomList(Fblist.this, listofvalues);
             listview.setAdapter(adapter);
@@ -126,6 +129,7 @@ public class Fblist extends AppCompatActivity {
                         Toast.makeText(Fblist.this, "Please Select at least one page to get the feeds", Toast.LENGTH_LONG).show();
                         onResume();
                     } else {
+                        setResult(RESULT_OK);
                         finish();
                     }
                 }

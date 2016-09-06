@@ -1,63 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:id="@+id/main_layout"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_light_trans">
+    android:layout_width="match_parent">
 
-    <include
-        android:id="@+id/tool_barfb"
-        layout="@layout/tool_bar"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_light_trans">
 
-    <!--<com.facebook.login.widget.LoginButton-->
-        <!--android:id="@+id/login_button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center_horizontal" />-->
+        <include
+            android:id="@+id/tool_barfb"
+            layout="@layout/tool_bar"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
 
-    <!--<EditText-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:id="@+id/editfb"-->
-        <!--android:scrollbars="vertical"/>-->
-    <!--<ListView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:id="@+id/listfb"/>-->
-            <!--<android.support.v7.widget.RecyclerView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:id="@+id/recyclerview1"-->
-                <!--android:layout_below="@+id/tool_barfb"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_alignParentEnd="true" />-->
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tool_barfb">
-        <com.etsy.android.grid.StaggeredGridView
-            android:id="@+id/grid_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:item_margin="12dp"
-            app:column_count="1"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <com.etsy.android.grid.StaggeredGridView
+                android:id="@+id/grid_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:item_margin="12dp"
+                app:column_count="1"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
 
-    <!--<ProgressBar-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:id="@+id/progressbar"-->
-        <!--android:layout_centerInParent="true"/>-->
+    </LinearLayout>
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/settings"
         android:visibility="gone"
         layout="@layout/contacts_settings_overlay" />
-</RelativeLayout>
+</FrameLayout>

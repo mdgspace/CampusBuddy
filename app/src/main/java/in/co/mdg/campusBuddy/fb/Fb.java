@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -39,6 +40,7 @@ import in.co.mdg.campusBuddy.R;
 
 public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
+    private static final int PAGE_SELECTED = 1;
     public static Boolean loadImages = true;
     Toolbar toolbar;
     ArrayList<String> fbpliked;
@@ -107,7 +109,15 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
             checkedTextView.setChecked(false);
             dataPackTV.setVisibility(View.VISIBLE);
         }
-        new checkNetwork().execute();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                new checkNetwork().execute();
+            }
+        }, 100);
+
     }
 
     @Override
@@ -155,8 +165,9 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
         if (fbpliked.size() == 0) {
             Toast.makeText(this, "Select pages to get the feeds", Toast.LENGTH_LONG).show();
             Intent i = new Intent(Fb.this, Fblist.class);
-            startActivity(i);
-            finish();
+            i.putExtra("firstTime",true);
+            startActivityForResult(i,PAGE_SELECTED);
+            return;
         }
         adapterfb = new FBFeedAdapter(this, R.layout.card_viewfb, posts);
         try {
@@ -186,6 +197,16 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
             }
         });
     }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == PAGE_SELECTED) {
+            if (resultCode == RESULT_OK) {
+                new checkNetwork().execute();
+            } else if(resultCode == RESULT_CANCELED) {
+                finish();
+            }
+        }
+    }
 
     public void getUserData(final AccessToken accessToken) {
 
@@ -205,7 +226,7 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
         int id = item.getItemId();
         if (id == R.id.addpages) {
             Intent i = new Intent(Fb.this, Fblist.class);
-            startActivity(i);
+            startActivityForResult(i,PAGE_SELECTED);
         } else if(id == R.id.settings) {
             int status = NetworkCheck.chkStatus(connMgr);
             overlay.setVisibility(View.VISIBLE);

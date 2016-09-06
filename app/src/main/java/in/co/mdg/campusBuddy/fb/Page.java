@@ -8,19 +8,16 @@ public class Page {
     private int imageId;
     private boolean isSelected = false;
 
-    Page(String page_name) {
-        this.page_name = page_name;
-    }
-
-    Page(String page_name, String id) {
-        this.page_name = page_name;
-        this.page_id = id;
-    }
-
     public Page(String page_name, String id, int image) {
         this.page_name = page_name;
         this.page_id = id;
         this.imageId = image;
+    }
+    public Page(String page_name, String id, int image,boolean isSelected) {
+        this.page_name = page_name;
+        this.page_id = id;
+        this.imageId = image;
+        this.isSelected = isSelected;
     }
 
     public boolean isSelected() {
