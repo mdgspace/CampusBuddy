@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -28,26 +30,33 @@ import in.co.mdg.campusBuddy.R;
  */
 class FBFeedAdapter extends ArrayAdapter<Post> {
 
-    ArrayList<Post> arrayList;
+//    ArrayList<Post> arrayList;
     private Context context;
     private static LayoutInflater inflater;
 
     FBFeedAdapter(Context context, int resource, ArrayList<Post> arrayList) {
-        super(context, resource,arrayList);
-        this.arrayList = arrayList;
+        super(context, resource, arrayList);
+//        this.arrayList = arrayList;
+        addAll(arrayList);
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
-    @Override
-    public int getCount() {
-        return arrayList.size();
-    }
+//    @Override
+//    public int getCount() {
+//        return arrayList.size();
+//    }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+//    @Override
+//    public long getItemId(int position) {
+//        return position;
+//    }
+
+//    @Nullable
+//    @Override
+//    public Post getItem(int position) {
+//        return arrayList.get(position);
+//    }
 
     @NonNull
     @Override
@@ -64,97 +73,77 @@ class FBFeedAdapter extends ArrayAdapter<Post> {
             holder.postheader = (TextView) convertView.findViewById(R.id.fbpagename);
             holder.fbpostpic = (DynamicHeightImageView) convertView.findViewById(R.id.fbpostpic);
             holder.fbpostpicicon = (DynamicHeightImageView) convertView.findViewById(R.id.fbpostpicicon);
-            holder.dateofpost=(TextView)convertView.findViewById(R.id.dateofpost);
-            holder.fblayout=(LinearLayout)convertView.findViewById(R.id.cardviewfb);
+            holder.dateofpost = (TextView) convertView.findViewById(R.id.dateofpost);
+            holder.fblayout = (LinearLayout) convertView.findViewById(R.id.cardviewfb);
             convertView.setTag(holder);
         } else {
-          holder = (Holder) convertView.getTag();
+            holder = (Holder) convertView.getTag();
         }
 
-        final Post post = arrayList.get(position);
+        final Post post = getItem(position);
+        if (post != null) {
+            holder.postmessage.setText(post.getMessage());
+            holder.postheader.setText(post.getHeader());
+            holder.fbpostpicicon.setImageResource(post.getImageDrawable());
+            holder.dateofpost.setText(DateFormatter.getTimeAgo(post.getDateS()));
+            if (post.getImageUrl() != null) {
+                if (Fb.loadImages) {
+                    holder.fbpostpic.setVisibility(View.VISIBLE);
+                    try {
+                        Glide.clear(holder.fbpostpic);
+                        Glide.with(context).load(post.getImageUrl()).fitCenter().into(holder.fbpostpic);
+                        holder.fbpostpic.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent fullscreenImageView = new Intent(context, FullscreenImageView.class);
+                                fullscreenImageView.putExtra("img_src", post.getImageUrl());
+                                fullscreenImageView.putExtra("title", post.getHeader());
+                                fullscreenImageView.putExtra("message", post.getMessage());
+                                fullscreenImageView.putExtra("time", DateFormatter.getTimeAgo(post.getDateS()));
+                                getContext().startActivity(fullscreenImageView);
+                            }
+                        });
 
-        holder.postmessage.setText(post.getMessage());
-        holder.postheader.setText(post.getHeader());
-        holder.fbpostpicicon.setImageResource(post.getImageDrawable());
-        holder.dateofpost.setText(DateFormatter.getTimeAgo(post.getDateS()));
-
-//        Transformation  transformation = new Transformation(){
-//
-//            @Override
-//            public Resource transform(Resource resource, int outWidth, int outHeight) {
-//                int targetWidth = holder.fbpostpic.getWidth();
-//                double aspectRatio = (double) resource.getHeight() / (double) source.getWidth();
-//                int targetHeight = (int) (targetWidth * aspectRatio);
-//                Bitmap result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false);
-//                if (result != source) {
-//                    // Same bitmap is returned if sizes are the same
-//                    source.recycle();
-//                }
-//                return result;
-//            }
-//
-//            @Override
-//            public String getId() {
-//                return null;
-//            }
-//        };
-
-        if(Fb.loadImages) {
-            if(post.getImageUrl()!=null){
-                holder.fbpostpic.setVisibility(View.VISIBLE);
-                try {
-                    Glide.with(context).load(post.getImageUrl()).fitCenter().into(holder.fbpostpic);
-                    holder.fbpostpic.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent fullscreenImageView = new Intent(context,FullscreenImageView.class);
-                            fullscreenImageView.putExtra("img_src",post.getImageUrl());
-                            fullscreenImageView.putExtra("title",post.getHeader());
-                            fullscreenImageView.putExtra("message",post.getMessage());
-                            fullscreenImageView.putExtra("time",DateFormatter.getTimeAgo(post.getDateS()));
-                            getContext().startActivity(fullscreenImageView);
-                        }
-                    });
-                }catch (Exception e){
-                    e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        holder.fbpostpic.setVisibility(View.GONE);
+                    }
+                } else {
                     holder.fbpostpic.setVisibility(View.GONE);
                 }
-            }else{
+            } else {
                 holder.fbpostpic.setVisibility(View.GONE);
             }
-        }
 
-
-        holder.fblayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(post.getLinkUrl()!=null) {
-                    Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(post.getLinkUrl()));
-                    getContext().startActivity(browser);
+            holder.fblayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (post.getLinkUrl() != null) {
+                        Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(post.getLinkUrl()));
+                        getContext().startActivity(browser);
+                    }
                 }
-            }
             });
 
-        holder.postmessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(post.getLinkUrl()!=null) {
-                    Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(post.getLinkUrl()));
-                    getContext().startActivity(browser);
+            holder.postmessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (post.getLinkUrl() != null) {
+                        Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(post.getLinkUrl()));
+                        getContext().startActivity(browser);
+                    }
                 }
-            }
-        });
+            });
+        }
 
         return convertView;
     }
 
-    private static class Holder{
-
+    private static class Holder {
         DynamicHeightTextView postmessage;
-        TextView postheader,dateofpost;
+        TextView postheader, dateofpost;
         DynamicHeightImageView fbpostpic;
         DynamicHeightImageView fbpostpicicon;
         LinearLayout fblayout;
-
     }
 }

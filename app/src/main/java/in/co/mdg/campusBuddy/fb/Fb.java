@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,13 +47,13 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
     ArrayList<String> fbpliked;
     JSONObject m;
     JSONArray n;
-    int i;
+
     StaggeredGridView staggeredGridView;
     ArrayList<Post> posts;
 
     int pageNumber = 0, ongoingpage = 0;
 
-    int prelast = 0;
+    int prelast = 0, count = 0;
     FBFeedAdapter adapterfb;
     SwipeRefreshLayout swipeRefreshLayout;
     private View overlay;
@@ -83,8 +84,9 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
         closeBtn = (ImageButton) overlay.findViewById(R.id.close_btn);
         checkedTextView = (CheckedTextView) overlay.findViewById(R.id.enable_images);
         dataPackTV = (TextView) overlay.findViewById(R.id.data_pack_notif_tv);
+        staggeredGridView = (StaggeredGridView) findViewById(R.id.grid_view);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this,R.color.accent),ContextCompat.getColor(this,R.color.primary));
+        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.accent), ContextCompat.getColor(this, R.color.primary));
         swipeRefreshLayout.setOnRefreshListener(this);
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +105,7 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
             }
         });
         int status = NetworkCheck.chkStatus(connMgr);
-        if(status == 2) {//mobile data warning
+        if (status == 2) {//mobile data warning
             overlay.setVisibility(View.VISIBLE);
             loadImages = false;
             checkedTextView.setChecked(false);
@@ -165,8 +167,8 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
         if (fbpliked.size() == 0) {
             Toast.makeText(this, "Select pages to get the feeds", Toast.LENGTH_LONG).show();
             Intent i = new Intent(Fb.this, Fblist.class);
-            i.putExtra("firstTime",true);
-            startActivityForResult(i,PAGE_SELECTED);
+            i.putExtra("firstTime", true);
+            startActivityForResult(i, PAGE_SELECTED);
             return;
         }
         adapterfb = new FBFeedAdapter(this, R.layout.card_viewfb, posts);
@@ -197,12 +199,13 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
             }
         });
     }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == PAGE_SELECTED) {
             if (resultCode == RESULT_OK) {
                 new checkNetwork().execute();
-            } else if(resultCode == RESULT_CANCELED) {
+            } else if (resultCode == RESULT_CANCELED) {
                 finish();
             }
         }
@@ -210,7 +213,6 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
 
     public void getUserData(final AccessToken accessToken) {
 
-        staggeredGridView = (StaggeredGridView) findViewById(R.id.grid_view);
         staggeredGridView.setAdapter(adapterfb);
         fetchData(0, accessToken);
     }
@@ -226,11 +228,11 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
         int id = item.getItemId();
         if (id == R.id.addpages) {
             Intent i = new Intent(Fb.this, Fblist.class);
-            startActivityForResult(i,PAGE_SELECTED);
-        } else if(id == R.id.settings) {
+            startActivityForResult(i, PAGE_SELECTED);
+        } else if (id == R.id.settings) {
             int status = NetworkCheck.chkStatus(connMgr);
             overlay.setVisibility(View.VISIBLE);
-            if(status == 2) {
+            if (status == 2) {
                 dataPackTV.setVisibility(View.VISIBLE);
             } else {
                 dataPackTV.setVisibility(View.GONE);
@@ -245,7 +247,7 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
         if (ongoingpage == page) {
 
             final ArrayList<GraphRequest> postsArrayList = new ArrayList<>();
-            for (i = 0; i < fbpliked.size(); i++) {
+            for (int i = 0; i < fbpliked.size(); i++) {
                 postsArrayList.add(GraphRequest.newGraphPathRequest(accessToken, "/" + fbpliked.get(i) +
                         "/posts", new GraphRequest.Callback() {
                     @Override
@@ -300,11 +302,17 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
                             picsRequestBatch.addCallback(new GraphRequestBatch.Callback() {
                                 @Override
                                 public void onBatchCompleted(GraphRequestBatch graphRequestBatch) {
+                                    count++;
                                     posts.addAll(pageSpecificPosts);
                                     Collections.sort(posts);
                                     Collections.reverse(posts);
-                                    adapterfb.arrayList = posts;
+//                                    adapterfb.clear();
+//                                    adapterfb.addAll(posts);
                                     adapterfb.notifyDataSetChanged();
+                                    Log.d("count",adapterfb.getCount()+"");
+                                    if (count == (fbpliked.size() - 1)) {
+                                        swipeRefreshLayout.setRefreshing(false);
+                                    }
                                 }
                             });
                             if (picsRequestBatch.size() > 0)
@@ -320,12 +328,14 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
             graphRequestBatch.addCallback(new GraphRequestBatch.Callback() {
                 @Override
                 public void onBatchCompleted(GraphRequestBatch graphRequestBatch) {
-                    Collections.sort(posts);
-                    Collections.reverse(posts);
-                    adapterfb.arrayList = posts;
-                    adapterfb.notifyDataSetChanged();
+//                    Collections.sort(posts);
+//                    Collections.reverse(posts);
+//                    adapterfb.arrayList = posts;
+//                    adapterfb.notifyDataSetChanged();
+                    Log.d("called", "main req");
+
                     pageNumber++;
-                    swipeRefreshLayout.setRefreshing(false);
+
                 }
             });
 
