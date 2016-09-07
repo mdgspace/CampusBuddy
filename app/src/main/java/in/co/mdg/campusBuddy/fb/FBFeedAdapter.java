@@ -3,16 +3,14 @@ package in.co.mdg.campusBuddy.fb;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -20,6 +18,7 @@ import com.etsy.android.grid.util.DynamicHeightImageView;
 import com.etsy.android.grid.util.DynamicHeightTextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import in.co.mdg.campusBuddy.R;
 
@@ -28,59 +27,45 @@ import in.co.mdg.campusBuddy.R;
  * @version 1.0.0
  * @since 25-Jul-15
  */
-class FBFeedAdapter extends ArrayAdapter<Post> {
+class FBFeedAdapter extends RecyclerView.Adapter<FBFeedAdapter.PostViewHolder> {
 
-//    ArrayList<Post> arrayList;
+    private ArrayList<Post> arrayList;
     private Context context;
-    private static LayoutInflater inflater;
 
-    FBFeedAdapter(Context context, int resource, ArrayList<Post> arrayList) {
-        super(context, resource, arrayList);
-//        this.arrayList = arrayList;
-        addAll(arrayList);
+    FBFeedAdapter(Context context) {
+        this.arrayList = new ArrayList<>();;
         this.context = context;
-        inflater = LayoutInflater.from(context);
     }
 
-//    @Override
-//    public int getCount() {
-//        return arrayList.size();
-//    }
+    class PostViewHolder extends RecyclerView.ViewHolder {
+        DynamicHeightTextView postmessage;
+        TextView postheader, dateofpost;
+        DynamicHeightImageView fbpostpic;
+        ImageView fbpostpicicon;
+        LinearLayout fblayout;
 
-//    @Override
-//    public long getItemId(int position) {
-//        return position;
-//    }
-
-//    @Nullable
-//    @Override
-//    public Post getItem(int position) {
-//        return arrayList.get(position);
-//    }
-
-    @NonNull
-    @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-
-        final Holder holder;
-
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.card_viewfb, parent, false);
-            holder = new Holder();
-            holder.postmessage = (DynamicHeightTextView) convertView.findViewById(R.id.postmessage);
-            holder.postmessage.setMovementMethod(LinkMovementMethod.getInstance());
-            Linkify.addLinks(holder.postmessage, Linkify.ALL);
-            holder.postheader = (TextView) convertView.findViewById(R.id.fbpagename);
-            holder.fbpostpic = (DynamicHeightImageView) convertView.findViewById(R.id.fbpostpic);
-            holder.fbpostpicicon = (DynamicHeightImageView) convertView.findViewById(R.id.fbpostpicicon);
-            holder.dateofpost = (TextView) convertView.findViewById(R.id.dateofpost);
-            holder.fblayout = (LinearLayout) convertView.findViewById(R.id.cardviewfb);
-            convertView.setTag(holder);
-        } else {
-            holder = (Holder) convertView.getTag();
+        PostViewHolder(View convertView) {
+            super(convertView);
+            postmessage = (DynamicHeightTextView) convertView.findViewById(R.id.postmessage);
+            postmessage.setMovementMethod(LinkMovementMethod.getInstance());
+            Linkify.addLinks(postmessage, Linkify.ALL);
+            postheader = (TextView) convertView.findViewById(R.id.fbpagename);
+            fbpostpic = (DynamicHeightImageView) convertView.findViewById(R.id.fbpostpic);
+            fbpostpicicon = (ImageView) convertView.findViewById(R.id.fbpostpicicon);
+            dateofpost = (TextView) convertView.findViewById(R.id.dateofpost);
+            fblayout = (LinearLayout) convertView.findViewById(R.id.cardviewfb);
         }
+    }
 
-        final Post post = getItem(position);
+    @Override
+    public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new PostViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_viewfb,
+                parent,false));
+    }
+
+    @Override
+    public void onBindViewHolder(final PostViewHolder holder, int position) {
+        final Post post = arrayList.get(position);
         if (post != null) {
             holder.postmessage.setText(post.getMessage());
             holder.postheader.setText(post.getHeader());
@@ -100,7 +85,7 @@ class FBFeedAdapter extends ArrayAdapter<Post> {
                                 fullscreenImageView.putExtra("title", post.getHeader());
                                 fullscreenImageView.putExtra("message", post.getMessage());
                                 fullscreenImageView.putExtra("time", DateFormatter.getTimeAgo(post.getDateS()));
-                                getContext().startActivity(fullscreenImageView);
+                                context.startActivity(fullscreenImageView);
                             }
                         });
 
@@ -120,7 +105,7 @@ class FBFeedAdapter extends ArrayAdapter<Post> {
                 public void onClick(View view) {
                     if (post.getLinkUrl() != null) {
                         Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(post.getLinkUrl()));
-                        getContext().startActivity(browser);
+                        context.startActivity(browser);
                     }
                 }
             });
@@ -130,20 +115,30 @@ class FBFeedAdapter extends ArrayAdapter<Post> {
                 public void onClick(View view) {
                     if (post.getLinkUrl() != null) {
                         Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(post.getLinkUrl()));
-                        getContext().startActivity(browser);
+                        context.startActivity(browser);
                     }
                 }
             });
         }
-
-        return convertView;
     }
 
-    private static class Holder {
-        DynamicHeightTextView postmessage;
-        TextView postheader, dateofpost;
-        DynamicHeightImageView fbpostpic;
-        DynamicHeightImageView fbpostpicicon;
-        LinearLayout fblayout;
+    @Override
+    public int getItemCount() {
+        return arrayList.size();
+    }
+
+    public void addItem(Post post){
+        arrayList.add(post);
+        notifyDataSetChanged();
+    }
+    void addAll(ArrayList<Post> posts){
+        arrayList.addAll(posts);
+        Collections.sort(arrayList);
+        Collections.reverse(arrayList);
+        notifyDataSetChanged();
+    }
+    void clear() {
+        arrayList.clear();
+//        notifyDataSetChanged();
     }
 }
