@@ -9,8 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +29,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -122,7 +123,7 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
             public void onClick(View view) {
                 ((CheckedTextView) view).toggle();
                 loadImages = ((CheckedTextView) view).isChecked();
-                if(loadImages) {
+                if (loadImages) {
                     deptList.adapter.notifyDataSetChanged();
                     AToZ.adapter.notifyDataSetChanged();
                 }
@@ -282,10 +283,10 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
             }
         } else {
 
-            if(status == 1 || status == 2)
+            if (status == 1 || status == 2)
                 new JSONTask().execute();
         }
-        if(status == 2) {//mobile data warning
+        if (status == 2) {//mobile data warning
             overlay.setVisibility(View.VISIBLE);
             loadImages = false;
             checkedTextView.setChecked(false);
@@ -294,17 +295,33 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
     }
 
     private void updateContacts(final String finalJson) {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.createOrUpdateAllFromJson(Department.class, finalJson);
-                //Do write something
+        if (isJSONArrayValid(finalJson)) {
+            try {
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        realm.createOrUpdateAllFromJson(Department.class, finalJson);
+                        //Do write something
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
             }
-        });
-        deptList.adapter.notifyDataSetChanged();
-        AToZ.adapter.notifyDataSetChanged();
-        progressBar.setVisibility(View.GONE);
-        Toast.makeText(this, "Contacts Updated", Toast.LENGTH_LONG).show();
+            deptList.adapter.notifyDataSetChanged();
+            AToZ.adapter.notifyDataSetChanged();
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(ContactsMainActivity.this, "Contacts Updated", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public boolean isJSONArrayValid(String json) {
+        try {
+            new JSONArray(json);
+        } catch (JSONException ex1) {
+            return false;
+        }
+        return true;
     }
 
     public class JSONTask extends AsyncTask<Void, String, Boolean> {
@@ -453,11 +470,10 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
             searchBox.requestFocus();
             searchBox.showDropDown();
             return true;
-        }
-        else if(id == R.id.settings) {
+        } else if (id == R.id.settings) {
             int status = NetworkCheck.chkStatus(connMgr);
             overlay.setVisibility(View.VISIBLE);
-            if(status == 2) {
+            if (status == 2) {
                 dataPackTV.setVisibility(View.VISIBLE);
             } else {
                 dataPackTV.setVisibility(View.GONE);

@@ -17,9 +17,11 @@ public class Data {
             fbPageList.add(new Page("Anushruti", "272394492879208", R.drawable.anushruti));
             fbPageList.add(new Page("ASHRAE", "754869404569818", R.drawable.ashrae));
             fbPageList.add(new Page("Audio Section", "418543801611643", R.drawable.audio));
+            fbPageList.add(new Page("Choreography and Dance section", "1534452020147921", R.drawable.choreo));
             fbPageList.add(new Page("Cinema Club", "231275190406200", R.drawable.cinema_club));
             fbPageList.add(new Page("Cinematic Section", "100641016663545", R.drawable.cinematic));
             fbPageList.add(new Page("Cognizance", "217963184943488", R.drawable.cogni));
+            fbPageList.add(new Page("Dramatics Section", "142847052545369", R.drawable.drams));
             fbPageList.add(new Page("EDC", "265096099170", R.drawable.edc));
             fbPageList.add(new Page("Electronics Section", "503218879766649", R.drawable.electronics_section));
             fbPageList.add(new Page("Fine Arts Section", "567441813288417", R.drawable.fine_arts));
@@ -31,6 +33,7 @@ public class Data {
             fbPageList.add(new Page("IMG", "353701311987", R.drawable.img));
             fbPageList.add(new Page("Kshitij - The Literary Magazine","316661941764002",R.drawable.kshitij));
             fbPageList.add(new Page("MDG IITR", "198343570325312", R.drawable.mdg,true));
+            fbPageList.add(new Page("Music Section", "313076638795867", R.drawable.music));
             fbPageList.add(new Page("NCC", "242919515859218", R.drawable.ncc));
             fbPageList.add(new Page("PAG IITR", "537723156291580", R.drawable.pag));
             fbPageList.add(new Page("Photography Section", "317158211638196", R.drawable.photography));

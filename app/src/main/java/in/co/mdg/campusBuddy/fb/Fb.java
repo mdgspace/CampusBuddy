@@ -129,6 +129,7 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
 
     @Override
     public void onRefresh() {
+        isRefreshed = true;
         new checkNetwork().execute();
     }
 
@@ -210,6 +211,7 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
 
         if (requestCode == PAGE_SELECTED) {
             if (resultCode == RESULT_OK) {
+                isRefreshed = true;
                 new checkNetwork().execute();
             } else if (resultCode == RESULT_CANCELED) {
                 finish();

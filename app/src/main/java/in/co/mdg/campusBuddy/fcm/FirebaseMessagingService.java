@@ -9,6 +9,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.NotificationCompat.BigTextStyle;
@@ -119,6 +120,13 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                         Notification notification = builder.build();
                         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                         manager.notify(id, notification);
+                    }
+
+                    @Override
+                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                        if(e!=null) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }
