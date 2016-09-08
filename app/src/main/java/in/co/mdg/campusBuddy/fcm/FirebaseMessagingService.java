@@ -9,28 +9,29 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.NotificationCompat.BigTextStyle;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
 import com.google.firebase.messaging.RemoteMessage;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Random;
 
-import in.co.mdg.campusBuddy.fb.Fb;
 import in.co.mdg.campusBuddy.R;
+import in.co.mdg.campusBuddy.fb.Fb;
 
 /**
  * Created by mohit on 11/8/16.
@@ -82,7 +83,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     public void showPictureNotification(final String title, final String message, final String img) {
         final int id = random;
-        RemoteViews collapsedView = new RemoteViews(getPackageName(), R.layout.notification_collapsed_layout);
+        final RemoteViews collapsedView = new RemoteViews(getPackageName(), R.layout.notification_collapsed_layout);
         collapsedView.setTextViewText(R.id.title, title);
         collapsedView.setTextViewText(R.id.message, message);
         collapsedView.setTextViewText(R.id.time, currentTime);
@@ -103,19 +104,34 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         uiHandler.post(new Runnable() {
             @Override
             public void run() {
-                Glide.with(getApplicationContext()).load(img).asBitmap().into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
+                DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                        .cacheInMemory(false)
+                        .cacheOnDisk(false)
+                        .build();
+                ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
+                        .defaultDisplayImageOptions(defaultOptions)
+                        .build();
+                if (!ImageLoader.getInstance().isInited())
+                    ImageLoader.getInstance().init(config);
+                ImageLoader.getInstance().loadImage(img, new ImageLoadingListener() {
                     @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        RemoteViews collapsedView = new RemoteViews(getPackageName(), R.layout.notification_collapsed_layout);
-                        collapsedView.setTextViewText(R.id.title, title);
-                        collapsedView.setTextViewText(R.id.message, message);
-                        collapsedView.setTextViewText(R.id.time, currentTime);
+                    public void onLoadingStarted(String imageUri, View view) {
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                        if (failReason != null) {
+                            failReason.getCause().printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                         final RemoteViews expandedView = new RemoteViews(getPackageName(), R.layout.notification_expanded_layout);
                         expandedView.setTextViewText(R.id.title, title);
                         expandedView.setTextViewText(R.id.message, message);
                         expandedView.setTextViewText(R.id.time, currentTime);
-                        expandedView.setImageViewBitmap(R.id.post_image, resource);
-                        builder.setCustomContentView(collapsedView);
+                        expandedView.setImageViewBitmap(R.id.post_image, loadedImage);
                         builder.setCustomBigContentView(expandedView);
                         Notification notification = builder.build();
                         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -123,10 +139,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                     }
 
                     @Override
-                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                        if(e!=null) {
-                            e.printStackTrace();
-                        }
+                    public void onLoadingCancelled(String imageUri, View view) {
+
                     }
                 });
             }
