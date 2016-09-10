@@ -72,20 +72,24 @@ public class GetEventsFromGCal {
                 //If result is successful, then process the output
 //                    final ArrayList<Event> result = new ArrayList<>();
 //                    result.addAll(response.body().getEvents());
+                if(response.isSuccessful() && response.body() != null) {
+                    for(int i=0;i<response.body().getEvents().size();i++) {
+                        final int finalI = i;
+                        realm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                realm.copyToRealm(response.body().getEvents().get(finalI));
+                            }
+                        });
+                    }
 
-                for(int i=0;i<response.body().getEvents().size();i++) {
-                    final int finalI = i;
-                    realm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            realm.copyToRealm(response.body().getEvents().get(finalI));
-                        }
-                    });
+                    setLastUpdatedDate(sdf.format(new Date()));
+                    calendarLoad.setVisibility(View.GONE);
+                    mWeekView.notifyDatasetChanged();
+                } else {
+                    Log.d("FailureGetEvents", "response is null");
                 }
 
-                setLastUpdatedDate(sdf.format(new Date()));
-                calendarLoad.setVisibility(View.GONE);
-                mWeekView.notifyDatasetChanged();
             }
 
             @Override
