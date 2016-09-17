@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
+import com.google.firebase.storage.FirebaseStorage;
 
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
@@ -19,7 +20,7 @@ public class CbApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+//        Fabric.with(this, new Crashlytics());
         RealmConfiguration config = new RealmConfiguration
                 .Builder(this)
                 .name("CBData.realm")
@@ -27,5 +28,6 @@ public class CbApplication extends Application {
                 .build();
         Realm.setDefaultConfiguration(config);
         FacebookSdk.sdkInitialize(getApplicationContext());
+
     }
 }

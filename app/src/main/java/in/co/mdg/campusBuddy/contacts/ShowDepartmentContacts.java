@@ -18,8 +18,11 @@ import android.view.View;
 import android.widget.EdgeEffect;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.target.Target;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -89,32 +92,20 @@ public class ShowDepartmentContacts extends AppCompatActivity {
         Realm realm = Realm.getDefaultInstance();
         Department dept = realm.where(Department.class).equalTo("name", deptName).findFirst();
         final ImageView deptBackdrop = (ImageView) findViewById(R.id.dept_backdrop);
-        String deptPhoto;
-        if (dept.getPhoto() != null) {
-            if (dept.getPhoto().length() > 4)
-                deptPhoto = dept.getPhoto();
-            else
-                deptPhoto = "http://www.iitr.ac.in/departments/" + dept.getPhoto() + "/assets/images/top1.jpg";
-            Picasso.with(this)
-                    .load(deptPhoto)
-                    .fit()
-                    .into(deptBackdrop, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            Bitmap bitmap = ((BitmapDrawable) deptBackdrop.getDrawable()).getBitmap();
-                            Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                                public void onGenerated(Palette palette) {
-                                    applyPalette(palette);
-                                    setEdgeGlowColor(recyclerView, primary);
-                                }
-                            });
-                        }
 
-                        @Override
-                        public void onError() {
-                        }
-                    });
-        }
+        BitmapImageViewTarget target = new BitmapImageViewTarget(deptBackdrop) {
+            @Override
+            public void onResourceReady(Bitmap bitmap, GlideAnimation anim) {
+                super.onResourceReady(bitmap, anim);
+                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                    public void onGenerated(Palette palette) {
+                        applyPalette(palette);
+                        setEdgeGlowColor(recyclerView, primary);
+                    }
+                });
+            }
+        };
+        LoadingImages.loadDeptImages(dept.getPhoto(),target );
 
 
     }

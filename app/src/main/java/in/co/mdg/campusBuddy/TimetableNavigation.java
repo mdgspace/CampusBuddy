@@ -32,6 +32,7 @@ import java.util.Locale;
 
 import in.co.mdg.campusBuddy.calendar.data_models.acad.Event;
 import in.co.mdg.campusBuddy.calendar.GetEventsFromGCal;
+import in.co.mdg.campusBuddy.calendar.data_models.acad.LastUpdated;
 import in.co.mdg.campusBuddy.calendar.data_models.user_events.UserEvent;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -52,6 +53,7 @@ public class TimetableNavigation extends AppCompatActivity implements MonthLoade
     private boolean calledNetwork = false;
     private Realm realm;
     private SimpleDateFormat sdfDate = new SimpleDateFormat("EEE, dd MMM yyyy",Locale.getDefault());
+    private SimpleDateFormat sdfDateString = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm",Locale.getDefault());
 
     private FloatingActionsMenu fab_menu;
@@ -66,7 +68,6 @@ public class TimetableNavigation extends AppCompatActivity implements MonthLoade
         fab_menu = (FloatingActionsMenu) findViewById(R.id.right_labels);
 
         calendarLoad = (ProgressBar) findViewById(R.id.calendarLoad);
-
         realm = Realm.getDefaultInstance();
 
         // Get a reference for the week view in the layout.
@@ -152,10 +153,30 @@ public class TimetableNavigation extends AppCompatActivity implements MonthLoade
         if(!calledNetwork)
         {
             calledNetwork=true;
-            calendarLoad.setVisibility(View.VISIBLE);
-            GetEventsFromGCal g = GetEventsFromGCal.getInstance();
-            g.getEvents(mWeekView,calendarLoad);
-
+            String lastUpdatedDate=(realm.where(LastUpdated.class).findFirst() != null)?realm.where(LastUpdated.class).findFirst().getDate():null;
+            if(lastUpdatedDate==null) {
+                updateAcadEvents();
+            }
+            else {
+                try {
+                    Calendar todaysDate = Calendar.getInstance();
+                    Calendar lastUpdated = Calendar.getInstance();
+                    lastUpdated.setTime(sdfDateString.parse(lastUpdatedDate));
+                    if(todaysDate.get(Calendar.MONTH)<7)
+                    {
+                        Calendar springSem = Calendar.getInstance();
+                        springSem.set(todaysDate.get(Calendar.YEAR),1,1,0,0,0);
+                        if(lastUpdated.before(springSem)) updateAcadEvents();
+                    }
+                    else {
+                        Calendar autumnSem = Calendar.getInstance();
+                        autumnSem.set(todaysDate.get(Calendar.YEAR),7,1,0,0,0);
+                        if(lastUpdated.before(autumnSem)) updateAcadEvents();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         Calendar startCal, endCal;
@@ -216,6 +237,12 @@ public class TimetableNavigation extends AppCompatActivity implements MonthLoade
         }
 
         return events;
+    }
+
+    private void updateAcadEvents() {
+        calendarLoad.setVisibility(View.VISIBLE);
+        GetEventsFromGCal g = GetEventsFromGCal.getInstance();
+        g.getAcadEvents(mWeekView,calendarLoad);
     }
 
     @Override
@@ -359,6 +386,13 @@ public class TimetableNavigation extends AppCompatActivity implements MonthLoade
 
             if(resultCode == RESULT_OK){
                 mWeekView.notifyDatasetChanged();
+                try {
+                    Calendar eventDate = Calendar.getInstance();
+                    eventDate.setTime(sdfDateString.parse(data.getStringExtra("Date")));
+                    mWeekView.goToDate(eventDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 if(fab_menu.isExpanded())
                     fab_menu.collapse();
             }

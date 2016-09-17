@@ -1,0 +1,55 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_black_transparent"
+    android:clickable="true"
+    android:focusable="true"
+    >
+<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:textColor="@color/white_pure"/>
+    <ImageButton
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="end"
+        android:id="@+id/close_btn"
+        android:background="@drawable/ic_close_white_24dp"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <CheckedTextView
+            android:id="@+id/enable_images"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enable images"
+            android:textSize="16sp"
+            android:textColor="#E6E2F8"
+            android:checked="true"
+            android:gravity="center"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/data_pack_notif_tv"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:text="@string/data_warning"
+        android:textColor="@color/white"
+        android:layout_gravity="bottom"/>
+</FrameLayout>

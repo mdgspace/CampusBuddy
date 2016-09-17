@@ -15,7 +15,7 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -33,18 +33,16 @@ import io.realm.Sort;
  * Created by Chirag on 13-06-2016.
  */
 
-public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
+class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
+
 
     private ArrayList<ContactSearchModel> suggestions;
     private int viewResourceId;
     private LayoutInflater mInflater;
-    private final static int HISTORY_ITEM_LIMIT = 2;
-    private final static int TOTAL_ITEM_LIMIT = 5;
-    private static final int DEPT_ITEM_LIMIT = 5;
     private String queryString;
     private final ForegroundColorSpan fcs = new ForegroundColorSpan(Color.parseColor("#be5e00"));
 
-    public SearchSuggestionAdapter(Context context, int viewResourceId) {
+    SearchSuggestionAdapter(Context context, int viewResourceId) {
         super(context, viewResourceId);
         this.suggestions = new ArrayList<>();
         this.viewResourceId = viewResourceId;
@@ -52,12 +50,14 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
     }
 
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             convertView = mInflater.inflate(viewResourceId, parent, false);
             holder = new ViewHolder();
             holder.contactName = (TextView) convertView.findViewById(R.id.contact_name);
+            holder.dept = (TextView) convertView.findViewById(R.id.contact_dept);
             holder.profilePic = (ImageView) convertView.findViewById(R.id.profile_pic);
             holder.icon = (ImageView) convertView.findViewById(R.id.history_icon);
             convertView.setTag(holder);
@@ -74,38 +74,18 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                     sb.setSpan(fcs, searchMatchPosition, searchMatchPosition + queryString.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             }
             holder.contactName.setText(sb);
-            Picasso.with(getContext())
-                    .cancelRequest(holder.profilePic);
+            Glide.clear(holder.profilePic);
             if (contact.isDept()) {
-                if (contact.getProfilePic() != null) {
-                    String deptPhoto;
-                    if (contact.getProfilePic().length() > 4)
-                        deptPhoto = contact.getProfilePic();
-                    else
-                        deptPhoto = "http://www.iitr.ac.in/departments/" + contact.getProfilePic() + "/assets/images/top1.jpg";
-                    Picasso.with(getContext())
-                            .load(deptPhoto)
-                            .fit()
-                            .into(holder.profilePic);
-                }
+                holder.dept.setVisibility(View.GONE);
+                LoadingImages.loadDeptImages(contact.getProfilePic(), holder.profilePic);
             } else {
-                if (contact.getProfilePic() != null) {
-                    if (contact.getProfilePic().equals("") || contact.getProfilePic().equals("default.jpg")) {
-                        holder.profilePic.setImageDrawable(
-                                ContextCompat.getDrawable(
-                                        getContext()
-                                        , R.drawable.contact_icon));
-                    } else {
-                        Picasso.with(getContext())
-                                .load("http://people.iitr.ernet.in/facultyphoto/" + contact.getProfilePic())
-                                .into(holder.profilePic);
-                    }
-                } else {
-                    holder.profilePic.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                    getContext()
-                                    , R.drawable.ic_account_circle_black_24dp));
+                if (contact.getProfilePic() != null)
+                    holder.dept.setVisibility(View.GONE);
+                else {
+                    holder.dept.setVisibility(View.VISIBLE);
+                    holder.dept.setText(contact.getDept());
                 }
+                LoadingImages.loadContactImages(contact.getProfilePic(), holder.profilePic);
                 if (contact.isHistorySearch())
                     holder.icon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_history_black_24dp));
                 else
@@ -117,7 +97,7 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
     }
 
     private static class ViewHolder {
-        TextView contactName;
+        TextView contactName, dept;
         ImageView icon, profilePic;
     }
 
@@ -140,6 +120,7 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
             RealmResults<ContactSearchModel> historySearches = null;
             RealmResults<Contact> contacts = null;
             RealmResults<Department> depts = null;
+            RealmResults<Contact> adminContacts = null;
             if (constraint == null) {
                 queryString = "";
                 historySearches = realm.where(ContactSearchModel.class).findAll().sort("dateAdded", Sort.DESCENDING);
@@ -158,8 +139,16 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                 }
                 contacts = contactRealmQuery.findAll().sort("name");
                 depts = realm.where(Department.class).contains("name", queryString, Case.INSENSITIVE).findAll().sort("name");
-
+                adminContacts = realm.where(Department.class)
+                        .equalTo("name", "Administration")
+                        .findFirst()
+                        .getContacts()
+                        .where()
+                        .contains("designation", queryString, Case.INSENSITIVE)
+                        .findAll()
+                        .sort("name");
             }
+            int HISTORY_ITEM_LIMIT = 2;
             for (int i = 0; i < (historySearches.size() > HISTORY_ITEM_LIMIT ? HISTORY_ITEM_LIMIT : historySearches.size()); i++) {
                 ContactSearchModel contactSearchModel = new ContactSearchModel();
                 contactSearchModel.setName(historySearches.get(i).getName());
@@ -170,6 +159,7 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
 
             }
             if (contacts != null) {
+                int TOTAL_ITEM_LIMIT = 5;
                 int limitSearch = TOTAL_ITEM_LIMIT - (historySearches.size() > HISTORY_ITEM_LIMIT ? HISTORY_ITEM_LIMIT : historySearches.size());
                 limitSearch = (limitSearch > contacts.size()) ? contacts.size() : limitSearch;
                 for (int i = 0; i < limitSearch; i++) {
@@ -193,6 +183,7 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                 }
             }
             if (depts != null) {
+                int DEPT_ITEM_LIMIT = 5;
                 for (int i = 0; i < (depts.size() > DEPT_ITEM_LIMIT ? DEPT_ITEM_LIMIT : depts.size()); i++) {
                     Department dept = depts.get(i);
                     ContactSearchModel contactSearchModel = new ContactSearchModel();
@@ -200,6 +191,18 @@ public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                     contactSearchModel.setHistorySearch(false);
                     contactSearchModel.setProfilePic(dept.getPhoto());
                     contactSearchModel.setDept(true);
+                    suggestions.add(contactSearchModel);
+                }
+            }
+            if (adminContacts != null) {
+                int ADMIN_ITEM_LIMIT = 5;
+                for (int i = 0; i < (adminContacts.size() > ADMIN_ITEM_LIMIT ? ADMIN_ITEM_LIMIT : adminContacts.size()); i++) {
+                    Contact adminContact = adminContacts.get(i);
+                    ContactSearchModel contactSearchModel = new ContactSearchModel();
+                    contactSearchModel.setName(adminContact.getDesignation());
+                    contactSearchModel.setHistorySearch(false);
+                    contactSearchModel.setProfilePic(adminContact.getProfilePic());
+                    contactSearchModel.setDept("Administration");
                     suggestions.add(contactSearchModel);
                 }
             }

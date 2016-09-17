@@ -2,55 +2,54 @@ package in.co.mdg.campusBuddy.contacts;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import org.json.JSONArray;
+import org.json.JSONException;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import in.co.mdg.campusBuddy.AboutUs;
+import in.co.mdg.campusBuddy.NetworkCheck;
 import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.ClickListener;
+import in.co.mdg.campusBuddy.contacts.data_models.Contact;
 import in.co.mdg.campusBuddy.contacts.data_models.ContactSearchModel;
 import in.co.mdg.campusBuddy.contacts.data_models.Department;
 import io.realm.Realm;
-
-/*
-import com.facebook.rebound.SimpleSpringListener;
-import com.facebook.rebound.Spring;
-import com.facebook.rebound.SpringSystem;
-*/
 
 /**
  * Created by rc on 29/6/15.
@@ -58,6 +57,7 @@ import com.facebook.rebound.SpringSystem;
 
 public class ContactsMainActivity extends AppCompatActivity implements ClickListener {
 
+    public static Boolean loadImages = true;
     private AutoCompleteTextView searchBox;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
     private static int SPEECHORCLEAR = 1;
@@ -66,17 +66,19 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
     private FrameLayout dimLayout;
     private LinearLayout searchBar;
     private ImageView backButton;
+    private ProgressBar progressBar;
+    private DeptListFragment deptList, AToZ;
+    private View overlay;
+    private ImageButton closeBtn;
+    private CheckedTextView checkedTextView;
+    private TextView dataPackTV;
+    private ConnectivityManager connMgr;
+    private String contactsUrl = "https://www.sdsmdg.ml/cb/contacts.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_telephone_contacts);
-        realm = Realm.getDefaultInstance();
-        try {
-            checkDbExists();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -85,19 +87,48 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
                 onBackPressed();
             }
         });
-        final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
+        connMgr = (ConnectivityManager)
+                this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        overlay = findViewById(R.id.settings);
+        closeBtn = (ImageButton) overlay.findViewById(R.id.close_btn);
+        checkedTextView = (CheckedTextView) overlay.findViewById(R.id.enable_images);
+        dataPackTV = (TextView) overlay.findViewById(R.id.data_pack_notif_tv);
         dimLayout = (FrameLayout) findViewById(R.id.dim_layout);
         final ImageView speechButton = (ImageView) findViewById(R.id.speechbutton);
         backButton = (ImageView) findViewById(R.id.backbutton);
         searchBox = (AutoCompleteTextView) findViewById(R.id.searchbox);
         searchBar = (LinearLayout) findViewById(R.id.searchbar);
+        progressBar = (ProgressBar) findViewById(R.id.progressbar);
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        deptList = DeptListFragment.newInstance(1);
+        AToZ = DeptListFragment.newInstance(2);
         setUpViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.accent));
+        tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.white));
         tabLayout.setTabTextColors(Color.parseColor("#A1F5F5F5"), Color.parseColor("#FFF5F5F5"));
+
+        realm = Realm.getDefaultInstance();
+        checkDbExists();
+
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                overlay.setVisibility(View.GONE);
+            }
+        });
+        checkedTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((CheckedTextView) view).toggle();
+                loadImages = ((CheckedTextView) view).isChecked();
+                if (loadImages) {
+                    deptList.adapter.notifyDataSetChanged();
+                    AToZ.adapter.notifyDataSetChanged();
+                }
+            }
+        });
 
         searchAdapter = new SearchSuggestionAdapter(this, R.layout.search_suggestion_listitem);
         searchBox.setThreshold(1);
@@ -121,9 +152,13 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
                             } else {
                                 historySearch.setDateAdded(new Date());
                             }
+                            if (contact.getDept().equals("Administration")) {
+                                Contact contact1 = realm.where(Contact.class).equalTo("designation", contact.getName()).findFirst();
+                                if (contact1 != null)
+                                    contact.setName(contact1.getName());
+                            }
                             showContact(contact.getName(), contact.getDept());
                         }
-
                     }
                 });
                 searchBox.setText("");
@@ -196,7 +231,10 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
                     case 2:
                         searchBox.setText("");
                         SPEECHORCLEAR = 1;
-                        Picasso.with(getApplicationContext()).load(R.drawable.ic_mic_black_24dp).into(speechButton);
+                        speechButton.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                        speechButton.getContext()
+                                        , R.drawable.ic_mic_black_24dp));
                         break;
                 }
             }
@@ -205,8 +243,8 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
 
     private void setUpViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(DeptListFragment.newInstance(1), "DEPARTMENT LIST");
-        adapter.addFrag(DeptListFragment.newInstance(2), "A TO Z LIST");
+        adapter.addFrag(deptList, "DEPARTMENT LIST");
+        adapter.addFrag(AToZ, "A TO Z LIST");
         viewPager.setAdapter(adapter);
     }
 
@@ -224,20 +262,136 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
         startActivity(in);
     }
 
-    private void checkDbExists() throws IOException {
-        long count = realm.where(Department.class).count();
-        if (count == 0) {
-            final InputStream stream = getAssets().open("contacts.json");
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
+    private void checkDbExists() {
+        int status = NetworkCheck.chkStatus(connMgr);
+        if (realm.where(Department.class).count() == 0) {
+            final InputStream stream;
+            try {
+                stream = getAssets().open("contacts.json");
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        try {
+                            realm.createOrUpdateAllFromJson(Department.class, stream);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+
+            if (status == 1 || status == 2)
+                new JSONTask().execute();
+        }
+        if (status == 2) {//mobile data warning
+            overlay.setVisibility(View.VISIBLE);
+            loadImages = false;
+            checkedTextView.setChecked(false);
+            dataPackTV.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void updateContacts(final String finalJson) {
+        if (isJSONArrayValid(finalJson)) {
+            try {
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        realm.createOrUpdateAllFromJson(Department.class, finalJson);
+                        //Do write something
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+            deptList.adapter.notifyDataSetChanged();
+            AToZ.adapter.notifyDataSetChanged();
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(ContactsMainActivity.this, "Contacts Updated", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public boolean isJSONArrayValid(String json) {
+        try {
+            new JSONArray(json);
+        } catch (JSONException ex1) {
+            return false;
+        }
+        return true;
+    }
+
+    public class JSONTask extends AsyncTask<Void, String, Boolean> {
+        String finalJson = "";
+
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            if (NetworkCheck.isNetConnected()) {
+                HttpURLConnection connection = null;
+                BufferedReader reader = null;
+                try {
+                    URL url = new URL(contactsUrl);
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.connect();
+                    InputStream stream = connection.getInputStream();
+                    reader = new BufferedReader(new InputStreamReader(stream));
+                    String line;
+                    StringBuilder buffer = new StringBuilder();
+                    while ((line = reader.readLine()) != null) {
+                        buffer.append(line);
+                    }
+                    finalJson = buffer.toString();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
                     try {
-                        realm.createAllFromJson(Department.class, stream);
+                        if (reader != null) {
+                            reader.close();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-            });
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            final InputStream stream;
+            try {
+                stream = getAssets().open("contacts.json");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                String line;
+                StringBuilder buffer = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
+                String initialJson = buffer.toString();
+                if (result && finalJson.length() > 0 && !initialJson.contentEquals(finalJson)) {
+                    updateContacts(finalJson);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -304,35 +458,8 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        if (id == R.id.disclaimer) {
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-// ...Irrelevant code for customizing the buttons and title
-            LayoutInflater inflater = this.getLayoutInflater();
-            View dialogView = inflater.inflate(R.layout.disclaimer, null);
-            dialogBuilder.setView(dialogView);
-            dialogBuilder.setTitle("Disclaimer");
-            dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
-
-            TextView tv_dis = (TextView) dialogView.findViewById(R.id.disclaimera);
-            tv_dis.setText(Html.fromHtml(getString(R.string.disclaimer_text)));
-            tv_dis.setMovementMethod(LinkMovementMethod.getInstance());
-            AlertDialog alertDialog = dialogBuilder.create();
-            alertDialog.show();
-        } else if (id == R.id.about_us_menu) {
-
-            Intent i = new Intent(ContactsMainActivity.this, AboutUs.class);
-            startActivity(i);
-        } else if (id == R.id.search) {
+        if (id == R.id.search) {
             searchBar.setVisibility(View.VISIBLE);
             dimLayout.setVisibility(View.VISIBLE);
             if (searchBox.getText().toString().equals("")) {
@@ -342,8 +469,16 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
             inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
             searchBox.requestFocus();
             searchBox.showDropDown();
+            return true;
+        } else if (id == R.id.settings) {
+            int status = NetworkCheck.chkStatus(connMgr);
+            overlay.setVisibility(View.VISIBLE);
+            if (status == 2) {
+                dataPackTV.setVisibility(View.VISIBLE);
+            } else {
+                dataPackTV.setVisibility(View.GONE);
+            }
         }
-
         return super.onOptionsItemSelected(item);
     }
 

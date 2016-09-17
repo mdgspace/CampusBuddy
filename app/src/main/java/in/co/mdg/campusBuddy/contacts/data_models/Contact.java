@@ -1,12 +1,15 @@
 package in.co.mdg.campusBuddy.contacts.data_models;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Chirag on 13-06-2016.
  */
 
 public class Contact extends RealmObject {
+    @PrimaryKey
+    private int primary_key;
     private String name;
     private String designation;
     private String iitr_o;          //

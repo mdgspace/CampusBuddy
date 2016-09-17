@@ -1,160 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/mainbackground_final"
-    android:fitsSystemWindows="true">
-
-    <RelativeLayout
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <!--android:background="@drawable/mainbackground_final"-->
-
-    <ImageView
-        android:id="@+id/text_CB"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:src="@drawable/cb_text" />
-    <!--android:layout_marginTop="20dp"-->
-    <!--android:paddingLeft="20dp"-->
-    <!--android:paddingRight="20dp" />-->
+    android:background="@drawable/bg_new"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
         <RelativeLayout
-            android:id="@+id/rel1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/quarter_circle">
+                <ImageButton
+                    android:id="@+id/info_menu"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/i_icon"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/ripple_circular"/>
+            </FrameLayout>
+            <ImageView
+                android:id="@+id/text_CB"
+                android:layout_width="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/cb_text" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:layout_below="@+id/text_CB"
-            android:layout_alignLeft="@+id/rel2"
-            android:layout_alignStart="@+id/rel2">
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp">
+            <RelativeLayout
+                android:id="@+id/rel1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/contactstext"
+                        android:id="@+id/contact_text"
+                        android:layout_centerHorizontal="true"/>
+                    <ImageButton
+                        android:id="@+id/tdbtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitCenter"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/contactsmain"
+                        android:layout_below="@id/contact_text"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/ripple_circular"/>
+                </RelativeLayout>
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:layout_marginStart="150dp">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/noticestext"
+                        android:id="@+id/fb_text"
+                        android:layout_centerHorizontal="true"/>
+                    <ImageButton
+                        android:id="@+id/fbbtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/noticesmain"
+                        android:layout_below="@id/fb_text"
+                        android:background="@drawable/ripple_circular" />
+                </RelativeLayout>
 
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/contactstext"
-                android:id="@+id/contact_text"/>
-            <ImageButton
-                android:id="@+id/tdbtn"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:scaleType="fitCenter"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/contactsmain"
-                android:layout_below="@id/contact_text"
-                android:background="@drawable/ripple_circular"/>
-
-
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="150dp"
-                android:layout_marginStart="150dp"
-                android:src="@drawable/noticestext"
-                android:id="@+id/fb_text"/>
-            <ImageButton
-                android:id="@+id/fbbtn"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="150dp"
-                android:layout_marginStart="150dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/noticesmain"
-                android:layout_below="@id/fb_text"
-                android:background="@drawable/ripple_circular" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rel2"
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_below="@id/rel1"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/calendartext"
+                        android:id="@+id/calendar_text"
+                        android:layout_centerHorizontal="true"/>
+                    <ImageButton
+                        android:id="@+id/tnBut2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/calendarmain"
+                        android:layout_below="@id/calendar_text"
+                        android:scaleType="fitCenter"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/ripple_circular" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:layout_marginStart="150dp">
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/maptext"
+                        android:id="@+id/map_text"
+                        android:layout_centerHorizontal="true"/>
+                    <ImageButton
+                        android:id="@+id/mapBut1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/mapmain"
+                        android:layout_below="@id/map_text"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/ripple_circular"
+                        android:layout_centerHorizontal="true"/>
+                </RelativeLayout>
+            </RelativeLayout>
         </RelativeLayout>
-        <RelativeLayout
-        android:id="@+id/rel2"
-            android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rel1"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/calendartext"
-            android:id="@+id/calendar_text"/>
-        <ImageButton
-            android:id="@+id/tnBut2"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="5dp"
-            android:src="@drawable/calendarmain"
-            android:layout_below="@id/calendar_text"
-            android:scaleType="fitCenter"
-            android:background="@drawable/ripple_circular" />
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="150dp"
-            android:layout_marginStart="150dp"
-            android:src="@drawable/maptext"
-            android:id="@+id/map_text"/>
-        <ImageButton
-            android:id="@+id/mapBut1"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="150dp"
-            android:layout_marginStart="150dp"
-            android:src="@drawable/mapmain"
-            android:layout_below="@id/map_text"
-            android:scaleType="fitCenter"
-            android:background="@drawable/ripple_circular" />
-    </RelativeLayout>
-    <!--android:layout_alignRight="@+id/progressBar"-->
-    <!--android:layout_alignEnd="@+id/progressBar" />-->
-    <!--<Button-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:id="@+id/button2"-->
-    <!--android:text="Broadcast Intent"-->
-    <!--android:onClick="broadcastIntent"-->
-    <!--android:layout_centerHorizontal="true" />-->
-
-
-    <TextView
-        android:id="@+id/credit"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_gravity="center"
-        android:alpha="0.6"
-        android:text=" Hobbies Club, IIT Roorkee"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:layout_above="@+id/imageView6"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="5dp"/>
-
-    <ImageView
-        android:id="@+id/imageView6"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/main_building_720"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_gravity="bottom">
 
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/main_building_720"/>
+        <TextView
+            android:id="@+id/credit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.6"
+            android:text=" Hobbies Club, IIT Roorkee"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_above="@id/imageView6"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"/>
 
-
-
-        <!--<ProgressBar-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:id="@+id/progressBar"-->
-    <!--android:layout_below="@+id/fbbtn"-->
-    <!--android:layout_alignRight="@+id/fbbtn"-->
-    <!--android:layout_alignEnd="@+id/fbbtn" />-->
     </RelativeLayout>
+
+
+
+    </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>

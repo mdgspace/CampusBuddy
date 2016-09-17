@@ -4,13 +4,10 @@ package in.co.mdg.campusBuddy.contacts;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,9 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.data_models.Contact;
@@ -138,31 +132,8 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         else
             desg_text.setVisibility(View.GONE);
 
-        if (contact.getProfilePic() != null) {
-            if (!contact.getProfilePic().equals("") && !contact.getProfilePic().equals("default.jpg")) {
-                Picasso.with(this)
-                        .load("http://people.iitr.ernet.in/facultyphoto/" + contact.getProfilePic())
-                        .into(new Target() {
-                            @Override
-                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                                profilePic.setImageBitmap(bitmap);
-                                smallProfilePic.setImageBitmap(bitmap);
-                            }
+        LoadingImages.loadContactImageForContactView(contact.getProfilePic(),profilePic,smallProfilePic);
 
-                            @Override
-                            public void onBitmapFailed(Drawable errorDrawable) {
-                                profilePic.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.contact_icon));
-                                smallProfilePic.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.contact_icon));
-                            }
-
-                            @Override
-                            public void onPrepareLoad(Drawable placeHolderDrawable) {
-                                profilePic.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.contact_icon));
-                                smallProfilePic.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.contact_icon));
-                            }
-                        });
-            }
-        }
         if (dept.equals("Polymer & Paper Pulp")) {
             std_code_res_off = "0132 271 ";
             std_code_bsnl = "0132 ";
