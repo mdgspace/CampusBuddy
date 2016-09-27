@@ -92,7 +92,7 @@
             fab:fab_colorNormal="@color/mdtp_white"
             fab:fab_size="mini"
             fab:fab_title="Three day view"
-            fab:fab_colorPressed="@color/wallet_highlighted_text_holo_dark"
+            fab:fab_colorPressed="#6633b5e5"
             android:id="@+id/fab_three"
             android:src="@drawable/ic_three_day"
 
@@ -104,7 +104,7 @@
             fab:fab_colorNormal="@color/mdtp_white"
             fab:fab_size="mini"
             fab:fab_title="Go to Today"
-            fab:fab_colorPressed="@color/wallet_highlighted_text_holo_dark"
+            fab:fab_colorPressed="#6633b5e5"
 
             android:id="@+id/fab_today"
             android:src="@drawable/ic_two_day"
@@ -116,7 +116,7 @@
             fab:fab_colorNormal="@color/mdtp_white"
             fab:fab_size="mini"
             fab:fab_title="Add new Event"
-            fab:fab_colorPressed="@color/wallet_highlighted_text_holo_dark"
+            fab:fab_colorPressed="#6633b5e5"
             android:id="@+id/fab_new"
             android:src="@drawable/ic_create"
             />

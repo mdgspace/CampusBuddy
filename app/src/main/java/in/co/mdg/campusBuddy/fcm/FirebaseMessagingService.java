@@ -62,7 +62,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         }
     }
 
-    private void showNotification(String title, String message) {
+    public void showNotification(String title, String message) {
         BigTextStyle bigTextStyle = new BigTextStyle();
         bigTextStyle.setBigContentTitle(title);
         bigTextStyle.bigText(message);

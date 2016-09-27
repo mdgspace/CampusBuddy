@@ -42,6 +42,7 @@ public class Data {
             fbPageList.add(new Page("SDSLabs", "182484805131346", R.drawable.sds_labs));
             fbPageList.add(new Page("SHARE IITR", "292035034247", R.drawable.share));
             fbPageList.add(new Page("Spic Macay IITR","247777145261376",R.drawable.spicmacay));
+            fbPageList.add(new Page("Student Mentorship Program","837956583005626",R.drawable.smp));
             fbPageList.add(new Page("Team Robocon", "257702554250168", R.drawable.robocon));
             fbPageList.add(new Page("Thomso IITR", "171774543014513", R.drawable.thomso));
             fbPageList.add(new Page("WatchOut NewsAgency","293084260715524",R.drawable.wona));
