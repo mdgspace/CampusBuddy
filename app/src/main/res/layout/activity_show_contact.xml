@@ -75,7 +75,7 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="@color/primary"
+                    android:background="@android:color/transparent"
                     style="@style/ToolBarWithNavigationBack"
                     app:theme="@style/ThemeOverlay.AppCompat.Dark"
                     app:title=""

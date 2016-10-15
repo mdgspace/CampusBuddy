@@ -37,7 +37,7 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
     private static final int ALPHA_ANIMATIONS_DURATION = 300;
 
     private boolean mIsTheTitleVisible = false;
-    private boolean mIsTheTitleContainerVisible = true;
+    private boolean mIsTheTitleContainerVisible = false;
 
     private LinearLayout mTitleContainer;
     private TextView mTitle;
@@ -58,14 +58,6 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         setContentView(R.layout.activity_show_contact);
         initializeVariables();
         setData();
-//        titleFrame.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                profileBackdrop.setPadding(0,0,0,titleFrame.getHeight());
-//            }
-//        });
-        startAlphaAnimation(mTitle, 0, View.INVISIBLE);
-        startAlphaAnimation(smallProfilePic, 0, View.INVISIBLE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -74,9 +66,9 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
                 onBackPressed();
             }
         });
+        mTitle.setVisibility(View.INVISIBLE);
+        smallProfilePic.setVisibility(View.INVISIBLE);
         mAppBarLayout.addOnOffsetChangedListener(this);
-        toolbar.getBackground().setAlpha(0);
-
     }
 
     @Override
@@ -313,12 +305,8 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
 //            float modifiedPercent = getModifiedPercent(percentage, PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR);
 //            nestedScrollView.setPadding(0, (int) (toolbar.getMeasuredHeight() * modifiedPercent), 0, 0);
             if (!mIsTheTitleVisible) {
-                toolbar.getBackground().setAlpha(255);
                 startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
                 startAlphaAnimation(smallProfilePic, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.brand_primary_dark));
-//                }
                 mIsTheTitleVisible = true;
             }
 
@@ -327,11 +315,6 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
             if (mIsTheTitleVisible) {
                 startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
                 startAlphaAnimation(smallProfilePic, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
-                toolbar.getBackground().setAlpha(0);
-                nestedScrollView.setPadding(0, 0, 0, 0);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    getWindow().setStatusBarColor(Color.TRANSPARENT);
-//                }
                 mIsTheTitleVisible = false;
             }
         }
