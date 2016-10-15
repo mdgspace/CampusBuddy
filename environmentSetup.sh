@@ -29,6 +29,7 @@ function copyEnvVarsToGradleProperties {
         echo "Gradle Properties does not exist"
 
         echo "Creating Gradle Properties file..."
+        mkdir $HOME"/.gradle/"
         touch $GRADLE_PROPERTIES
 
         echo "Writing environment variables to gradle.properties..."
