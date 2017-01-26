@@ -28,9 +28,10 @@ import java.util.List;
 import in.co.mdg.campusBuddy.contacts.ContactsMainActivity;
 import in.co.mdg.campusBuddy.fb.Fb;
 
-public class MainActivity extends AppCompatActivity implements OnMenuItemClickListener{
+public class MainActivity extends AppCompatActivity implements OnMenuItemClickListener {
 
     ImageButton mapButt1, tnButt2, tdbtt1, fbbtt1, infobt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,8 +116,8 @@ public class MainActivity extends AppCompatActivity implements OnMenuItemClickLi
         fbbtt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            Intent tdIntent = new Intent(MainActivity.this, Fb.class);
-            startActivity(tdIntent);
+                Intent tdIntent = new Intent(MainActivity.this, Fb.class);
+                startActivity(tdIntent);
             }
         });
     }

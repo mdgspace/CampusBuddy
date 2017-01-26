@@ -23,12 +23,12 @@ public class CustomList extends ArrayAdapter<Page> {
 
     Activity context;
     ArrayList<Page> pageList;
-//    ArrayList<String> listofvalues;
-    public CustomList(Activity context,ArrayList<Page> pageList)
-    {
-        super(context,R.layout.mytextviewfb,pageList);
-        this.context=context;
-        this.pageList=pageList;
+
+    //    ArrayList<String> listofvalues;
+    public CustomList(Activity context, ArrayList<Page> pageList) {
+        super(context, R.layout.mytextviewfb, pageList);
+        this.context = context;
+        this.pageList = pageList;
 //        alreadychosen=PagesSelected.getSelectedPageIds(getContext());
 
     }
@@ -36,11 +36,10 @@ public class CustomList extends ArrayAdapter<Page> {
 
     @NonNull
     @Override
-    public View getView(final int p, View view, @NonNull ViewGroup parent)
-    {
-        LayoutInflater inflator=context.getLayoutInflater();
-        View row=inflator.inflate(R.layout.mytextviewfb, null, true);
-        TextView txt=(TextView)row.findViewById(R.id.textforpage);
+    public View getView(final int p, View view, @NonNull ViewGroup parent) {
+        LayoutInflater inflator = context.getLayoutInflater();
+        View row = inflator.inflate(R.layout.mytextviewfb, null, true);
+        TextView txt = (TextView) row.findViewById(R.id.textforpage);
 
         final CheckBox cb = (CheckBox) row.findViewById(R.id.checkBox);
         row.setOnClickListener(new View.OnClickListener() {

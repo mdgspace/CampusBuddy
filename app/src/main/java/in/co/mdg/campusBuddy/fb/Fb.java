@@ -1,6 +1,5 @@
 package in.co.mdg.campusBuddy.fb;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,7 +11,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,13 +18,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.CheckedTextView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.etsy.android.grid.StaggeredGridView;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphRequestBatch;
@@ -36,7 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import in.co.mdg.campusBuddy.BuildConfig;
 import in.co.mdg.campusBuddy.NetworkCheck;
@@ -89,7 +84,7 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
         mRecyclerView = (RecyclerView) findViewById(R.id.grid_view);
         adapterfb = new FBFeedAdapter(Fb.this);
         mRecyclerView.setAdapter(adapterfb);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.accent), ContextCompat.getColor(this, R.color.primary));
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -195,8 +190,8 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager layoutManager = ((LinearLayoutManager) mRecyclerView.getLayoutManager());
                 int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-                Log.d("last",lastVisibleItem + "");
-                if (lastVisibleItem == (adapterfb.getItemCount()-5)) {
+//                Log.d("last", lastVisibleItem + "");
+                if (lastVisibleItem == (adapterfb.getItemCount() - 5)) {
                     if (prelast != lastVisibleItem) {
                         prelast = lastVisibleItem;
                         ongoingpage++;
@@ -309,13 +304,13 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
                                 @Override
                                 public void onBatchCompleted(GraphRequestBatch graphRequestBatch) {
                                     count++;
-                                    if(isRefreshed) {
+                                    if (isRefreshed) {
                                         adapterfb.clear();
                                         isRefreshed = false;
                                     }
                                     adapterfb.addAll(pageSpecificPosts);
-                                    Log.d("count",adapterfb.getItemCount()+"");
-                                    if (count == (fbpliked.size()-1)) {
+                                    Log.d("count", adapterfb.getItemCount() + "");
+                                    if (count == (fbpliked.size() - 1)) {
                                         count = 0;
                                         swipeRefreshLayout.setRefreshing(false);
                                     }

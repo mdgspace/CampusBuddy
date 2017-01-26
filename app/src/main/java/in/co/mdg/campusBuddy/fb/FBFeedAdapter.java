@@ -14,8 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.etsy.android.grid.util.DynamicHeightImageView;
-import com.etsy.android.grid.util.DynamicHeightTextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,24 +31,24 @@ class FBFeedAdapter extends RecyclerView.Adapter<FBFeedAdapter.PostViewHolder> {
     private Context context;
 
     FBFeedAdapter(Context context) {
-        this.arrayList = new ArrayList<>();;
+        this.arrayList = new ArrayList<>();
         this.context = context;
     }
 
     class PostViewHolder extends RecyclerView.ViewHolder {
-        DynamicHeightTextView postmessage;
+        TextView postmessage;
         TextView postheader, dateofpost;
-        DynamicHeightImageView fbpostpic;
+        ImageView fbpostpic;
         ImageView fbpostpicicon;
         LinearLayout fblayout;
 
         PostViewHolder(View convertView) {
             super(convertView);
-            postmessage = (DynamicHeightTextView) convertView.findViewById(R.id.postmessage);
+            postmessage = (TextView) convertView.findViewById(R.id.postmessage);
             postmessage.setMovementMethod(LinkMovementMethod.getInstance());
             Linkify.addLinks(postmessage, Linkify.ALL);
             postheader = (TextView) convertView.findViewById(R.id.fbpagename);
-            fbpostpic = (DynamicHeightImageView) convertView.findViewById(R.id.fbpostpic);
+            fbpostpic = (ImageView) convertView.findViewById(R.id.fbpostpic);
             fbpostpicicon = (ImageView) convertView.findViewById(R.id.fbpostpicicon);
             dateofpost = (TextView) convertView.findViewById(R.id.dateofpost);
             fblayout = (LinearLayout) convertView.findViewById(R.id.cardviewfb);
@@ -60,7 +58,7 @@ class FBFeedAdapter extends RecyclerView.Adapter<FBFeedAdapter.PostViewHolder> {
     @Override
     public PostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new PostViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_viewfb,
-                parent,false));
+                parent, false));
     }
 
     @Override
@@ -127,16 +125,18 @@ class FBFeedAdapter extends RecyclerView.Adapter<FBFeedAdapter.PostViewHolder> {
         return arrayList.size();
     }
 
-    public void addItem(Post post){
+    public void addItem(Post post) {
         arrayList.add(post);
         notifyDataSetChanged();
     }
-    void addAll(ArrayList<Post> posts){
+
+    void addAll(ArrayList<Post> posts) {
         arrayList.addAll(posts);
         Collections.sort(arrayList);
         Collections.reverse(arrayList);
         notifyDataSetChanged();
     }
+
     void clear() {
         arrayList.clear();
 //        notifyDataSetChanged();

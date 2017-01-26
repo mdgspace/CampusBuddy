@@ -1,7 +1,6 @@
 package in.co.mdg.campusBuddy.fb;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -18,11 +17,11 @@ class PagesSelected {
 
     private static String preferences_file = "pages_list";
 
-    static void writeSelectedPageIds(Context context, ArrayList<String> idList){
+    static void writeSelectedPageIds(Context context, ArrayList<String> idList) {
         try {
             String idString = "";
 //            FirebaseMessaging.getInstance().subscribeToTopic("1558962134412332"); //test page subscription
-            for(int i=0;i<idList.size();i++){
+            for (int i = 0; i < idList.size(); i++) {
                 idString += idList.get(i) + "\n";
                 FirebaseMessaging.getInstance().subscribeToTopic(idList.get(i));
             }
@@ -35,7 +34,7 @@ class PagesSelected {
         }
     }
 
-    static ArrayList<String> getSelectedPageIds(Context context){
+    static ArrayList<String> getSelectedPageIds(Context context) {
         try {
             FileInputStream inputStream;
             ArrayList<String> idList = new ArrayList<String>();
@@ -44,8 +43,8 @@ class PagesSelected {
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                String id = line.replace('\n','\0');
-                id = id.replace('\r','\0');
+                String id = line.replace('\n', '\0');
+                id = id.replace('\r', '\0');
                 idList.add(id);
             }
             return idList;

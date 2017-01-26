@@ -17,15 +17,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 public class SimpleMap extends FragmentActivity
         implements OnMapReadyCallback,
@@ -41,7 +37,6 @@ public class SimpleMap extends FragmentActivity
     GoogleMap mGoogleMap;
     SupportMapFragment mFragment;
     Marker currLocationMarker;
-
 
 
     @Override
@@ -73,7 +68,7 @@ public class SimpleMap extends FragmentActivity
         try {
             setContentView(R.layout.activity_map);
             mFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-            if(mFragment != null)
+            if (mFragment != null)
                 mFragment.getMapAsync(SimpleMap.this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,19 +122,20 @@ public class SimpleMap extends FragmentActivity
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         //mLocationRequest.setSmallestDisplacement(0.1F); //1/10 meter
 
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, (com.google.android.gms.location.LocationListener) SimpleMap.this);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, SimpleMap.this);
 
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Toast.makeText(this,"Connection Suspended",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Connection Suspended", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this,"Connection Failed",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Connection Failed", Toast.LENGTH_SHORT).show();
     }
+
     @Override
     public void onLocationChanged(Location location) {
 //

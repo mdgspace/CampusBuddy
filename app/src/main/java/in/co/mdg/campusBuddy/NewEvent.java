@@ -23,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.text.ParseException;
@@ -38,7 +37,10 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 
-public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, DialogColor.ColorDialogListener {
+public class NewEvent extends AppCompatActivity implements
+        DatePickerDialog.OnDateSetListener,
+        TimePickerDialog.OnTimeSetListener,
+        DialogColor.ColorDialogListener {
 
     private EditText editt_date, editt_start, editt_end, editt_title, editt_details, editt_venue;
     private TextView color_text, typeOfEvent;
@@ -169,10 +171,6 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
         editt_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                DialogFragment newFragment = new DateDialog();
-                newFragment.show(getFragmentManager(), "datePicker");
-                */
                 if (check == 0) {
                     Calendar now = Calendar.getInstance();
                     year = now.get(Calendar.YEAR);
@@ -432,7 +430,7 @@ public class NewEvent extends AppCompatActivity implements DatePickerDialog.OnDa
     }
 
     @Override
-    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hour, int minute) {
+    public void onTimeSet(TimePickerDialog timePickerDialog, int hour, int minute, int second) {
 
         if (isStartTime) {
             editt_start.setText(String.format(Locale.US, "%02d", hour) + ":" + String.format(Locale.US, "%02d", minute), TextView.BufferType.EDITABLE);

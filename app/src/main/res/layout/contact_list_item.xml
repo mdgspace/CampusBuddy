@@ -4,46 +4,47 @@
     android:layout_width="match_parent"
     android:layout_height="75dp"
     android:layout_marginTop="1dp"
-    android:paddingTop="4dp"
+    android:background="@drawable/ripple_effect"
     android:paddingBottom="4dp"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
-    android:background="@drawable/ripple_effect">
+    android:paddingTop="4dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_pic"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_gravity="center_vertical"
-        android:id="@+id/profile_pic"
-        android:src="@drawable/contact_icon"
         android:contentDescription="profile pic"
-        app:civ_border_width="1dp"
-        app:civ_border_color="@color/white"/>
+        android:src="@drawable/contact_icon"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="1dp" />
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="13dp"
-        android:layout_marginLeft="13dp">
-        <TextView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp">
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/name"
-            android:text="Name"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:textSize="17sp"
-            android:textColor="@color/contact_dark"/>
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textColor="@color/contact_dark"
+            android:textSize="17sp" />
+
         <TextView
+            android:id="@+id/desg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
             android:layout_marginTop="2dp"
-            android:textSize="12sp"
             android:text="Designation"
-            android:id="@+id/desg"
-            android:textColor="@color/contact_secondayText" />
+            android:textColor="@color/contact_secondayText"
+            android:textSize="12sp" />
     </RelativeLayout>
-
 
 
 </LinearLayout>

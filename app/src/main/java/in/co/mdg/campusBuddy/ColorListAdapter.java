@@ -4,13 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -56,11 +53,11 @@ public class ColorListAdapter extends BaseAdapter {
             LayoutInflater mInflater = (LayoutInflater) mContext
                     .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.custom_color_item, null);
-            holder=new Holder();
-            holder.colorll=(LinearLayout)convertView.findViewById(R.id.colorLL);
-            holder.colortext=(TextView)convertView.findViewById(R.id.color_text);
-            holder.colorimage=(CardView) convertView.findViewById(R.id.color_image);
-            final ColorItem color_item=mData.get(position);
+            holder = new Holder();
+            holder.colorll = (LinearLayout) convertView.findViewById(R.id.colorLL);
+            holder.colortext = (TextView) convertView.findViewById(R.id.color_text);
+            holder.colorimage = (CardView) convertView.findViewById(R.id.color_image);
+            final ColorItem color_item = mData.get(position);
             try {
                 holder.colortext.setText(color_item.getColor());
                 holder.colorimage.setCardBackgroundColor(Color.parseColor(color_item.getHash()));
@@ -71,13 +68,10 @@ public class ColorListAdapter extends BaseAdapter {
                     }
                 });
 
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
 
 
         return convertView;

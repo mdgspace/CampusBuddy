@@ -6,16 +6,13 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.SQLException;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
 import in.co.mdg.campusBuddy.calendar.data_models.user_events.UserEvent;
 import io.realm.Realm;
@@ -33,23 +30,22 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("alarm","start");
+        Log.d("alarm", "start");
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         PowerManager.WakeLock wl = pm.newWakeLock(
                 PowerManager.PARTIAL_WAKE_LOCK, "YOUR TAG");
         // Acquire the lock
         wl.acquire();
-        int i=1;
+        int i = 1;
         NotificationManager mNotificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         Calendar c = Calendar.getInstance();
         Date now = c.getTime();
-        c.add(Calendar.HOUR_OF_DAY,1);
+        c.add(Calendar.HOUR_OF_DAY, 1);
         Date anHourLater = c.getTime();
         realm = Realm.getDefaultInstance();
-        RealmResults<UserEvent> userEvents = realm.where(UserEvent.class).greaterThan("time.start",now).lessThan("time.start",anHourLater).findAll();
-        for(UserEvent userEvent:userEvents)
-        {
+        RealmResults<UserEvent> userEvents = realm.where(UserEvent.class).greaterThan("time.start", now).lessThan("time.start", anHourLater).findAll();
+        for (UserEvent userEvent : userEvents) {
 
             in = new Intent(context, TimetableNavigation.class);
             Bundle bundle = new Bundle();

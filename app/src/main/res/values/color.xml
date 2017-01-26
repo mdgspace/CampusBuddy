@@ -4,14 +4,14 @@
     <color name="dark_black_transparent">#EE000000</color>
     <color name="white">#fafafa</color>
     <!--<color name="my_divider">#B6B6B6</color>-->
-    <color name="primary">#5c3bb5 </color>
+    <color name="primary">#5c3bb5</color>
     <color name="primary_dark">#462d8a</color>
     <color name="accent">#009688</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
     <color name="black_transparent">#40000000</color>
     <color name="white_pure">#FFFFFF</color>
-    <color  name="contact_dark">#333333</color>
+    <color name="contact_dark">#333333</color>
     <color name="contact_secondayText">#999999</color>
     <color name="gray_light_trans">#33999999</color>
     <color name="black">#000</color>

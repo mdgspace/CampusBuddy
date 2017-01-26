@@ -5,7 +5,7 @@ package in.co.mdg.campusBuddy;
  */
 public class ColorItem {
 
-    String color,hash;
+    String color, hash;
 
     public String getColor() {
         return color;
@@ -25,8 +25,8 @@ public class ColorItem {
 
     public ColorItem(String color, String hash) {
         super();
-        this.color=color;
-        this.hash=hash;
+        this.color = color;
+        this.hash = hash;
 
     }
 

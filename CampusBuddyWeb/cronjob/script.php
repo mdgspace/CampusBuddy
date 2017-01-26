@@ -145,34 +145,44 @@ function cron () {
       $message = $post['message'];
       $page_name = array_search ($page_id, $GLOBALS['pageList']);
       $img_src = array_key_exists('img_src',$post)?$post['img_src']:'';
-      send_notification ($page_id,$message,$page_name,$img_src);
+      //for android phones
+      send_notification ($page_id,$message,$page_name,$img_src, false);
+      //for ios phones
+      send_notification ($page_id,$message,$page_name,$img_src, true);
     }
     
   }
 }
 
-function send_notification ($topic, $message, $name, $img_src)
+function send_notification ($topic, $message, $name, $img_src, $ios)
 {
-  
-  
   // prep the bundle
-  $data = array
-  (
-    'content'   => $message,
-    'name'    => $name,
-    'img'   => $img_src
-    );
-  // $notification = array
-  // (
-        // "body" => "great match!",
-        // "title" => "Portugal vs. Denmark"
-  // );
-  $fields = array
-  (
-    'to'  =>  '/topics/'.$topic,
-    'data'  =>  $data
-    // 'notification' => $notification
-    );
+  $fields = array();
+  if($ios) {
+    $notification = array
+    (
+      "body" => $message,
+      "title" => $name,
+      "sound" => "default"
+      );
+    $fields = array
+    (
+      'to'  =>  '/topics/ios_'.$topic,
+      'notification' => $notification
+      );
+  } else {
+    $data = array
+    (
+      'content'   => $message,
+      'name'    => $name,
+      'img'   => $img_src
+      );
+    $fields = array
+    (
+      'to'  =>  '/topics/'.$topic,
+      'data'  =>  $data
+      );
+  }
   
   $headers = array
   (

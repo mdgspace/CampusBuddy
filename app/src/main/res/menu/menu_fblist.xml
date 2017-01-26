@@ -1,11 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="in.co.mdg.campusBuddy.fb.Fblist">
-    <item android:id="@+id/action_select_all" android:title="Select All"
-    android:orderInCategory="100" app:showAsAction="never" />
-    <item android:id="@+id/action_select_none" android:title="Select None"
-        android:orderInCategory="101" app:showAsAction="never" />
-    <item android:id="@+id/action_select_invert" android:title="Invert Selection"
-        android:orderInCategory="102" app:showAsAction="never" />
+    tools:context="in.co.mdg.campusBuddy.fb.Fblist"
+    tools:ignore="HardcodedText">
+    <item
+        android:id="@+id/action_select_all"
+        android:orderInCategory="100"
+        android:title="Select All"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_select_none"
+        android:orderInCategory="101"
+        android:title="Select None"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_select_invert"
+        android:orderInCategory="102"
+        android:title="Invert Selection"
+        app:showAsAction="never" />
 </menu>

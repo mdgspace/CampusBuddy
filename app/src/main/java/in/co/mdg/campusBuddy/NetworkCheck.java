@@ -1,6 +1,5 @@
 package in.co.mdg.campusBuddy;
 
-import android.app.Application;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -12,7 +11,7 @@ import java.io.IOException;
 
 public class NetworkCheck {
     public static boolean isNetConnected() {
-       Runtime runtime = Runtime.getRuntime();
+        Runtime runtime = Runtime.getRuntime();
         try {
             Process mIpAddrProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
             int mExitValue = mIpAddrProcess.waitFor();
@@ -25,8 +24,8 @@ public class NetworkCheck {
     }
 
     public static int chkStatus(ConnectivityManager connMgr) {
-    //        final ConnectivityManager connMgr = (ConnectivityManager)
-    //                this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        //        final ConnectivityManager connMgr = (ConnectivityManager)
+        //                this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connMgr.getActiveNetworkInfo();
         if (activeNetwork != null) { // connected to the internet
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {

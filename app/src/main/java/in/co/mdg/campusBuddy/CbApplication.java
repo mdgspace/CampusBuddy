@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
-import com.google.firebase.storage.FirebaseStorage;
 
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
@@ -21,8 +20,9 @@ public class CbApplication extends Application {
     public void onCreate() {
         super.onCreate();
 //        Fabric.with(this, new Crashlytics());
+        Realm.init(this);
         RealmConfiguration config = new RealmConfiguration
-                .Builder(this)
+                .Builder()
                 .name("CBData.realm")
                 .deleteRealmIfMigrationNeeded()
                 .build();

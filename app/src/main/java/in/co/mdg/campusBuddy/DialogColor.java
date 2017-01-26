@@ -15,7 +15,7 @@ import android.widget.ListView;
 public class DialogColor extends DialogFragment {
 
     public interface ColorDialogListener {
-        public void onColorChoose(int position);
+        void onColorChoose(int position);
 
     }
 
@@ -43,7 +43,7 @@ public class DialogColor extends DialogFragment {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
         dialog.setTitle("Choose color for event");
         // Get the layout inflater
-       // LayoutInflater inflater = getActivity().getLayoutInflater();
+        // LayoutInflater inflater = getActivity().getLayoutInflater();
         View customView = LayoutInflater.from(getActivity()).inflate(
                 R.layout.custom_color, null, false);
         ListView listView = (ListView) customView.findViewById(R.id.color_list);
@@ -52,9 +52,8 @@ public class DialogColor extends DialogFragment {
         ColorListAdapter mAdapter = new ColorListAdapter(Data.getColor_list(), getActivity(), mListener);
 
         listView.setAdapter(mAdapter);
-       // listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        // listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         dialog.setView(customView);
-
 
 
         return dialog.show();
