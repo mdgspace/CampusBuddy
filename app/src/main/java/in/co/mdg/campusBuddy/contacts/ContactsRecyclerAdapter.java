@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.data_models.Contact;
 import in.co.mdg.campusBuddy.contacts.data_models.Department;
+import in.co.mdg.campusBuddy.contacts.data_models.Group;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmQuery;
@@ -21,10 +22,11 @@ import io.realm.RealmResults;
  * Created by root on 13/6/15.
  */
 class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapter.ContactViewHolder> implements RecyclerViewFastScroller.BubbleTextGetter {
-    private static Realm realm = Realm.getDefaultInstance();
-    private RealmList<Department> depts = new RealmList<>();
+    private Realm realm = Realm.getDefaultInstance();
+    private RealmResults<Group> groups;
     private RealmResults<Contact> contacts;
     private RealmList<Contact> deptContacts;
+    private RealmList<Department> groupDepts;
     private int type = 1;
     private static ClickListener clicklistener;
 
@@ -41,13 +43,8 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
     void setListData(int option, String deptName) {
         switch (option) {
             case 1:
-                if (depts.size() == 0) {
-                    RealmResults<Department> results = realm.where(Department.class).notEqualTo("name", "Medical Aid").findAll().sort("name");
-                    Department medicalAid = realm.where(Department.class).equalTo("name", "Medical Aid").findFirst();
-                    if (medicalAid != null) {
-                        depts.add(0, medicalAid);
-                    }
-                    depts.addAll(results);
+                if (groups == null) {
+                    groups = realm.where(Group.class).findAll().sort("name");
                 }
                 break;
             case 2:
@@ -58,21 +55,23 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
             case 3:
                 deptContacts = realm.where(Department.class).equalTo("name", deptName).findFirst().getContacts();
                 break;
+            case 4:
+                groupDepts = realm.where(Group.class).equalTo("name", deptName).findFirst().getDepartments();
         }
         type = option;
         notifyDataSetChanged();
     }
 
-    private static String getDept(Contact contact) {
+    private String getDept(Contact contact) {
         RealmQuery<Department> deptSearch = realm
                 .where(Department.class)
                 .equalTo("contacts.name", contact.getName());
-        if (contact.getIitr_o() != null)
-            deptSearch.equalTo("contacts.iitr_o", contact.getIitr_o());
-        else if (contact.getIitr_r() != null)
-            deptSearch.equalTo("contacts.iitr_r", contact.getIitr_r());
-        else if (contact.getPhoneBSNL() != null)
-            deptSearch.equalTo("contacts.phoneBSNL", contact.getPhoneBSNL());
+        if (contact.getIitr_o().size() > 0)
+            deptSearch.equalTo("contacts.iitr_o.number", contact.getIitr_o().get(0).getNumber());
+        else if (contact.getIitr_r().size() > 0)
+            deptSearch.equalTo("contacts.iitr_r.number", contact.getIitr_r().get(0).getNumber());
+        else if (contact.getPhoneBSNL().size() > 0)
+            deptSearch.equalTo("contacts.phoneBSNL.number", contact.getPhoneBSNL().get(0).getNumber());
         return deptSearch.findFirst().getName();
     }
 
@@ -94,13 +93,16 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
     public void onBindViewHolder(ContactViewHolder holder, int position) {
         switch (type) {
             case 1:
-                holder.bind(type, depts.get(position));
+                holder.bind(type, groups.get(position));
                 break;
             case 2:
                 holder.bind(type, contacts.get(position));
                 break;
             case 3:
                 holder.bind(type, deptContacts.get(position));
+                break;
+            case 4:
+                holder.bind(type, groupDepts.get(position));
         }
     }
 
@@ -108,11 +110,13 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
     public int getItemCount() {
         switch (type) {
             case 1:
-                return depts.size();
+                return groups.size();
             case 2:
                 return contacts.size();
             case 3:
                 return deptContacts.size();
+            case 4:
+                return groupDepts.size();
         }
         return 0;
     }
@@ -121,11 +125,13 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
     public String getTextToShowInBubble(int pos) {
         switch (type) {
             case 1:
-                return depts.get(pos).getName().substring(0, 1);
+                return groups.get(pos).getName().substring(0, 1);
             case 2:
                 return contacts.get(pos).getName().substring(0, 1);
             case 3:
                 return deptContacts.get(pos).getName().substring(0, 1);
+            case 4:
+                return groupDepts.get(pos).getName().substring(0, 1);
         }
         return "";
     }
@@ -145,22 +151,42 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
             Glide.clear(profilePic);
             switch (type) {
                 case 1:
-                    Department dept = (Department) item;
-                    name.setText(dept.getName());
+                    Group group = (Group) item;
+                    String str = group.getName();
+//                    String[] strArray = str.split(" ");
+//                    StringBuilder builder = new StringBuilder();
+//                    for (String s : strArray) {
+//                        String cap = s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+//                        builder.append(cap + " ");
+//                    }
+                    name.setText(str);
                     desg.setVisibility(View.GONE);
-                    LoadingImages.loadDeptImages(dept.getPhoto(), profilePic);
+//                    LoadingImages.loadDeptImages(dept.getPhoto(), profilePic);
                     break;
                 case 2:
                 case 3:
                     Contact contact = (Contact) item;
                     name.setText(contact.getName());
-                    if (contact.getDesignation() == null)
+                    if (contact.getDesg() == null)
                         desg.setVisibility(View.GONE);
                     else {
                         desg.setVisibility(View.VISIBLE);
-                        desg.setText(contact.getDesignation());
+                        desg.setText(contact.getDesg());
                     }
                     LoadingImages.loadContactImages(contact.getProfilePic(), profilePic);
+                    break;
+                case 4:
+                    Department dept = (Department) item;
+                    str = dept.getName();
+//                    strArray = str.split(" ");
+//                    builder = new StringBuilder();
+//                    for (String s : strArray) {
+//                        String cap = s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+//                        builder.append(cap + " ");
+//                    }
+                    name.setText(str);
+                    desg.setVisibility(View.GONE);
+                    LoadingImages.loadDeptImages(dept.getPhoto(), profilePic);
                     break;
             }
 //            itemView.setOnTouchListener(new View.OnTouchListener() {
@@ -181,6 +207,8 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
                         clicklistener.itemClicked(type, null, name.getText().toString());
                     } else if (type == 2 || type == 3) {
                         clicklistener.itemClicked(type, name.getText().toString(), getDept((Contact) item));
+                    } else if (type == 4) {
+                        clicklistener.itemClicked(type, null, name.getText().toString());
                     }
 
                 }

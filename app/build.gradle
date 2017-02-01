@@ -4,8 +4,8 @@ apply plugin: 'io.fabric'
 apply plugin: 'realm-android'
 
 def versionMajor = 2
-def versionMinor = 0
-def versionPatch = 7
+def versionMinor = 1
+def versionPatch = 0
 def versionBuild = 0
 
 android
@@ -67,6 +67,10 @@ android
         }
 //Intentionally added to the bottom.
 apply plugin: 'com.google.gms.google-services'
+dependencies {
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha5'
+    compile 'com.android.support:support-v4:25.1.0'
+}
 
 
 

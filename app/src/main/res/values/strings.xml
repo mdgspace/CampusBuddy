@@ -28,4 +28,7 @@
     <string name="data_warning"><i>It looks like you are on Data Pack!</i>\nStandard data charges may apply.</string>
 
     <string name="title_activity_fullscreen_image_view">FullscreenImageView</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

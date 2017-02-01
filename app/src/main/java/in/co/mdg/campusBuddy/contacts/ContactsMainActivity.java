@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.TabLayout;
@@ -30,25 +29,24 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import in.co.mdg.campusBuddy.NetworkCheck;
 import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.ClickListener;
-import in.co.mdg.campusBuddy.contacts.data_models.Contact;
 import in.co.mdg.campusBuddy.contacts.data_models.ContactSearchModel;
-import in.co.mdg.campusBuddy.contacts.data_models.Department;
+import in.co.mdg.campusBuddy.contacts.data_models.CustomStringArrayGsonAdapter;
+import in.co.mdg.campusBuddy.contacts.data_models.Group;
 import io.realm.Realm;
 
 /**
@@ -67,13 +65,13 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
     private LinearLayout searchBar;
     private ImageView backButton;
     private ProgressBar progressBar;
-    private DeptListFragment deptList, AToZ;
+    private DeptListFragment deptList;//, AToZ;
     private View overlay;
     private ImageButton closeBtn;
     private CheckedTextView checkedTextView;
     private TextView dataPackTV;
     private ConnectivityManager connMgr;
-    private String contactsUrl = "https://www.sdsmdg.ml/cb/contacts.json";
+//    private String contactsUrl = "https://www.sdsmdg.ml/cb/contacts.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +100,7 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         deptList = DeptListFragment.newInstance(1);
-        AToZ = DeptListFragment.newInstance(2);
+//        AToZ = DeptListFragment.newInstance(2);
         setUpViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -125,7 +123,7 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
                 loadImages = ((CheckedTextView) view).isChecked();
                 if (loadImages) {
                     deptList.adapter.notifyDataSetChanged();
-                    AToZ.adapter.notifyDataSetChanged();
+//                    AToZ.adapter.notifyDataSetChanged();
                 }
             }
         });
@@ -152,11 +150,11 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
                             } else {
                                 historySearch.setDateAdded(new Date());
                             }
-                            if (contact.getDept().equals("Administration")) {
-                                Contact contact1 = realm.where(Contact.class).equalTo("designation", contact.getName()).findFirst();
-                                if (contact1 != null)
-                                    contact.setName(contact1.getName());
-                            }
+//                            if (contact.getDept().equals("Administration")) {
+//                                Contact contact1 = realm.where(Contact.class).equalTo("designation", contact.getName()).findFirst();
+//                                if (contact1 != null)
+//                                    contact.setName(contact1.getName());
+//                            }
                             showContact(contact.getName(), contact.getDept());
                         }
                     }
@@ -243,8 +241,8 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
 
     private void setUpViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(deptList, "DEPARTMENT LIST");
-        adapter.addFrag(AToZ, "A TO Z LIST");
+        adapter.addFrag(deptList, "Contact Groups");
+//        adapter.addFrag(AToZ, "A TO Z LIST");
         viewPager.setAdapter(adapter);
     }
 
@@ -262,138 +260,154 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
         startActivity(in);
     }
 
+    private void showGroupDepartments(String groupName) {
+        Intent in = new Intent(this, ShowGroupDepartments.class);
+        in.putExtra("group_name", groupName);
+        startActivity(in);
+    }
+
     private void checkDbExists() {
-        int status = NetworkCheck.chkStatus(connMgr);
-        if (realm.where(Department.class).count() == 0) {
-            final InputStream stream;
+//        int status = NetworkCheck.chkStatus(connMgr);
+        if (realm.where(Group.class).count() == 0) {
+
             try {
-                stream = getAssets().open("contacts.json");
+                InputStream stream;
+                final StringBuilder buf = new StringBuilder();
+                stream = getAssets().open("contacts.min.json");
+                BufferedReader in = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+                String str;
+                while ((str = in.readLine()) != null) {
+                    buf.append(str);
+                }
+                in.close();
+                final Gson gson = new CustomStringArrayGsonAdapter().getGson();
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        try {
-                            realm.createOrUpdateAllFromJson(Department.class, stream);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        List<Group> groups = gson.fromJson(String.valueOf(buf), new TypeToken<List<Group>>() {
+                        }.getType());
+                        realm.copyToRealm(groups);
+//                            realm.createOrUpdateAllFromJson(Group.class, stream);
                     }
                 });
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
-
-            if (status == 1 || status == 2)
-                new JSONTask().execute();
         }
-        if (status == 2) {//mobile data warning
-            overlay.setVisibility(View.VISIBLE);
-            loadImages = false;
-            checkedTextView.setChecked(false);
-            dataPackTV.setVisibility(View.VISIBLE);
-        }
+//        else {
+//
+//            if (status == 1 || status == 2)
+//                new JSONTask().execute();
+//        }
+//        if (status == 2) {//mobile data warning
+//            overlay.setVisibility(View.VISIBLE);
+//            loadImages = false;
+//            checkedTextView.setChecked(false);
+//            dataPackTV.setVisibility(View.VISIBLE);
+//        }
     }
 
-    private void updateContacts(final String finalJson) {
-        if (isJSONArrayValid(finalJson)) {
-            try {
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        realm.createOrUpdateAllFromJson(Department.class, finalJson);
-                        //Do write something
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-                return;
-            }
-            deptList.adapter.notifyDataSetChanged();
-            AToZ.adapter.notifyDataSetChanged();
-            progressBar.setVisibility(View.GONE);
-            Toast.makeText(ContactsMainActivity.this, "Contacts Updated", Toast.LENGTH_LONG).show();
-        }
-    }
+//    private void updateContacts(final String finalJson) {
+//        if (isJSONArrayValid(finalJson)) {
+//            try {
+//                realm.executeTransaction(new Realm.Transaction() {
+//                    @Override
+//                    public void execute(Realm realm) {
+//                        realm.createOrUpdateAllFromJson(Department.class, finalJson);
+//                        //Do write something
+//                    }
+//                });
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                return;
+//            }
+//            deptList.adapter.notifyDataSetChanged();
+//            AToZ.adapter.notifyDataSetChanged();
+//            progressBar.setVisibility(View.GONE);
+//            Toast.makeText(ContactsMainActivity.this, "Contacts Updated", Toast.LENGTH_LONG).show();
+//        }
+//    }
 
-    public boolean isJSONArrayValid(String json) {
-        try {
-            new JSONArray(json);
-        } catch (JSONException ex1) {
-            return false;
-        }
-        return true;
-    }
+//
+//    public boolean isJSONArrayValid(String json) {
+//        try {
+//            new JSONArray(json);
+//        } catch (JSONException ex1) {
+//            return false;
+//        }
+//        return true;
+//    }
 
-    public class JSONTask extends AsyncTask<Void, String, Boolean> {
-        String finalJson = "";
-
-        @Override
-        protected void onPreExecute() {
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            if (NetworkCheck.isNetConnected()) {
-                HttpURLConnection connection = null;
-                BufferedReader reader = null;
-                try {
-                    URL url = new URL(contactsUrl);
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.connect();
-                    InputStream stream = connection.getInputStream();
-                    reader = new BufferedReader(new InputStreamReader(stream));
-                    String line;
-                    StringBuilder buffer = new StringBuilder();
-                    while ((line = reader.readLine()) != null) {
-                        buffer.append(line);
-                    }
-                    finalJson = buffer.toString();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
-                } finally {
-                    if (connection != null) {
-                        connection.disconnect();
-                    }
-                    try {
-                        if (reader != null) {
-                            reader.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            final InputStream stream;
-            try {
-                stream = getAssets().open("contacts.json");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-                String line;
-                StringBuilder buffer = new StringBuilder();
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line);
-                }
-                String initialJson = buffer.toString();
-                if (result && finalJson.length() > 0 && !initialJson.contentEquals(finalJson)) {
-                    updateContacts(finalJson);
-                } else {
-                    progressBar.setVisibility(View.GONE);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
+//    public class JSONTask extends AsyncTask<Void, String, Boolean> {
+//        String finalJson = "";
+//
+//        @Override
+//        protected void onPreExecute() {
+//            progressBar.setVisibility(View.VISIBLE);
+//        }
+//
+//        @Override
+//        protected Boolean doInBackground(Void... voids) {
+//            if (NetworkCheck.isNetConnected()) {
+//                HttpURLConnection connection = null;
+//                BufferedReader reader = null;
+//                try {
+//                    URL url = new URL(contactsUrl);
+//                    connection = (HttpURLConnection) url.openConnection();
+//                    connection.connect();
+//                    InputStream stream = connection.getInputStream();
+//                    reader = new BufferedReader(new InputStreamReader(stream));
+//                    String line;
+//                    StringBuilder buffer = new StringBuilder();
+//                    while ((line = reader.readLine()) != null) {
+//                        buffer.append(line);
+//                    }
+//                    finalJson = buffer.toString();
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    return false;
+//                } finally {
+//                    if (connection != null) {
+//                        connection.disconnect();
+//                    }
+//                    try {
+//                        if (reader != null) {
+//                            reader.close();
+//                        }
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Boolean result) {
+//            final InputStream stream;
+//            try {
+//                stream = getAssets().open("contacts.json");
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+//                String line;
+//                StringBuilder buffer = new StringBuilder();
+//                while ((line = reader.readLine()) != null) {
+//                    buffer.append(line);
+//                }
+//                String initialJson = buffer.toString();
+//                if (result && finalJson.length() > 0 && !initialJson.contentEquals(finalJson)) {
+//                    updateContacts(finalJson);
+//                } else {
+//                    progressBar.setVisibility(View.GONE);
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+//    }
 
     @Override
     public void onBackPressed() {
@@ -447,12 +461,15 @@ public class ContactsMainActivity extends AppCompatActivity implements ClickList
     public void itemClicked(int type, String contactName, String deptName) {
         switch (type) {
             case 1:
-                showDepartmentContacts(deptName);
+                showGroupDepartments(deptName);
                 break;
             case 2:
             case 3:
                 showContact(contactName, deptName);
                 break;
+            case 4:
+                showDepartmentContacts(deptName);
+
         }
     }
 

@@ -119,8 +119,8 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         dept_text.setText(dept);
         mTitle.setText(name);
 
-        if (contact.getDesignation() != null)
-            desg_text.setText(contact.getDesignation());
+        if (contact.getDesg() != null)
+            desg_text.setText(contact.getDesg());
         else
             desg_text.setVisibility(View.GONE);
 
@@ -132,9 +132,9 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         }
 
         LinearLayout contactOffice = (LinearLayout) findViewById(R.id.contact_office);
-        if (contact.getIitr_o() != null) {
+        if (contact.getIitr_o().size() > 0) {
             final TextView iitr_o = (TextView) findViewById(R.id.iitr_o);
-            iitr_o.setText(std_code_res_off + contact.getIitr_o());
+            iitr_o.setText(std_code_res_off + contact.getIitr_o().get(0).getNumber());
             contactOffice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -154,9 +154,9 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         }
 
         LinearLayout contactResidence = (LinearLayout) findViewById(R.id.contact_residence);
-        if (contact.getIitr_r() != null) {
+        if (contact.getIitr_r().size() > 0) {
             final TextView iitr_r = (TextView) findViewById(R.id.iitr_r);
-            iitr_r.setText(std_code_res_off + contact.getIitr_r());
+            iitr_r.setText(std_code_res_off + contact.getIitr_r().get(0).getNumber());
             contactResidence.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -176,15 +176,15 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         }
 
         LinearLayout contactBsnl = (LinearLayout) findViewById(R.id.contact_bsnl);
-        if (contact.getPhoneBSNL() != null) {
+        if (contact.getPhoneBSNL().size() > 0) {
             final TextView phoneBsnl = (TextView) findViewById(R.id.phone_bsnl);
-            if (contact.getPhoneBSNL().startsWith("9") || contact.getPhoneBSNL().startsWith("8")) {
-                final TextView bsnlText = (TextView) findViewById(R.id.bsnl_text);
-                bsnlText.setText("Mobile");
-                phoneBsnl.setText(contact.getPhoneBSNL());
-            } else {
-                phoneBsnl.setText(std_code_bsnl + contact.getPhoneBSNL());
-            }
+//            if (contact.getPhoneBSNL().get(0).getNumber().startsWith("9") || contact.getPhoneBSNL().get(0).getNumber().startsWith("8")) {
+//                final TextView bsnlText = (TextView) findViewById(R.id.bsnl_text);
+//                bsnlText.setText("Mobile");
+//                phoneBsnl.setText(contact.getPhoneBSNL().get(0).getNumber());
+//            } else {
+            phoneBsnl.setText(std_code_bsnl + contact.getPhoneBSNL().get(0).getNumber());
+//            }
             contactBsnl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -204,9 +204,13 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         }
 
         LinearLayout contactEmail = (LinearLayout) findViewById(R.id.contact_email);
-        if (contact.getEmail() != null) {
+        if (contact.getEmail().size() > 0) {
             final TextView email = (TextView) findViewById(R.id.email);
-            email.setText(contact.getEmail() + "@iitr.ac.in");
+            String emailId = contact.getEmail().get(0).getNumber();
+            if (!emailId.contains("@")) {
+                emailId = emailId.concat("@iitr.ac.in");
+            }
+            email.setText(emailId);
             contactEmail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -261,28 +265,28 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         final Intent addContact = new Intent(Intent.ACTION_INSERT_OR_EDIT);
         addContact.putExtra(ContactsContract.Intents.Insert.NAME, name);
         addContact.putExtra(ContactsContract.Intents.Insert.COMPANY, dept);
-        if (contact.getDesignation() != null)
-            addContact.putExtra(ContactsContract.Intents.Insert.JOB_TITLE, contact.getDesignation());
-        if (contact.getIitr_o() != null) {
-            addContact.putExtra(ContactsContract.Intents.Insert.PHONE, (std_code_res_off + contact.getIitr_o()).replace(" ", ""));
+        if (contact.getDesg() != null)
+            addContact.putExtra(ContactsContract.Intents.Insert.JOB_TITLE, contact.getDesg());
+        if (contact.getIitr_o().size()>0) {
+            addContact.putExtra(ContactsContract.Intents.Insert.PHONE, (std_code_res_off + contact.getIitr_o().get(0).getNumber()).replace(" ", ""));
             addContact.putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, "Office");
             addContact.putExtra(ContactsContract.Intents.Insert.PHONE_ISPRIMARY, "True");
         }
-        if (contact.getIitr_r() != null) {
+        if (contact.getIitr_r().size()>0) {
             addContact.putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE, (std_code_res_off + contact.getIitr_r()).replace(" ", ""));
             addContact.putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE_TYPE, "Residence");
         }
-        if (contact.getPhoneBSNL() != null) {
-            if (contact.getPhoneBSNL().startsWith("9") || contact.getPhoneBSNL().startsWith("8")) {
-                addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE, contact.getPhoneBSNL());
-                addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE_TYPE, "Mobile");
-            } else {
-                addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE, std_code_bsnl + contact.getPhoneBSNL());
+        if (contact.getPhoneBSNL().size()>0) {
+//            if (contact.getPhoneBSNL().get(0).getNumber().startsWith("9") || contact.getPhoneBSNL().get(0).getNumber().startsWith("8")) {
+//                addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE, contact.getPhoneBSNL().get(0).getNumber());
+//                addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE_TYPE, "Mobile");
+//            } else {
+                addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE, std_code_bsnl + contact.getPhoneBSNL().get(0).getNumber());
                 addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE_TYPE, "Bsnl Landline");
-            }
+//            }
         }
-        if (contact.getEmail() != null)
-            addContact.putExtra(ContactsContract.Intents.Insert.EMAIL, contact.getEmail() + "@iitr.ac.in");
+        if (contact.getEmail().size()>0)
+            addContact.putExtra(ContactsContract.Intents.Insert.EMAIL, contact.getEmail().get(0).getNumber() + "@iitr.ac.in");
 
         addContact.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
         startActivity(addContact);

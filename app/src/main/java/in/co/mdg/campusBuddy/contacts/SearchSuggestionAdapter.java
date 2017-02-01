@@ -117,50 +117,50 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
         protected FilterResults performFiltering(CharSequence constraint) {
             Realm realm = Realm.getDefaultInstance();
             suggestions.clear();
-            RealmResults<ContactSearchModel> historySearches = null;
+//            RealmResults<ContactSearchModel> historySearches = null;
             RealmResults<Contact> contacts = null;
             RealmResults<Department> depts = null;
-            RealmResults<Contact> adminContacts = null;
+//            RealmResults<Contact> adminContacts = null;
             if (constraint == null) {
-                queryString = "";
-                historySearches = realm.where(ContactSearchModel.class).findAll().sort("dateAdded", Sort.DESCENDING);
+//                queryString = "";
+//                historySearches = realm.where(ContactSearchModel.class).findAll().sort("dateAdded", Sort.DESCENDING);
             } else {
                 queryString = constraint.toString();
-                historySearches = realm.where(ContactSearchModel.class)
-                        .contains("name", queryString, Case.INSENSITIVE)
-                        .findAll()
-                        .sort("dateAdded", Sort.DESCENDING);
+//                historySearches = realm.where(ContactSearchModel.class)
+//                        .contains("name", queryString, Case.INSENSITIVE)
+//                        .findAll()
+//                        .sort("dateAdded", Sort.DESCENDING);
                 RealmQuery<Contact> contactRealmQuery = realm.where(Contact.class)
                         .contains("name", queryString, Case.INSENSITIVE);
-                if (historySearches.size() > 0) {
-                    contactRealmQuery.notEqualTo("name", historySearches.get(0).getName());
-                    if (historySearches.size() > 1)
-                        contactRealmQuery.notEqualTo("name", historySearches.get(1).getName());
-                }
+//                if (historySearches.size() > 0) {
+//                    contactRealmQuery.notEqualTo("name", historySearches.get(0).getName());
+//                    if (historySearches.size() > 1)
+//                        contactRealmQuery.notEqualTo("name", historySearches.get(1).getName());
+//                }
                 contacts = contactRealmQuery.findAll().sort("name");
                 depts = realm.where(Department.class).contains("name", queryString, Case.INSENSITIVE).findAll().sort("name");
-                adminContacts = realm.where(Department.class)
-                        .equalTo("name", "Administration")
-                        .findFirst()
-                        .getContacts()
-                        .where()
-                        .contains("designation", queryString, Case.INSENSITIVE)
-                        .findAll()
-                        .sort("name");
+//                adminContacts = realm.where(Department.class)
+//                        .equalTo("name", "Administration")
+//                        .findFirst()
+//                        .getContacts()
+//                        .where()
+//                        .contains("designation", queryString, Case.INSENSITIVE)
+//                        .findAll()
+//                        .sort("name");
             }
-            int HISTORY_ITEM_LIMIT = 2;
-            for (int i = 0; i < (historySearches.size() > HISTORY_ITEM_LIMIT ? HISTORY_ITEM_LIMIT : historySearches.size()); i++) {
-                ContactSearchModel contactSearchModel = new ContactSearchModel();
-                contactSearchModel.setName(historySearches.get(i).getName());
-                contactSearchModel.setProfilePic(historySearches.get(i).getProfilePic());
-                contactSearchModel.setHistorySearch(historySearches.get(i).isHistorySearch());
-                contactSearchModel.setDept(historySearches.get(i).getDept());
-                suggestions.add(contactSearchModel);
-
-            }
+//            int HISTORY_ITEM_LIMIT = 2;
+//            for (int i = 0; i < (historySearches.size() > HISTORY_ITEM_LIMIT ? HISTORY_ITEM_LIMIT : historySearches.size()); i++) {
+//                ContactSearchModel contactSearchModel = new ContactSearchModel();
+//                contactSearchModel.setName(historySearches.get(i).getName());
+//                contactSearchModel.setProfilePic(historySearches.get(i).getProfilePic());
+//                contactSearchModel.setHistorySearch(historySearches.get(i).isHistorySearch());
+//                contactSearchModel.setDept(historySearches.get(i).getDept());
+//                suggestions.add(contactSearchModel);
+//
+//            }
             if (contacts != null) {
                 int TOTAL_ITEM_LIMIT = 5;
-                int limitSearch = TOTAL_ITEM_LIMIT - (historySearches.size() > HISTORY_ITEM_LIMIT ? HISTORY_ITEM_LIMIT : historySearches.size());
+                int limitSearch = TOTAL_ITEM_LIMIT;// - (historySearches.size() > HISTORY_ITEM_LIMIT ? HISTORY_ITEM_LIMIT : historySearches.size());
                 limitSearch = (limitSearch > contacts.size()) ? contacts.size() : limitSearch;
                 for (int i = 0; i < limitSearch; i++) {
                     Contact contact = contacts.get(i);
@@ -171,12 +171,12 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                     RealmQuery<Department> deptSearch = realm
                             .where(Department.class)
                             .equalTo("contacts.name", contact.getName());
-                    if (contact.getIitr_o() != null)
-                        deptSearch.equalTo("contacts.iitr_o", contact.getIitr_o());
-                    else if (contact.getIitr_r() != null)
-                        deptSearch.equalTo("contacts.iitr_r", contact.getIitr_r());
-                    else if (contact.getPhoneBSNL() != null)
-                        deptSearch.equalTo("contacts.phoneBSNL", contact.getPhoneBSNL());
+                    if (contact.getIitr_o().size()>0)
+                        deptSearch.equalTo("contacts.iitr_o.number", contact.getIitr_o().get(0).getNumber());
+                    else if (contact.getIitr_r().size()>0)
+                        deptSearch.equalTo("contacts.iitr_r.number", contact.getIitr_r().get(0).getNumber());
+                    else if (contact.getPhoneBSNL().size()>0)
+                        deptSearch.equalTo("contacts.phoneBSNL.number", contact.getPhoneBSNL().get(0).getNumber());
                     String dept = deptSearch.findFirst().getName();
                     contactSearchModel.setDept(dept);
                     suggestions.add(contactSearchModel);
@@ -194,18 +194,18 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                     suggestions.add(contactSearchModel);
                 }
             }
-            if (adminContacts != null) {
-                int ADMIN_ITEM_LIMIT = 5;
-                for (int i = 0; i < (adminContacts.size() > ADMIN_ITEM_LIMIT ? ADMIN_ITEM_LIMIT : adminContacts.size()); i++) {
-                    Contact adminContact = adminContacts.get(i);
-                    ContactSearchModel contactSearchModel = new ContactSearchModel();
-                    contactSearchModel.setName(adminContact.getDesignation());
-                    contactSearchModel.setHistorySearch(false);
-                    contactSearchModel.setProfilePic(adminContact.getProfilePic());
-                    contactSearchModel.setDept("Administration");
-                    suggestions.add(contactSearchModel);
-                }
-            }
+//            if (adminContacts != null) {
+//                int ADMIN_ITEM_LIMIT = 5;
+//                for (int i = 0; i < (adminContacts.size() > ADMIN_ITEM_LIMIT ? ADMIN_ITEM_LIMIT : adminContacts.size()); i++) {
+//                    Contact adminContact = adminContacts.get(i);
+//                    ContactSearchModel contactSearchModel = new ContactSearchModel();
+//                    contactSearchModel.setName(adminContact.getDesg());
+//                    contactSearchModel.setHistorySearch(false);
+//                    contactSearchModel.setProfilePic(adminContact.getProfilePic());
+//                    contactSearchModel.setDept("Administration");
+//                    suggestions.add(contactSearchModel);
+//                }
+//            }
             FilterResults filterResults = new FilterResults();
             filterResults.values = suggestions;
             filterResults.count = suggestions.size();
