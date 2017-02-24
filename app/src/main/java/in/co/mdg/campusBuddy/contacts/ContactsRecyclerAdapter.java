@@ -21,17 +21,19 @@ import io.realm.RealmResults;
 /**
  * Created by root on 13/6/15.
  */
-class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapter.ContactViewHolder> implements RecyclerViewFastScroller.BubbleTextGetter {
+public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapter.ContactViewHolder> implements RecyclerViewFastScroller.BubbleTextGetter {
     private Realm realm = Realm.getDefaultInstance();
     private RealmResults<Group> groups;
-    private RealmResults<Contact> contacts;
     private RealmList<Contact> deptContacts;
     private RealmList<Department> groupDepts;
     private int type = 1;
+    public static int ENGLISH = 1;
+    public static int HINDI = 2;
+    private static int lang = ENGLISH;
     private static ClickListener clicklistener;
 
-    interface ClickListener {
-        void itemClicked(int type, String contactName, String deptName);
+    public interface ClickListener {
+        void itemClicked(int type, String contactName, String deptName, String groupName);
     }
 
     ContactsRecyclerAdapter() {
@@ -42,23 +44,24 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
 
     void setListData(int option, String deptName) {
         switch (option) {
-            case 1:
+            case 1: //for showing groups
                 if (groups == null) {
                     groups = realm.where(Group.class).findAll().sort("name");
                 }
                 break;
-            case 2:
-                if (contacts == null) {
-                    contacts = realm.where(Contact.class).isNotNull("profilePic").findAll().sort("name");
-                }
+            case 2: //for showing departments of a group
+                groupDepts = realm.where(Group.class).equalTo("name", deptName).findFirst().getDepartments();
                 break;
-            case 3:
+            case 3: //for showing contacts of a dept
                 deptContacts = realm.where(Department.class).equalTo("name", deptName).findFirst().getContacts();
                 break;
-            case 4:
-                groupDepts = realm.where(Group.class).equalTo("name", deptName).findFirst().getDepartments();
         }
         type = option;
+        notifyDataSetChanged();
+    }
+
+    void setLang(int lang) {
+        ContactsRecyclerAdapter.lang = lang;
         notifyDataSetChanged();
     }
 
@@ -73,6 +76,20 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
         else if (contact.getPhoneBSNL().size() > 0)
             deptSearch.equalTo("contacts.phoneBSNL.number", contact.getPhoneBSNL().get(0).getNumber());
         return deptSearch.findFirst().getName();
+    }
+
+    private String getGroup(Department department) {
+        RealmQuery<Group> groupSearch = realm
+                .where(Group.class)
+                .equalTo("departments.name", department.getName());
+        return groupSearch.findFirst().getName();
+    }
+
+    private String getGroup(String deptName) {
+        RealmQuery<Group> groupSearch = realm
+                .where(Group.class)
+                .equalTo("departments.name", deptName);
+        return groupSearch.findFirst().getName();
     }
 
     void setClickListener(ClickListener clickListener) {
@@ -96,13 +113,10 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
                 holder.bind(type, groups.get(position));
                 break;
             case 2:
-                holder.bind(type, contacts.get(position));
+                holder.bind(type, groupDepts.get(position));
                 break;
             case 3:
                 holder.bind(type, deptContacts.get(position));
-                break;
-            case 4:
-                holder.bind(type, groupDepts.get(position));
         }
     }
 
@@ -112,11 +126,9 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
             case 1:
                 return groups.size();
             case 2:
-                return contacts.size();
+                return groupDepts.size();
             case 3:
                 return deptContacts.size();
-            case 4:
-                return groupDepts.size();
         }
         return 0;
     }
@@ -127,11 +139,9 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
             case 1:
                 return groups.get(pos).getName().substring(0, 1);
             case 2:
-                return contacts.get(pos).getName().substring(0, 1);
+                return groupDepts.get(pos).getName().substring(0, 1);
             case 3:
                 return deptContacts.get(pos).getName().substring(0, 1);
-            case 4:
-                return groupDepts.get(pos).getName().substring(0, 1);
         }
         return "";
     }
@@ -152,18 +162,24 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
             switch (type) {
                 case 1:
                     Group group = (Group) item;
-                    String str = group.getName();
-//                    String[] strArray = str.split(" ");
-//                    StringBuilder builder = new StringBuilder();
-//                    for (String s : strArray) {
-//                        String cap = s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
-//                        builder.append(cap + " ");
-//                    }
-                    name.setText(str);
+                    if (lang == HINDI && group.getNameHindi() != null) {
+                        name.setText(group.getNameHindi());
+                    } else {
+                        name.setText(group.getName());
+                    }
                     desg.setVisibility(View.GONE);
 //                    LoadingImages.loadDeptImages(dept.getPhoto(), profilePic);
                     break;
                 case 2:
+                    Department dept = (Department) item;
+                    if (lang == HINDI && dept.getNameHindi() != null) {
+                        name.setText(dept.getNameHindi());
+                    } else {
+                        name.setText(dept.getName());
+                    }
+                    desg.setVisibility(View.GONE);
+//                    LoadingImages.loadDeptImages(dept.getPhoto(), profilePic);
+                    break;
                 case 3:
                     Contact contact = (Contact) item;
                     name.setText(contact.getName());
@@ -173,42 +189,21 @@ class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapt
                         desg.setVisibility(View.VISIBLE);
                         desg.setText(contact.getDesg());
                     }
-                    LoadingImages.loadContactImages(contact.getProfilePic(), profilePic);
-                    break;
-                case 4:
-                    Department dept = (Department) item;
-                    str = dept.getName();
-//                    strArray = str.split(" ");
-//                    builder = new StringBuilder();
-//                    for (String s : strArray) {
-//                        String cap = s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
-//                        builder.append(cap + " ");
-//                    }
-                    name.setText(str);
-                    desg.setVisibility(View.GONE);
-                    LoadingImages.loadDeptImages(dept.getPhoto(), profilePic);
+//                    LoadingImages.loadContactImages(contact.getProfilePic(), profilePic);
                     break;
             }
-//            itemView.setOnTouchListener(new View.OnTouchListener() {
-//                @Override
-//                public boolean onTouch(View v, MotionEvent event) {
-//                    if (event.getAction() == android.view.MotionEvent.ACTION_DOWN) {
-//                        profilePic.animate().scaleX(1.2f).scaleY(1.2f).setDuration(200).start();
-//                    } else if (event.getAction() == android.view.MotionEvent.ACTION_UP) {
-//                        profilePic.animate().scaleX(1.0f).scaleY(1.0f).setDuration(200).start();
-//                    }
-//                    return true;
-//                }
-//            });
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (type == 1) {
-                        clicklistener.itemClicked(type, null, name.getText().toString());
-                    } else if (type == 2 || type == 3) {
-                        clicklistener.itemClicked(type, name.getText().toString(), getDept((Contact) item));
-                    } else if (type == 4) {
-                        clicklistener.itemClicked(type, null, name.getText().toString());
+                        clicklistener.itemClicked(type, null, null, ((Group) item).getName());
+                    } else if (type == 2) {
+                        clicklistener.itemClicked(type, null, ((Department) item).getName(), getGroup((Department) item));
+                    } else if (type == 3) {
+                        Contact contact = (Contact) item;
+                        String dept = getDept(contact);
+                        clicklistener.itemClicked(type, contact.getName(), dept, getGroup(dept) );
                     }
 
                 }

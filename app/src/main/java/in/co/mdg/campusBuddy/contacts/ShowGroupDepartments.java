@@ -20,6 +20,13 @@ public class ShowGroupDepartments extends AppCompatActivity {
     //    private int primaryDark;
 //    private int primary;
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +46,7 @@ public class ShowGroupDepartments extends AppCompatActivity {
 //        primary = ContextCompat.getColor(this, R.color.primary);
 //        primaryDark = ContextCompat.getColor(this, R.color.primary_dark);
         String groupName = getIntent().getStringExtra("group_name");
-        final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
+//        final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -47,26 +54,26 @@ public class ShowGroupDepartments extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, R.drawable.divider, metrics.density));
         ContactsRecyclerAdapter adapter = new ContactsRecyclerAdapter();
-        adapter.setListData(4, groupName);
+        adapter.setListData(2, groupName);
         recyclerView.setAdapter(adapter);
         RecyclerViewFastScroller fastScroller = (RecyclerViewFastScroller) findViewById(R.id.fastscroller);
-        fastScroller.setVisibility(View.GONE);
-//        fastScroller.setRecyclerView(recyclerView);
-//        fastScroller.setViewsToUse(R.layout.recycler_view_fast_scroller,R.id.fastscroller_bubble,R.id.fastscroller_handle);
+//        fastScroller.setVisibility(View.GONE);
+        fastScroller.setRecyclerView(recyclerView);
+        fastScroller.setViewsToUse(R.layout.recycler_view_fast_scroller,R.id.fastscroller_bubble,R.id.fastscroller_handle);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    int firstVisiblePosition = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-                    if (firstVisiblePosition == 0) {
-                        appBarLayout.setExpanded(true, true);
-                    }
-                }
-            }
-        });
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    int firstVisiblePosition = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+//                    if (firstVisiblePosition == 0) {
+//                        appBarLayout.setExpanded(true, true);
+//                    }
+//                }
+//            }
+//        });
 
         collapsingToolbarLayout.setTitle(groupName);
         collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));

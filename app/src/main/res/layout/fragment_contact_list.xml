@@ -10,7 +10,7 @@
         android:background="@color/white_pure"
         android:clipToPadding="false"
         android:paddingBottom="5dp"
-        android:paddingTop="5dp" />
+        android:paddingTop="10dp" />
 
     <in.co.mdg.campusBuddy.contacts.RecyclerViewFastScroller
         android:id="@+id/fastscroller"
@@ -18,5 +18,5 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp" />
+        android:layout_marginTop="2dp"/>
 </FrameLayout>

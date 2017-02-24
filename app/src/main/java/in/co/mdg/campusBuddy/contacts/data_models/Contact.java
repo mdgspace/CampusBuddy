@@ -1,12 +1,8 @@
 package in.co.mdg.campusBuddy.contacts.data_models;
 
 import com.google.gson.annotations.SerializedName;
-
-import java.util.ArrayList;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Chirag on 13-06-2016.
@@ -27,6 +23,7 @@ public class Contact extends RealmObject {
     private RealmList<RealmString> iitr_r;          //
     @SerializedName("bsnl_res")
     private RealmList<RealmString> phoneBSNL;       //
+    private RealmList<RealmString> mobile;
     private RealmList<RealmString> email;           //{email}@iitr.ac.in
     private String profilePic;      //http://people.iitr.ernet.in/facultyphoto/{profilePic}
     private String website;
@@ -41,6 +38,12 @@ public class Contact extends RealmObject {
     public void setIitr_r(RealmList<RealmString> iitr_r) {this.iitr_r = iitr_r;}
     public RealmList<RealmString> getPhoneBSNL() {return phoneBSNL;}
     public void setPhoneBSNL(RealmList<RealmString> phoneBSNL) {this.phoneBSNL = phoneBSNL;}
+    public String getNameHindi() { return nameHindi; }
+    public void setNameHindi(String nameHindi) { this.nameHindi = nameHindi; }
+    public String getDesgHindi() { return desgHindi; }
+    public void setDesgHindi(String desgHindi) { this.desgHindi = desgHindi; }
+    public RealmList<RealmString> getMobile() { return mobile; }
+    public void setMobile(RealmList<RealmString> mobile) { this.mobile = mobile; }
     public RealmList<RealmString> getEmail() {return email;}
     public void setEmail(RealmList<RealmString> email) {this.email = email;}
     public String getProfilePic() {return profilePic;}

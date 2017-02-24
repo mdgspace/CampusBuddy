@@ -39,7 +39,7 @@ class Post implements Comparable<Post> {
             dateS = post.optString("created_time");
             id = post.getJSONObject("from").getString("name");
             id1 = post.getJSONObject("from").getString("id");
-//            Log.e("id of Fb icon", id1);
+//            Log.e("id of FbFeedFragment icon", id1);
             postId = post.optString("id");
 
         } catch (Exception e) {

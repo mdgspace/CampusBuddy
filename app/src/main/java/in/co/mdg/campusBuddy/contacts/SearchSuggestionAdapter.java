@@ -23,6 +23,7 @@ import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.data_models.Contact;
 import in.co.mdg.campusBuddy.contacts.data_models.ContactSearchModel;
 import in.co.mdg.campusBuddy.contacts.data_models.Department;
+import in.co.mdg.campusBuddy.contacts.data_models.Group;
 import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -33,7 +34,7 @@ import io.realm.Sort;
  * Created by Chirag on 13-06-2016.
  */
 
-class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
+public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
 
 
     private ArrayList<ContactSearchModel> suggestions;
@@ -42,7 +43,7 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
     private String queryString;
     private final ForegroundColorSpan fcs = new ForegroundColorSpan(Color.parseColor("#be5e00"));
 
-    SearchSuggestionAdapter(Context context, int viewResourceId) {
+    public SearchSuggestionAdapter(Context context, int viewResourceId) {
         super(context, viewResourceId);
         this.suggestions = new ArrayList<>();
         this.viewResourceId = viewResourceId;
@@ -117,26 +118,26 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
         protected FilterResults performFiltering(CharSequence constraint) {
             Realm realm = Realm.getDefaultInstance();
             suggestions.clear();
-//            RealmResults<ContactSearchModel> historySearches = null;
+            RealmResults<ContactSearchModel> historySearches = null;
             RealmResults<Contact> contacts = null;
             RealmResults<Department> depts = null;
 //            RealmResults<Contact> adminContacts = null;
             if (constraint == null) {
-//                queryString = "";
-//                historySearches = realm.where(ContactSearchModel.class).findAll().sort("dateAdded", Sort.DESCENDING);
+                queryString = "";
+                historySearches = realm.where(ContactSearchModel.class).findAll().sort("dateAdded", Sort.DESCENDING);
             } else {
                 queryString = constraint.toString();
-//                historySearches = realm.where(ContactSearchModel.class)
-//                        .contains("name", queryString, Case.INSENSITIVE)
-//                        .findAll()
-//                        .sort("dateAdded", Sort.DESCENDING);
+                historySearches = realm.where(ContactSearchModel.class)
+                        .contains("name", queryString, Case.INSENSITIVE)
+                        .findAll()
+                        .sort("dateAdded", Sort.DESCENDING);
                 RealmQuery<Contact> contactRealmQuery = realm.where(Contact.class)
                         .contains("name", queryString, Case.INSENSITIVE);
-//                if (historySearches.size() > 0) {
-//                    contactRealmQuery.notEqualTo("name", historySearches.get(0).getName());
-//                    if (historySearches.size() > 1)
-//                        contactRealmQuery.notEqualTo("name", historySearches.get(1).getName());
-//                }
+                if (historySearches.size() > 0) {
+                    contactRealmQuery.notEqualTo("name", historySearches.get(0).getName());
+                    if (historySearches.size() > 1)
+                        contactRealmQuery.notEqualTo("name", historySearches.get(1).getName());
+                }
                 contacts = contactRealmQuery.findAll().sort("name");
                 depts = realm.where(Department.class).contains("name", queryString, Case.INSENSITIVE).findAll().sort("name");
 //                adminContacts = realm.where(Department.class)
@@ -148,19 +149,20 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
 //                        .findAll()
 //                        .sort("name");
             }
-//            int HISTORY_ITEM_LIMIT = 2;
-//            for (int i = 0; i < (historySearches.size() > HISTORY_ITEM_LIMIT ? HISTORY_ITEM_LIMIT : historySearches.size()); i++) {
-//                ContactSearchModel contactSearchModel = new ContactSearchModel();
-//                contactSearchModel.setName(historySearches.get(i).getName());
-//                contactSearchModel.setProfilePic(historySearches.get(i).getProfilePic());
-//                contactSearchModel.setHistorySearch(historySearches.get(i).isHistorySearch());
-//                contactSearchModel.setDept(historySearches.get(i).getDept());
-//                suggestions.add(contactSearchModel);
-//
-//            }
+            int HISTORY_ITEM_LIMIT = 2;
+            for (int i = 0; i < (historySearches.size() > HISTORY_ITEM_LIMIT ? HISTORY_ITEM_LIMIT : historySearches.size()); i++) {
+                ContactSearchModel contactSearchModel = new ContactSearchModel();
+                contactSearchModel.setName(historySearches.get(i).getName());
+                contactSearchModel.setProfilePic(historySearches.get(i).getProfilePic());
+                contactSearchModel.setHistorySearch(historySearches.get(i).isHistorySearch());
+                contactSearchModel.setDept(historySearches.get(i).getDept());
+                contactSearchModel.setGroup(historySearches.get(i).getGroup());
+                suggestions.add(contactSearchModel);
+
+            }
             if (contacts != null) {
                 int TOTAL_ITEM_LIMIT = 5;
-                int limitSearch = TOTAL_ITEM_LIMIT;// - (historySearches.size() > HISTORY_ITEM_LIMIT ? HISTORY_ITEM_LIMIT : historySearches.size());
+                int limitSearch = TOTAL_ITEM_LIMIT - (historySearches.size() > HISTORY_ITEM_LIMIT ? HISTORY_ITEM_LIMIT : historySearches.size());
                 limitSearch = (limitSearch > contacts.size()) ? contacts.size() : limitSearch;
                 for (int i = 0; i < limitSearch; i++) {
                     Contact contact = contacts.get(i);
@@ -179,6 +181,7 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                         deptSearch.equalTo("contacts.phoneBSNL.number", contact.getPhoneBSNL().get(0).getNumber());
                     String dept = deptSearch.findFirst().getName();
                     contactSearchModel.setDept(dept);
+                    contactSearchModel.setGroup(realm.where(Group.class).equalTo("departments.name", dept).findFirst().getName());
                     suggestions.add(contactSearchModel);
                 }
             }

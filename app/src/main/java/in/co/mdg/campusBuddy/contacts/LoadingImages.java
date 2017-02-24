@@ -11,6 +11,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 
 import in.co.mdg.campusBuddy.R;
+import in.co.mdg.campusBuddy.fragments.ContactsFragment;
 
 /**
  * Created by Chirag on 27-08-2016.
@@ -18,7 +19,7 @@ import in.co.mdg.campusBuddy.R;
 
 class LoadingImages {
     static void loadDeptImages(String deptPhoto, final ImageView deptBackDrop) {
-        if (ContactsMainActivity.loadImages) {
+        if (ContactsFragment.loadImages) {
             if (deptPhoto != null) {
                 if (deptPhoto.length() < 4)
                     deptPhoto = "http://www.iitr.ac.in/departments/" + deptPhoto + "/assets/images/top1.jpg";
@@ -40,7 +41,7 @@ class LoadingImages {
     }
 
     static void loadDeptImages(String deptPhoto, final BitmapImageViewTarget target) {
-        if (ContactsMainActivity.loadImages) {
+        if (ContactsFragment.loadImages) {
             if (deptPhoto != null) {
                 if (deptPhoto.length() < 4)
                     deptPhoto = "http://www.iitr.ac.in/departments/" + deptPhoto + "/assets/images/top1.jpg";
@@ -57,7 +58,7 @@ class LoadingImages {
     }
 
     static void loadContactImages(String profilePicAddr, ImageView profilePic) {
-        if (ContactsMainActivity.loadImages) {
+        if (ContactsFragment.loadImages) {
             if (profilePicAddr != null) {
                 if (profilePicAddr.equals("") || profilePicAddr.equals("default.jpg")) {
                     profilePic.setImageDrawable(
@@ -85,7 +86,7 @@ class LoadingImages {
     }
 
     static void loadContactImageForContactView(String profilePicAddr, final ImageView profilePic, final ImageView smallProfilePic) {
-        if (ContactsMainActivity.loadImages) {
+        if (ContactsFragment.loadImages) {
             if (profilePicAddr != null) {
                 if (!(profilePicAddr.equals("") || profilePicAddr.equals("default.jpg"))) {
                     if (!profilePicAddr.contains("http"))

@@ -7,19 +7,24 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +42,10 @@ import in.co.mdg.campusBuddy.BuildConfig;
 import in.co.mdg.campusBuddy.NetworkCheck;
 import in.co.mdg.campusBuddy.R;
 
-public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
+public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final int PAGE_SELECTED = 1;
     public static Boolean loadImages = true;
@@ -55,38 +63,55 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
     private View overlay;
     private ImageButton closeBtn;
     private CheckedTextView checkedTextView;
+    private LinearLayout mainLayout;
     private TextView dataPackTV;
     private ConnectivityManager connMgr;
     private boolean isRefreshed = true;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fb);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_fb, menu);
 
-        toolbar = (Toolbar) findViewById(R.id.tool_barfb);
-        toolbar.setTitle("Facebook posts");
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        View v = inflater.inflate(R.layout.activity_fb, container, false);
+
+        toolbar = (Toolbar) v.findViewById(R.id.tool_barfb);
+        toolbar.setTitle("Facebook Feed");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        mainLayout = (LinearLayout) v.findViewById(R.id.main_layout);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onBackPressed();
+//            }
+//        });
         connMgr = (ConnectivityManager)
-                this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        overlay = findViewById(R.id.settings);
+                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        overlay = v.findViewById(R.id.settings);
         closeBtn = (ImageButton) overlay.findViewById(R.id.close_btn);
         checkedTextView = (CheckedTextView) overlay.findViewById(R.id.enable_images);
         dataPackTV = (TextView) overlay.findViewById(R.id.data_pack_notif_tv);
-        mRecyclerView = (RecyclerView) findViewById(R.id.grid_view);
-        adapterfb = new FBFeedAdapter(Fb.this);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.grid_view);
+        adapterfb = new FBFeedAdapter(getActivity());
         mRecyclerView.setAdapter(adapterfb);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.accent), ContextCompat.getColor(this, R.color.primary));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getActivity(), R.color.accent), ContextCompat.getColor(getActivity(), R.color.primary));
         swipeRefreshLayout.setOnRefreshListener(this);
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,13 +129,19 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
                 }
             }
         });
-        int status = NetworkCheck.chkStatus(connMgr);
-        if (status == 2) {//mobile data warning
-            overlay.setVisibility(View.VISIBLE);
-            loadImages = false;
-            checkedTextView.setChecked(false);
-            dataPackTV.setVisibility(View.VISIBLE);
-        }
+//        int status = NetworkCheck.chkStatus(connMgr);
+//        if (status == 2) {//mobile data warning
+//            overlay.setVisibility(View.VISIBLE);
+//            loadImages = false;
+//            checkedTextView.setChecked(false);
+//            dataPackTV.setVisibility(View.VISIBLE);
+//        }
+        return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
 
@@ -119,7 +150,6 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
                 new checkNetwork().execute();
             }
         }, 100);
-
     }
 
     @Override
@@ -147,7 +177,7 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
                 processFeeds();
             else {
                 swipeRefreshLayout.setRefreshing(false);
-                final Snackbar sb = Snackbar.make(findViewById(R.id.main_layout), "No Internet Detected!", Snackbar.LENGTH_INDEFINITE);
+                final Snackbar sb = Snackbar.make(mainLayout, "No Internet Detected!", Snackbar.LENGTH_INDEFINITE);
                 sb.setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -161,11 +191,11 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
 
     private void processFeeds() {
 
-        fbpliked = PagesSelected.getSelectedPageIds(Fb.this);
+        fbpliked = PagesSelected.getSelectedPageIds(getActivity());
         // Log.e("dta in file",fbpliked.toString());
         if (fbpliked.size() == 0) {
-            Toast.makeText(this, "Select pages to get the feeds", Toast.LENGTH_LONG).show();
-            Intent i = new Intent(Fb.this, Fblist.class);
+            Toast.makeText(getActivity(), "Select pages to get the feeds", Toast.LENGTH_LONG).show();
+            Intent i = new Intent(getActivity(), Fblist.class);
             i.putExtra("firstTime", true);
             startActivityForResult(i, PAGE_SELECTED);
             return;
@@ -202,14 +232,15 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
         });
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == PAGE_SELECTED) {
             if (resultCode == RESULT_OK) {
                 isRefreshed = true;
                 new checkNetwork().execute();
             } else if (resultCode == RESULT_CANCELED) {
-                finish();
+                Toast.makeText(getActivity(), "No pages selected", Toast.LENGTH_LONG).show();
+//                finish();
             }
         }
     }
@@ -219,29 +250,29 @@ public class Fb extends AppCompatActivity implements SwipeRefreshLayout.OnRefres
         fetchData(0, accessToken);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_fb, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_fb, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.addpages) {
-            Intent i = new Intent(Fb.this, Fblist.class);
-            startActivityForResult(i, PAGE_SELECTED);
-        } else if (id == R.id.settings) {
-            int status = NetworkCheck.chkStatus(connMgr);
-            overlay.setVisibility(View.VISIBLE);
-            if (status == 2) {
-                dataPackTV.setVisibility(View.VISIBLE);
-            } else {
-                dataPackTV.setVisibility(View.GONE);
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == R.id.addpages) {
+//            Intent i = new Intent(getActivity(), Fblist.class);
+//            startActivityForResult(i, PAGE_SELECTED);
+//        } else if (id == R.id.settings) {
+//            int status = NetworkCheck.chkStatus(connMgr);
+//            overlay.setVisibility(View.VISIBLE);
+//            if (status == 2) {
+//                dataPackTV.setVisibility(View.VISIBLE);
+//            } else {
+//                dataPackTV.setVisibility(View.GONE);
+//            }
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
     public void fetchData(final int page, final AccessToken accessToken) {

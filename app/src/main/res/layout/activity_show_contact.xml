@@ -303,6 +303,45 @@
                 android:background="@drawable/divider" />
 
             <LinearLayout
+                android:id="@+id/contact_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ripple_effect"
+                android:orientation="vertical"
+                android:paddingBottom="15dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="15dp">
+
+                <TextView
+                    android:id="@+id/mobile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:text="9999999999"
+                    android:textColor="@color/contact_dark"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:text="Mobile"
+                    android:textColor="@color/contact_secondayText" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider6"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/divider" />
+
+            <LinearLayout
                 android:id="@+id/contact_website"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -334,7 +373,7 @@
             </LinearLayout>
 
             <View
-                android:id="@+id/divider6"
+                android:id="@+id/divider7"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="25dp"

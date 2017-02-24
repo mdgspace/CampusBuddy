@@ -70,7 +70,7 @@ class FBFeedAdapter extends RecyclerView.Adapter<FBFeedAdapter.PostViewHolder> {
             holder.fbpostpicicon.setImageResource(post.getImageDrawable());
             holder.dateofpost.setText(DateFormatter.getTimeAgo(post.getDateS()));
             if (post.getImageUrl() != null) {
-                if (Fb.loadImages) {
+                if (FbFeedFragment.loadImages) {
                     holder.fbpostpic.setVisibility(View.VISIBLE);
                     try {
                         Glide.clear(holder.fbpostpic);

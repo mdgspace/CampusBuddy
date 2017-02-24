@@ -31,4 +31,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="back_button">Back Button</string>
+    <string name="search_contacts">Search Contacts</string>
+    <string name="speech_button">Speech Button</string>
+
+    <string name="std_code_res_off_rk">01332 28 </string>
+    <string name="std_code_bsnl_rk">01332 </string>
+    <string name="std_code_res_off_shrnpr">0132 271 </string>
+    <string name="std_code_bsnl_shrnpr">0132 </string>
 </resources>

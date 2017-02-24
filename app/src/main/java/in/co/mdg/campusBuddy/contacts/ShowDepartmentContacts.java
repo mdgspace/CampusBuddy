@@ -2,7 +2,6 @@ package in.co.mdg.campusBuddy.contacts;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -18,11 +17,8 @@ import android.view.View;
 import android.widget.EdgeEffect;
 import android.widget.ImageView;
 
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.bumptech.glide.request.target.Target;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -35,8 +31,14 @@ public class ShowDepartmentContacts extends AppCompatActivity {
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private RecyclerView recyclerView;
-    private int primaryDark;
-    private int primary;
+//    private int primaryDark;
+//    private int primary;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +56,8 @@ public class ShowDepartmentContacts extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
-        primary = ContextCompat.getColor(this, R.color.primary);
-        primaryDark = ContextCompat.getColor(this, R.color.primary_dark);
+//        primary = ContextCompat.getColor(this, R.color.primary);
+//        primaryDark = ContextCompat.getColor(this, R.color.primary_dark);
         String deptName = getIntent().getStringExtra("dept_name");
         final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
@@ -89,57 +91,57 @@ public class ShowDepartmentContacts extends AppCompatActivity {
         collapsingToolbarLayout.setTitle(deptName);
         collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));
 
-        Realm realm = Realm.getDefaultInstance();
-        Department dept = realm.where(Department.class).equalTo("name", deptName).findFirst();
-        final ImageView deptBackdrop = (ImageView) findViewById(R.id.dept_backdrop);
-
-        BitmapImageViewTarget target = new BitmapImageViewTarget(deptBackdrop) {
-            @Override
-            public void onResourceReady(Bitmap bitmap, GlideAnimation anim) {
-                super.onResourceReady(bitmap, anim);
-                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                    public void onGenerated(Palette palette) {
-                        applyPalette(palette);
-                        setEdgeGlowColor(recyclerView, primary);
-                    }
-                });
-            }
-        };
-        LoadingImages.loadDeptImages(dept.getPhoto(),target );
+//        Realm realm = Realm.getDefaultInstance();
+//        Department dept = realm.where(Department.class).equalTo("name", deptName).findFirst();
+//        final ImageView deptBackdrop = (ImageView) findViewById(R.id.dept_backdrop);
+//
+//        BitmapImageViewTarget target = new BitmapImageViewTarget(deptBackdrop) {
+//            @Override
+//            public void onResourceReady(Bitmap bitmap, GlideAnimation anim) {
+//                super.onResourceReady(bitmap, anim);
+//                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+//                    public void onGenerated(Palette palette) {
+//                        applyPalette(palette);
+//                        setEdgeGlowColor(recyclerView, primary);
+//                    }
+//                });
+//            }
+//        };
+//        LoadingImages.loadDeptImages(dept.getPhoto(), target);
 
 
     }
 
-    private void applyPalette(Palette palette) {
-
-        primary = palette.getMutedColor(primary);
-        primaryDark = palette.getDarkMutedColor(primaryDark);
-        collapsingToolbarLayout.setContentScrimColor(primary);
-        collapsingToolbarLayout.setStatusBarScrimColor(primaryDark);
-        supportStartPostponedEnterTransition();
-    }
-
-    private static void setEdgeGlowColor(final RecyclerView recyclerView, final int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            try {
-                final Class<?> clazz = RecyclerView.class;
-                for (final String name : new String[]{"ensureTopGlow", "ensureBottomGlow"}) {
-                    Method method = clazz.getDeclaredMethod(name);
-                    method.setAccessible(true);
-                    method.invoke(recyclerView);
-                }
-                for (final String name : new String[]{"mTopGlow", "mBottomGlow"}) {
-                    final Field field = clazz.getDeclaredField(name);
-                    field.setAccessible(true);
-                    final Object edge = field.get(recyclerView); // android.support.v4.widget.EdgeEffectCompat
-                    final Field fEdgeEffect = edge.getClass().getDeclaredField("mEdgeEffect");
-                    fEdgeEffect.setAccessible(true);
-                    ((EdgeEffect) fEdgeEffect.get(edge)).setColor(color);
-                }
-            } catch (final Exception ignored) {
-            }
-        }
-    }
+//    private void applyPalette(Palette palette) {
+//
+//        primary = palette.getMutedColor(primary);
+//        primaryDark = palette.getDarkMutedColor(primaryDark);
+//        collapsingToolbarLayout.setContentScrimColor(primary);
+//        collapsingToolbarLayout.setStatusBarScrimColor(primaryDark);
+//        supportStartPostponedEnterTransition();
+//    }
+//
+//    private static void setEdgeGlowColor(final RecyclerView recyclerView, final int color) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            try {
+//                final Class<?> clazz = RecyclerView.class;
+//                for (final String name : new String[]{"ensureTopGlow", "ensureBottomGlow"}) {
+//                    Method method = clazz.getDeclaredMethod(name);
+//                    method.setAccessible(true);
+//                    method.invoke(recyclerView);
+//                }
+//                for (final String name : new String[]{"mTopGlow", "mBottomGlow"}) {
+//                    final Field field = clazz.getDeclaredField(name);
+//                    field.setAccessible(true);
+//                    final Object edge = field.get(recyclerView); // android.support.v4.widget.EdgeEffectCompat
+//                    final Field fEdgeEffect = edge.getClass().getDeclaredField("mEdgeEffect");
+//                    fEdgeEffect.setAccessible(true);
+//                    ((EdgeEffect) fEdgeEffect.get(edge)).setColor(color);
+//                }
+//            } catch (final Exception ignored) {
+//            }
+//        }
+//    }
 
 
 }

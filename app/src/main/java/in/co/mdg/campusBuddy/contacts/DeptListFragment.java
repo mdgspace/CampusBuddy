@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import in.co.mdg.campusBuddy.R;
+import in.co.mdg.campusBuddy.fragments.ContactsFragment;
 
 
 public class DeptListFragment extends Fragment {
@@ -51,14 +52,17 @@ public class DeptListFragment extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity().getBaseContext(), R.drawable.divider, metrics.density));
         adapter = new ContactsRecyclerAdapter();
-        ContactsMainActivity contactsMainActivity = (ContactsMainActivity) getActivity();
-        adapter.setClickListener(contactsMainActivity);
+        adapter.setClickListener((ContactsFragment)getParentFragment());
         adapter.setListData(mType, null);
         recyclerView.setAdapter(adapter);
         RecyclerViewFastScroller fastScroller = (RecyclerViewFastScroller) view.findViewById(R.id.fastscroller);
         fastScroller.setRecyclerView(recyclerView);
         fastScroller.setViewsToUse(R.layout.recycler_view_fast_scroller, R.id.fastscroller_bubble, R.id.fastscroller_handle);
         return view;
+    }
+
+    public void setLang(int lang) {
+        adapter.setLang(lang);
     }
 
     @Override
