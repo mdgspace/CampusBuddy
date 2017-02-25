@@ -20,6 +20,7 @@
             android:layout_weight="8"
             />
         <ImageView
+            android:id="@+id/tool_barfb_add_fb_feed"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
             android:src="@drawable/ic_add_black_24dp"
@@ -27,6 +28,7 @@
             android:padding="16dp"
             android:layout_gravity="center"
             android:background="@color/primary"
+            android:clickable="true"
             />
 </LinearLayout>
         <RelativeLayout
@@ -55,6 +57,23 @@
                 android:layout_marginTop="16dp"
                 android:textSize="16sp"/>
         </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/add_fb_feed_layout"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+            android:id="@+id/btn_add_fb_feed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:text="Select Pages"
+            android:padding="16dp"
+            android:textSize="16sp"
+            />
+        </RelativeLayout>
+
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh"
             android:layout_width="wrap_content"

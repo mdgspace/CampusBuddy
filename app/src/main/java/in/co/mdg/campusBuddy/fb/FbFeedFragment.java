@@ -22,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -65,11 +66,14 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private RecyclerView mRecyclerView;
     private View overlay;
     private ImageButton closeBtn;
+    private ImageView toolbarAddFbFeed;
     private CheckedTextView checkedTextView;
     private LinearLayout mainLayout;
+    private RelativeLayout addFbFeed;
     private RelativeLayout retryLayout;
     private TextView retry;
     private TextView dataPackTV;
+    private Button addFbFeedButton;
     private ConnectivityManager connMgr;
     private boolean isRefreshed = true;
 
@@ -101,6 +105,17 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         mainLayout = (LinearLayout) v.findViewById(R.id.main_layout);
         retryLayout=(RelativeLayout)v.findViewById(R.id.fb_feed_view);
         retry=(TextView)v.findViewById(R.id.txt_retry);
+        addFbFeedButton=(Button)v.findViewById(R.id.btn_add_fb_feed);
+        toolbarAddFbFeed=(ImageView)v.findViewById(R.id.tool_barfb_add_fb_feed);
+        toolbarAddFbFeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), Fblist.class);
+                i.putExtra("firstTime", true);
+                startActivityForResult(i, PAGE_SELECTED);
+                return;
+            }
+        });
 //        setSupportActionBar(toolbar);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -109,6 +124,7 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
 //                onBackPressed();
 //            }
 //        });
+
         connMgr = (ConnectivityManager)
                 getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         overlay = v.findViewById(R.id.settings);
@@ -116,6 +132,7 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         checkedTextView = (CheckedTextView) overlay.findViewById(R.id.enable_images);
         dataPackTV = (TextView) overlay.findViewById(R.id.data_pack_notif_tv);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.grid_view);
+        addFbFeed=(RelativeLayout)v.findViewById(R.id.add_fb_feed_layout);
         adapterfb = new FBFeedAdapter(getActivity());
         mRecyclerView.setAdapter(adapterfb);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -212,11 +229,29 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         fbpliked = PagesSelected.getSelectedPageIds(getActivity());
         // Log.e("dta in file",fbpliked.toString());
         if (fbpliked.size() == 0) {
+            /*
+            Button button=new Button(getActivity());
+            button.setText("Select Pages");
+            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams
+                    (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            */
+            mRecyclerView.setVisibility(View.GONE);
+            addFbFeed.setVisibility(View.VISIBLE);
+            addFbFeedButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), Fblist.class);
+                    i.putExtra("firstTime", true);
+                    startActivityForResult(i, PAGE_SELECTED);
+                    return;
+                }
+            });
             Toast.makeText(getActivity(), "Select pages to get the feeds", Toast.LENGTH_LONG).show();
-            Intent i = new Intent(getActivity(), Fblist.class);
+            /*Intent i = new Intent(getActivity(), Fblist.class);
             i.putExtra("firstTime", true);
             startActivityForResult(i, PAGE_SELECTED);
             return;
+            */
         }
         try {
             AccessToken accessToken = new AccessToken(getString(R.string.facebook_app_id) + "|" + BuildConfig.CB_APP_SECRET
