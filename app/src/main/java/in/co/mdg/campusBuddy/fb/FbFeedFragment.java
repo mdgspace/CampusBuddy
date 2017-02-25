@@ -24,7 +24,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +58,7 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     int pageNumber = 0, ongoingpage = 0;
 
+    Context context=getContext();
     int prelast = 0, count = 0;
     FBFeedAdapter adapterfb;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -64,6 +67,8 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private ImageButton closeBtn;
     private CheckedTextView checkedTextView;
     private LinearLayout mainLayout;
+    private RelativeLayout retryLayout;
+    private TextView retry;
     private TextView dataPackTV;
     private ConnectivityManager connMgr;
     private boolean isRefreshed = true;
@@ -91,7 +96,11 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         toolbar = (Toolbar) v.findViewById(R.id.tool_barfb);
         toolbar.setTitle("Facebook Feed");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+
+        //toolbar.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_add_black_24dp));
         mainLayout = (LinearLayout) v.findViewById(R.id.main_layout);
+        retryLayout=(RelativeLayout)v.findViewById(R.id.fb_feed_view);
+        retry=(TextView)v.findViewById(R.id.txt_retry);
 //        setSupportActionBar(toolbar);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -177,7 +186,15 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 processFeeds();
             else {
                 swipeRefreshLayout.setRefreshing(false);
-                final Snackbar sb = Snackbar.make(mainLayout, "No Internet Detected!", Snackbar.LENGTH_INDEFINITE);
+                retryLayout.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
+                retry.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new checkNetwork().execute();
+                    }
+                });
+                /*final Snackbar sb = Snackbar.make(mainLayout, "No Internet Detected!", Snackbar.LENGTH_INDEFINITE);
                 sb.setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -185,6 +202,7 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     }
                 });
                 sb.show();
+                */
             }
         }
     }
