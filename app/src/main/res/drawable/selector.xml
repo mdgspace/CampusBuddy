@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/white_pure" android:state_enabled="true" />
-    <item android:color="@color/mdtp_light_gray" android:state_enabled="false" />
+    <item android:color="@color/primary_dark"
+        android:drawable="@color/primary_dark"
+        android:state_selected="true" />
+    <item android:color="@color/primary"
+        android:drawable="@color/primary"
+        android:state_selected="false"/>
 </selector>

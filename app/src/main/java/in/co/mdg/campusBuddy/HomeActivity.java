@@ -20,6 +20,7 @@ import in.co.mdg.campusBuddy.contacts.ViewPagerAdapter;
 import in.co.mdg.campusBuddy.contacts.data_models.CustomStringArrayGsonAdapter;
 import in.co.mdg.campusBuddy.contacts.data_models.Group;
 import in.co.mdg.campusBuddy.fb.FbFeedFragment;
+import in.co.mdg.campusBuddy.fragments.AboutUsFragment;
 import in.co.mdg.campusBuddy.fragments.ContactsFragment;
 import io.realm.Realm;
 
@@ -48,6 +49,7 @@ public class HomeActivity extends FragmentActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new ContactsFragment(), "Contacts Fragment");
         adapter.addFrag(new FbFeedFragment(), "FbFeedFragment Fragment");
+        adapter.addFrag(new AboutUsFragment(),"AboutUs Fragment");
 //        adapter.addFrag(new SimpleMap(), "Map Fragment");
         viewPager.setAdapter(adapter);
     }
@@ -65,7 +67,7 @@ public class HomeActivity extends FragmentActivity {
                                 viewPager.setCurrentItem(1);
                                 break;
                             case R.id.action_maps:
-//                                viewPager.setCurrentItem(2);
+                                viewPager.setCurrentItem(2);
                                 break;
                         }
                         return true;

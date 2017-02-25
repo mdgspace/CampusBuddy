@@ -1,27 +1,41 @@
-package in.co.mdg.campusBuddy;
+package in.co.mdg.campusBuddy.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AboutUs extends AppCompatActivity {
+import in.co.mdg.campusBuddy.R;
+
+/**
+ * Created by Harshit Bansal on 2/25/2017.
+ */
+
+public class AboutUsFragment extends Fragment {
+    private ImageView gitImage,fbImage,playImage;
+    private TextView blogText;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
-        setContentView(R.layout.activity_about_us);
+    @Override
+    public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_about_us, container, false);
+        initView(view);
+        registerListeners();
+        return view;
+    }
 
-        ImageView gitImage = (ImageView) findViewById(R.id.git_about_us);
-        ImageView fbImage = (ImageView) findViewById(R.id.fb_about_us);
-        ImageView playImage = (ImageView) findViewById(R.id.play_about_us);
-        TextView blogText = (TextView) findViewById(R.id.blog_link_text);
-
+    private void registerListeners() {
         gitImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,25 +70,12 @@ public class AboutUs extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_about_us, menu);
-        return true;
+    private void initView(View v) {
+        gitImage = (ImageView) v.findViewById(R.id.git_about_us);
+        fbImage = (ImageView) v.findViewById(R.id.fb_about_us);
+        playImage = (ImageView) v.findViewById(R.id.play_about_us);
+        blogText = (TextView) v.findViewById(R.id.blog_link_text);
+
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }
