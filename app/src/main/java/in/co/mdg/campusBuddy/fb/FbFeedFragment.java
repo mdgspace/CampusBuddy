@@ -199,8 +199,11 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
         @Override
         protected void onPostExecute(Boolean result) {
-            if (result)
-                processFeeds();
+            Log.i("1234", "resutlt : " + result);
+            if (result){
+                mRecyclerView.setVisibility(View.VISIBLE);
+                retryLayout.setVisibility(View.GONE);
+                processFeeds();}
             else {
                 swipeRefreshLayout.setRefreshing(false);
                 retryLayout.setVisibility(View.VISIBLE);
@@ -247,7 +250,7 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 }
             });
             Toast.makeText(getActivity(), "Select pages to get the feeds", Toast.LENGTH_LONG).show();
-            /*Intent i = new Intent(getActivity(), Fblist.class);
+           /*Intent i = new Intent(getActivity(), Fblist.class);
             i.putExtra("firstTime", true);
             startActivityForResult(i, PAGE_SELECTED);
             return;
@@ -290,6 +293,8 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         if (requestCode == PAGE_SELECTED) {
             if (resultCode == RESULT_OK) {
                 isRefreshed = true;
+                addFbFeed.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
                 new checkNetwork().execute();
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "No pages selected", Toast.LENGTH_LONG).show();
