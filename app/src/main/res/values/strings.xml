@@ -39,4 +39,5 @@
     <string name="std_code_bsnl_rk">01332 </string>
     <string name="std_code_res_off_shrnpr">0132 271 </string>
     <string name="std_code_bsnl_shrnpr">0132 </string>
+    <string name="group_description">Mobile development group at IIT Roorkee is an active student group directing its efforts towards creating useful mobile applications and promoting tech based learning for the same.</string>
 </resources>

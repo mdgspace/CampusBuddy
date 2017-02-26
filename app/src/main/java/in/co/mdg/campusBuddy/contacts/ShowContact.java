@@ -24,6 +24,9 @@ import in.co.mdg.campusBuddy.contacts.data_models.Contact;
 import in.co.mdg.campusBuddy.contacts.data_models.Department;
 import io.realm.Realm;
 
+import static in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.ENGLISH;
+import static in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.HINDI;
+
 public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
     private int maxScrollSize;
@@ -44,11 +47,14 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
     private TextView name_text;
     private TextView dept_text;
     private TextView desg_text;
-    private String name, dept, group;
+    private String name;
+    private String group;
     private String std_code_res_off;
     private String std_code_bsnl;
 
     private Contact contact;
+    private Department department;
+    private int lang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +78,7 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.left_to_right,R.anim.right_to_left);
+        overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
     }
 
     @Override
@@ -106,13 +112,15 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
 
         maxScrollSize = mAppBarLayout.getTotalScrollRange();
         name = getIntent().getStringExtra("name");
-        dept = getIntent().getStringExtra("dept");
+        String dept = getIntent().getStringExtra("dept");
         group = getIntent().getStringExtra("group");
+        lang = getIntent().getIntExtra("lang",ENGLISH);
         Realm realm = Realm.getDefaultInstance();
-        contact = realm
+        department = realm
                 .where(Department.class)
                 .equalTo("name", dept)
-                .findFirst()
+                .findFirst();
+        contact = department
                 .getContacts()
                 .where()
                 .equalTo("name", name)
@@ -120,14 +128,29 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
     }
 
     private void setData() {
-        name_text.setText(name);
-        dept_text.setText(dept);
-        mTitle.setText(name);
+        if (lang == HINDI && contact.getNameHindi() != null) {
+            name_text.setText(contact.getNameHindi());
+            mTitle.setText(contact.getNameHindi());
+        } else {
+            name_text.setText(contact.getName());
+            mTitle.setText(contact.getName());
+        }
+        if (lang == HINDI && department.getNameHindi() != null) {
+            dept_text.setText(department.getNameHindi());
+        } else {
+            dept_text.setText(department.getName());
+        }
 
-        if (contact.getDesg() != null)
-            desg_text.setText(contact.getDesg());
-        else
+
+        if (contact.getDesg() != null) {
+            if (lang == HINDI && contact.getDesgHindi() != null) {
+                desg_text.setText(contact.getDesgHindi());
+            } else {
+                desg_text.setText(contact.getDesg());
+            }
+        } else {
             desg_text.setVisibility(View.GONE);
+        }
 
 //        LoadingImages.loadContactImageForContactView(contact.getProfilePic(), profilePic, smallProfilePic);
 
@@ -290,17 +313,17 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
 
     private boolean addToContacts() {
         final Intent addContact = new Intent(Intent.ACTION_INSERT_OR_EDIT);
-        addContact.putExtra(ContactsContract.Intents.Insert.NAME, name);
-        addContact.putExtra(ContactsContract.Intents.Insert.COMPANY, dept);
+        addContact.putExtra(ContactsContract.Intents.Insert.NAME, name_text.getText().toString());
+        addContact.putExtra(ContactsContract.Intents.Insert.COMPANY, dept_text.getText().toString());
         if (contact.getDesg() != null)
-            addContact.putExtra(ContactsContract.Intents.Insert.JOB_TITLE, contact.getDesg());
+            addContact.putExtra(ContactsContract.Intents.Insert.JOB_TITLE, desg_text.getText().toString());
         if (contact.getIitr_o().size() > 0) {
             addContact.putExtra(ContactsContract.Intents.Insert.PHONE, (std_code_res_off + contact.getIitr_o().get(0).getNumber()).replace(" ", ""));
             addContact.putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, "Office");
             addContact.putExtra(ContactsContract.Intents.Insert.PHONE_ISPRIMARY, "True");
         }
         if (contact.getIitr_r().size() > 0) {
-            addContact.putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE, (std_code_res_off + contact.getIitr_r()).replace(" ", ""));
+            addContact.putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE, (std_code_res_off + contact.getIitr_r().get(0).getNumber()).replace(" ", ""));
             addContact.putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE_TYPE, "Residence");
         }
         if (contact.getPhoneBSNL().size() > 0) {
@@ -308,11 +331,13 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
             addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE_TYPE, "Bsnl Landline");
         }
         if (contact.getMobile().size() > 0) {
-            addContact.putExtra(ContactsContract.Intents.Insert.PHONE, contact.getPhoneBSNL().get(0).getNumber());
-            addContact.putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, "Mobile");
+            addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE, contact.getMobile().get(0).getNumber());
+            addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE_TYPE, "Mobile");
         }
-        if (contact.getEmail().size() > 0)
+        if (contact.getEmail().size() > 0) {
             addContact.putExtra(ContactsContract.Intents.Insert.EMAIL, contact.getEmail().get(0).getNumber() + "@iitr.ac.in");
+            addContact.putExtra(ContactsContract.Intents.Insert.EMAIL_TYPE, "Office");
+        }
 
         addContact.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
         startActivity(addContact);

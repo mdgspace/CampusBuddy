@@ -76,6 +76,9 @@
             android:padding="16dp"
             android:text="Select Pages"
             android:textSize="16sp"
+            android:textColor="@color/white"
+            style="@style/Base.CardView"
+            android:background="@color/primary"
             android:visibility="gone"/>
 
         <android.support.v4.widget.SwipeRefreshLayout

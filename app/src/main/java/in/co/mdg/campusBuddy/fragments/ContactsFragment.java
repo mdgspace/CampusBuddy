@@ -213,6 +213,7 @@ public class ContactsFragment extends Fragment implements ContactsRecyclerAdapte
         in.putExtra("name", name);
         in.putExtra("dept", dept);
         in.putExtra("group", group);
+        in.putExtra("lang", groupList.getLang());
         startActivity(in);
         getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
     }

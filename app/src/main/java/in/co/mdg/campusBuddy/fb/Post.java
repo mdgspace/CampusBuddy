@@ -31,7 +31,7 @@ class Post implements Comparable<Post> {
 
         try {
             this.post = obj;
-            Log.d("JSON", "Post() called with: obj = [" + obj.toString() + "]");
+//            Log.d("JSON", "Post() called with: obj = [" + obj.toString() + "]");
             message = post.optString("message");
             url = post.optString("picture");
             SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy", Locale.getDefault());

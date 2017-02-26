@@ -1,9 +1,7 @@
 package in.co.mdg.campusBuddy.fb;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,17 +14,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckedTextView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -42,7 +35,6 @@ import in.co.mdg.campusBuddy.BuildConfig;
 import in.co.mdg.campusBuddy.NetworkCheck;
 import in.co.mdg.campusBuddy.R;
 
-import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -70,17 +62,17 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     //    private ImageButton closeBtn;
     //    private LinearLayout mainLayout;
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_fb, menu);
-
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        inflater.inflate(R.menu.menu_fb, menu);
+//
+//    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+//        setHasOptionsMenu(true);
 
     }
 
@@ -92,15 +84,14 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         Toolbar toolbar = (Toolbar) v.findViewById(R.id.toolbar);
         toolbar.setTitle("Facebook Feed");
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
-        retryLayout=(RelativeLayout)v.findViewById(R.id.no_internet_warning);
-        retry=(TextView)v.findViewById(R.id.txt_retry);
-        addFbFeedButton=(Button)v.findViewById(R.id.btn_add_fb_feed);
+        retryLayout = (RelativeLayout) v.findViewById(R.id.no_internet_warning);
+        retry = (TextView) v.findViewById(R.id.txt_retry);
+        addFbFeedButton = (Button) v.findViewById(R.id.btn_add_fb_feed);
         ImageView toolbarAddFbFeed = (ImageView) v.findViewById(R.id.tool_barfb_add_fb_feed);
         toolbarAddFbFeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), Fblist.class);
-                i.putExtra("firstTime", true);
                 startActivityForResult(i, PAGE_SELECTED);
             }
         });
@@ -155,6 +146,10 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onStart() {
         super.onStart();
+        count = 0;
+        pageNumber = 0;
+        ongoingpage = 0;
+        isRefreshed = true;
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
 
@@ -168,6 +163,7 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onRefresh() {
         isRefreshed = true;
+        count = 0;
         new checkNetwork().execute();
     }
 
@@ -189,8 +185,8 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
             if (result) {
                 mRecyclerView.setVisibility(View.VISIBLE);
                 retryLayout.setVisibility(View.GONE);
-                processFeeds();}
-            else {
+                processFeeds();
+            } else {
                 swipeRefreshLayout.setRefreshing(false);
                 retryLayout.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.GONE);
@@ -219,6 +215,7 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     startActivityForResult(i, PAGE_SELECTED);
                 }
             });
+            swipeRefreshLayout.setRefreshing(false);
             return;
         }
         try {
@@ -257,14 +254,9 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
         if (requestCode == PAGE_SELECTED) {
             if (resultCode == RESULT_OK) {
-                isRefreshed = true;
                 addFbFeedButton.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.VISIBLE);
-                new checkNetwork().execute();
             }
-//            else if (resultCode == RESULT_CANCELED) {
-//                Toast.makeText(getActivity(), "No pages selected", Toast.LENGTH_LONG).show();
-//            }
         }
     }
 
@@ -301,7 +293,6 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public void fetchData(final int page, final AccessToken accessToken) {
 
         if (ongoingpage == page) {
-
             final ArrayList<GraphRequest> postsArrayList = new ArrayList<>();
             for (int i = 0; i < fbpliked.size(); i++) {
                 postsArrayList.add(GraphRequest.newGraphPathRequest(accessToken, "/" + fbpliked.get(i) +
@@ -364,7 +355,7 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                                     }
                                     adapterfb.addAll(pageSpecificPosts);
                                     Log.d("count", adapterfb.getItemCount() + "");
-                                    if (count == (fbpliked.size() - 1)) {
+                                    if (count >= fbpliked.size()) {
                                         count = 0;
                                         swipeRefreshLayout.setRefreshing(false);
                                     }

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.gson.Gson;
@@ -49,9 +50,14 @@ public class HomeActivity extends FragmentActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new ContactsFragment(), "Contacts Fragment");
         adapter.addFrag(new FbFeedFragment(), "FbFeedFragment Fragment");
-        adapter.addFrag(new AboutUsFragment(),"AboutUs Fragment");
-//        adapter.addFrag(new SimpleMap(), "Map Fragment");
+        adapter.addFrag(new AboutUsFragment(), "AboutUs Fragment");
         viewPager.setAdapter(adapter);
+        if (getIntent().hasExtra("open")) {
+            if (getIntent().getStringExtra("open").equals("fb_feed")) {
+                viewPager.setCurrentItem(1);
+                updateNavigationBarState(R.id.action_notices);
+            }
+        }
     }
 
     private void registerListeners() {
@@ -66,13 +72,46 @@ public class HomeActivity extends FragmentActivity {
                             case R.id.action_notices:
                                 viewPager.setCurrentItem(1);
                                 break;
-                            case R.id.action_maps:
+                            case R.id.action_about_us:
                                 viewPager.setCurrentItem(2);
                                 break;
                         }
+                        updateNavigationBarState(item.getItemId());
                         return true;
                     }
                 });
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                updateNavigationBarState(getMenuItemId(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+    }
+
+    private int getMenuItemId(int position) {
+        switch (position) {
+            case 0:
+                return R.id.action_contacts;
+            case 1:
+                return R.id.action_notices;
+            case 2:
+                return R.id.action_about_us;
+            default:
+                return -1;
+        }
+    }
+
+    private void updateNavigationBarState(int actionId) {
+        Menu menu = bottomNavigationView.getMenu();
+        menu.findItem(actionId).setChecked(true);
     }
 
     private void checkDbExists() {

@@ -65,6 +65,10 @@ public class DeptListFragment extends Fragment {
         adapter.setLang(lang);
     }
 
+    public int getLang() {
+        return adapter.getLang();
+    }
+
     @Override
     public void onDestroy() {
         adapter.closeRealm();

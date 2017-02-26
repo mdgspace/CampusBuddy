@@ -32,7 +32,7 @@ public class Data {
             fbPageList.add(new Page("IIT Roorkee", "415004402015833", R.drawable.iit_roorkee));
             fbPageList.add(new Page("IMG", "353701311987", R.drawable.img));
             fbPageList.add(new Page("Kshitij - The Literary Magazine", "316661941764002", R.drawable.kshitij));
-            fbPageList.add(new Page("MDG IITR", "198343570325312", R.drawable.mdg, true));
+            fbPageList.add(new Page("MDG", "198343570325312", R.drawable.mdg_logo_new, true));
             fbPageList.add(new Page("Music Section", "313076638795867", R.drawable.music));
             fbPageList.add(new Page("NCC", "242919515859218", R.drawable.ncc));
             fbPageList.add(new Page("PAG IITR", "537723156291580", R.drawable.pag));

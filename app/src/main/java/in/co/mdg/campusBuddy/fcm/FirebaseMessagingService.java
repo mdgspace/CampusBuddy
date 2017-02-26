@@ -30,8 +30,8 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Random;
 
+import in.co.mdg.campusBuddy.HomeActivity;
 import in.co.mdg.campusBuddy.R;
-import in.co.mdg.campusBuddy.fb.FbFeedFragment;
 
 /**
  * Created by mohit on 11/8/16.
@@ -49,9 +49,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         final String img = remoteMessage.getData().get("img");
         final String name = remoteMessage.getData().get("name");
         final String content = remoteMessage.getData().get("content");
-        Intent resultIntent = new Intent(this, FbFeedFragment.class);
+        Intent resultIntent = new Intent(this, HomeActivity.class);
+        resultIntent.putExtra("open", "fb_feed");
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(FbFeedFragment.class);
         stackBuilder.addNextIntent(resultIntent);
         pi = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 

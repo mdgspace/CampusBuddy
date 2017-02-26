@@ -19,8 +19,7 @@ import in.co.mdg.campusBuddy.R;
  */
 
 public class AboutUsFragment extends Fragment {
-    private ImageView gitImage,fbImage,playImage;
-    private TextView blogText;
+    private ImageView gitImage,fbImage, blogImage;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,19 +51,11 @@ public class AboutUsFragment extends Fragment {
                 startActivity(browser);
             }
         });
-        playImage.setOnClickListener(new View.OnClickListener() {
+        blogImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent browser = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://play.google.com/store/apps/developer?id=MDG,+SDS"));
-                startActivity(browser);
-            }
-        });
-        blogText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent browser = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://mobile.sdslabs.co/"));
+                        Uri.parse("https://mdg.sdslabs.co/"));
                 startActivity(browser);
             }
         });
@@ -73,8 +64,7 @@ public class AboutUsFragment extends Fragment {
     private void initView(View v) {
         gitImage = (ImageView) v.findViewById(R.id.git_about_us);
         fbImage = (ImageView) v.findViewById(R.id.fb_about_us);
-        playImage = (ImageView) v.findViewById(R.id.play_about_us);
-        blogText = (TextView) v.findViewById(R.id.blog_link_text);
+        blogImage = (ImageView) v.findViewById(R.id.blog_about_us);
 
     }
 

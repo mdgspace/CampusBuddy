@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText">
     <item
         android:id="@+id/action_contacts"
         android:enabled="true"
@@ -14,15 +16,15 @@
         android:title="Notices"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_maps"
+        android:id="@+id/action_about_us"
         android:enabled="true"
-        android:icon="@drawable/mapmain"
-        android:title="About Us"
+        android:icon="@drawable/more_icon"
+        android:title="More"
         app:showAsAction="ifRoom" />
     <!--<item-->
-        <!--android:id="@+id/action_calendar"-->
-        <!--android:enabled="true"-->
-        <!--android:icon="@drawable/calendarmain"-->
-        <!--android:title="Calendar"-->
-        <!--app:showAsAction="ifRoom" />-->
+    <!--android:id="@+id/action_calendar"-->
+    <!--android:enabled="true"-->
+    <!--android:icon="@drawable/calendarmain"-->
+    <!--android:title="Calendar"-->
+    <!--app:showAsAction="ifRoom" />-->
 </menu>
