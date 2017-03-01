@@ -46,6 +46,7 @@ public class ShowDepartmentContacts extends AppCompatActivity {
         setContentView(R.layout.activity_show_department_contacts);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,10 +72,10 @@ public class ShowDepartmentContacts extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         RecyclerViewFastScroller fastScroller = (RecyclerViewFastScroller) findViewById(R.id.fastscroller);
         fastScroller.setVisibility(View.GONE);
-//        fastScroller.setRecyclerView(recyclerView);
-//        fastScroller.setViewsToUse(R.layout.recycler_view_fast_scroller,R.id.fastscroller_bubble,R.id.fastscroller_handle);
+        // fastScroller.setRecyclerView(recyclerView);
+        //fastScroller.setViewsToUse(R.layout.recycler_view_fast_scroller,R.id.fastscroller_bubble,R.id.fastscroller_handle);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        /*recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -86,7 +87,7 @@ public class ShowDepartmentContacts extends AppCompatActivity {
                     }
                 }
             }
-        });
+        });*/
 
         collapsingToolbarLayout.setTitle(deptName);
         collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));

@@ -62,6 +62,7 @@ public class DeptListFragment extends Fragment {
     }
 
     public void setLang(int lang) {
+        if(adapter!=null)
         adapter.setLang(lang);
     }
 

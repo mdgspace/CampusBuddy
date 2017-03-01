@@ -33,6 +33,7 @@ public class ShowGroupDepartments extends AppCompatActivity {
         setContentView(R.layout.activity_show_department_contacts);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
