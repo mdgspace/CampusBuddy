@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardCornerRadius="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="0dp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/departmentName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#d3d3d3"
+                android:text="departmentName"
+                android:textColor="#696969"
+                android:padding="12dp"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/cardviewSectionRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/departmentName"
+                >
+            </android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/cardviewSectionRecyclerView"
+                android:background="#dfdfdf"
+                ></LinearLayout>
+
+            <TextView
+                android:id="@+id/seeMoreText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="See All"
+                android:textSize="15dp"
+                android:gravity="end"
+                android:layout_below="@+id/cardviewSectionRecyclerView"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:textColor="#5c3bb5"
+                android:clickable="true"
+                android:background="?attr/selectableItemBackground"
+                android:paddingRight="16dp"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

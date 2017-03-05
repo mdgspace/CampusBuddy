@@ -23,13 +23,12 @@ import io.realm.RealmResults;
  */
 public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapter.ContactViewHolder> implements RecyclerViewFastScroller.BubbleTextGetter {
     private Realm realm = Realm.getDefaultInstance();
-    private RealmResults<Group> groups;
     private RealmResults<Contact> deptContacts;
     private RealmResults<Department> groupDepts;
     private int type = 1;
     public static int ENGLISH = 1;
     public static int HINDI = 2;
-    private static int lang = ENGLISH;
+    private static int lang;
     private static ClickListener clicklistener;
 
     public interface ClickListener {
@@ -44,17 +43,13 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
 
     void setListData(int option, String deptName) {
         switch (option) {
-            case 1: //for showing groups
-                if (groups == null) {
-                    groups = realm.where(Group.class).findAll().sort("name");
-                }
-                break;
-            case 2: //for showing departments of a group
+            case 1:case 2: //for showing departments of a group
                 groupDepts = realm.where(Group.class).equalTo("name", deptName).findFirst().getDepartments().sort("name");
                 break;
             case 3: //for showing contacts of a dept
                 deptContacts = realm.where(Department.class).equalTo("name", deptName).findFirst().getContacts().sort("name");
                 break;
+
         }
         type = option;
         notifyDataSetChanged();
@@ -113,14 +108,12 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
     @Override
     public void onBindViewHolder(ContactViewHolder holder, int position) {
         switch (type) {
-            case 1:
-                holder.bind(type, groups.get(position));
-                break;
-            case 2:
+            case 1:case 2:
                 holder.bind(type, groupDepts.get(position));
                 break;
             case 3:
                 holder.bind(type, deptContacts.get(position));
+                break;
         }
     }
 
@@ -128,7 +121,7 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
     public int getItemCount() {
         switch (type) {
             case 1:
-                return groups.size();
+                return 3;
             case 2:
                 return groupDepts.size();
             case 3:
@@ -140,9 +133,7 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
     @Override
     public String getTextToShowInBubble(int pos) {
         switch (type) {
-            case 1:
-                return groups.get(pos).getName().substring(0, 1);
-            case 2:
+            case 1:case 2:
                 return groupDepts.get(pos).getName().substring(0, 1);
             case 3:
                 return deptContacts.get(pos).getName().substring(0, 1);
@@ -164,22 +155,12 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
         void bind(final int type, final Object item) {
             Glide.clear(profilePic);
             switch (type) {
-                case 1:
-                    Group group = (Group) item;
-                    if (lang == HINDI && group.getNameHindi() != null) {
-                        name.setText(group.getNameHindi());
+                case 1:case 2:
+                    Department dept1 = (Department) item;
+                    if (lang == HINDI && dept1.getNameHindi() != null) {
+                        name.setText(dept1.getNameHindi());
                     } else {
-                        name.setText(group.getName());
-                    }
-                    desg.setVisibility(View.GONE);
-//                    LoadingImages.loadDeptImages(dept.getPhoto(), profilePic);
-                    break;
-                case 2:
-                    Department dept = (Department) item;
-                    if (lang == HINDI && dept.getNameHindi() != null) {
-                        name.setText(dept.getNameHindi());
-                    } else {
-                        name.setText(dept.getName());
+                        name.setText(dept1.getName());
                     }
                     desg.setVisibility(View.GONE);
 //                    LoadingImages.loadDeptImages(dept.getPhoto(), profilePic);
@@ -204,14 +185,13 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
                     }
 //                    LoadingImages.loadContactImages(contact.getProfilePic(), profilePic);
                     break;
+
             }
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (type == 1) {
-                        clicklistener.itemClicked(type, null, null, ((Group) item).getName());
-                    } else if (type == 2) {
+                    if (type == 1 || type == 2) {
                         clicklistener.itemClicked(type, null, ((Department) item).getName(), getGroup((Department) item));
                     } else if (type == 3) {
                         Contact contact = (Contact) item;

@@ -18,7 +18,7 @@ public class DeptListFragment extends Fragment {
     private static final String ARG_TYPE = "type";
 
     private int mType;
-    public ContactsRecyclerAdapter adapter;
+    public ContactsSectionRecyclerAdapter adapter;
 
 
     public DeptListFragment() {
@@ -48,12 +48,10 @@ public class DeptListFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        DisplayMetrics metrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity().getBaseContext(), R.drawable.divider, metrics.density));
-        adapter = new ContactsRecyclerAdapter();
+        adapter = new ContactsSectionRecyclerAdapter();
         adapter.setClickListener((ContactsFragment)getParentFragment());
-        adapter.setListData(mType, null);
+        adapter.setClickListenerDepartments((ContactsFragment) getParentFragment());
+        adapter.getListOfGroups();
         recyclerView.setAdapter(adapter);
         RecyclerViewFastScroller fastScroller = (RecyclerViewFastScroller) view.findViewById(R.id.fastscroller);
         fastScroller.setRecyclerView(recyclerView);
@@ -62,8 +60,9 @@ public class DeptListFragment extends Fragment {
     }
 
     public void setLang(int lang) {
-        if(adapter!=null)
-        adapter.setLang(lang);
+        if(adapter!=null) {
+            adapter.setLang(lang);
+        }
     }
 
     public int getLang() {

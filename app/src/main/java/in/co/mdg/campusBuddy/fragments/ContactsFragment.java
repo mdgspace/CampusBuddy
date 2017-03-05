@@ -1,6 +1,5 @@
 package in.co.mdg.campusBuddy.fragments;
 
-
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +29,7 @@ import java.util.Locale;
 import in.co.mdg.campusBuddy.HomeActivity;
 import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter;
+import in.co.mdg.campusBuddy.contacts.ContactsSectionRecyclerAdapter;
 import in.co.mdg.campusBuddy.contacts.DeptListFragment;
 import in.co.mdg.campusBuddy.contacts.SearchSuggestionAdapter;
 import in.co.mdg.campusBuddy.contacts.ShowContact;
@@ -42,7 +42,7 @@ import static in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.ENGLISH;
 import static in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.HINDI;
 
 
-public class ContactsFragment extends Fragment implements ContactsRecyclerAdapter.ClickListener {
+public class ContactsFragment extends Fragment implements ContactsRecyclerAdapter.ClickListener,ContactsSectionRecyclerAdapter.ClickListener {
 
     public static Boolean loadImages = true;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
@@ -252,10 +252,15 @@ public class ContactsFragment extends Fragment implements ContactsRecyclerAdapte
     }
 
     @Override
+    public void itemClickedHome(int type, String contactName, String deptName, String groupName) {
+        showGroupDepartments(groupName);
+    }
+
+    @Override
     public void itemClicked(int type, String contactName, String deptName, String groupName) {
         switch (type) {
             case 1:
-                showGroupDepartments(groupName);
+                showDepartmentContacts(deptName);
                 break;
             case 2:
                 showDepartmentContacts(deptName);
@@ -265,6 +270,8 @@ public class ContactsFragment extends Fragment implements ContactsRecyclerAdapte
                 break;
 
         }
+
+
     }
 
 }
