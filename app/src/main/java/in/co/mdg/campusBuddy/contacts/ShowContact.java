@@ -14,8 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -163,124 +166,169 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
             std_code_bsnl = getResources().getString(R.string.std_code_bsnl_rk);
         }
 
-        LinearLayout contactOffice = (LinearLayout) findViewById(R.id.contact_office);
-        if (contact.getIitr_o().size() > 0) {
-            final TextView iitr_o = (TextView) findViewById(R.id.iitr_o);
-            iitr_o.setText(String.format("%s%s", std_code_res_off, contact.getIitr_o().get(0).getNumber()));
-            contactOffice.setOnClickListener(new View.OnClickListener() {
+        ListView contactOfficeListView = (ListView) findViewById(R.id.contact_office_listview);
+        int officeContactSize = contact.getIitr_o().size();
+        if (officeContactSize > 0) {
+            final String[] officeContactsArray = new String[officeContactSize];
+            for(int i = 0; i<officeContactSize ; i++){
+                officeContactsArray[i] = String.format("%s%s", std_code_res_off, contact.getIitr_o().get(i).getNumber());
+            }
+            ArrayAdapter<String> contactOfficeAdapter = new ArrayAdapter<String>(this,R.layout.office_contact_list_item,R.id.iitr_o,officeContactsArray);
+            contactOfficeListView.setAdapter(contactOfficeAdapter);
+
+            contactOfficeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + iitr_o.getText().toString().replace(" ", "")));
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + officeContactsArray[position].replace(" ", "")));
                     startActivity(intent);
                 }
             });
-            contactOffice.setOnLongClickListener(new View.OnLongClickListener() {
+
+            contactOfficeListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
-                public boolean onLongClick(View v) {
-                    return copyToClipboard(name, iitr_o.getText().toString().replace(" ", ""));
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    return copyToClipboard(name, officeContactsArray[position].replace(" ", ""));
                 }
             });
+
         } else {
             findViewById(R.id.divider2).setVisibility(View.GONE);
-            contactOffice.setVisibility(View.GONE);
+            contactOfficeListView.setVisibility(View.GONE);
         }
 
-        LinearLayout contactResidence = (LinearLayout) findViewById(R.id.contact_residence);
-        if (contact.getIitr_r().size() > 0) {
-            final TextView iitr_r = (TextView) findViewById(R.id.iitr_r);
-            iitr_r.setText(String.format("%s%s", std_code_res_off, contact.getIitr_r().get(0).getNumber()));
-            contactResidence.setOnClickListener(new View.OnClickListener() {
+
+        ListView contactResidenceListView = (ListView) findViewById(R.id.contact_residence_listview);
+        int residenceContactSize = contact.getIitr_r().size();
+        if (residenceContactSize > 0) {
+            final String[] residenceContactsArray = new String[residenceContactSize];
+            for(int i = 0; i<residenceContactSize ; i++){
+                residenceContactsArray[i] = String.format("%s%s", std_code_res_off, contact.getIitr_r().get(i).getNumber());
+            }
+            ArrayAdapter<String> contactResidenceAdapter = new ArrayAdapter<String>(this,R.layout.residence_contact_list_item,R.id.iitr_r,residenceContactsArray);
+            contactResidenceListView.setAdapter(contactResidenceAdapter);
+
+            contactResidenceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + iitr_r.getText().toString().replace(" ", "")));
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + residenceContactsArray[position].replace(" ", "")));
                     startActivity(intent);
                 }
             });
-            contactResidence.setOnLongClickListener(new View.OnLongClickListener() {
+
+            contactResidenceListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
-                public boolean onLongClick(View v) {
-                    return copyToClipboard(name, iitr_r.getText().toString().replace(" ", ""));
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    return copyToClipboard(name, residenceContactsArray[position].replace(" ", ""));
                 }
             });
+
         } else {
             findViewById(R.id.divider3).setVisibility(View.GONE);
-            contactResidence.setVisibility(View.GONE);
+            contactResidenceListView.setVisibility(View.GONE);
         }
 
-        LinearLayout contactBsnl = (LinearLayout) findViewById(R.id.contact_bsnl);
-        if (contact.getPhoneBSNL().size() > 0) {
-            final TextView phoneBsnl = (TextView) findViewById(R.id.phone_bsnl);
-            phoneBsnl.setText(String.format("%s%s", std_code_bsnl, contact.getPhoneBSNL().get(0).getNumber()));
-//            }
-            contactBsnl.setOnClickListener(new View.OnClickListener() {
+        ListView contactBSNLListView = (ListView) findViewById(R.id.contact_bsnl_listview);
+        int BSNLContactSize = contact.getPhoneBSNL().size();
+        if (BSNLContactSize > 0) {
+
+            final String[] bsnlContactsArray = new String[BSNLContactSize];
+            for(int i = 0; i<officeContactSize ; i++){
+                bsnlContactsArray[i] = String.format("%s%s", std_code_bsnl, contact.getPhoneBSNL().get(i).getNumber());
+            }
+            ArrayAdapter<String> contactBSNLAdapter = new ArrayAdapter<String>(this,R.layout.bsnl_contact_list_item,R.id.phone_bsnl,bsnlContactsArray);
+            contactBSNLListView.setAdapter(contactBSNLAdapter);
+
+            contactBSNLListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneBsnl.getText().toString().replace(" ", "")));
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + bsnlContactsArray[position].replace(" ", "")));
                     startActivity(intent);
                 }
             });
-            contactBsnl.setOnLongClickListener(new View.OnLongClickListener() {
+
+            contactBSNLListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
-                public boolean onLongClick(View v) {
-                    return copyToClipboard(name, phoneBsnl.getText().toString().replace(" ", ""));
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    return copyToClipboard(name, bsnlContactsArray[position].replace(" ", ""));
                 }
             });
+
         } else {
             findViewById(R.id.divider4).setVisibility(View.GONE);
-            contactBsnl.setVisibility(View.GONE);
+            contactBSNLListView.setVisibility(View.GONE);
         }
 
-        LinearLayout contactEmail = (LinearLayout) findViewById(R.id.contact_email);
-        if (contact.getEmail().size() > 0) {
-            final TextView email = (TextView) findViewById(R.id.email);
-            String emailId = contact.getEmail().get(0).getNumber();
-            if (!emailId.contains("@")) {
-                emailId = emailId.concat("@iitr.ac.in");
+        ListView contactEmailListView = (ListView) findViewById(R.id.contact_email_listview);
+        int emailContactSize = contact.getEmail().size();
+        if (emailContactSize > 0) {
+
+            final String[] emailContactsArray = new String[emailContactSize];
+            for(int i = 0; i<emailContactSize ; i++){
+                String emailId = contact.getEmail().get(i).getNumber();
+                if (!emailId.contains("@")) {
+                    emailId = emailId.concat("@iitr.ac.in");
+                }
+                emailContactsArray[i] = emailId;
             }
-            email.setText(emailId);
-            contactEmail.setOnClickListener(new View.OnClickListener() {
+            ArrayAdapter<String> contactEmailAdapter = new ArrayAdapter<String>(this,R.layout.email_contact_list_item,R.id.email,emailContactsArray);
+            contactEmailListView.setAdapter(contactEmailAdapter);
+
+            contactEmailListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + email.getText().toString()));
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + emailContactsArray[position]));
                     startActivity(intent);
                 }
             });
-            contactEmail.setOnLongClickListener(new View.OnLongClickListener() {
+
+            contactEmailListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
-                public boolean onLongClick(View v) {
-                    return copyToClipboard(name, email.getText().toString());
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    return copyToClipboard(name, emailContactsArray[position]);
                 }
             });
+
         } else {
             findViewById(R.id.divider5).setVisibility(View.GONE);
-            contactEmail.setVisibility(View.GONE);
+            contactEmailListView.setVisibility(View.GONE);
         }
 
-        LinearLayout contactMobile = (LinearLayout) findViewById(R.id.contact_mobile);
-        if (contact.getMobile().size() > 0) {
-            final TextView mobile = (TextView) findViewById(R.id.mobile);
-            mobile.setText(contact.getMobile().get(0).getNumber());
-            contactMobile.setOnClickListener(new View.OnClickListener() {
+        ListView contactMobileListView = (ListView) findViewById(R.id.contact_mobile_listview);
+        int mobileContactSize = contact.getMobile().size();
+        if (mobileContactSize > 0) {
+
+            final String[] mobileContactsArray = new String[mobileContactSize];
+            for(int i = 0; i<mobileContactSize ; i++){
+                String mobile = contact.getMobile().get(i).getNumber();
+                mobileContactsArray[i] = mobile;
+            }
+            ArrayAdapter<String> contactMobileAdapter = new ArrayAdapter<String>(this,R.layout.mobile_contact_list_item,R.id.mobile,mobileContactsArray);
+            contactMobileListView.setAdapter(contactMobileAdapter);
+
+            contactMobileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mobile.getText().toString().replace(" ", "")));
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mobileContactsArray[position].replace(" ", "")));
                     startActivity(intent);
                 }
             });
-            contactMobile.setOnLongClickListener(new View.OnLongClickListener() {
+
+            contactMobileListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
-                public boolean onLongClick(View v) {
-                    return copyToClipboard(name, mobile.getText().toString());
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    return copyToClipboard(name, mobileContactsArray[position]);
                 }
             });
 
         } else {
             findViewById(R.id.divider6).setVisibility(View.GONE);
-            contactMobile.setVisibility(View.GONE);
+            contactMobileListView.setVisibility(View.GONE);
         }
+
 
         LinearLayout contactWebsite = (LinearLayout) findViewById(R.id.contact_website);
         if (contact.getWebsite() != null) {
+
             final TextView website = (TextView) findViewById(R.id.website_link);
             website.setText(contact.getWebsite());
             contactWebsite.setOnClickListener(new View.OnClickListener() {

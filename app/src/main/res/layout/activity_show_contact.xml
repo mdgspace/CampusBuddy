@@ -139,38 +139,13 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/divider" />
 
-            <LinearLayout
-                android:id="@+id/contact_office"
+            <ListView
+                android:id="@+id/contact_office_listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ripple_effect"
-                android:orientation="vertical"
-                android:paddingBottom="15dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="15dp">
+                >
 
-                <TextView
-                    android:id="@+id/iitr_o"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:clickable="true"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:text="01332 22 4891"
-                    android:textColor="@color/contact_dark"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:text="Main | Office"
-                    android:textColor="@color/contact_secondayText" />
-
-            </LinearLayout>
+            </ListView>
 
             <View
                 android:id="@+id/divider2"
@@ -180,38 +155,13 @@
                 android:layout_marginRight="25dp"
                 android:background="@drawable/divider" />
 
-            <LinearLayout
-                android:id="@+id/contact_residence"
+            <ListView
+                android:id="@+id/contact_residence_listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ripple_effect"
-                android:orientation="vertical"
-                android:paddingBottom="15dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="15dp">
+                >
 
-                <TextView
-                    android:id="@+id/iitr_r"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:clickable="true"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:text="01332 22 4891"
-                    android:textColor="@color/contact_dark"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:text="Main | Residence"
-                    android:textColor="@color/contact_secondayText" />
-
-            </LinearLayout>
+            </ListView>
 
             <View
                 android:id="@+id/divider3"
@@ -221,38 +171,13 @@
                 android:layout_marginRight="25dp"
                 android:background="@drawable/divider" />
 
-            <LinearLayout
-                android:id="@+id/contact_bsnl"
+            <ListView
+                android:id="@+id/contact_bsnl_listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ripple_effect"
-                android:orientation="vertical"
-                android:paddingBottom="15dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="15dp">
+                >
 
-                <TextView
-                    android:id="@+id/phone_bsnl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:clickable="true"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:text="01332 22 4891"
-                    android:textColor="@color/contact_dark"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/bsnl_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:text="BSNL"
-                    android:textColor="@color/contact_secondayText" />
-            </LinearLayout>
+            </ListView>
 
             <View
                 android:id="@+id/divider4"
@@ -262,37 +187,13 @@
                 android:layout_marginRight="25dp"
                 android:background="@drawable/divider" />
 
-            <LinearLayout
-                android:id="@+id/contact_email"
+            <ListView
+                android:id="@+id/contact_email_listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ripple_effect"
-                android:orientation="vertical"
-                android:paddingBottom="15dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="15dp">
+                >
 
-                <TextView
-                    android:id="@+id/email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:clickable="true"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:text="example@iitr.ac.in"
-                    android:textColor="@color/contact_dark"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:text="IITR Email"
-                    android:textColor="@color/contact_secondayText" />
-            </LinearLayout>
+            </ListView>
 
             <View
                 android:id="@+id/divider5"
@@ -302,36 +203,13 @@
                 android:layout_marginRight="25dp"
                 android:background="@drawable/divider" />
 
-            <LinearLayout
-                android:id="@+id/contact_mobile"
+            <ListView
+                android:id="@+id/contact_mobile_listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ripple_effect"
-                android:orientation="vertical"
-                android:paddingBottom="15dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="15dp">
+                >
 
-                <TextView
-                    android:id="@+id/mobile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:text="9999999999"
-                    android:textColor="@color/contact_dark"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:text="Mobile"
-                    android:textColor="@color/contact_secondayText" />
-            </LinearLayout>
+            </ListView>
 
             <View
                 android:id="@+id/divider6"
@@ -370,6 +248,7 @@
                     android:layout_marginRight="20dp"
                     android:text="Website"
                     android:textColor="@color/contact_secondayText" />
+
             </LinearLayout>
 
             <View
