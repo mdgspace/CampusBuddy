@@ -1,7 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools" tools:context="in.co.mdg.campusBuddy.contacts">
-<item android:id="@+id/action_addtocontacts" android:title="Add To Contacts"
-    android:orderInCategory="100" app:showAsAction="ifRoom"
-    android:icon="@drawable/ic_person_add_white_24dp"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="in.co.mdg.campusBuddy.contacts">
+    <item
+        android:id="@+id/action_addtocontacts"
+        android:icon="@drawable/ic_person_add_white_24dp"
+        android:orderInCategory="100"
+        android:title="Add To Contacts"
+        app:showAsAction="ifRoom" />
 </menu>

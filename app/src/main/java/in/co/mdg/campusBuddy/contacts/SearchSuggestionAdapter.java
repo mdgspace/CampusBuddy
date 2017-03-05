@@ -15,7 +15,7 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -23,6 +23,7 @@ import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.data_models.Contact;
 import in.co.mdg.campusBuddy.contacts.data_models.ContactSearchModel;
 import in.co.mdg.campusBuddy.contacts.data_models.Department;
+import in.co.mdg.campusBuddy.contacts.data_models.Group;
 import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -33,7 +34,7 @@ import io.realm.Sort;
  * Created by Chirag on 13-06-2016.
  */
 
-class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
+public class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
 
 
     private ArrayList<ContactSearchModel> suggestions;
@@ -42,7 +43,7 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
     private String queryString;
     private final ForegroundColorSpan fcs = new ForegroundColorSpan(Color.parseColor("#be5e00"));
 
-    SearchSuggestionAdapter(Context context, int viewResourceId) {
+    public SearchSuggestionAdapter(Context context, int viewResourceId) {
         super(context, viewResourceId);
         this.suggestions = new ArrayList<>();
         this.viewResourceId = viewResourceId;
@@ -57,6 +58,7 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
             convertView = mInflater.inflate(viewResourceId, parent, false);
             holder = new ViewHolder();
             holder.contactName = (TextView) convertView.findViewById(R.id.contact_name);
+            holder.dept = (TextView) convertView.findViewById(R.id.contact_dept);
             holder.profilePic = (ImageView) convertView.findViewById(R.id.profile_pic);
             holder.icon = (ImageView) convertView.findViewById(R.id.history_icon);
             convertView.setTag(holder);
@@ -73,12 +75,18 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                     sb.setSpan(fcs, searchMatchPosition, searchMatchPosition + queryString.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             }
             holder.contactName.setText(sb);
-            Picasso.with(getContext())
-                    .cancelRequest(holder.profilePic);
+            Glide.clear(holder.profilePic);
             if (contact.isDept()) {
-                LoadingImages.loadDeptImages(contact.getProfilePic(),holder.profilePic,null);
+                holder.dept.setVisibility(View.GONE);
+                LoadingImages.loadDeptImages(contact.getProfilePic(), holder.profilePic);
             } else {
-                LoadingImages.loadContactImages(contact.getProfilePic(),holder.profilePic);
+                if (contact.getProfilePic() != null)
+                    holder.dept.setVisibility(View.GONE);
+                else {
+                    holder.dept.setVisibility(View.VISIBLE);
+                    holder.dept.setText(contact.getDept());
+                }
+                LoadingImages.loadContactImages(contact.getProfilePic(), holder.profilePic);
                 if (contact.isHistorySearch())
                     holder.icon.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_history_black_24dp));
                 else
@@ -90,7 +98,7 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
     }
 
     private static class ViewHolder {
-        TextView contactName;
+        TextView contactName, dept;
         ImageView icon, profilePic;
     }
 
@@ -113,7 +121,7 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
             RealmResults<ContactSearchModel> historySearches = null;
             RealmResults<Contact> contacts = null;
             RealmResults<Department> depts = null;
-            RealmResults<Contact> adminContacts = null;
+//            RealmResults<Contact> adminContacts = null;
             if (constraint == null) {
                 queryString = "";
                 historySearches = realm.where(ContactSearchModel.class).findAll().sort("dateAdded", Sort.DESCENDING);
@@ -132,14 +140,14 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                 }
                 contacts = contactRealmQuery.findAll().sort("name");
                 depts = realm.where(Department.class).contains("name", queryString, Case.INSENSITIVE).findAll().sort("name");
-                adminContacts = realm.where(Department.class)
-                        .equalTo("name","Administration")
-                        .findFirst()
-                        .getContacts()
-                        .where()
-                        .contains("designation",queryString,Case.INSENSITIVE)
-                        .findAll()
-                        .sort("name");
+//                adminContacts = realm.where(Department.class)
+//                        .equalTo("name", "Administration")
+//                        .findFirst()
+//                        .getContacts()
+//                        .where()
+//                        .contains("designation", queryString, Case.INSENSITIVE)
+//                        .findAll()
+//                        .sort("name");
             }
             int HISTORY_ITEM_LIMIT = 2;
             for (int i = 0; i < (historySearches.size() > HISTORY_ITEM_LIMIT ? HISTORY_ITEM_LIMIT : historySearches.size()); i++) {
@@ -148,6 +156,7 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                 contactSearchModel.setProfilePic(historySearches.get(i).getProfilePic());
                 contactSearchModel.setHistorySearch(historySearches.get(i).isHistorySearch());
                 contactSearchModel.setDept(historySearches.get(i).getDept());
+                contactSearchModel.setGroup(historySearches.get(i).getGroup());
                 suggestions.add(contactSearchModel);
 
             }
@@ -164,14 +173,15 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                     RealmQuery<Department> deptSearch = realm
                             .where(Department.class)
                             .equalTo("contacts.name", contact.getName());
-                    if (contact.getIitr_o() != null)
-                        deptSearch.equalTo("contacts.iitr_o", contact.getIitr_o());
-                    else if (contact.getIitr_r() != null)
-                        deptSearch.equalTo("contacts.iitr_r", contact.getIitr_r());
-                    else if (contact.getPhoneBSNL() != null)
-                        deptSearch.equalTo("contacts.phoneBSNL", contact.getPhoneBSNL());
+                    if (contact.getIitr_o().size()>0)
+                        deptSearch.equalTo("contacts.iitr_o.number", contact.getIitr_o().get(0).getNumber());
+                    else if (contact.getIitr_r().size()>0)
+                        deptSearch.equalTo("contacts.iitr_r.number", contact.getIitr_r().get(0).getNumber());
+                    else if (contact.getPhoneBSNL().size()>0)
+                        deptSearch.equalTo("contacts.phoneBSNL.number", contact.getPhoneBSNL().get(0).getNumber());
                     String dept = deptSearch.findFirst().getName();
                     contactSearchModel.setDept(dept);
+                    contactSearchModel.setGroup(realm.where(Group.class).equalTo("departments.name", dept).findFirst().getName());
                     suggestions.add(contactSearchModel);
                 }
             }
@@ -187,18 +197,18 @@ class SearchSuggestionAdapter extends ArrayAdapter<ContactSearchModel> {
                     suggestions.add(contactSearchModel);
                 }
             }
-            if (adminContacts != null) {
-                int ADMIN_ITEM_LIMIT = 5;
-                for (int i = 0; i < (adminContacts.size() > ADMIN_ITEM_LIMIT ? ADMIN_ITEM_LIMIT : adminContacts.size()); i++) {
-                    Contact adminContact = adminContacts.get(i);
-                    ContactSearchModel contactSearchModel = new ContactSearchModel();
-                    contactSearchModel.setName(adminContact.getDesignation());
-                    contactSearchModel.setHistorySearch(false);
-                    contactSearchModel.setProfilePic(adminContact.getProfilePic());
-                    contactSearchModel.setDept("Administration");
-                    suggestions.add(contactSearchModel);
-                }
-            }
+//            if (adminContacts != null) {
+//                int ADMIN_ITEM_LIMIT = 5;
+//                for (int i = 0; i < (adminContacts.size() > ADMIN_ITEM_LIMIT ? ADMIN_ITEM_LIMIT : adminContacts.size()); i++) {
+//                    Contact adminContact = adminContacts.get(i);
+//                    ContactSearchModel contactSearchModel = new ContactSearchModel();
+//                    contactSearchModel.setName(adminContact.getDesg());
+//                    contactSearchModel.setHistorySearch(false);
+//                    contactSearchModel.setProfilePic(adminContact.getProfilePic());
+//                    contactSearchModel.setDept("Administration");
+//                    suggestions.add(contactSearchModel);
+//                }
+//            }
             FilterResults filterResults = new FilterResults();
             filterResults.values = suggestions;
             filterResults.count = suggestions.size();

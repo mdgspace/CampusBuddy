@@ -4,14 +4,10 @@ package in.co.mdg.campusBuddy.contacts;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -23,40 +19,42 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-
 import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.data_models.Contact;
 import in.co.mdg.campusBuddy.contacts.data_models.Department;
 import io.realm.Realm;
+
+import static in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.ENGLISH;
+import static in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.HINDI;
 
 public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
     private int maxScrollSize;
     private ImageView profilePic;
     private ImageView smallProfilePic;
-    private String std_code_res_off = "01332 28 "; // std code for roorkee
-    private String std_code_bsnl = "01332 "; //std code for roorkee
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.8f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.2f;
     private static final int ALPHA_ANIMATIONS_DURATION = 300;
 
     private boolean mIsTheTitleVisible = false;
-    private boolean mIsTheTitleContainerVisible = true;
+    private boolean mIsTheTitleContainerVisible = false;
 
     private LinearLayout mTitleContainer;
     private TextView mTitle;
     private Toolbar toolbar;
-    private NestedScrollView nestedScrollView;
+    //    private NestedScrollView nestedScrollView;
     private AppBarLayout mAppBarLayout;
     private TextView name_text;
     private TextView dept_text;
     private TextView desg_text;
     private String name;
-    private String dept;
+    private String group;
+    private String std_code_res_off;
+    private String std_code_bsnl;
 
     private Contact contact;
+    private Department department;
+    private int lang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +62,6 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         setContentView(R.layout.activity_show_contact);
         initializeVariables();
         setData();
-//        titleFrame.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                profileBackdrop.setPadding(0,0,0,titleFrame.getHeight());
-//            }
-//        });
-        startAlphaAnimation(mTitle, 0, View.INVISIBLE);
-        startAlphaAnimation(smallProfilePic, 0, View.INVISIBLE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -80,9 +70,15 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
                 onBackPressed();
             }
         });
+        mTitle.setVisibility(View.INVISIBLE);
+        smallProfilePic.setVisibility(View.INVISIBLE);
         mAppBarLayout.addOnOffsetChangedListener(this);
-        toolbar.getBackground().setAlpha(0);
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
     }
 
     @Override
@@ -108,7 +104,7 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         dept_text = (TextView) findViewById(R.id.dept);
         desg_text = (TextView) findViewById(R.id.desg);
         mTitle = (TextView) findViewById(R.id.action_bar_title);
-        nestedScrollView = (NestedScrollView) findViewById(R.id.nested_scroll_view);
+//        nestedScrollView = (NestedScrollView) findViewById(R.id.nested_scroll_view);
         mTitleContainer = (LinearLayout) findViewById(R.id.linearlayout_title);
         profilePic = (ImageView) findViewById(R.id.profile_pic);
         smallProfilePic = (ImageView) findViewById(R.id.small_profile_pic);
@@ -116,12 +112,15 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
 
         maxScrollSize = mAppBarLayout.getTotalScrollRange();
         name = getIntent().getStringExtra("name");
-        dept = getIntent().getStringExtra("dept");
+        String dept = getIntent().getStringExtra("dept");
+        group = getIntent().getStringExtra("group");
+        lang = getIntent().getIntExtra("lang",ENGLISH);
         Realm realm = Realm.getDefaultInstance();
-        contact = realm
+        department = realm
                 .where(Department.class)
                 .equalTo("name", dept)
-                .findFirst()
+                .findFirst();
+        contact = department
                 .getContacts()
                 .where()
                 .equalTo("name", name)
@@ -129,26 +128,45 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
     }
 
     private void setData() {
-        name_text.setText(name);
-        dept_text.setText(dept);
-        mTitle.setText(name);
+        if (lang == HINDI && contact.getNameHindi() != null) {
+            name_text.setText(contact.getNameHindi());
+            mTitle.setText(contact.getNameHindi());
+        } else {
+            name_text.setText(contact.getName());
+            mTitle.setText(contact.getName());
+        }
+        if (lang == HINDI && department.getNameHindi() != null) {
+            dept_text.setText(department.getNameHindi());
+        } else {
+            dept_text.setText(department.getName());
+        }
 
-        if (contact.getDesignation() != null)
-            desg_text.setText(contact.getDesignation());
-        else
+
+        if (contact.getDesg() != null) {
+            if (lang == HINDI && contact.getDesgHindi() != null) {
+                desg_text.setText(contact.getDesgHindi());
+            } else {
+                desg_text.setText(contact.getDesg());
+            }
+        } else {
             desg_text.setVisibility(View.GONE);
+        }
 
-        LoadingImages.loadContactImageForContactView(contact.getProfilePic(),profilePic,smallProfilePic);
+//        LoadingImages.loadContactImageForContactView(contact.getProfilePic(), profilePic, smallProfilePic);
 
-        if (dept.equals("Polymer & Paper Pulp")) {
-            std_code_res_off = "0132 271 ";
-            std_code_bsnl = "0132 ";
+
+        if (group.equals("Saharanpur Campus")) {
+            std_code_res_off = getResources().getString(R.string.std_code_res_off_shrnpr);
+            std_code_bsnl = getResources().getString(R.string.std_code_bsnl_shrnpr);
+        } else {
+            std_code_res_off = getResources().getString(R.string.std_code_res_off_rk);
+            std_code_bsnl = getResources().getString(R.string.std_code_bsnl_rk);
         }
 
         LinearLayout contactOffice = (LinearLayout) findViewById(R.id.contact_office);
-        if (contact.getIitr_o() != null) {
+        if (contact.getIitr_o().size() > 0) {
             final TextView iitr_o = (TextView) findViewById(R.id.iitr_o);
-            iitr_o.setText(std_code_res_off + contact.getIitr_o());
+            iitr_o.setText(String.format("%s%s", std_code_res_off, contact.getIitr_o().get(0).getNumber()));
             contactOffice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -168,9 +186,9 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         }
 
         LinearLayout contactResidence = (LinearLayout) findViewById(R.id.contact_residence);
-        if (contact.getIitr_r() != null) {
+        if (contact.getIitr_r().size() > 0) {
             final TextView iitr_r = (TextView) findViewById(R.id.iitr_r);
-            iitr_r.setText(std_code_res_off + contact.getIitr_r());
+            iitr_r.setText(String.format("%s%s", std_code_res_off, contact.getIitr_r().get(0).getNumber()));
             contactResidence.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -190,15 +208,10 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         }
 
         LinearLayout contactBsnl = (LinearLayout) findViewById(R.id.contact_bsnl);
-        if (contact.getPhoneBSNL() != null) {
+        if (contact.getPhoneBSNL().size() > 0) {
             final TextView phoneBsnl = (TextView) findViewById(R.id.phone_bsnl);
-            if (contact.getPhoneBSNL().startsWith("9") || contact.getPhoneBSNL().startsWith("8")) {
-                final TextView bsnlText = (TextView) findViewById(R.id.bsnl_text);
-                bsnlText.setText("Mobile");
-                phoneBsnl.setText(contact.getPhoneBSNL());
-            } else {
-                phoneBsnl.setText(std_code_bsnl + contact.getPhoneBSNL());
-            }
+            phoneBsnl.setText(String.format("%s%s", std_code_bsnl, contact.getPhoneBSNL().get(0).getNumber()));
+//            }
             contactBsnl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -218,9 +231,13 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         }
 
         LinearLayout contactEmail = (LinearLayout) findViewById(R.id.contact_email);
-        if (contact.getEmail() != null) {
+        if (contact.getEmail().size() > 0) {
             final TextView email = (TextView) findViewById(R.id.email);
-            email.setText(contact.getEmail() + "@iitr.ac.in");
+            String emailId = contact.getEmail().get(0).getNumber();
+            if (!emailId.contains("@")) {
+                emailId = emailId.concat("@iitr.ac.in");
+            }
+            email.setText(emailId);
             contactEmail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -237,6 +254,29 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
         } else {
             findViewById(R.id.divider5).setVisibility(View.GONE);
             contactEmail.setVisibility(View.GONE);
+        }
+
+        LinearLayout contactMobile = (LinearLayout) findViewById(R.id.contact_mobile);
+        if (contact.getMobile().size() > 0) {
+            final TextView mobile = (TextView) findViewById(R.id.mobile);
+            mobile.setText(contact.getMobile().get(0).getNumber());
+            contactMobile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mobile.getText().toString().replace(" ", "")));
+                    startActivity(intent);
+                }
+            });
+            contactMobile.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return copyToClipboard(name, mobile.getText().toString());
+                }
+            });
+
+        } else {
+            findViewById(R.id.divider6).setVisibility(View.GONE);
+            contactMobile.setVisibility(View.GONE);
         }
 
         LinearLayout contactWebsite = (LinearLayout) findViewById(R.id.contact_website);
@@ -258,7 +298,7 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
             });
 
         } else {
-            findViewById(R.id.divider6).setVisibility(View.GONE);
+            findViewById(R.id.divider7).setVisibility(View.GONE);
             contactWebsite.setVisibility(View.GONE);
         }
     }
@@ -273,30 +313,31 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
 
     private boolean addToContacts() {
         final Intent addContact = new Intent(Intent.ACTION_INSERT_OR_EDIT);
-        addContact.putExtra(ContactsContract.Intents.Insert.NAME, name);
-        addContact.putExtra(ContactsContract.Intents.Insert.COMPANY, dept);
-        if (contact.getDesignation() != null)
-            addContact.putExtra(ContactsContract.Intents.Insert.JOB_TITLE, contact.getDesignation());
-        if (contact.getIitr_o() != null) {
-            addContact.putExtra(ContactsContract.Intents.Insert.PHONE, (std_code_res_off + contact.getIitr_o()).replace(" ", ""));
+        addContact.putExtra(ContactsContract.Intents.Insert.NAME, name_text.getText().toString());
+        addContact.putExtra(ContactsContract.Intents.Insert.COMPANY, dept_text.getText().toString());
+        if (contact.getDesg() != null)
+            addContact.putExtra(ContactsContract.Intents.Insert.JOB_TITLE, desg_text.getText().toString());
+        if (contact.getIitr_o().size() > 0) {
+            addContact.putExtra(ContactsContract.Intents.Insert.PHONE, (std_code_res_off + contact.getIitr_o().get(0).getNumber()).replace(" ", ""));
             addContact.putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, "Office");
             addContact.putExtra(ContactsContract.Intents.Insert.PHONE_ISPRIMARY, "True");
         }
-        if (contact.getIitr_r() != null) {
-            addContact.putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE, (std_code_res_off + contact.getIitr_r()).replace(" ", ""));
+        if (contact.getIitr_r().size() > 0) {
+            addContact.putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE, (std_code_res_off + contact.getIitr_r().get(0).getNumber()).replace(" ", ""));
             addContact.putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE_TYPE, "Residence");
         }
-        if (contact.getPhoneBSNL() != null) {
-            if (contact.getPhoneBSNL().startsWith("9") || contact.getPhoneBSNL().startsWith("8")) {
-                addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE, contact.getPhoneBSNL());
-                addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE_TYPE, "Mobile");
-            } else {
-                addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE, std_code_bsnl + contact.getPhoneBSNL());
-                addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE_TYPE, "Bsnl Landline");
-            }
+        if (contact.getPhoneBSNL().size() > 0) {
+            addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE, std_code_bsnl + contact.getPhoneBSNL().get(0).getNumber());
+            addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE_TYPE, "Bsnl Landline");
         }
-        if (contact.getEmail() != null)
-            addContact.putExtra(ContactsContract.Intents.Insert.EMAIL, contact.getEmail() + "@iitr.ac.in");
+        if (contact.getMobile().size() > 0) {
+            addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE, contact.getMobile().get(0).getNumber());
+            addContact.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE_TYPE, "Mobile");
+        }
+        if (contact.getEmail().size() > 0) {
+            addContact.putExtra(ContactsContract.Intents.Insert.EMAIL, contact.getEmail().get(0).getNumber() + "@iitr.ac.in");
+            addContact.putExtra(ContactsContract.Intents.Insert.EMAIL_TYPE, "Office");
+        }
 
         addContact.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
         startActivity(addContact);
@@ -319,12 +360,8 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
 //            float modifiedPercent = getModifiedPercent(percentage, PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR);
 //            nestedScrollView.setPadding(0, (int) (toolbar.getMeasuredHeight() * modifiedPercent), 0, 0);
             if (!mIsTheTitleVisible) {
-                toolbar.getBackground().setAlpha(255);
                 startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
                 startAlphaAnimation(smallProfilePic, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.brand_primary_dark));
-//                }
                 mIsTheTitleVisible = true;
             }
 
@@ -333,11 +370,6 @@ public class ShowContact extends AppCompatActivity implements AppBarLayout.OnOff
             if (mIsTheTitleVisible) {
                 startAlphaAnimation(mTitle, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
                 startAlphaAnimation(smallProfilePic, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
-                toolbar.getBackground().setAlpha(0);
-                nestedScrollView.setPadding(0, 0, 0, 0);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    getWindow().setStatusBarColor(Color.TRANSPARENT);
-//                }
                 mIsTheTitleVisible = false;
             }
         }

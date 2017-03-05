@@ -10,18 +10,18 @@ import android.content.Intent;
  */
 public class NotificationHandler {
 
-    public static void buildNotification(Context context){
+    public static void buildNotification(Context context) {
 
-        AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.putExtra("onetime", Boolean.FALSE);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
         //After after day
-        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_HOUR , pi);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_HOUR, pi);
 
     }
 
-    public static void deleteNotification(int id){
+    public static void deleteNotification(int id) {
 
     }
 

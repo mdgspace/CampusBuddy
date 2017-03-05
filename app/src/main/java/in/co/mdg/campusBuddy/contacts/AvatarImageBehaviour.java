@@ -79,8 +79,8 @@ class AvatarImageBehaviour extends CoordinatorLayout.Behavior<CircleImageView> {
             child.setY(mStartYPosition - distanceYToSubtract);
 
             CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-            lp.width = (int) (mStartHeight);
-            lp.height = (int) (mStartHeight);
+            lp.width = mStartHeight;
+            lp.height = mStartHeight;
             child.setLayoutParams(lp);
         }
         return true;

@@ -15,27 +15,27 @@
             android:id="@+id/edit_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edit Event"
-            android:checked="true" />
+            android:checked="true"
+            android:text="Edit Event" />
 
         <RadioButton
             android:id="@+id/delete_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete Event"/>
+            android:text="Delete Event" />
 
     </RadioGroup>
 
 
     <CheckBox
         android:id="@+id/multi_checkbox"
-        android:textSize="12sp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/radio_group"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
         android:text="Do this for all repetitive events"
-        android:layout_below="@+id/radio_group" />
+        android:textSize="12sp" />
 
 </RelativeLayout>

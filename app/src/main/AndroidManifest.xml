@@ -4,51 +4,42 @@
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <!--<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="com.example.googlemapstesting.permission.MAPS_RECEIVE" />
+    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+    <!--<uses-permission android:name="com.example.googlemapstesting.permission.MAPS_RECEIVE" />-->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
+    <!--<uses-permission android:name="android.permission.WAKE_LOCK" />-->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
-    <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true" />
+    <!--<uses-feature-->
+        <!--android:glEsVersion="0x00020000"-->
+        <!--android:required="true" />-->
 
-    <permission
-        android:name="com.example.googlemapstesting.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature" />
+    <!--<permission-->
+        <!--android:name="com.example.googlemapstesting.permission.MAPS_RECEIVE"-->
+        <!--android:protectionLevel="signature" />-->
 
     <application
         android:name=".CbApplication"
         android:allowBackup="true"
-        android:icon="@drawable/buddy_icon_edited2"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name=".MainActivity"
-            android:configChanges="orientation"
-            android:label="@string/app_name"
-            android:theme="@style/MainAcitvityTheme"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <!-- <activity -->
+        <!-- android:name="com.facebook.FacebookActivity" -->
+        <!-- android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" -->
+        <!-- android:label="@string/app_name" -->
+        <!-- android:theme="@android:style/Theme.Translucent.NoTitleBar" -->
+        <!-- tools:replace="android:theme" /> -->
         <!-- <activity -->
         <!-- android:name=".map" -->
         <!-- android:label="@string/app_name" > -->
@@ -60,15 +51,6 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
 
-        <activity
-            android:name=".contacts.ContactsMainActivity"
-            android:label="Contacts">
-            <intent-filter>
-                <action android:name="android.intent.action.DEPTT_LIST" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
         <!-- <activity -->
         <!-- android:name=".map3" -->
@@ -88,16 +70,12 @@
         <!-- <category android:name="android.intent.category.DEFAULT" /> -->
         <!-- </intent-filter> -->
         <!-- </activity> -->
-        <activity
-            android:name=".NewEvent"
-            android:label="@string/app_name"
-            android:theme="@style/NewEventTheme"/>
-        <activity
-            android:name=".TimetableNavigation"
-            android:label="@string/app_name" />
-        <activity
-            android:name=".SimpleMap"
-            android:label="@string/app_name" />
+        <!--<activity-->
+            <!--android:name=".NewEvent"-->
+            <!--android:label="@string/app_name" />-->
+        <!--<activity-->
+            <!--android:name=".TimetableNavigation"-->
+            <!--android:label="@string/app_name" />-->
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -105,53 +83,61 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyD8LQckj7h5s6w_rAzk5UyP3WzpfkO3BCE" />
+        <!--<meta-data-->
+            <!--android:name="com.google.android.maps.v2.API_KEY"-->
+            <!--android:value="AIzaSyD8LQckj7h5s6w_rAzk5UyP3WzpfkO3BCE" />-->
         <!-- android:value="AIzaSyA-X5bozVBQg1gKeK_B1AreRFLFXmguwS8" /> -->
 
         <activity
-            android:name=".Fb"
-            android:label="@string/title_activity_fb"
-            android:parentActivityName=".MainActivity"/>
-        <activity
-            android:name=".Fblist"
+            android:name=".fb.Fblist"
             android:label="@string/title_activity_fblist" />
-        <activity
-            android:name=".Fblogin"
-            android:label="@string/title_activity_fblogin" />
 
-        <receiver android:name=".AlarmReceiver">
+        <!--<receiver android:name=".AlarmReceiver">-->
 
             <!-- <intent-filter> -->
             <!-- <action android:name="abc"> -->
             <!-- </action> -->
             <!-- </intent-filter> -->
 
-        </receiver>
+        <!--</receiver>-->
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="9327903226aef349b7e2cf7c2dfe1e6960f79233" />
 
+        <activity android:name=".contacts.ShowContact" />
+        <activity android:name=".contacts.ShowDepartmentContacts" />
+        <activity android:name=".contacts.ShowGroupDepartments" />
+
+        <service android:name=".fcm.FirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".fcm.FirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
-            android:name=".AboutUs"
-            android:label="@string/title_activity_about_us" />
-        <activity android:name=".contacts.ShowContact"/>
-        <activity android:name=".contacts.ShowDepartmentContacts"/>
-
-        <service android:name=".fcm.FirebaseMessagingService" >
+            android:name=".fb.FullscreenImageView"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_fullscreen_image_view"
+            android:theme="@style/FullscreenTheme"/>
+        <activity android:name=".SplashScreen"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
-        <service
-            android:name=".fcm.FirebaseInstanceIDService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-            </intent-filter>
-        </service>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".HomeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest> <!-- Pro KD, chu rc -->

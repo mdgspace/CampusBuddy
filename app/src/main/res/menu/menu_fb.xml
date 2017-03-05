@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <item android:id="@+id/logout"
-        android:title="Logout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText">
+    <item
+        android:id="@+id/addpages"
         android:orderInCategory="100"
-        app:showAsAction="never" />
-
-    <item android:id="@+id/addpages"
         android:title="Add pages"
-        android:orderInCategory="100"
         app:showAsAction="never" />
-
+    <item
+        android:id="@+id/settings"
+        android:orderInCategory="101"
+        android:title="Settings"
+        app:showAsAction="never" />
 </menu>

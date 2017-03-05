@@ -1,41 +1,39 @@
- <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-     android:background="#ffffff"
-     android:orientation="vertical">
+    android:background="#ffffff"
+    android:orientation="vertical">
 
-     <include
-         android:id="@+id/tool_barfblist"
-         layout="@layout/tool_bar"
-         android:layout_height="wrap_content"
-         android:layout_width="match_parent"
-         />
+    <include
+        android:id="@+id/tool_barfblist"
+        layout="@layout/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <ListView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/listfbpages"
+        android:id="@+id/listfbpages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_above="@+id/submitbutton"
-        android:layout_below="@+id/tool_barfblist"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/tool_barfblist" />
 
-     <Button
-         android:layout_width="match_parent"
-         android:layout_height="48dp"
-         android:id="@+id/submitbutton"
-         android:textColor="#FFF"
-         android:background="@color/primary"
-         android:text="Get Feeds"
-         android:layout_alignParentBottom="true"
-         android:layout_alignParentLeft="true"
-         android:layout_alignParentStart="true" />
+    <Button
+        android:id="@+id/submitbutton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/primary"
+        android:text="Get Feeds"
+        android:textColor="#FFF" />
     <!--<com.facebook.login.widget.LoginButton-->
     <!--android:id="@+id/login_button"-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="58dp"-->
     <!--android:layout_gravity="center_horizontal"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_centerHorizontal="true" />-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_centerHorizontal="true" />-->
 </RelativeLayout>
