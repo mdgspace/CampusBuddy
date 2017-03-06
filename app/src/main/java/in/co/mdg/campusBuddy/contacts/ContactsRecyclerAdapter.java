@@ -32,7 +32,7 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
     private static ClickListener clicklistener;
 
     public interface ClickListener {
-        void itemClicked(int type, String contactName, String deptName, String groupName);
+        void itemClicked(int type, String contactName, String deptName, String groupName, int lang);
     }
 
     ContactsRecyclerAdapter() {
@@ -46,9 +46,9 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
             case 1:case 2: //for showing departments of a group
                 groupDepts = realm.where(Group.class).equalTo("name", deptName).findFirst().getDepartments().sort("name");
                 break;
-            case 3: //for showing contacts of a dept
-                deptContacts = realm.where(Department.class).equalTo("name", deptName).findFirst().getContacts().sort("name");
-                break;
+//            case 3: //for showing contacts of a dept
+//                deptContacts = realm.where(Department.class).equalTo("name", deptName).findFirst().getContacts().sort("name");
+//                break;
 
         }
         type = option;
@@ -111,9 +111,9 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
             case 1:case 2:
                 holder.bind(type, groupDepts.get(position));
                 break;
-            case 3:
-                holder.bind(type, deptContacts.get(position));
-                break;
+//            case 3:
+//                holder.bind(type, deptContacts.get(position));
+//                break;
         }
     }
 
@@ -124,8 +124,8 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
                 return 3;
             case 2:
                 return groupDepts.size();
-            case 3:
-                return deptContacts.size();
+//            case 3:
+//                return deptContacts.size();
         }
         return 0;
     }
@@ -135,8 +135,8 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
         switch (type) {
             case 1:case 2:
                 return groupDepts.get(pos).getName().substring(0, 1);
-            case 3:
-                return deptContacts.get(pos).getName().substring(0, 1);
+//            case 3:
+//                return deptContacts.get(pos).getName().substring(0, 1);
         }
         return "";
     }
@@ -165,26 +165,26 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
                     desg.setVisibility(View.GONE);
 //                    LoadingImages.loadDeptImages(dept.getPhoto(), profilePic);
                     break;
-                case 3:
-                    Contact contact = (Contact) item;
-                    if (lang == HINDI && contact.getNameHindi() != null) {
-                        name.setText(contact.getNameHindi());
-                    } else {
-                        name.setText(contact.getName());
-                    }
-                    if (contact.getDesg() == null)
-                        desg.setVisibility(View.GONE);
-                    else {
-                        desg.setVisibility(View.VISIBLE);
-                        if (lang == HINDI && contact.getDesgHindi() != null) {
-                            desg.setText(contact.getDesgHindi());
-                        } else {
-                            desg.setText(contact.getDesg());
-                        }
-
-                    }
-//                    LoadingImages.loadContactImages(contact.getProfilePic(), profilePic);
-                    break;
+//                case 3:
+//                    Contact contact = (Contact) item;
+//                    if (lang == HINDI && contact.getNameHindi() != null) {
+//                        name.setText(contact.getNameHindi());
+//                    } else {
+//                        name.setText(contact.getName());
+//                    }
+//                    if (contact.getDesg() == null)
+//                        desg.setVisibility(View.GONE);
+//                    else {
+//                        desg.setVisibility(View.VISIBLE);
+//                        if (lang == HINDI && contact.getDesgHindi() != null) {
+//                            desg.setText(contact.getDesgHindi());
+//                        } else {
+//                            desg.setText(contact.getDesg());
+//                        }
+//
+//                    }
+////                    LoadingImages.loadContactImages(contact.getProfilePic(), profilePic);
+//                    break;
 
             }
 
@@ -192,12 +192,13 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
                 @Override
                 public void onClick(View v) {
                     if (type == 1 || type == 2) {
-                        clicklistener.itemClicked(type, null, ((Department) item).getName(), getGroup((Department) item));
-                    } else if (type == 3) {
-                        Contact contact = (Contact) item;
-                        String dept = getDept(contact);
-                        clicklistener.itemClicked(type, contact.getName(), dept, getGroup(dept));
+                        clicklistener.itemClicked(type, null, ((Department) item).getName(), getGroup((Department) item),lang);
                     }
+//                    } else if (type == 3) {
+//                        Contact contact = (Contact) item;
+//                        String dept = getDept(contact);
+//                        clicklistener.itemClicked(type, contact.getName(), dept, getGroup(dept));
+//                    }
 
                 }
             });

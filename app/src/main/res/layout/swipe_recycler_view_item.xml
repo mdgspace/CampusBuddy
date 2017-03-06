@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.daimajia.swipe.SwipeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    swipe:leftEdgeSwipeOffset="0dp"
+    swipe:rightEdgeSwipeOffset="0dp">
+
+    <!--Bottom View For Right to Left-->
+
+    <LinearLayout
+        android:id="@+id/bottom_wrapper"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/swipeCall"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#0076a5"
+            android:gravity="center"
+            android:text="Call"
+            android:textColor="#fff" />
+
+        <TextView
+            android:id="@+id/swipeMessage"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#003c54"
+            android:gravity="center"
+            android:text="Message"
+            android:textColor="#fff" />
+
+        <TextView
+            android:id="@+id/swipeEmail"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#0076a5"
+            android:gravity="center"
+            android:text="Email"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+
+    <!-- Top View,  Row itemView of RecyclerView -->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/ripple_effect"
+        android:paddingBottom="4dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="4dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/swipe_profile_pic"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="profile pic"
+            android:src="@drawable/contact_icon"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="1dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_marginLeft="13dp"
+            android:layout_marginStart="13dp">
+
+            <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/swipeContactName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textColor="@color/contact_dark"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/swipeContactDesg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name"
+                android:layout_marginTop="2dp"
+                android:text="Designation"
+                android:textColor="@color/contact_secondayText"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</com.daimajia.swipe.SwipeLayout>

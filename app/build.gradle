@@ -62,6 +62,8 @@ android
                 compile 'de.hdodenhof:circleimageview:2.0.0'
                 //for info menu on home screen
                 compile 'com.yalantis:contextmenu:1.0.7'
+                //for swipe recycler view
+                compile 'com.daimajia.swipelayout:library:1.2.0@aar'
             }
         }
 //Intentionally added to the bottom.

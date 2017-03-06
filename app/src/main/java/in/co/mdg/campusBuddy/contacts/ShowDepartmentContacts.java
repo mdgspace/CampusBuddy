@@ -22,15 +22,19 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.jar.Attributes;
 
 import in.co.mdg.campusBuddy.R;
 import in.co.mdg.campusBuddy.contacts.data_models.Department;
+import in.co.mdg.campusBuddy.fragments.ContactsFragment;
 import io.realm.Realm;
 
 public class ShowDepartmentContacts extends AppCompatActivity {
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private RecyclerView recyclerView;
+    SwipeRecyclerViewAdapter swipeRecyclerViewAdapter;
+    int lang;
 //    private int primaryDark;
 //    private int primary;
 
@@ -38,6 +42,19 @@ public class ShowDepartmentContacts extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
+    }
+
+
+
+    public int getLang() {
+        return swipeRecyclerViewAdapter.getLang();
+    }
+
+
+
+    public static DeptListFragment newInstance() {
+        DeptListFragment fragment = new DeptListFragment();
+        return fragment;
     }
 
     @Override
@@ -59,6 +76,7 @@ public class ShowDepartmentContacts extends AppCompatActivity {
 //        primary = ContextCompat.getColor(this, R.color.primary);
 //        primaryDark = ContextCompat.getColor(this, R.color.primary_dark);
         String deptName = getIntent().getStringExtra("dept_name");
+        lang = getIntent().getIntExtra("lang",1);
         final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -66,9 +84,12 @@ public class ShowDepartmentContacts extends AppCompatActivity {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, R.drawable.divider, metrics.density));
-        ContactsRecyclerAdapter adapter = new ContactsRecyclerAdapter();
-        adapter.setListData(3, deptName);
-        recyclerView.setAdapter(adapter);
+
+        swipeRecyclerViewAdapter = new SwipeRecyclerViewAdapter(this);
+        swipeRecyclerViewAdapter.setMode(com.daimajia.swipe.util.Attributes.Mode.Single);
+        swipeRecyclerViewAdapter.setLang(lang);
+        swipeRecyclerViewAdapter.setListData(deptName);
+        recyclerView.setAdapter(swipeRecyclerViewAdapter);
         RecyclerViewFastScroller fastScroller = (RecyclerViewFastScroller) findViewById(R.id.fastscroller);
         fastScroller.setVisibility(View.GONE);
 //        fastScroller.setRecyclerView(recyclerView);
@@ -142,6 +163,12 @@ public class ShowDepartmentContacts extends AppCompatActivity {
 //            }
 //        }
 //    }
+
+    @Override
+    public void onDestroy() {
+        swipeRecyclerViewAdapter.closeRealm();
+        super.onDestroy();
+    }
 
 
 }

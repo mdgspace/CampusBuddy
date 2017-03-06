@@ -35,6 +35,7 @@ import in.co.mdg.campusBuddy.contacts.SearchSuggestionAdapter;
 import in.co.mdg.campusBuddy.contacts.ShowContact;
 import in.co.mdg.campusBuddy.contacts.ShowDepartmentContacts;
 import in.co.mdg.campusBuddy.contacts.ShowGroupDepartments;
+import in.co.mdg.campusBuddy.contacts.SwipeRecyclerViewAdapter;
 import in.co.mdg.campusBuddy.contacts.data_models.ContactSearchModel;
 import io.realm.Realm;
 
@@ -42,7 +43,8 @@ import static in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.ENGLISH;
 import static in.co.mdg.campusBuddy.contacts.ContactsRecyclerAdapter.HINDI;
 
 
-public class ContactsFragment extends Fragment implements ContactsRecyclerAdapter.ClickListener,ContactsSectionRecyclerAdapter.ClickListener {
+public class ContactsFragment extends Fragment implements ContactsRecyclerAdapter.ClickListener,ContactsSectionRecyclerAdapter.ClickListener
+{
 
     public static Boolean loadImages = true;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
@@ -55,6 +57,7 @@ public class ContactsFragment extends Fragment implements ContactsRecyclerAdapte
     private ImageView speechButton;
     private FrameLayout dimLayout;
     private Switch languageSwitcher;
+    private int lang;
 
     private DeptListFragment groupList;
 
@@ -99,7 +102,8 @@ public class ContactsFragment extends Fragment implements ContactsRecyclerAdapte
         languageSwitcher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                groupList.setLang(b ? HINDI : ENGLISH);
+                lang = b ? HINDI : ENGLISH;
+                groupList.setLang(lang);
             }
         });
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +130,7 @@ public class ContactsFragment extends Fragment implements ContactsRecyclerAdapte
                     public void execute(Realm realm) {
                         ContactSearchModel historySearch = realm.where(ContactSearchModel.class).equalTo("name", contact.getName()).findFirst();
                         if (contact.isDept()) {
-                            showDepartmentContacts(contact.getName());
+                            showDepartmentContacts(contact.getName(),lang);
                         } else {
                             if (historySearch == null) {
                                 contact.setDateAdded(new Date());
@@ -218,10 +222,11 @@ public class ContactsFragment extends Fragment implements ContactsRecyclerAdapte
         getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
-    private void showDepartmentContacts(String deptName) {
+    private void showDepartmentContacts(String deptName, int lang) {
         searchBox.setText("");
         Intent in = new Intent(getActivity(), ShowDepartmentContacts.class);
         in.putExtra("dept_name", deptName);
+        in.putExtra("lang",lang);
         startActivity(in);
         getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
     }
@@ -230,6 +235,7 @@ public class ContactsFragment extends Fragment implements ContactsRecyclerAdapte
         searchBox.setText("");
         Intent in = new Intent(getActivity(), ShowGroupDepartments.class);
         in.putExtra("group_name", groupName);
+        in.putExtra("lang",groupList.getLang());
         startActivity(in);
         getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
     }
@@ -257,20 +263,18 @@ public class ContactsFragment extends Fragment implements ContactsRecyclerAdapte
     }
 
     @Override
-    public void itemClicked(int type, String contactName, String deptName, String groupName) {
+    public void itemClicked(int type, String contactName, String deptName, String groupName, int lang) {
         switch (type) {
             case 1:
-                showDepartmentContacts(deptName);
+                showDepartmentContacts(deptName,lang);
                 break;
             case 2:
-                showDepartmentContacts(deptName);
+                showDepartmentContacts(deptName,lang);
                 break;
-            case 3:
-                showContact(contactName, deptName, groupName);
-                break;
-
+//            case 3:
+//                showContact(contactName, deptName, groupName);
+//                break;
         }
-
 
     }
 
