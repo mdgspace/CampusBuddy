@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fb_page_list_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
@@ -13,10 +14,9 @@
         android:id="@+id/fb_page_list_progress_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_selected_fb_pages"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tool_barfblist"/>
     <android.support.v7.widget.RecyclerView
@@ -26,7 +26,7 @@
         android:layout_above="@+id/submitbutton"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/tool_barfblist" />
+        android:layout_below="@+id/list_selected_fb_pages" />
 
     <Button
         android:id="@+id/submitbutton"

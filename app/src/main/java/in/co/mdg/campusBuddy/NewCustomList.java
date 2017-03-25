@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,11 +29,16 @@ import in.co.mdg.campusBuddy.fb.Page;
  * Created by Harshit Bansal on 3/24/2017.
  */
 
-public class NewCustomList extends RecyclerView.Adapter<NewCustomList.FbPagesViewHolder>{
+public class NewCustomList extends RecyclerView.Adapter<NewCustomList.FbPagesViewHolder> {
 
     Context mcontext;
     ArrayList<Page> pageList;
     String[] fbImages;
+    ClickListener clickListener = null;
+
+    public void setClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
 
     public NewCustomList(Context mcontext, ArrayList<Page> pageList,String[] fbImages){
         this.mcontext = mcontext;
@@ -47,7 +54,7 @@ public class NewCustomList extends RecyclerView.Adapter<NewCustomList.FbPagesVie
     }
 
     @Override
-    public void onBindViewHolder(final FbPagesViewHolder holder, int position) {
+    public void onBindViewHolder(final FbPagesViewHolder holder, final int position) {
         final String fbPageName = pageList.get(position).getPage_name();
         try {
             String image = fbImages[position];
@@ -57,6 +64,13 @@ public class NewCustomList extends RecyclerView.Adapter<NewCustomList.FbPagesVie
             e.printStackTrace();
         }
         holder.fbPageName.setText(fbPageName);
+        holder.cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                pageList.get(position).setIsSelected(isChecked);
+            }
+        });
+        holder.cb.setChecked(pageList.get(position).isSelected());
         /*
         Bundle params = new Bundle();
         params.putBoolean("redirect",false);
@@ -91,15 +105,28 @@ public class NewCustomList extends RecyclerView.Adapter<NewCustomList.FbPagesVie
         return pageList.size();
     }
 
-    public class FbPagesViewHolder extends RecyclerView.ViewHolder{
+    public class FbPagesViewHolder extends RecyclerView.ViewHolder {
+        RelativeLayout main;
         ImageView fbPageImage;
         TextView fbPageName;
         CheckBox cb;
-        public FbPagesViewHolder(View itemView) {
+
+        public FbPagesViewHolder(final View itemView) {
             super(itemView);
+            main=(RelativeLayout)itemView.findViewById(R.id.main);
             fbPageImage=(ImageView)itemView.findViewById(R.id.fb_page_image);
             fbPageName=(TextView)itemView.findViewById(R.id.textforpage);
             cb=(CheckBox)itemView.findViewById(R.id.checkBox);
+            main.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(clickListener != null){
+                        clickListener.itemClicked(itemView,getAdapterPosition());
+                    }
+                }
+            });
+
         }
+
     }
 }
