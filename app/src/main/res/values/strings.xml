@@ -2,7 +2,8 @@
 
 <resources>
     <string name="app_name">Campus Buddy</string>
-
+    <string name="app_description">An active students group at IIT Roorkee directed towards creating useful mobile applications.</string>
+    <string name="version">3.0.0</string>
     <string name="action_settings">Settings</string>
 
 
