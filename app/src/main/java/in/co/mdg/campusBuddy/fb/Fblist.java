@@ -66,6 +66,34 @@ public class Fblist extends AppCompatActivity implements ClickListener {
     private ArrayList<Page> listofvalues;
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putStringArray("FbPageList",fbPageImages);
+        outState.putStringArray("FbSelectedPageList",fbSelectedPageImages);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if(fbPageImages[listofvalues.size()-1] !=  null) {
+            progressBar.setVisibility(View.INVISIBLE);
+            listview.setVisibility(View.VISIBLE);
+            selectedFbPagesList.setVisibility(View.VISIBLE);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            listview.setLayoutManager(layoutManager);
+            listview.setItemAnimator(new DefaultItemAnimator());
+            fbPageListAdapter = new NewCustomList(this, listofvalues, savedInstanceState.getStringArray("FbPageList"));
+            fbPageListAdapter.setClickListener(this);
+            listview.setAdapter(fbPageListAdapter);
+            RecyclerView.LayoutManager layoutManagerSelected = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            selectedFbPagesList.setLayoutManager(layoutManagerSelected);
+            selectedFbPagesList.setItemAnimator(new DefaultItemAnimator());
+            selectedFbPagesAdapter = new SelectedFbPagesAdapter(this, savedInstanceState.getStringArray("FbSelectedPageList"));
+            selectedFbPagesList.setAdapter(selectedFbPagesAdapter);
+            super.onRestoreInstanceState(savedInstanceState);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -132,6 +160,7 @@ public class Fblist extends AppCompatActivity implements ClickListener {
                                 } catch (NullPointerException e) {
                                     e.printStackTrace();
                                     progressBar.setVisibility(View.INVISIBLE);
+                                    submitb.setVisibility(View.INVISIBLE);
                                     Snackbar snackbar = Snackbar
                                             .make(fbPageLayout, "No Internet Connection!", Snackbar.LENGTH_LONG);
 
@@ -202,6 +231,7 @@ public class Fblist extends AppCompatActivity implements ClickListener {
                                     } catch (NullPointerException e) {
                                         e.printStackTrace();
                                         progressBar.setVisibility(View.INVISIBLE);
+                                        submitb.setVisibility(View.INVISIBLE);
                                         Snackbar snackbar = Snackbar
                                                 .make(fbPageLayout, "No Internet Connection!", Snackbar.LENGTH_LONG);
                                         snackbar.show();
