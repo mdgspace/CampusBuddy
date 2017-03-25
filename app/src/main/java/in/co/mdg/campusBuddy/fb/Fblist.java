@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -14,16 +17,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
 import in.co.mdg.campusBuddy.CustomList;
 import in.co.mdg.campusBuddy.Data;
+import in.co.mdg.campusBuddy.NewCustomList;
 import in.co.mdg.campusBuddy.R;
+import in.co.mdg.campusBuddy.SelectedFbPagesAdapter;
 
 
 public class Fblist extends AppCompatActivity {
@@ -32,11 +44,17 @@ public class Fblist extends AppCompatActivity {
     Cursor cr;
     ContentValues values;
     String page_name;
-    ListView listview;
+    ProgressBar progressBar;
+    RecyclerView listview;
+    RecyclerView selectedFbPagesList;
     ArrayList<String> fbpagesliked;
+    String[] fbPageImages;
+    String[] fbSelectedPageImages;
     CallbackManager callbackManager;
     Button submitb;
     CustomList adapter;
+    NewCustomList fbPageListAdapter;
+    SelectedFbPagesAdapter selectedFbPagesAdapter;
     int i;
     Toolbar toolbar;
     private ArrayList<Page> listofvalues;
@@ -76,14 +94,50 @@ public class Fblist extends AppCompatActivity {
         });
 //        flag = false;
         listofvalues = Data.getFbPageList();
+        fbPageImages=new String[listofvalues.size()];
+        listview = (RecyclerView) findViewById(R.id.listfbpages);
+        progressBar=(ProgressBar)findViewById(R.id.fb_page_list_progress_bar);
+        selectedFbPagesList=(RecyclerView)findViewById(R.id.list_selected_fb_pages);
+        listview.setVisibility(View.INVISIBLE);
+        selectedFbPagesList.setVisibility(View.INVISIBLE);
+        final int[] imageUrls = {0};
+        for(int i=0;i<listofvalues.size();i++) {
+            final int position =i;
+            Bundle params = new Bundle();
+            params.putBoolean("redirect", false);
+            final boolean[] urlReceived = {false};
+            String pageId = listofvalues.get(position).getPage_id();
+            new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + pageId + "/picture", params, HttpMethod.GET,
+                    new GraphRequest.Callback() {
+                        @Override
+                        public void onCompleted(GraphResponse response) {
+                            if (response != null) {
+                                try {
+                                    fbPageImages[position] = (response.getJSONObject().getJSONObject("data").getString("url"));
+                                    imageUrls[0]++;
+                                    if( imageUrls[0] == listofvalues.size()-1){
+                                        setListAdapter();
+                                    }
+                                }catch (JSONException e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(Fblist.this,"JSON",Toast.LENGTH_SHORT).show();
+                                    Log.e("responseCheck", "Response not received");
+                                } catch (NullPointerException e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(Fblist.this,"NULL",Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Log.e("responseRecCheck", "Response null");
+                            }
+                        }
+                    }).executeAsync();
+        }
 
-
-        fbpagesliked = new ArrayList<>();
+        fbpagesliked = new ArrayList<String>();
         callbackManager = CallbackManager.Factory.create();
         submitb = (Button) findViewById(R.id.submitbutton);
         try {
-            listview = (ListView) findViewById(R.id.listfbpages);
-            listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
             if(getIntent().getBooleanExtra("firstTime",false))
                 listofvalues.get(16).setIsSelected(true);
             else {
@@ -99,10 +153,47 @@ public class Fblist extends AppCompatActivity {
                     } while (cr.moveToNext());
                 }
             }
-            adapter = new CustomList(Fblist.this, listofvalues);
-            listview.setAdapter(adapter);
-
-
+            int number_liked = 0;
+            for (int i = 0; i < listofvalues.size(); i++) {
+                String page_id = listofvalues.get(i).getPage_id();
+                if (listofvalues.get(i).isSelected()) {
+                    number_liked++;
+                    fbpagesliked.add(page_id);
+                }
+            }
+            fbSelectedPageImages=new String[fbpagesliked.size()];
+            final int[] selectedImageUrls=new int[1];
+            for(int i=0;i<fbpagesliked.size();i++) {
+                final int position =i;
+                Bundle params = new Bundle();
+                params.putBoolean("redirect", false);
+                final boolean[] urlReceived = {false};
+                String pageId = fbpagesliked.get(position);
+                new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + pageId + "/picture", params, HttpMethod.GET,
+                        new GraphRequest.Callback() {
+                            @Override
+                            public void onCompleted(GraphResponse response) {
+                                if (response != null) {
+                                    try {
+                                        fbSelectedPageImages[position] = (response.getJSONObject().getJSONObject("data").getString("url"));
+                                        selectedImageUrls[0]++;
+                                        if( selectedImageUrls[0] == fbpagesliked.size()-1){
+                                            setSelectedListAdapter();
+                                        }
+                                    }catch (JSONException e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(Fblist.this,"JSON",Toast.LENGTH_SHORT).show();
+                                        Log.e("responseCheck", "Response not received");
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(Fblist.this,"NULL",Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Log.e("responseRecCheck", "Response null");
+                                }
+                            }
+                        }).executeAsync();
+            }
             submitb.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -140,6 +231,26 @@ public class Fblist extends AppCompatActivity {
             Toast.makeText(Fblist.this, e.toString(), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
+    }
+
+    private void setSelectedListAdapter() {
+        //selectedFbPagesList.setVisibility(View.VISIBLE);
+        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(this);
+        selectedFbPagesList.setLayoutManager(layoutManager);
+        selectedFbPagesList.setItemAnimator(new DefaultItemAnimator());
+        selectedFbPagesAdapter = new SelectedFbPagesAdapter(this,fbSelectedPageImages);
+        selectedFbPagesList.setAdapter(selectedFbPagesAdapter);
+    }
+
+    private void setListAdapter() {
+        progressBar.setVisibility(View.INVISIBLE);
+        listview.setVisibility(View.VISIBLE);
+        selectedFbPagesList.setVisibility(View.VISIBLE);
+        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(this);
+        listview.setLayoutManager(layoutManager);
+        listview.setItemAnimator(new DefaultItemAnimator());
+        fbPageListAdapter = new NewCustomList(this,listofvalues,fbPageImages);
+        listview.setAdapter(fbPageListAdapter);
     }
 
     @Override

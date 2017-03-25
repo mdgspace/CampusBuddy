@@ -9,8 +9,17 @@
         layout="@layout/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <ProgressBar
+        android:id="@+id/fb_page_list_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_selected_fb_pages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tool_barfblist"/>
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/listfbpages"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/ripple_effect"
     android:orientation="horizontal">
-
+    <ImageView
+        android:id="@+id/fb_page_image"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginLeft="8dp"
+        android:layout_centerVertical="true"/>
     <TextView
         android:id="@+id/textforpage"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_gravity="center_vertical|start"
         android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/fb_page_image"
+        android:gravity="center"
         android:text="Page Name"
         android:textColor="#000000"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_gravity="end|center_vertical"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp" />
 
-</FrameLayout>
+</RelativeLayout>
