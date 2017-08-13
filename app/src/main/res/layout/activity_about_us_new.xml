@@ -8,7 +8,7 @@
         android:id="@+id/about_us_new_logo"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="48dp"
         android:layout_marginBottom="8dp"
         android:layout_centerHorizontal="true"
         android:contentDescription="logo"
