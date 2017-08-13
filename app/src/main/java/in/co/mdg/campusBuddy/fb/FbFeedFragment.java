@@ -295,7 +295,7 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
         if (ongoingpage == page) {
             final ArrayList<GraphRequest> postsArrayList = new ArrayList<>();
             for (int i = 0; i < fbpliked.size(); i++) {
-                postsArrayList.add(GraphRequest.newGraphPathRequest(accessToken, "/" + fbpliked.get(i) +
+                GraphRequest graphRequest = GraphRequest.newGraphPathRequest(accessToken, "/" + fbpliked.get(i) +
                         "/posts", new GraphRequest.Callback() {
                     @Override
                     public void onCompleted(GraphResponse graphResponse) {
@@ -367,7 +367,12 @@ public class FbFeedFragment extends Fragment implements SwipeRefreshLayout.OnRef
                             e.printStackTrace();
                         }
                     }
-                }));
+                });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "from,story,id,message,picture,created_time");
+                graphRequest.setParameters(parameters);
+                graphRequest.executeAsync();
+                postsArrayList.add(graphRequest);
             }
 
             GraphRequestBatch graphRequestBatch = new GraphRequestBatch(postsArrayList);
