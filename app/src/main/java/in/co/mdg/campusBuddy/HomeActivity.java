@@ -22,6 +22,7 @@ import in.co.mdg.campusBuddy.contacts.data_models.CustomStringArrayGsonAdapter;
 import in.co.mdg.campusBuddy.contacts.data_models.Group;
 import in.co.mdg.campusBuddy.fb.FbFeedFragment;
 import in.co.mdg.campusBuddy.fragments.AboutUsFragment;
+import in.co.mdg.campusBuddy.fragments.AboutUsNew;
 import in.co.mdg.campusBuddy.fragments.ContactsFragment;
 import io.realm.Realm;
 
@@ -50,7 +51,7 @@ public class HomeActivity extends FragmentActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new ContactsFragment(), "Contacts Fragment");
         adapter.addFrag(new FbFeedFragment(), "FbFeedFragment Fragment");
-        adapter.addFrag(new AboutUsFragment(), "AboutUs Fragment");
+        adapter.addFrag(new AboutUsNew(), "AboutUs Fragment");
         viewPager.setAdapter(adapter);
         if (getIntent().hasExtra("open")) {
             if (getIntent().getStringExtra("open").equals("fb_feed")) {

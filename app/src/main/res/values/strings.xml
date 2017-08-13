@@ -2,7 +2,8 @@
 
 <resources>
     <string name="app_name">Campus Buddy</string>
-
+    <string name="app_description">An active students group at IIT Roorkee directed towards creating useful mobile applications.</string>
+    <string name="version">3.0.0</string>
     <string name="action_settings">Settings</string>
 
 
@@ -40,4 +41,7 @@
     <string name="std_code_res_off_shrnpr">0132 271 </string>
     <string name="std_code_bsnl_shrnpr">0132 </string>
     <string name="group_description">Mobile development group at IIT Roorkee is an active student group directing its efforts towards creating useful mobile applications and promoting tech based learning for the same.</string>
+    <string name="recommend">\nI recommend you this application:\n</string>
+    <string name="choose_dialer_text">Share With</string>
+    <string name="github_link">https://github.com/sdsmdg/CampusBuddy</string>
 </resources>
